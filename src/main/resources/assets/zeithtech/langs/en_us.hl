@@ -1,0 +1,46 @@
+# English translations
+
+itemGroup.zeithtech=ZeithTech
+
+item.zeithtech.copper_coil=Copper Coil
+item.zeithtech.gold_coil=Gold Coil
+item.zeithtech.iron_plate=Iron Plate
+item.zeithtech.gold_plate=Gold Plate
+item.zeithtech.copper_plate=Copper Plate
+item.zeithtech.tin_plate=Tin Plate
+item.zeithtech.lead_plate=Lead Plate
+item.zeithtech.aluminum_plate=Aluminum Plate
+
+item.zeithtech.iron_hammer=Iron Hammer
+
+block.zeithtech.fuel_generator.basic=Basic Solid Fuel Generator
+block.zeithtech.machine_assembler.basic=Basic Machine Assembler
+
+block.zeithtech.deepslate_tin_ore=Deepslate Tin Ore
+block.zeithtech.tin_ore=Tin Ore
+item.zeithtech.raw_tin=Raw Tin
+block.zeithtech.raw_tin_block=Block of Raw Tin
+item.zeithtech.tin_ingot=Tin Ingot
+block.zeithtech.tin_block=Block of Tin
+
+block.zeithtech.deepslate_lead_ore=Deepslate Lead Ore
+block.zeithtech.lead_ore=Lead Ore
+item.zeithtech.raw_lead=Raw Lead
+block.zeithtech.raw_lead_block=Block of Raw Lead
+item.zeithtech.lead_ingot=Lead Ingot
+block.zeithtech.lead_block=Block of Lead
+
+block.zeithtech.deepslate_aluminum_ore=Deepslate Aluminum Ore
+block.zeithtech.aluminum_ore=Aluminum Ore
+item.zeithtech.raw_aluminum=Raw Aluminum
+block.zeithtech.raw_aluminum_block=Block of Raw Aluminum
+item.zeithtech.aluminum_ingot=Aluminum Ingot
+block.zeithtech.aluminum_block=Block of Aluminum
+
+block.zeithtech.deepslate_lithium_ore=Deepslate Lithium Ore
+block.zeithtech.lithium_ore=Lithium Ore
+
+block.zeithtech.deepslate_uranium_ore=Deepslate Uranium Ore
+block.zeithtech.uranium_ore=Uranium Ore
+
+gui.zeithtech.start_crafting=Start Crafting

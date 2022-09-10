@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "zeithtech:ore_tin_upper",
+    "zeithtech:ore_tin_middle",
+    "zeithtech:ore_tin_small"
+  ],
+  "step": "underground_ores"
+}

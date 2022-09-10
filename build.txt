@@ -1,12 +1,12 @@
 # Mod Info
-mod_id=modid
-archive_name=ModId
-mod_name=Mod Name
+mod_id=zeithtech
+archive_name=ZeithTech
+mod_name=ZeithTech
 mod_version=19.1.0
 
 # Maven Info
-maven_group=org.zeith.modid
-hl_version=19.1.0
+maven_group=org.zeith.tech
+hl_version=19.1.9
 
 # MC Info
 mc_version=1.19.2
