@@ -18,6 +18,7 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.zeith.tech.ZeithTech;
+import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.RecipeRegistriesZT;
 
 import java.util.Comparator;
@@ -89,7 +90,7 @@ public class ItemHammer
 					{
 						var dropStack = ent.getItem();
 						
-						var recipe = RecipeRegistriesZT.HAMMERING.getRecipes().stream().filter(r -> r.matches(state, dropStack)).findFirst().orElse(null);
+						var recipe = RecipeRegistriesZT.HAMMERING.getRecipes().stream().filter(r -> r.matches(state, dropStack, TechTier.BASIC)).findFirst().orElse(null);
 						
 						if(recipe != null)
 						{

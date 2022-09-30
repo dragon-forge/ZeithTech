@@ -15,8 +15,9 @@ item.zeithtech.iron_hammer=Iron Hammer
 item.zeithtech.hevea_boat=Hevea Boat
 item.zeithtech.hevea_chest_boat=Hevea Boat with Chest
 
-item.zeithtech.bowl_of_rubber=Bowl of Rubber
+item.zeithtech.bowl_of_resin=Bowl of Resin
 item.zeithtech.latex=Latex Orb
+item.zeithtech.tree_tap=Tree Tap
 
 block.zeithtech.hevea_sapling=Hevea Sapling
 block.zeithtech.hevea_log=Hevea Log
@@ -69,3 +70,5 @@ block.zeithtech.deepslate_uranium_ore=Deepslate Uranium Ore
 block.zeithtech.uranium_ore=Uranium Ore
 
 gui.zeithtech.start_crafting=Start Crafting
+
+jei.info.zeithtech.bowl_of_resin=To obtain a Bowl of Resin, you need to find Hevea Tree, strip it's barks with your axe, use 5 sticks on the Stripped Hevea Log, then place Tree Tap (click the sticks) and put a Bowl on the sticks. After some time, the Bowl will fill up with resin, which you can gather with your hand.

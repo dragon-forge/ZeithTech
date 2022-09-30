@@ -17,11 +17,23 @@ import org.zeith.tech.ZeithTech;
 import org.zeith.tech.common.blocks.hevea.BlockHeveaLeaves;
 import org.zeith.tech.common.blocks.hevea.BlockHeveaLog;
 
+import java.util.function.UnaryOperator;
+
 public class BaseZT
 {
 	public static Item newItem()
 	{
 		return new Item(itemProps());
+	}
+	
+	public static Item newItem(Item.Properties props)
+	{
+		return new Item(props);
+	}
+	
+	public static Item newItem(UnaryOperator<Item.Properties> props)
+	{
+		return new Item(props.apply(itemProps()));
 	}
 	
 	public static Item newItem(TagKey<Item> tag)

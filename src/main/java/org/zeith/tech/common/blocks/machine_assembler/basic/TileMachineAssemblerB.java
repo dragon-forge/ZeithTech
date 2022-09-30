@@ -11,7 +11,7 @@ import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.*;
 import org.zeith.hammerlib.util.java.DirectStorage;
-import org.zeith.tech.api.enums.MachineTier;
+import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.RecipeMachineAssembler;
 import org.zeith.tech.api.recipes.RecipeRegistriesZT;
 import org.zeith.tech.common.blocks.base.machine.TileBaseMachine;
@@ -172,7 +172,7 @@ public class TileMachineAssemblerB
 	
 	private boolean isValidRecipe(RecipeMachineAssembler recipe)
 	{
-		return (resultInventory.getItem(0).isEmpty() || ItemStackHelper.matchesIgnoreCount(resultInventory.getItem(0), recipe.getRecipeOutput(this))) && recipe.matches(craftingInventory, MachineTier.BASIC);
+		return (resultInventory.getItem(0).isEmpty() || ItemStackHelper.matchesIgnoreCount(resultInventory.getItem(0), recipe.getRecipeOutput(this))) && recipe.matches(craftingInventory, TechTier.BASIC);
 	}
 	
 	@Override

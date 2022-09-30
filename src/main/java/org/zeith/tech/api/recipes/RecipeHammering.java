@@ -22,6 +22,7 @@ import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
+import org.zeith.tech.api.enums.TechTier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,16 @@ public class RecipeHammering
 	final NumberProvider hitCount;
 	final Ingredient input;
 	final ItemStack output;
+	final TechTier tier;
 	
-	public RecipeHammering(ResourceLocation id, Ingredient input, ItemStack output, NumberProvider hitCount, List<TagKey<Block>> blockHammeringTags)
+	public RecipeHammering(ResourceLocation id, Ingredient input, ItemStack output, NumberProvider hitCount, List<TagKey<Block>> blockHammeringTags, TechTier tier)
 	{
 		super(id, new ItemStackResult(output), NonNullList.of(new MCIngredient(input)));
 		this.input = input;
 		this.output = output;
 		this.hitCount = hitCount;
 		this.blockHammeringTags = blockHammeringTags;
+		this.tier = tier;
 	}
 	
 	public int getHitCount(ItemStack hammer, ItemEntity targetEntity, Vec3 origin, Player player, ServerLevel level)
@@ -69,9 +72,14 @@ public class RecipeHammering
 		return output.copy();
 	}
 	
-	public boolean matches(BlockState state, ItemStack stack)
+	public boolean matches(BlockState state, ItemStack stack, TechTier tier)
 	{
-		return canPerformHammering(state) && input.test(stack);
+		return canPerformHammering(state) && input.test(stack) && tier.isOrHigher(getTier());
+	}
+	
+	public TechTier getTier()
+	{
+		return tier;
 	}
 	
 	public static class Builder
@@ -79,6 +87,7 @@ public class RecipeHammering
 	{
 		private Ingredient inputItem = Ingredient.EMPTY;
 		private NumberProvider hitCount = ConstantValue.exactly(4);
+		private TechTier tier = TechTier.BASIC;
 		
 		private final List<TagKey<Block>> blockHammeringTags = new ArrayList<>();
 		
@@ -92,6 +101,15 @@ public class RecipeHammering
 		public Builder(IRecipeRegistrationEvent<RecipeHammering> event)
 		{
 			super(event);
+		}
+		
+		/**
+		 * BASIC is the Iron Hammer!
+		 */
+		public Builder withTier(TechTier tier)
+		{
+			this.tier = tier;
+			return this;
 		}
 		
 		public Builder hitCount(int exact)
@@ -157,7 +175,7 @@ public class RecipeHammering
 		@Override
 		protected RecipeHammering createRecipe() throws IllegalStateException
 		{
-			return new RecipeHammering(getIdentifier(), inputItem, result, hitCount, blockHammeringTags);
+			return new RecipeHammering(getIdentifier(), inputItem, result, hitCount, blockHammeringTags, tier);
 		}
 	}
 }

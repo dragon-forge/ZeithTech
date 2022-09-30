@@ -7,6 +7,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.HammerLib;
@@ -16,7 +17,8 @@ import org.zeith.hammerlib.core.adapter.recipe.SmeltingRecipeBuilder;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.tech.ZeithTech;
-import org.zeith.tech.api.enums.MachineTier;
+import org.zeith.tech.api.enums.TechTier;
+import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
 import org.zeith.tech.api.recipes.*;
 import org.zeith.tech.init.blocks.MachinesZT;
 import org.zeith.tech.init.blocks.OresZT;
@@ -68,8 +70,9 @@ public class RecipesZT
 		event.shaped().shape("ppp", "p p", "ppp").map('p', BlocksZT.HEVEA_PLANKS).result(BlocksZT.HEVEA_CHEST).register();
 		event.shaped().shape("ppp", "p p", "ppp").map('p', TagsZT.Items.HEVEA_LOGS).result(new ItemStack(BlocksZT.HEVEA_CHEST, 4)).register();
 		event.shapeless().addAll(BlocksZT.HEVEA_CHEST, Items.TRIPWIRE_HOOK).result(BlocksZT.HEVEA_TRAPPED_CHEST).register();
+		event.shaped().shape(" pp", "  p", " pp").map('p', ItemTags.PLANKS).result(ItemsZT.TREE_TAP).register();
 		
-		event.smelting().xp(0.5F).input(ItemsZT.BOWL_OF_RUBBER).cookTime(100).result(ItemsZT.LATEX).register();
+		event.smelting().xp(0.5F).input(ItemsZT.BOWL_OF_RESIN).cookTime(100).result(new ItemStack(ItemsZT.LATEX, 3)).register();
 		
 		event.shaped().shape("pgp").map('p', TagsZT.Items.PLATES_COPPER).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT.COPPER_ITEM_PIPE, 3)).register();
 		
@@ -98,7 +101,7 @@ public class RecipesZT
 			var f = evt.<RecipeMachineAssembler.Builder> builderFactory();
 			
 			f.get()
-					.minTier(MachineTier.BASIC)
+					.minTier(TechTier.BASIC)
 					.shape("  g  ", " ici ", "gibig", " scs ", "  g  ")
 					.map('i', Tags.Items.INGOTS_IRON)
 					.map('c', CraftingMaterialsZT.COPPER_COIL)
@@ -119,13 +122,15 @@ public class RecipesZT
 			var itemTags = evt.getContext().getAllTags(ForgeRegistries.Keys.ITEMS);
 			
 			Set<String> excludePlates = new HashSet<>();
-			
-			// TODO: HammerLib.EVENT_BUS event!
-			excludePlates.add("steel");
-			
 			Map<String, Integer> materialHitOverride = new HashMap<>();
+			Map<String, TechTier> minTierOverride = new HashMap<>();
+			
+			minTierOverride.put("steel", TechTier.ADVANCED);
 			materialHitOverride.put("gold", 3);
 			materialHitOverride.put("aluminum", 2);
+			
+			var hevt = new BasicHammeringRegistryEvent(excludePlates, materialHitOverride, minTierOverride);
+			MinecraftForge.EVENT_BUS.post(hevt);
 			
 			for(var tag : itemTags.keySet())
 			{
@@ -141,7 +146,8 @@ public class RecipesZT
 							f.get()
 									.input(ItemTags.create(tag))
 									.result(plateItem.get())
-									.hitCount(materialHitOverride.getOrDefault(metalType, 4))
+									.hitCount(hevt.getHitsForMetal(metalType))
+									.withTier(hevt.getMaterialTier(metalType))
 									.register();
 						else
 							ZeithTech.LOG.warn("Unable to find plate for metal " + metalType + ", but the plate tag (" + plateTag + ") is present...");

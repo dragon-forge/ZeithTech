@@ -2,7 +2,9 @@ package org.zeith.tech.common.blocks;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
@@ -13,37 +15,37 @@ import org.zeith.tech.ZeithTech;
 
 import java.util.*;
 
-public class SimpleBlockZT
-		extends Block
+public abstract class BaseEntityBlockZT
+		extends BaseEntityBlock
 		implements IRegisterListener, ICustomBlockItem
 {
 	private final List<TagKey<Item>> itemTags = new ArrayList<>();
 	protected boolean dropsSelf = false;
 	
-	public SimpleBlockZT(Properties props, BlockHarvestAdapter.MineableType toolType, Tier miningTier)
+	public BaseEntityBlockZT(BlockBehaviour.Properties props, BlockHarvestAdapter.MineableType toolType, Tier miningTier)
 	{
 		super(props);
 		BlockHarvestAdapter.bindTool(toolType, miningTier, this);
 	}
 	
-	public SimpleBlockZT(Properties props, BlockHarvestAdapter.MineableType toolType)
+	public BaseEntityBlockZT(BlockBehaviour.Properties props, BlockHarvestAdapter.MineableType toolType)
 	{
 		super(props);
 		addBlockTag(toolType.blockTag());
 	}
 	
-	public SimpleBlockZT(Properties props)
+	public BaseEntityBlockZT(BlockBehaviour.Properties props)
 	{
 		super(props);
 	}
 	
-	public SimpleBlockZT dropsSelf()
+	public BaseEntityBlockZT dropsSelf()
 	{
 		this.dropsSelf = true;
 		return this;
 	}
 	
-	public SimpleBlockZT addItemTags(Collection<TagKey<Item>> tags)
+	public BaseEntityBlockZT addItemTags(Collection<TagKey<Item>> tags)
 	{
 		if(itemBlock != null)
 			for(var tag : tags)
@@ -52,7 +54,7 @@ public class SimpleBlockZT
 		return this;
 	}
 	
-	public SimpleBlockZT addItemTag(TagKey<Item> tag)
+	public BaseEntityBlockZT addItemTag(TagKey<Item> tag)
 	{
 		if(itemBlock != null)
 			TagAdapter.bindStaticTag(tag, itemBlock);
@@ -60,14 +62,14 @@ public class SimpleBlockZT
 		return this;
 	}
 	
-	public SimpleBlockZT addBlockTags(Collection<TagKey<Block>> tags)
+	public BaseEntityBlockZT addBlockTags(Collection<TagKey<Block>> tags)
 	{
 		for(var tag : tags)
 			TagAdapter.bindStaticTag(tag, this);
 		return this;
 	}
 	
-	public SimpleBlockZT addBlockTag(TagKey<Block> tag)
+	public BaseEntityBlockZT addBlockTag(TagKey<Block> tag)
 	{
 		TagAdapter.bindStaticTag(tag, this);
 		return this;

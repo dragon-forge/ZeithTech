@@ -10,7 +10,7 @@ import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.core.adapter.recipe.RecipeShape;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
-import org.zeith.tech.api.enums.MachineTier;
+import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.common.blocks.machine_assembler.basic.TileMachineAssemblerB;
 
 import java.util.HashMap;
@@ -19,12 +19,12 @@ import java.util.Map;
 public class RecipeMachineAssembler
 		extends BaseNameableRecipe
 {
-	private final MachineTier minTier;
+	private final TechTier minTier;
 	private final int width, height;
 	private final NonNullList<Ingredient> recipeItems;
 	private final ItemStackResult output;
 	
-	public RecipeMachineAssembler(ResourceLocation id, MachineTier minTier, ItemStackResult output, RecipeShape shape, Map<Character, Ingredient> dictionary)
+	public RecipeMachineAssembler(ResourceLocation id, TechTier minTier, ItemStackResult output, RecipeShape shape, Map<Character, Ingredient> dictionary)
 	{
 		super(id, output, parseHLIngredients(shape, dictionary));
 		if(shape.width > 5 || shape.height > 5)
@@ -41,7 +41,7 @@ public class RecipeMachineAssembler
 		return output.getOutput(executor);
 	}
 	
-	public MachineTier getMinTier()
+	public TechTier getMinTier()
 	{
 		return minTier;
 	}
@@ -61,7 +61,7 @@ public class RecipeMachineAssembler
 		return recipeItems;
 	}
 	
-	public boolean matches(Container container, MachineTier tier)
+	public boolean matches(Container container, TechTier tier)
 	{
 		if(!tier.isOrHigher(this.minTier))
 			return false;
@@ -133,14 +133,14 @@ public class RecipeMachineAssembler
 	{
 		private final Map<Character, Ingredient> dictionary = new HashMap<>();
 		private RecipeShape shape;
-		private MachineTier minTier = MachineTier.BASIC;
+		private TechTier minTier = TechTier.BASIC;
 		
 		public Builder(IRecipeRegistrationEvent<RecipeMachineAssembler> event)
 		{
 			super(event);
 		}
 		
-		public Builder minTier(MachineTier minTier)
+		public Builder minTier(TechTier minTier)
 		{
 			this.minTier = minTier;
 			return this;

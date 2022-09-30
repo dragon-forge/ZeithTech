@@ -2,7 +2,7 @@ package org.zeith.tech.api.enums;
 
 import net.minecraft.util.StringRepresentable;
 
-public enum MachineTier
+public enum TechTier
 		implements StringRepresentable
 {
 	BASIC("basic"),
@@ -11,7 +11,7 @@ public enum MachineTier
 	
 	final String name;
 	
-	MachineTier(String name)
+	TechTier(String name)
 	{
 		this.name = name;
 	}
@@ -22,7 +22,7 @@ public enum MachineTier
 		return name;
 	}
 	
-	public boolean isOrHigher(MachineTier than)
+	public boolean isOrHigher(TechTier than)
 	{
 		return ordinal() >= than.ordinal();
 	}

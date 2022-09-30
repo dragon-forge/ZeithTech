@@ -7,12 +7,14 @@ import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.tech.ZeithTech;
+import org.zeith.tech.init.ItemsZT;
 import org.zeith.tech.init.blocks.MachinesZT;
 import org.zeith.tech.init.items.ToolsZT;
 
@@ -36,6 +38,8 @@ public class JeiZT
 	{
 		IModPlugin.super.registerRecipes(registration);
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
+		
+		registration.addItemStackInfo(new ItemStack(ItemsZT.BOWL_OF_RESIN), Component.translatable("jei.info.zeithtech.bowl_of_resin"));
 	}
 	
 	@Override
