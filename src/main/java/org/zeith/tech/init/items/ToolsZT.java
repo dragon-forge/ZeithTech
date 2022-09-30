@@ -10,8 +10,8 @@ import java.util.Optional;
 import static org.zeith.tech.init.BaseZT.itemProps;
 
 @SimplyRegister
-public class ToolsZT
+public interface ToolsZT
 {
 	@RegistryName("iron_hammer")
-	public static final ItemHammer IRON_HAMMER = new ItemHammer(itemProps().durability(256), Optional.of(Tags.Items.INGOTS_IRON));
+	ItemHammer IRON_HAMMER = new ItemHammer(itemProps().durability(256), Optional.of(Tags.Items.INGOTS_IRON));
 }

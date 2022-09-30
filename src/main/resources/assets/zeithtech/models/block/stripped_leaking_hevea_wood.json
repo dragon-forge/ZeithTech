@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "zeithtech:block/stripped_leaking_evea_log",
+    "side": "zeithtech:block/stripped_leaking_evea_log"
+  }
+}

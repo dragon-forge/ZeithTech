@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "zeithtech:block/hevea_slab"
+    },
+    "type=double": {
+      "model": "zeithtech:block/hevea_planks"
+    },
+    "type=top": {
+      "model": "zeithtech:block/hevea_slab_top"
+    }
+  }
+}

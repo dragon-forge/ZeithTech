@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "zeithtech:block/hevea_planks",
+    "top": "zeithtech:block/hevea_planks",
+    "side": "zeithtech:block/hevea_planks"
+  }
+}

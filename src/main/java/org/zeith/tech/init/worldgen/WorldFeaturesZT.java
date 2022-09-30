@@ -2,18 +2,26 @@ package org.zeith.tech.init.worldgen;
 
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import org.zeith.tech.ZeithTech;
+import org.zeith.tech.init.BlocksZT;
 import org.zeith.tech.init.blocks.OresZT;
 
 import java.util.List;
 
 import static net.minecraft.data.worldgen.features.OreFeatures.*;
 
-public class OreFeaturesZT
+public class WorldFeaturesZT
 {
 	private static final List<OreConfiguration.TargetBlockState> ORE_TIN_TARGET_LIST = List.of(
 			OreConfiguration.target(STONE_ORE_REPLACEABLES, OresZT.TIN_ORE.defaultBlockState()),
@@ -56,6 +64,40 @@ public class OreFeaturesZT
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> URANIUM_ORE = register("uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 6));
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> URANIUM_ORE_SMALL = register("small_uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 2));
 	
+	
+	// TREES
+	
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> HEVEA_TREE = register("hevea_tree", Feature.TREE,
+			new TreeConfiguration.TreeConfigurationBuilder(
+					BlockStateProvider.simple(BlocksZT.HEVEA_LOG),
+					new StraightTrunkPlacer(6, 2, 2),
+					BlockStateProvider.simple(BlocksZT.HEVEA_LEAVES.defaultBlockState()),
+					new PineFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(7)),
+					new TwoLayersFeatureSize(1, 0, 1)
+			)
+					.dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT))
+					.forceDirt()
+					.build()
+	);
+	
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> HEVEA_TREE_WITH_BEES = register("hevea_tree_with_bees", Feature.TREE,
+			new TreeConfiguration.TreeConfigurationBuilder(
+					BlockStateProvider.simple(BlocksZT.HEVEA_LOG),
+					new StraightTrunkPlacer(6, 2, 2),
+					BlockStateProvider.simple(BlocksZT.HEVEA_LEAVES.defaultBlockState()),
+					new PineFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(7)),
+					new TwoLayersFeatureSize(1, 0, 1)
+			)
+					.dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT))
+					.forceDirt()
+					.decorators(List.of(new BeehiveDecorator(0.05F)))
+					.build()
+	);
+	
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> HEVEA_TREES_PLAINS = register("hevea_trees_plains", Feature.RANDOM_SELECTOR,
+			new RandomFeatureConfiguration(List.of(),
+					PlacementUtils.inlinePlaced(HEVEA_TREE))
+	);
 	
 	private static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String p_206489_, F p_206490_, FC p_206491_)
 	{

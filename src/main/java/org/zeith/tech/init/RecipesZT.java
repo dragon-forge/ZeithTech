@@ -3,6 +3,7 @@ package org.zeith.tech.init;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.Blocks;
@@ -50,12 +51,29 @@ public class RecipesZT
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_LEAD).result(new ItemStack(OresZT.LEAD_INGOT, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_ALUMINUM).result(new ItemStack(OresZT.ALUMINUM_INGOT, 9)).register();
 		
-		smeltingAndBlasting(event).input(TagsZT.Items.RAW_MATERIALS_TIN).result(OresZT.TIN_INGOT).register();
-		smeltingAndBlasting(event).input(TagsZT.Items.RAW_MATERIALS_LEAD).result(OresZT.LEAD_INGOT).register();
-		smeltingAndBlasting(event).input(TagsZT.Items.RAW_MATERIALS_ALUMINUM).result(OresZT.ALUMINUM_INGOT).register();
-		smeltingAndBlasting(event).input(TagsZT.Items.ORES_TIN).result(OresZT.TIN_INGOT).register();
-		smeltingAndBlasting(event).input(TagsZT.Items.ORES_LEAD).result(OresZT.LEAD_INGOT).register();
-		smeltingAndBlasting(event).input(TagsZT.Items.ORES_ALUMINUM).result(OresZT.ALUMINUM_INGOT).register();
+		event.shaped().shape("ll", "ll").map('l', BlocksZT.HEVEA_LOG).result(new ItemStack(BlocksZT.HEVEA_WOOD, 3)).register();
+		event.shaped().shape("ll", "ll").map('l', BlocksZT.STRIPPED_HEVEA_LOG).result(new ItemStack(BlocksZT.STRIPPED_HEVEA_WOOD, 3)).register();
+		event.shapeless().add(TagsZT.Items.HEVEA_LOGS).result(new ItemStack(BlocksZT.HEVEA_PLANKS, 4)).register();
+		event.shapeless().add(BlocksZT.HEVEA_PLANKS).result(BlocksZT.HEVEA_BUTTON).register();
+		event.shaped().shape("p  ", "pp ", "ppp").map('p', BlocksZT.HEVEA_PLANKS).result(new ItemStack(BlocksZT.HEVEA_STAIRS, 4)).register();
+		event.shaped().shape("ppp").map('p', BlocksZT.HEVEA_PLANKS).result(new ItemStack(BlocksZT.HEVEA_SLAB, 6)).register();
+		event.shaped().shape("sps", "sps").map('p', BlocksZT.HEVEA_PLANKS).map('s', Tags.Items.RODS_WOODEN).result(BlocksZT.HEVEA_FENCE_GATE).register();
+		event.shaped().shape("psp", "psp").map('p', BlocksZT.HEVEA_PLANKS).map('s', Tags.Items.RODS_WOODEN).result(new ItemStack(BlocksZT.HEVEA_FENCE, 3)).register();
+		event.shaped().shape("pp", "pp", "pp").map('p', BlocksZT.HEVEA_PLANKS).result(new ItemStack(BlocksZT.HEVEA_DOOR, 3)).register();
+		event.shaped().shape("ppp", "ppp", " s ").map('p', BlocksZT.HEVEA_PLANKS).map('s', Tags.Items.RODS_WOODEN).result(new ItemStack(BlocksZT.HEVEA_SIGN, 3)).register();
+		event.shaped().shape("pp").map('p', BlocksZT.HEVEA_PLANKS).result(BlocksZT.HEVEA_PRESSURE_PLATE).register();
+		event.shaped().shape("ppp", "ppp").map('p', BlocksZT.HEVEA_PLANKS).result(new ItemStack(BlocksZT.HEVEA_TRAP_DOOR, 2)).register();
+		event.shaped().shape("p p", "ppp").map('p', BlocksZT.HEVEA_PLANKS).result(ItemsZT.HEVEA_BOAT).register();
+		event.shapeless().addAll(ItemsZT.HEVEA_BOAT, Tags.Items.CHESTS_WOODEN).result(ItemsZT.HEVEA_CHEST_BOAT).register();
+		event.shaped().shape("ppp", "p p", "ppp").map('p', BlocksZT.HEVEA_PLANKS).result(BlocksZT.HEVEA_CHEST).register();
+		event.shapeless().addAll(BlocksZT.HEVEA_CHEST, Items.TRIPWIRE_HOOK).result(BlocksZT.HEVEA_TRAPPED_CHEST).register();
+		
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_TIN).result(OresZT.TIN_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_LEAD).result(OresZT.LEAD_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_ALUMINUM).result(OresZT.ALUMINUM_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_TIN).result(OresZT.TIN_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_LEAD).result(OresZT.LEAD_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_ALUMINUM).result(OresZT.ALUMINUM_INGOT).register();
 		
 		event.shaped().shape("iin", "is ", " s ").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).map('n', Tags.Items.NUGGETS_IRON).result(ToolsZT.IRON_HAMMER).register();
 		

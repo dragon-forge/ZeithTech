@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=x,leaking=false": {
+      "model": "zeithtech:block/stripped_hevea_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,leaking=false": {
+      "model": "zeithtech:block/stripped_hevea_wood"
+    },
+    "axis=z,leaking=false": {
+      "model": "zeithtech:block/stripped_hevea_wood",
+      "x": 90
+    },
+    "axis=x,leaking=true": {
+      "model": "zeithtech:block/stripped_leaking_hevea_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,leaking=true": {
+      "model": "zeithtech:block/stripped_leaking_hevea_wood"
+    },
+    "axis=z,leaking=true": {
+      "model": "zeithtech:block/stripped_leaking_hevea_wood",
+      "x": 90
+    }
+  }
+}

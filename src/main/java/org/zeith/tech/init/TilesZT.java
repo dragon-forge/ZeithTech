@@ -9,11 +9,11 @@ import org.zeith.tech.common.blocks.machine_assembler.basic.TileMachineAssembler
 import org.zeith.tech.init.blocks.MachinesZT;
 
 @SimplyRegister
-public class TilesZT
+public interface TilesZT
 {
 	@RegistryName("fuel_generator/basic")
-	public static final BlockEntityType<TileFuelGeneratorB> FUEL_GENERATOR_BASIC = BlockAPI.createBlockEntityType(TileFuelGeneratorB::new, MachinesZT.FUEL_GENERATOR_BASIC);
+	BlockEntityType<TileFuelGeneratorB> FUEL_GENERATOR_BASIC = BlockAPI.createBlockEntityType(TileFuelGeneratorB::new, MachinesZT.FUEL_GENERATOR_BASIC);
 	
 	@RegistryName("machine_assembler/basic")
-	public static final BlockEntityType<TileMachineAssemblerB> MACHINE_ASSEMBLER_BASIC = BlockAPI.createBlockEntityType(TileMachineAssemblerB::new, MachinesZT.MACHINE_ASSEMBLER_BASIC);
+	BlockEntityType<TileMachineAssemblerB> MACHINE_ASSEMBLER_BASIC = BlockAPI.createBlockEntityType(TileMachineAssemblerB::new, MachinesZT.MACHINE_ASSEMBLER_BASIC);
 }

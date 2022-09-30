@@ -1,0 +1,8 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_forest",
+  "features": [
+    "zeithtech:hevea_trees_plains"
+  ],
+  "step": "vegetal_decoration"
+}

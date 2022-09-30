@@ -26,6 +26,11 @@ public class SimpleBlockZT
 		BlockHarvestAdapter.bindTool(toolType, miningTier, this);
 	}
 	
+	public SimpleBlockZT(Properties props)
+	{
+		super(props);
+	}
+	
 	public SimpleBlockZT dropsSelf()
 	{
 		this.dropsSelf = true;

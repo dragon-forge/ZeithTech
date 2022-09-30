@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "zeithtech:block/hevea_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "zeithtech:block/hevea_log"
+    },
+    "axis=z": {
+      "model": "zeithtech:block/hevea_log_horizontal",
+      "x": 90
+    }
+  }
+}

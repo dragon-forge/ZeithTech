@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/leaves",
+  "textures": {
+    "all": "zeithtech:block/hevea_leaves"
+  }
+}

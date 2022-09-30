@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "zeithtech:block/stripped_hevea_log_top",
+    "side": "zeithtech:block/stripped_hevea_log"
+  }
+}

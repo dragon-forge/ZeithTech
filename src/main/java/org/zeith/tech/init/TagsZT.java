@@ -18,6 +18,8 @@ public class TagsZT
 		{
 		}
 		
+		public static final TagKey<Item> HEVEA_LOGS = tag("hevea_logs");
+		
 		public static final TagKey<Item> INGOTS_TIN = tag("ingots/tin");
 		public static final TagKey<Item> INGOTS_LEAD = tag("ingots/lead");
 		public static final TagKey<Item> INGOTS_ALUMINUM = tag("ingots/aluminum");
