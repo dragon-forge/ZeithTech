@@ -4,7 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,12 +20,11 @@ public class HeveaChestISTER
 	private final ChestBlockEntity trappedChest = new TrappedChestBlockEntity(BlockPos.ZERO, BlocksZT.HEVEA_TRAPPED_CHEST.defaultBlockState());
 	
 	@Override
-	public void renderByItem(ItemStack stack, ItemTransforms.TransformType p_108831_, PoseStack p_108832_, MultiBufferSource p_108833_, int p_108834_, int p_108835_)
+	public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack pose, MultiBufferSource bufferSource, int uv2, int overlay)
 	{
-		Item item = stack.getItem();
-		if(item instanceof BlockItem)
+		if(stack.getItem() instanceof BlockItem ib)
 		{
-			Block block = ((BlockItem) item).getBlock();
+			Block block = ib.getBlock();
 			
 			BlockState state = block.defaultBlockState();
 			BlockEntity entity;
@@ -37,7 +37,7 @@ public class HeveaChestISTER
 				entity = this.trappedChest;
 			} else return;
 			
-			this.blockEntRenderDispatcher.renderItem(entity, p_108832_, p_108833_, p_108834_, p_108835_);
+			this.blockEntRenderDispatcher.renderItem(entity, pose, bufferSource, uv2, overlay);
 		}
 	}
 }

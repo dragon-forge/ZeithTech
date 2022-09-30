@@ -14,8 +14,8 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
 import org.zeith.tech.ZeithTech;
-import org.zeith.tech.common.blocks.hevea.HeveaLeavesBlock;
-import org.zeith.tech.common.blocks.hevea.HeveaLogBlock;
+import org.zeith.tech.common.blocks.hevea.BlockHeveaLeaves;
+import org.zeith.tech.common.blocks.hevea.BlockHeveaLog;
 
 public class BaseZT
 {
@@ -36,16 +36,16 @@ public class BaseZT
 		return new Item.Properties().tab(ZeithTech.TAB);
 	}
 	
-	public static HeveaLogBlock heveaLog(MaterialColor p_50789_, MaterialColor p_50790_, boolean leaking)
+	public static BlockHeveaLog heveaLog(MaterialColor p_50789_, MaterialColor p_50790_, boolean leaking)
 	{
 		var props = BlockBehaviour.Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? p_50789_ : p_50790_).strength(2.0F).sound(SoundType.WOOD);
 		
-		return leaking ? new HeveaLogBlock.Leaking(props) : new HeveaLogBlock(props);
+		return leaking ? new BlockHeveaLog.Leaking(props) : new BlockHeveaLog(props);
 	}
 	
-	public static HeveaLeavesBlock leaves(SoundType sounds)
+	public static BlockHeveaLeaves leaves(SoundType sounds)
 	{
-		return new HeveaLeavesBlock(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(sounds).noOcclusion().isValidSpawn(BaseZT::ocelotOrParrot).isSuffocating(BaseZT::never).isViewBlocking(BaseZT::never));
+		return new BlockHeveaLeaves(BlockBehaviour.Properties.of(Material.LEAVES).strength(0.2F).randomTicks().sound(sounds).noOcclusion().isValidSpawn(BaseZT::ocelotOrParrot).isSuffocating(BaseZT::never).isViewBlocking(BaseZT::never));
 	}
 	
 	public static Boolean ocelotOrParrot(BlockState p_50822_, BlockGetter p_50823_, BlockPos p_50824_, EntityType<?> p_50825_)

@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
-import org.zeith.tech.common.blocks.hevea.HeveaLogBlock;
+import org.zeith.tech.common.blocks.hevea.BlockHeveaLog;
 
 @FunctionalInterface
 public interface IToolModifyHandler
@@ -24,7 +24,7 @@ public interface IToolModifyHandler
 		};
 	}
 	
-	static IToolModifyHandler axeStripping(HeveaLogBlock targetBlock)
+	static IToolModifyHandler axeStripping(BlockHeveaLog targetBlock)
 	{
 		return ctx ->
 		{

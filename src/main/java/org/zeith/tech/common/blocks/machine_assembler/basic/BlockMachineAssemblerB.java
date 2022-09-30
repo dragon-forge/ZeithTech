@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
-import org.zeith.tech.common.blocks.base.BlockBaseMachine;
+import org.zeith.tech.common.blocks.base.machine.BlockBaseMachine;
 
 public class BlockMachineAssemblerB
 		extends BlockBaseMachine<TileMachineAssemblerB>

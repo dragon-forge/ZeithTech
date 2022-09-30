@@ -24,8 +24,8 @@ import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
-import org.zeith.tech.common.blocks.base.ContainerBaseMachine;
-import org.zeith.tech.common.blocks.base.TileBaseMachine;
+import org.zeith.tech.common.blocks.base.machine.ContainerBaseMachine;
+import org.zeith.tech.common.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.init.TilesZT;
 
 import java.util.EnumSet;

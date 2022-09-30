@@ -7,7 +7,7 @@ import org.zeith.hammerlib.client.utils.FXUtils;
 import org.zeith.hammerlib.client.utils.RenderUtils;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.client.gui.WidgetAPI;
-import org.zeith.tech.common.blocks.base.GuiBaseMachine;
+import org.zeith.tech.common.blocks.base.machine.GuiBaseMachine;
 
 public class GuiFuelGeneratorB
 		extends GuiBaseMachine<ContainerFuelGeneratorB>

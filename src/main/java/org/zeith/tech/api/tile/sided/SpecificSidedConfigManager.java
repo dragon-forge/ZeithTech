@@ -3,26 +3,21 @@ package org.zeith.tech.api.tile.sided;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.ShortTag;
 import net.minecraftforge.common.util.INBTSerializable;
-import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.enums.RelativeDirection;
 import org.zeith.tech.api.enums.SideConfig;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 public class SpecificSidedConfigManager
 		implements ITileSidedConfig.ISpecificSidedConfig, INBTSerializable<ShortTag>
 {
 	public final DirectStorage<Direction> currentDirection;
 	
-	@NBTSerializable
-	public final SideConfig[] configurations = new SideConfig[6];
+	public final SideConfig6 configurations;
 	
 	public SpecificSidedConfigManager(DirectStorage<Direction> currentDirection, SideConfig def)
 	{
 		this.currentDirection = currentDirection;
-		Arrays.fill(configurations, def);
+		configurations = new SideConfig6(def);
 	}
 	
 	public SpecificSidedConfigManager(DirectStorage<Direction> currentDirection)
@@ -33,7 +28,7 @@ public class SpecificSidedConfigManager
 	@Override
 	public ITileSidedConfig.ISpecificSidedConfig setDefaults(SideConfig config)
 	{
-		Arrays.fill(configurations, Objects.requireNonNull(config));
+		configurations.setDefaults(config);
 		return this;
 	}
 	
@@ -79,14 +74,14 @@ public class SpecificSidedConfigManager
 	public SideConfig getRelative(RelativeDirection direction)
 	{
 		if(direction == null) return SideConfig.DISABLE;
-		return configurations[direction.ordinal()];
+		return configurations.get(direction.ordinal());
 	}
 	
 	@Override
 	public void setRelative(RelativeDirection direction, SideConfig config)
 	{
 		if(direction == null) return;
-		configurations[direction.ordinal()] = config;
+		configurations.set(direction.ordinal(), config);
 	}
 	
 	@Override
@@ -107,22 +102,12 @@ public class SpecificSidedConfigManager
 	@Override
 	public ShortTag serializeNBT()
 	{
-		return ShortTag.valueOf((short)
-				(configurations[0].ordinal() << 10 |
-						(configurations[1].ordinal() << 8) |
-						(configurations[2].ordinal() << 6) |
-						(configurations[3].ordinal() << 4) |
-						(configurations[4].ordinal() << 2) |
-						configurations[5].ordinal()
-				)
-		);
+		return configurations.serializeNBT();
 	}
 	
 	@Override
 	public void deserializeNBT(ShortTag nbt)
 	{
-		var value = nbt.getAsShort();
-		for(int i = 0; i < 6; ++i)
-			configurations[i] = SideConfig.byId((value >> (10 - i * 2)) & 3);
+		configurations.deserializeNBT(nbt);
 	}
 }

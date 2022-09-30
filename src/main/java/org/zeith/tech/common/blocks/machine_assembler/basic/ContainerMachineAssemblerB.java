@@ -8,7 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.zeith.tech.common.blocks.base.ContainerBaseMachine;
+import org.zeith.tech.common.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.common.ui.SlotInput;
 import org.zeith.tech.common.ui.SlotOutput;
 

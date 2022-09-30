@@ -66,7 +66,12 @@ public class RecipesZT
 		event.shaped().shape("p p", "ppp").map('p', BlocksZT.HEVEA_PLANKS).result(ItemsZT.HEVEA_BOAT).register();
 		event.shapeless().addAll(ItemsZT.HEVEA_BOAT, Tags.Items.CHESTS_WOODEN).result(ItemsZT.HEVEA_CHEST_BOAT).register();
 		event.shaped().shape("ppp", "p p", "ppp").map('p', BlocksZT.HEVEA_PLANKS).result(BlocksZT.HEVEA_CHEST).register();
+		event.shaped().shape("ppp", "p p", "ppp").map('p', TagsZT.Items.HEVEA_LOGS).result(new ItemStack(BlocksZT.HEVEA_CHEST, 4)).register();
 		event.shapeless().addAll(BlocksZT.HEVEA_CHEST, Items.TRIPWIRE_HOOK).result(BlocksZT.HEVEA_TRAPPED_CHEST).register();
+		
+		event.smelting().xp(0.5F).input(ItemsZT.BOWL_OF_RUBBER).cookTime(100).result(ItemsZT.LATEX).register();
+		
+		event.shaped().shape("pgp").map('p', TagsZT.Items.PLATES_COPPER).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT.COPPER_ITEM_PIPE, 3)).register();
 		
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_TIN).result(OresZT.TIN_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_LEAD).result(OresZT.LEAD_INGOT).register();

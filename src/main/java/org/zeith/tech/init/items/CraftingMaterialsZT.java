@@ -33,4 +33,10 @@ public interface CraftingMaterialsZT
 	
 	@RegistryName("aluminum_plate")
 	Item ALUMINUM_PLATE = newItem(TagsZT.Items.PLATES_ALUMINUM);
+	
+	@RegistryName("bowl_of_rubber")
+	Item BOWL_OF_RUBBER = newItem();
+	
+	@RegistryName("latex")
+	Item LATEX = newItem();
 }

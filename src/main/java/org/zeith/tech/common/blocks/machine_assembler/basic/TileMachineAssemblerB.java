@@ -14,7 +14,7 @@ import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.enums.MachineTier;
 import org.zeith.tech.api.recipes.RecipeMachineAssembler;
 import org.zeith.tech.api.recipes.RecipeRegistriesZT;
-import org.zeith.tech.common.blocks.base.TileBaseMachine;
+import org.zeith.tech.common.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.common.items.ItemHammer;
 import org.zeith.tech.init.TilesZT;
 import org.zeith.tech.utils.ItemStackHelper;
