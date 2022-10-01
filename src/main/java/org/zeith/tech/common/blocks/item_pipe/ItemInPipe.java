@@ -34,7 +34,7 @@ public class ItemInPipe
 	
 	public float speedMultiplied = 1F;
 	
-	public float currentPipeProgress, currentSpeed;
+	public float prevPipeProgress, currentPipeProgress, currentSpeed;
 	
 	public ItemInPipe()
 	{
@@ -48,15 +48,18 @@ public class ItemInPipe
 	public boolean update(TileItemPipe currentPipe)
 	{
 		currentSpeed = currentPipe.getSpeed();
+		prevPipeProgress = currentPipeProgress;
 		
-		if((currentPipeProgress = Math.min(currentPipeProgress + currentSpeed, 1F)) >= 1 && currentPipe.isOnServer())
+		if((currentPipeProgress = Math.min(currentPipeProgress + currentSpeed, 1F)) >= 1)
 		{
 			this.prevPos = currentPos;
 			var nextDst = path.isEmpty() ? endpoint.dir() : path.get(0);
-			currentPipeProgress = 0;
 			
 			if(currentPipe.transferItem(this, nextDst))
 			{
+				currentPipeProgress = 0;
+				prevPipeProgress = 0;
+				
 				if(!path.isEmpty()) path.remove(0);
 				currentPos = currentPipe.getPosition().relative(nextDst);
 				
@@ -83,7 +86,7 @@ public class ItemInPipe
 	
 	public Vec3 getCurrentPosition(float partialTicks)
 	{
-		float progress = Math.min(currentPipeProgress + currentSpeed * partialTicks, 1F);
+		float progress = Math.min(prevPipeProgress + (currentPipeProgress - prevPipeProgress) * partialTicks, 1F);
 		if(progress <= 0.5F)
 			return Vec3.atCenterOf(prevPos).lerp(Vec3.atCenterOf(currentPos), 0.5F + progress);
 		return Vec3.atCenterOf(currentPos).lerp(Vec3.atCenterOf(nextPos), progress - 0.5F);
@@ -112,6 +115,7 @@ public class ItemInPipe
 		nbt.putLong("CurPos", currentPos.asLong());
 		nbt.putLong("NextPos", nextPos.asLong());
 		nbt.putFloat("Move", currentPipeProgress);
+		nbt.putFloat("PMove", prevPipeProgress);
 		nbt.put("Item", contents.serializeNBT());
 		nbt.putByteArray("ToDo", path.stream().map(Direction::ordinal).map(Integer::byteValue).collect(Collectors.toList()));
 		nbt.putUUID("Id", itemId);
@@ -129,6 +133,7 @@ public class ItemInPipe
 		currentPos = BlockPos.of(nbt.getLong("CurPos"));
 		nextPos = BlockPos.of(nbt.getLong("NextPos"));
 		currentPipeProgress = nbt.getFloat("Move");
+		prevPipeProgress = nbt.getFloat("PMove");
 		contents = ItemStack.of(nbt.getCompound("Item"));
 		itemId = nbt.getUUID("Id");
 		endpoint = new EndpointData(nbt.getCompound("Endpoint"));

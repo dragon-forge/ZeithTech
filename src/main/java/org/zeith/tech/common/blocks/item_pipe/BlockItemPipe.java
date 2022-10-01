@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
@@ -27,7 +29,7 @@ import java.util.function.Function;
 
 public class BlockItemPipe
 		extends BaseEntityBlock
-		implements ICreativeTabBlock, IRegisterListener
+		implements ICreativeTabBlock, IRegisterListener, SimpleWaterloggedBlock
 {
 	static final Direction[] DIRECTIONS = Direction.values();
 	public static final Map<Direction, BooleanProperty> DIR2PROP = Map.of(
@@ -55,6 +57,7 @@ public class BlockItemPipe
 	public static final BooleanProperty CORE_X = BooleanProperty.create("core_x");
 	public static final BooleanProperty CORE_Y = BooleanProperty.create("core_y");
 	public static final BooleanProperty CORE_Z = BooleanProperty.create("core_z");
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
 	public static final Map<Direction.Axis, BooleanProperty> AXIS2PROP = Map.of(
 			Direction.Axis.X, CORE_X,
@@ -84,11 +87,14 @@ public class BlockItemPipe
 		this.properties = props;
 		
 		var bs = defaultBlockState()
+				.setValue(WATERLOGGED, false)
 				.setValue(CORE_X, false)
 				.setValue(CORE_Y, false)
 				.setValue(CORE_Z, false);
+		
 		for(Direction d : DIRECTIONS)
 			bs = bs.setValue(DIR2PROP.get(d), false);
+		
 		registerDefaultState(bs);
 	}
 	
@@ -98,10 +104,16 @@ public class BlockItemPipe
 	}
 	
 	@Override
+	public FluidState getFluidState(BlockState state)
+	{
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+	
+	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		DIR2PROP.values().forEach(builder::add);
-		builder.add(CORE_CENTRAL, CORE_X, CORE_Y, CORE_Z);
+		builder.add(CORE_CENTRAL, CORE_X, CORE_Y, CORE_Z, WATERLOGGED);
 	}
 	
 	@Override
@@ -131,6 +143,9 @@ public class BlockItemPipe
 	@Override
 	public BlockState updateShape(BlockState state, Direction ignore0, BlockState ignore1, LevelAccessor accessor, BlockPos pos, BlockPos ignore2)
 	{
+		if(state.getValue(WATERLOGGED))
+			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
+		
 		var pipe = Cast.cast(accessor.getBlockEntity(pos), TileItemPipe.class);
 		if(pipe != null)
 		{
@@ -168,7 +183,8 @@ public class BlockItemPipe
 		var accessor = ctx.getLevel();
 		var pos = ctx.getClickedPos();
 		
-		var state = defaultBlockState();
+		var state = defaultBlockState()
+				.setValue(WATERLOGGED, accessor.getFluidState(pos).getType() == Fluids.WATER);
 		
 		var pipe = Cast.cast(accessor.getBlockEntity(pos), TileItemPipe.class);
 		if(pipe == null)

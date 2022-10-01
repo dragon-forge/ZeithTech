@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -25,11 +24,12 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.INoItemBlock;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
+import org.zeith.tech.api.voxels.VoxelShapeCache;
 import org.zeith.tech.common.blocks.BaseEntityBlockZT;
 import org.zeith.tech.init.BlocksZT;
 import org.zeith.tech.init.ItemsZT;
 
-import java.util.*;
+import java.util.List;
 
 public class BlockHeveaTreeTap
 		extends BaseEntityBlockZT
@@ -108,68 +108,40 @@ public class BlockHeveaTreeTap
 		}
 	}
 	
-	private final Map<BlockState, VoxelShape> voxelCache = new HashMap<>();
+	private final VoxelShapeCache voxelCache = new VoxelShapeCache((state, $) ->
+	{
+		Direction d = state.getValue(FACING);
+		
+		var finalShape = Shapes.or($.box(d, 10, 0, 15.5, 11, 5, 16),
+				$.box(d, 5, 0, 15.5, 6, 5, 16),
+				$.box(d, 4.75, 5, 15.25, 4.75 + 6.5, 6, 16),
+				$.box(d, 4.75, 5.5, 8.75, 5.75, 6, 8.75 + 6.5),
+				$.box(d, 10.25, 5.5, 8.75, 11.25, 6, 8.75 + 6.5)
+		);
+		
+		if(state.getValue(TAP))
+			finalShape = Shapes.or(finalShape, $.box(d, 7.75, 7.25, 14, 7.75 + 1.5, 9, 16));
+		
+		if(state.getValue(BOWL))
+			finalShape = Shapes.or(finalShape,
+					$.box(d, 6, 5.5, 10, 10, 6, 14),
+					$.box(d, 10, 6, 10, 10.5, 6.5, 14),
+					$.box(d, 5.5, 6, 10, 6, 6.5, 14),
+					$.box(d, 5.5, 6, 9.5, 10.5, 6.5, 10),
+					$.box(d, 5.5, 6, 14, 10.5, 6.5, 14.5),
+					$.box(d, 5.5, 6.5, 14.5, 10.5, 7.5, 15),
+					$.box(d, 5, 6.5, 9.25, 5.5, 7.5, 14.75),
+					$.box(d, 10.5, 6.5, 9.25, 11, 7.5, 14.75),
+					$.box(d, 5.5, 6.5, 9, 10.5, 7.5, 9.5)
+			);
+		
+		return finalShape;
+	});
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
 	{
-		VoxelShape finalShape = voxelCache.get(state);
-		
-		if(finalShape == null)
-		{
-			Direction rotation = state.getValue(FACING);
-			
-			finalShape = Shapes.or(box(rotation, 10, 0, 15.5, 11, 5, 16),
-					box(rotation, 5, 0, 15.5, 6, 5, 16),
-					box(rotation, 4.75, 5, 15.25, 4.75 + 6.5, 6, 16),
-					box(rotation, 4.75, 5.5, 8.75, 5.75, 6, 8.75 + 6.5),
-					box(rotation, 10.25, 5.5, 8.75, 11.25, 6, 8.75 + 6.5)
-			);
-			
-			if(state.getValue(TAP))
-				finalShape = Shapes.or(finalShape, box(rotation, 7.75, 7.25, 14, 7.75 + 1.5, 9, 16));
-			
-			if(state.getValue(BOWL))
-				finalShape = Shapes.or(finalShape,
-						box(rotation, 6, 5.5, 10, 10, 6, 14),
-						box(rotation, 10, 6, 10, 10.5, 6.5, 14),
-						box(rotation, 5.5, 6, 10, 6, 6.5, 14),
-						box(rotation, 5.5, 6, 9.5, 10.5, 6.5, 10),
-						box(rotation, 5.5, 6, 14, 10.5, 6.5, 14.5),
-						box(rotation, 5.5, 6.5, 14.5, 10.5, 7.5, 15),
-						box(rotation, 5, 6.5, 9.25, 5.5, 7.5, 14.75),
-						box(rotation, 10.5, 6.5, 9.25, 11, 7.5, 14.75),
-						box(rotation, 5.5, 6.5, 9, 10.5, 7.5, 9.5)
-				);
-			
-			voxelCache.put(state, finalShape);
-		}
-		
-		return finalShape;
-	}
-	
-	public static VoxelShape box(Direction rotation, double x, double y, double z, double x2, double y2, double z2)
-	{
-		Vec3 pivot = new Vec3(8, 8, 8);
-		
-		Vec3 a = rotateAround(pivot, new Vec3(x, y, z), rotation),
-				b = rotateAround(pivot, new Vec3(x2, y2, z2), rotation);
-		
-		return box(
-				Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z),
-				Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z)
-		);
-	}
-	
-	public static Vec3 rotateAround(Vec3 pivot, Vec3 pos, Direction rotation)
-	{
-		return switch(rotation)
-				{
-					default -> pos;
-					case WEST -> new Vec3(pivot.x + (pos.z - pivot.z), pos.y, pivot.z - (pos.x - pivot.x));
-					case SOUTH -> new Vec3(pivot.x - (pos.x - pivot.x), pos.y, pivot.z - (pos.z - pivot.z));
-					case EAST -> new Vec3(pivot.x - (pos.z - pivot.z), pos.y, pivot.z + (pos.x - pivot.x));
-				};
+		return voxelCache.get(state);
 	}
 	
 	@Override

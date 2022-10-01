@@ -21,6 +21,7 @@ import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.client.renderer.block.TileRendererItemPipe;
 import org.zeith.tech.common.blocks.base.traversable.*;
+import org.zeith.tech.net.PacketMoveItemInPipe;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -91,7 +92,11 @@ public class TileItemPipe
 	{
 		if(level.getBlockEntity(worldPosition.relative(to)) instanceof TileItemPipe pipe)
 		{
+			item.prevPipeProgress = item.currentPipeProgress = 0;
+			item.currentPos = pipe.getPosition();
+			item.prevPos = getPosition();
 			pipe.contents.add(item);
+			PacketMoveItemInPipe.send(this, item, to);
 			return true;
 		}
 		
@@ -148,7 +153,7 @@ public class TileItemPipe
 			var slots = handler.getSlots();
 			for(int i = 0; i < slots; ++i)
 			{
-				var remaining = handler.insertItem(i, contents.getContents(), simulate);
+				var remaining = handler.insertItem(i, contents.getContents(), simulate || isOnClient());
 				if(!ItemStack.matches(contents.getContents(), remaining))
 				{
 					// If we are not simulating, perform the insert and update the remaining items.
