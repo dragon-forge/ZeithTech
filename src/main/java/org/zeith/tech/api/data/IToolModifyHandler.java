@@ -1,11 +1,11 @@
 package org.zeith.tech.api.data;
 
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.jetbrains.annotations.Nullable;
-import org.zeith.tech.common.blocks.hevea.BlockHeveaLog;
 
 @FunctionalInterface
 public interface IToolModifyHandler
@@ -24,7 +24,7 @@ public interface IToolModifyHandler
 		};
 	}
 	
-	static IToolModifyHandler axeStripping(BlockHeveaLog targetBlock)
+	static IToolModifyHandler axeStripping(Block targetBlock)
 	{
 		return ctx ->
 		{

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.zeith.tech.ZeithTech;
-import org.zeith.tech.init.BlocksZT;
+import org.zeith.tech.modules.world.init.BlocksZT_World;
 
 import java.util.function.Consumer;
 
@@ -45,10 +45,10 @@ public abstract class SheetsMixin
 		{
 			var bs = blockEntity.getBlockState();
 			
-			if(bs.is(BlocksZT.HEVEA_CHEST))
+			if(bs.is(BlocksZT_World.HEVEA_CHEST))
 				cir.setReturnValue(chooseMaterial(chestType, HEVEA_CHEST_LOCATION, HEVEA_CHEST_LOCATION_LEFT, HEVEA_CHEST_LOCATION_RIGHT));
 			
-			if(bs.is(BlocksZT.HEVEA_TRAPPED_CHEST))
+			if(bs.is(BlocksZT_World.HEVEA_TRAPPED_CHEST))
 				cir.setReturnValue(chooseMaterial(chestType, HEVEA_CHEST_TRAP_LOCATION, HEVEA_CHEST_TRAP_LOCATION_LEFT, HEVEA_CHEST_TRAP_LOCATION_RIGHT));
 		}
 	}

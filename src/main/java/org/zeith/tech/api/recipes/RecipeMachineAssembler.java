@@ -6,12 +6,12 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.zeith.hammerlib.api.crafting.IBaseIngredient;
+import org.zeith.hammerlib.api.crafting.ICraftingExecutor;
 import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.core.adapter.recipe.RecipeShape;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.common.blocks.machine_assembler.basic.TileMachineAssemblerB;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class RecipeMachineAssembler
 		this.recipeItems = shape.createIngredientMap(dictionary);
 	}
 	
-	public ItemStack getRecipeOutput(TileMachineAssemblerB executor)
+	public ItemStack getRecipeOutput(ICraftingExecutor executor)
 	{
 		return output.getOutput(executor);
 	}

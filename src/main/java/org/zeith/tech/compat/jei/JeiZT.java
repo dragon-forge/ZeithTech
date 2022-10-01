@@ -14,9 +14,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.tech.ZeithTech;
-import org.zeith.tech.init.ItemsZT;
-import org.zeith.tech.init.blocks.MachinesZT;
-import org.zeith.tech.init.items.ToolsZT;
+import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
+import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
+import org.zeith.tech.modules.shared.init.ItemsZT;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -45,14 +45,14 @@ public class JeiZT
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
 	{
-		registration.addRecipeCatalyst(new ItemStack(MachinesZT.FUEL_GENERATOR_BASIC), RecipeTypes.FUELING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FUEL_GENERATOR_BASIC), RecipeTypes.FUELING);
 	}
 	
 	private static Stream<RepairData> getRepairData()
 	{
 		return Stream.of(
 				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_IRON), new ItemStack[] {
-						new ItemStack(ToolsZT.IRON_HAMMER)
+						new ItemStack(ItemsZT_Processing.IRON_HAMMER)
 				}));
 	}
 	

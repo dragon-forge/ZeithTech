@@ -1,0 +1,105 @@
+package org.zeith.tech.modules.world.worldgen;
+
+import net.minecraft.core.Holder;
+import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.*;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import org.zeith.tech.ZeithTech;
+import org.zeith.tech.modules.world.init.BlocksZT_World;
+
+import java.util.List;
+
+import static net.minecraft.data.worldgen.features.OreFeatures.*;
+
+public class WorldFeaturesZT
+{
+	private static final List<OreConfiguration.TargetBlockState> ORE_TIN_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.TIN_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_TIN_ORE.defaultBlockState())
+	);
+	
+	private static final List<OreConfiguration.TargetBlockState> ORE_LEAD_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.LEAD_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_LEAD_ORE.defaultBlockState())
+	);
+	
+	private static final List<OreConfiguration.TargetBlockState> ORE_ALUMINUM_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.ALUMINUM_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_ALUMINUM_ORE.defaultBlockState())
+	);
+	
+	private static final List<OreConfiguration.TargetBlockState> ORE_LITHIUM_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.LITHIUM_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_LITHIUM_ORE.defaultBlockState())
+	);
+	
+	private static final List<OreConfiguration.TargetBlockState> ORE_URANIUM_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.URANIUM_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_URANIUM_ORE.defaultBlockState())
+	);
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TIN_ORE = register("tin_ore", Feature.ORE, new OreConfiguration(ORE_TIN_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TIN_ORE_SMALL = register("small_tin_ore", Feature.ORE, new OreConfiguration(ORE_TIN_TARGET_LIST, 4));
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEAD_ORE = register("lead_ore", Feature.ORE, new OreConfiguration(ORE_LEAD_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEAD_ORE_SMALL = register("small_lead_ore", Feature.ORE, new OreConfiguration(ORE_LEAD_TARGET_LIST, 4));
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE = register("aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE_SMALL = register("small_aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 4));
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LITHIUM_ORE = register("lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LITHIUM_ORE_SMALL = register("small_lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 4));
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> BIG_URANIUM_ORE = register("big_uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 12));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> URANIUM_ORE = register("uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 6));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> URANIUM_ORE_SMALL = register("small_uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 2));
+	
+	
+	// TREES
+	
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> HEVEA_TREE = register("hevea_tree", Feature.TREE,
+			new TreeConfiguration.TreeConfigurationBuilder(
+					BlockStateProvider.simple(BlocksZT_World.HEVEA_LOG),
+					new StraightTrunkPlacer(6, 2, 2),
+					BlockStateProvider.simple(BlocksZT_World.HEVEA_LEAVES.defaultBlockState()),
+					new PineFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(7)),
+					new TwoLayersFeatureSize(1, 0, 1)
+			)
+					.dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT))
+					.forceDirt()
+					.build()
+	);
+	
+	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> HEVEA_TREE_WITH_BEES = register("hevea_tree_with_bees", Feature.TREE,
+			new TreeConfiguration.TreeConfigurationBuilder(
+					BlockStateProvider.simple(BlocksZT_World.HEVEA_LOG),
+					new StraightTrunkPlacer(6, 2, 2),
+					BlockStateProvider.simple(BlocksZT_World.HEVEA_LEAVES.defaultBlockState()),
+					new PineFoliagePlacer(ConstantInt.of(2), ConstantInt.of(2), ConstantInt.of(7)),
+					new TwoLayersFeatureSize(1, 0, 1)
+			)
+					.dirt(BlockStateProvider.simple(Blocks.ROOTED_DIRT))
+					.forceDirt()
+					.decorators(List.of(new BeehiveDecorator(0.05F)))
+					.build()
+	);
+	
+	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> HEVEA_TREES_PLAINS = register("hevea_trees_plains", Feature.RANDOM_SELECTOR,
+			new RandomFeatureConfiguration(List.of(),
+					PlacementUtils.inlinePlaced(HEVEA_TREE))
+	);
+	
+	private static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String p_206489_, F p_206490_, FC p_206491_)
+	{
+		return FeatureUtils.register(ZeithTech.MOD_ID + ":" + p_206489_, p_206490_, p_206491_);
+	}
+}

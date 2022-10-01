@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -13,27 +12,29 @@ import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
-import org.zeith.tech.api.recipes.RecipeRegistriesZT;
-import org.zeith.tech.init.TagsZT;
-import org.zeith.tech.init.blocks.MachinesZT;
-import org.zeith.tech.proxy.ClientProxy;
-import org.zeith.tech.proxy.CommonProxy;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.modules.IZeithTechModules;
+import org.zeith.tech.modules.ZeithTechModulesImpl;
+import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
+import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
+import org.zeith.tech.modules.shared.init.TagsZT;
 
 @Mod(ZeithTech.MOD_ID)
 public class ZeithTech
+		extends ZeithTechAPI
 {
+	private final ZeithTechModulesImpl MODULES;
+	
 	public static final String MOD_ID = "zeithtech";
 	
 	public static final Logger LOG = LogManager.getLogger("ZeithTech");
-	
-	public static final CommonProxy PROXY = DistExecutor.unsafeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 	
 	public static final CreativeModeTab TAB = new CreativeModeTab(MOD_ID)
 	{
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(MachinesZT.FUEL_GENERATOR_BASIC);
+			return new ItemStack(BlocksZT_Processing.FUEL_GENERATOR_BASIC);
 		}
 	};
 	
@@ -41,10 +42,10 @@ public class ZeithTech
 	{
 		TagsZT.init();
 		LanguageAdapter.registerMod(MOD_ID);
+		apply(this);
 		
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
-		bus.addListener(RecipeRegistriesZT::setup);
-		PROXY.subEvents(bus);
+		bus.addListener(RecipeRegistriesZT_Processing::setup);
 		
 		var illegalSourceNotice = ModSourceAdapter.getModSource(HammerLib.class)
 				.filter(ModSourceAdapter.ModSource::wasDownloadedIllegally)
@@ -81,5 +82,14 @@ public class ZeithTech
 					.append(".")
 			);
 		}
+		
+		this.MODULES = new ZeithTechModulesImpl();
+		this.MODULES.enable();
+	}
+	
+	@Override
+	public IZeithTechModules getModules()
+	{
+		return MODULES;
 	}
 }
