@@ -16,13 +16,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
+import org.zeith.hammerlib.util.charging.fe.FECharge;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.modules.transport.blocks.base.traversable.EndpointData;
 import org.zeith.tech.modules.transport.blocks.base.traversable.ITraversable;
 import org.zeith.tech.modules.transport.init.*;
-import org.zeith.tech.utils.FEChargeWithLosses;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 public class TileEnergyWire
 		extends TileSyncableTickable
-		implements ITraversable<FEChargeWithLosses>
+		implements ITraversable<FECharge>
 {
 	@NBTSerializable("EnergyPassed")
 	public int energyPassed;
@@ -149,17 +149,17 @@ public class TileEnergyWire
 	}
 	
 	@Override
-	public Optional<? extends ITraversable<FEChargeWithLosses>> getRelativeTraversable(Direction side)
+	public Optional<? extends ITraversable<FECharge>> getRelativeTraversable(Direction side)
 	{
 		return Cast.optionally(level.getBlockEntity(worldPosition.relative(side)), TileEnergyWire.class)
 				.filter(pipe -> connectsTo(side, pipe));
 	}
 	
 	@Override
-	public List<EndpointData> getEndpoints(FEChargeWithLosses contents)
+	public List<EndpointData> getEndpoints(FECharge contents)
 	{
 		return Stream.of(BlockEnergyWire.DIRECTIONS)
-				.filter(dir -> emitToDirect(dir, contents.getFE(), true) > 0)
+				.filter(dir -> emitToDirect(dir, contents.FE, true) > 0)
 				.map(dir -> new EndpointData(dir, getPriority(dir), true))
 				.toList();
 	}

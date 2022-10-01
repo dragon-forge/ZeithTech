@@ -2,11 +2,11 @@ package org.zeith.tech.modules.transport.blocks.energy_wire;
 
 import net.minecraft.core.Direction;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.zeith.hammerlib.util.charging.fe.FECharge;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.energy.EnergyBalancingHelper;
 import org.zeith.tech.modules.transport.blocks.base.traversable.ITraversable;
 import org.zeith.tech.modules.transport.blocks.base.traversable.TraversableHelper;
-import org.zeith.tech.utils.FEChargeWithLosses;
 
 import java.util.function.Function;
 
@@ -19,7 +19,7 @@ public record WireEnergyHandler(Direction from, TileEnergyWire wire)
 	{
 		maxReceive = Math.min(maxReceive, wire.getWireProps().tier().maxFE());
 		
-		var charge = new FEChargeWithLosses(maxReceive);
+		var charge = new FECharge(maxReceive);
 		var paths = TraversableHelper.findAllPaths(wire, from, charge);
 		
 		Function<Integer, IEnergyStorage> targets = i ->
@@ -30,7 +30,7 @@ public record WireEnergyHandler(Direction from, TileEnergyWire wire)
 					.orElse(null);
 		};
 		
-		var receives = EnergyBalancingHelper.balanceOut(targets, paths.size(), charge.getFE());
+		var receives = EnergyBalancingHelper.balanceOut(targets, paths.size(), charge.FE);
 		
 		if(!simulate)
 		{
@@ -42,7 +42,7 @@ public record WireEnergyHandler(Direction from, TileEnergyWire wire)
 				
 				for(int j = 0; j < path.size(); j++)
 				{
-					ITraversable<FEChargeWithLosses> component = path.get(j);
+					ITraversable<FECharge> component = path.get(j);
 					
 					if(component instanceof TileEnergyWire rem)
 					{
