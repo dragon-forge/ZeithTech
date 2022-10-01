@@ -1,10 +1,12 @@
 package org.zeith.tech.api.recipes;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +20,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
@@ -35,8 +36,9 @@ public class RecipeHammering
 	final Ingredient input;
 	final ItemStack output;
 	final TechTier tier;
+	final Component displayHitCount;
 	
-	public RecipeHammering(ResourceLocation id, Ingredient input, ItemStack output, NumberProvider hitCount, List<TagKey<Block>> blockHammeringTags, TechTier tier)
+	public RecipeHammering(ResourceLocation id, Ingredient input, ItemStack output, NumberProvider hitCount, Component displayHitCount, List<TagKey<Block>> blockHammeringTags, TechTier tier)
 	{
 		super(id, new ItemStackResult(output), NonNullList.of(new MCIngredient(input)));
 		this.input = input;
@@ -44,6 +46,14 @@ public class RecipeHammering
 		this.hitCount = hitCount;
 		this.blockHammeringTags = blockHammeringTags;
 		this.tier = tier;
+		this.displayHitCount = displayHitCount;
+	}
+	
+	final RandomSource rand = RandomSource.create();
+	
+	public Component getHitCount()
+	{
+		return displayHitCount;
 	}
 	
 	public int getHitCount(ItemStack hammer, ItemEntity targetEntity, Vec3 origin, Player player, ServerLevel level)
@@ -74,7 +84,17 @@ public class RecipeHammering
 	
 	public boolean matches(BlockState state, ItemStack stack, TechTier tier)
 	{
-		return canPerformHammering(state) && input.test(stack) && tier.isOrHigher(getTier());
+		return canPerformHammering(state) && input.test(stack) && isTierGoodEnough(tier);
+	}
+	
+	public boolean isTierGoodEnough(TechTier tier)
+	{
+		return tier.isOrHigher(getTier());
+	}
+	
+	public Ingredient getInput()
+	{
+		return input;
 	}
 	
 	public TechTier getTier()
@@ -87,14 +107,12 @@ public class RecipeHammering
 	{
 		private Ingredient inputItem = Ingredient.EMPTY;
 		private NumberProvider hitCount = ConstantValue.exactly(4);
+		private Component displayHitCount = Component.literal("4");
 		private TechTier tier = TechTier.BASIC;
 		
 		private final List<TagKey<Block>> blockHammeringTags = new ArrayList<>();
 		
 		{
-			blockHammeringTags.add(Tags.Blocks.STONE);
-			blockHammeringTags.add(Tags.Blocks.COBBLESTONE);
-			blockHammeringTags.add(BlockTags.SNAPS_GOAT_HORN);
 			blockHammeringTags.add(BlockTags.ANVIL);
 		}
 		
@@ -115,12 +133,14 @@ public class RecipeHammering
 		public Builder hitCount(int exact)
 		{
 			this.hitCount = ConstantValue.exactly(exact);
+			this.displayHitCount = Component.literal(Integer.toString(exact));
 			return this;
 		}
 		
-		public Builder hitCount(NumberProvider amount)
+		public Builder hitCount(NumberProvider amount, Component display)
 		{
 			this.hitCount = amount;
+			this.displayHitCount = display;
 			return this;
 		}
 		
@@ -175,7 +195,7 @@ public class RecipeHammering
 		@Override
 		protected RecipeHammering createRecipe() throws IllegalStateException
 		{
-			return new RecipeHammering(getIdentifier(), inputItem, result, hitCount, blockHammeringTags, tier);
+			return new RecipeHammering(getIdentifier(), inputItem, result, hitCount, displayHitCount, blockHammeringTags, tier);
 		}
 	}
 }

@@ -5,8 +5,7 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -14,8 +13,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.tech.ZeithTech;
-import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
-import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
+import org.zeith.tech.api.enums.TechTier;
+import org.zeith.tech.compat.jei.hammering.ManualHammeringCategory;
+import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 
 import java.util.List;
@@ -34,9 +34,21 @@ public class JeiZT
 	}
 	
 	@Override
+	public void registerCategories(IRecipeCategoryRegistration registration)
+	{
+		registration.addRecipeCategories(new ManualHammeringCategory(registration.getJeiHelpers().getGuiHelper()));
+	}
+	
+	@Override
 	public void registerRecipes(IRecipeRegistration registration)
 	{
-		IModPlugin.super.registerRecipes(registration);
+		registration.addRecipes(RecipeTypesZT.MANUAL_HAMMERING, RecipeRegistriesZT_Processing.HAMMERING
+				.getRecipes()
+				.stream()
+				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
+				.toList()
+		);
+		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
 		registration.addItemStackInfo(new ItemStack(ItemsZT.BOWL_OF_RESIN), Component.translatable("jei.info.zeithtech.bowl_of_resin"));
@@ -46,6 +58,7 @@ public class JeiZT
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
 	{
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FUEL_GENERATOR_BASIC), RecipeTypes.FUELING);
+		registration.addRecipeCatalyst(new ItemStack(ItemsZT_Processing.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
 	}
 	
 	private static Stream<RepairData> getRepairData()
