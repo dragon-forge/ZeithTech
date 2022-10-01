@@ -92,4 +92,10 @@ public class ZeithTech
 	{
 		return MODULES;
 	}
+	
+	@Override
+	public CreativeModeTab getCreativeTab()
+	{
+		return TAB;
+	}
 }

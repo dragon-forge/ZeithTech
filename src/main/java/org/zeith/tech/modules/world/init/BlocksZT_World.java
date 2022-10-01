@@ -94,12 +94,22 @@ public interface BlocksZT_World
 	
 	@RegistryName("tin_ore")
 	SimpleBlockZT TIN_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TIN).addItemTag(TagsZT.Items.ORES_TIN);
+	
 	@RegistryName("lead_ore")
 	SimpleBlockZT LEAD_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_LEAD).addItemTag(TagsZT.Items.ORES_LEAD);
+	
 	@RegistryName("aluminum_ore")
 	SimpleBlockZT ALUMINUM_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ALUMINUM).addItemTag(TagsZT.Items.ORES_ALUMINUM);
+	
+	@RegistryName("zinc_ore")
+	SimpleBlockZT ZINC_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ZINC).addItemTag(TagsZT.Items.ORES_ZINC);
+	
+	@RegistryName("tungsten_ore")
+	SimpleBlockZT TUNGSTEN_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TUNGSTEN).addItemTag(TagsZT.Items.ORES_TUNGSTEN);
+	
 	@RegistryName("lithium_ore")
 	SimpleBlockZT LITHIUM_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_LITHIUM).addItemTag(TagsZT.Items.ORES_LITHIUM).dropsSelf();
+	
 	@RegistryName("uranium_ore")
 	SimpleBlockZT URANIUM_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, IRON).addBlockTag(TagsZT.Blocks.ORES_URANIUM).addItemTag(TagsZT.Items.ORES_URANIUM).dropsSelf();
 	
@@ -107,12 +117,22 @@ public interface BlocksZT_World
 	
 	@RegistryName("deepslate_tin_ore")
 	SimpleBlockZT DEEPSLATE_TIN_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TIN).addItemTag(TagsZT.Items.ORES_TIN);
+	
 	@RegistryName("deepslate_lead_ore")
 	SimpleBlockZT DEEPSLATE_LEAD_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_LEAD).addItemTag(TagsZT.Items.ORES_LEAD);
+	
 	@RegistryName("deepslate_aluminum_ore")
 	SimpleBlockZT DEEPSLATE_ALUMINUM_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ALUMINUM).addItemTag(TagsZT.Items.ORES_ALUMINUM);
+	
+	@RegistryName("deepslate_zinc_ore")
+	SimpleBlockZT DEEPSLATE_ZINC_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ZINC).addItemTag(TagsZT.Items.ORES_ZINC);
+	
+	@RegistryName("deepslate_tungsten_ore")
+	SimpleBlockZT DEEPSLATE_TUNGSTEN_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TUNGSTEN).addItemTag(TagsZT.Items.ORES_TUNGSTEN);
+	
 	@RegistryName("deepslate_lithium_ore")
 	SimpleBlockZT DEEPSLATE_LITHIUM_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_LITHIUM).addItemTag(TagsZT.Items.ORES_LITHIUM).dropsSelf();
+	
 	@RegistryName("deepslate_uranium_ore")
 	SimpleBlockZT DEEPSLATE_URANIUM_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, IRON).addBlockTag(TagsZT.Blocks.ORES_URANIUM).addItemTag(TagsZT.Items.ORES_URANIUM).dropsSelf();
 	
@@ -120,8 +140,10 @@ public interface BlocksZT_World
 	
 	@RegistryName("raw_tin_block")
 	SimpleBlockZT RAW_TIN_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_RAW_TIN).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_TIN).dropsSelf();
+	
 	@RegistryName("raw_lead_block")
 	SimpleBlockZT RAW_LEAD_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_RAW_LEAD).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_LEAD).dropsSelf();
+	
 	@RegistryName("raw_aluminum_block")
 	SimpleBlockZT RAW_ALUMINUM_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTags(List.of(TagsZT.Blocks.STORAGE_BLOCKS_RAW_ALUMINUM, BlockTags.BEACON_BASE_BLOCKS)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_ALUMINUM).dropsSelf();
 	
@@ -129,10 +151,18 @@ public interface BlocksZT_World
 	
 	@RegistryName("tin_block")
 	SimpleBlockZT TIN_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTags(List.of(TagsZT.Blocks.STORAGE_BLOCKS_TIN, BlockTags.BEACON_BASE_BLOCKS)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_TIN).dropsSelf();
+	
 	@RegistryName("lead_block")
 	SimpleBlockZT LEAD_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTags(List.of(BlockTags.BEACON_BASE_BLOCKS, TagsZT.Blocks.STORAGE_BLOCKS_LEAD)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_LEAD).dropsSelf();
+	
 	@RegistryName("aluminum_block")
 	SimpleBlockZT ALUMINUM_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_ALUMINUM).addItemTag(TagsZT.Items.STORAGE_BLOCKS_ALUMINUM).dropsSelf();
+	
+	@RegistryName("zinc_block")
+	SimpleBlockZT ZINC_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_ZINC).addItemTag(TagsZT.Items.STORAGE_BLOCKS_ZINC).dropsSelf();
+	
+	@RegistryName("tungsten_block")
+	SimpleBlockZT TUNGSTEN_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_TUNGSTEN).addItemTag(TagsZT.Items.STORAGE_BLOCKS_TUNGSTEN).dropsSelf();
 	
 	static @Setup void registerExtra()
 	{

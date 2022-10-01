@@ -30,6 +30,12 @@ public class WorldPlacementsZT
 	public static final Holder<PlacedFeature> ORE_ALUMINUM_MIDDLE = register("ore_aluminum_middle", WorldFeaturesZT.ALUMINUM_ORE, commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
 	public static final Holder<PlacedFeature> ORE_ALUMINUM_SMALL = register("ore_aluminum_small", WorldFeaturesZT.ALUMINUM_ORE_SMALL, commonOrePlacement(7, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));
 	
+	public static final Holder<PlacedFeature> ORE_ZINC_MIDDLE = register("ore_zinc_middle", WorldFeaturesZT.ZINC_ORE, commonOrePlacement(5, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
+	public static final Holder<PlacedFeature> ORE_ZINC_SMALL = register("ore_zinc_small", WorldFeaturesZT.ZINC_ORE_SMALL, commonOrePlacement(5, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));
+	
+	public static final Holder<PlacedFeature> ORE_TUNGSTEN_MIDDLE = register("ore_tungsten_middle", WorldFeaturesZT.TUNGSTEN_ORE, commonOrePlacement(3, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
+	public static final Holder<PlacedFeature> ORE_TUNGSTEN_SMALL = register("ore_tungsten_small", WorldFeaturesZT.TUNGSTEN_ORE_SMALL, commonOrePlacement(3, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));
+	
 	public static final Holder<PlacedFeature> ORE_LITHIUM_UPPER = register("ore_lithium_upper", WorldFeaturesZT.LITHIUM_ORE, commonOrePlacement(6, HeightRangePlacement.triangle(VerticalAnchor.absolute(80), VerticalAnchor.absolute(384))));
 	public static final Holder<PlacedFeature> ORE_LITHIUM_MIDDLE = register("ore_lithium_middle", WorldFeaturesZT.LITHIUM_ORE, commonOrePlacement(3, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
 	public static final Holder<PlacedFeature> ORE_LITHIUM_SMALL = register("ore_lithium_small", WorldFeaturesZT.LITHIUM_ORE_SMALL, commonOrePlacement(3, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));

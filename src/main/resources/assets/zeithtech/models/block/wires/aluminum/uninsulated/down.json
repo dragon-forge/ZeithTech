@@ -1,0 +1,59 @@
+{
+  "textures": {
+    "0": "zeithtech:block/wires/aluminum_uninsulated",
+    "particle": "zeithtech:block/wires/aluminum_uninsulated"
+  },
+  "elements": [
+    {
+      "name": "down",
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        7,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            2,
+            7
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            2,
+            7
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            2,
+            7
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            2,
+            7
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}

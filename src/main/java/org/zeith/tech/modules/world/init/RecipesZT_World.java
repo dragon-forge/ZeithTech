@@ -43,12 +43,17 @@ public interface RecipesZT_World
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_TIN).result(BlocksZT_World.TIN_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_LEAD).result(BlocksZT_World.LEAD_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_ALUMINUM).result(BlocksZT_World.ALUMINUM_BLOCK).register();
+		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_ZINC).result(BlocksZT_World.ZINC_BLOCK).register();
+		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_TUNGSTEN).result(BlocksZT_World.TUNGSTEN_BLOCK).register();
+		
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_TIN).result(new ItemStack(ItemsZT_World.RAW_TIN, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_LEAD).result(new ItemStack(ItemsZT_World.RAW_LEAD, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_ALUMINUM).result(new ItemStack(ItemsZT_World.RAW_ALUMINUM, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_TIN).result(new ItemStack(ItemsZT_World.TIN_INGOT, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_LEAD).result(new ItemStack(ItemsZT_World.LEAD_INGOT, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_ALUMINUM).result(new ItemStack(ItemsZT_World.ALUMINUM_INGOT, 9)).register();
+		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_ZINC).result(new ItemStack(ItemsZT_World.ZINC_INGOT, 9)).register();
+		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_TUNGSTEN).result(new ItemStack(ItemsZT_World.TUNGSTEN_INGOT, 9)).register();
 		
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_TIN).result(ItemsZT_World.TIN_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_LEAD).result(ItemsZT_World.LEAD_INGOT).register();
@@ -56,6 +61,7 @@ public interface RecipesZT_World
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_TIN).result(ItemsZT_World.TIN_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_LEAD).result(ItemsZT_World.LEAD_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_ALUMINUM).result(ItemsZT_World.ALUMINUM_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_ZINC).result(ItemsZT_World.ZINC_INGOT).register();
 	}
 	
 	static SmeltingRecipeBuilder smeltingAndBlasting(RegisterRecipesEvent event)

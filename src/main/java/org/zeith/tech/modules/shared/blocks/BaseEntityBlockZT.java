@@ -77,11 +77,16 @@ public abstract class BaseEntityBlockZT
 	
 	private BlockItem itemBlock;
 	
+	protected BlockItem newBlockItem(Item.Properties props)
+	{
+		return new BlockItem(this, props);
+	}
+	
 	@Override
 	public BlockItem createBlockItem()
 	{
 		var props = new Item.Properties().tab(ZeithTech.TAB);
-		var gen = new BlockItem(this, props);
+		var gen = newBlockItem(props);
 		itemBlock = gen;
 		for(var tag : itemTags)
 			TagAdapter.bindStaticTag(tag, gen);

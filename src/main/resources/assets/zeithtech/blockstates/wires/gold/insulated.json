@@ -1,0 +1,64 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "zeithtech:block/wires/gold/insulated/core",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/wires/gold/insulated/down",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/wires/gold/insulated/east",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/wires/gold/insulated/north",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/wires/gold/insulated/south",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/wires/gold/insulated/up",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/wires/gold/insulated/west",
+        "uvlock": true
+      }
+    }
+  ]
+}

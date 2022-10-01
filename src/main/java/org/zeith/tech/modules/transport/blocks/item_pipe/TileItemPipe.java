@@ -17,6 +17,7 @@ import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.modules.transport.blocks.base.traversable.*;
+import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 import org.zeith.tech.modules.transport.net.PacketMoveItemInPipe;
 
@@ -54,7 +55,7 @@ public class TileItemPipe
 		var state = getBlockState();
 		if(state.getBlock() instanceof BlockItemPipe pipe)
 			return pipe;
-		return null;
+		return BlocksZT_Transport.COPPER_ITEM_PIPE;
 	}
 	
 	public ItemStack insertItemIntoPipe(ItemStack stack, Direction from, boolean simulate)

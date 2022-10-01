@@ -19,24 +19,6 @@ public interface ItemsZT
 	@RegistryName("gold_coil")
 	Item GOLD_COIL = newItem(TagsZT.Items.COILS_GOLD);
 	
-	@RegistryName("gold_plate")
-	Item GOLD_PLATE = newItem(TagsZT.Items.PLATES_GOLD);
-	
-	@RegistryName("iron_plate")
-	Item IRON_PLATE = newItem(TagsZT.Items.PLATES_IRON);
-	
-	@RegistryName("copper_plate")
-	Item COPPER_PLATE = newItem(TagsZT.Items.PLATES_COPPER);
-	
-	@RegistryName("tin_plate")
-	Item TIN_PLATE = newItem(TagsZT.Items.PLATES_TIN);
-	
-	@RegistryName("lead_plate")
-	Item LEAD_PLATE = newItem(TagsZT.Items.PLATES_LEAD);
-	
-	@RegistryName("aluminum_plate")
-	Item ALUMINUM_PLATE = newItem(TagsZT.Items.PLATES_ALUMINUM);
-	
 	@RegistryName("bowl_of_resin")
 	Item BOWL_OF_RESIN = BaseZT.newItem(p -> p.stacksTo(4));
 	

@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "zeithtech:ore_tungsten_middle",
+    "zeithtech:ore_tungsten_small"
+  ],
+  "step": "underground_ores"
+}

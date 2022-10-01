@@ -51,9 +51,10 @@ public class JeiZT
 	private static Stream<RepairData> getRepairData()
 	{
 		return Stream.of(
-				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_IRON), new ItemStack[] {
-						new ItemStack(ItemsZT_Processing.IRON_HAMMER)
-				}));
+				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_IRON),
+						new ItemStack(ItemsZT_Processing.IRON_HAMMER),
+						new ItemStack(ItemsZT_Processing.WIRE_CUTTER))
+		);
 	}
 	
 	private static Stream<IJeiAnvilRecipe> getRepairRecipes(IVanillaRecipeFactory vanillaRecipeFactory)

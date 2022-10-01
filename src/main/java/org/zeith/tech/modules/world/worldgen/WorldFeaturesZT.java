@@ -37,6 +37,16 @@ public class WorldFeaturesZT
 			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_ALUMINUM_ORE.defaultBlockState())
 	);
 	
+	private static final List<OreConfiguration.TargetBlockState> ORE_ZINC_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.ZINC_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_ZINC_ORE.defaultBlockState())
+	);
+	
+	private static final List<OreConfiguration.TargetBlockState> ORE_TUNGSTEN_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.TUNGSTEN_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_TUNGSTEN_ORE.defaultBlockState())
+	);
+	
 	private static final List<OreConfiguration.TargetBlockState> ORE_LITHIUM_TARGET_LIST = List.of(
 			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.LITHIUM_ORE.defaultBlockState()),
 			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_LITHIUM_ORE.defaultBlockState())
@@ -55,6 +65,12 @@ public class WorldFeaturesZT
 	
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE = register("aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 9));
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE_SMALL = register("small_aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 4));
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ZINC_ORE = register("zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 10));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ZINC_ORE_SMALL = register("small_zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 6));
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TUNGSTEN_ORE = register("tungsten_ore", Feature.ORE, new OreConfiguration(ORE_TUNGSTEN_TARGET_LIST, 5));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TUNGSTEN_ORE_SMALL = register("small_tungsten_ore", Feature.ORE, new OreConfiguration(ORE_TUNGSTEN_TARGET_LIST, 3));
 	
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LITHIUM_ORE = register("lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 9));
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LITHIUM_ORE_SMALL = register("small_lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 4));

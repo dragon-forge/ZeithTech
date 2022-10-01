@@ -44,6 +44,38 @@ public interface ItemsZT_World
 	@RegistryName("aluminum_ingot")
 	Item ALUMINUM_INGOT = newItem(TagsZT.Items.INGOTS_ALUMINUM);
 	
+	@RegistryName("zinc_ingot")
+	Item ZINC_INGOT = newItem(TagsZT.Items.INGOTS_ZINC);
+	
+	@RegistryName("tungsten_ingot")
+	Item TUNGSTEN_INGOT = newItem(TagsZT.Items.INGOTS_TUNGSTEN);
+	
+	// Plates
+	
+	@RegistryName("gold_plate")
+	Item GOLD_PLATE = newItem(TagsZT.Items.PLATES_GOLD);
+	
+	@RegistryName("iron_plate")
+	Item IRON_PLATE = newItem(TagsZT.Items.PLATES_IRON);
+	
+	@RegistryName("copper_plate")
+	Item COPPER_PLATE = newItem(TagsZT.Items.PLATES_COPPER);
+	
+	@RegistryName("tin_plate")
+	Item TIN_PLATE = newItem(TagsZT.Items.PLATES_TIN);
+	
+	@RegistryName("lead_plate")
+	Item LEAD_PLATE = newItem(TagsZT.Items.PLATES_LEAD);
+	
+	@RegistryName("aluminum_plate")
+	Item ALUMINUM_PLATE = newItem(TagsZT.Items.PLATES_ALUMINUM);
+	
+	@RegistryName("zinc_plate")
+	Item ZINC_PLATE = newItem(TagsZT.Items.PLATES_ZINC);
+	
+	@RegistryName("tungsten_plate")
+	Item TUNGSTEN_PLATE = newItem(TagsZT.Items.PLATES_TUNGSTEN);
+	
 	static @Setup void registerExtra()
 	{
 		TagAdapter.bindStaticTag(ItemTags.BOATS, HEVEA_BOAT);

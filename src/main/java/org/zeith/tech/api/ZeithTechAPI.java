@@ -1,5 +1,6 @@
 package org.zeith.tech.api;
 
+import net.minecraft.world.item.CreativeModeTab;
 import org.zeith.tech.api.modules.IZeithTechModules;
 
 public abstract class ZeithTechAPI
@@ -25,4 +26,6 @@ public abstract class ZeithTechAPI
 	}
 	
 	public abstract IZeithTechModules getModules();
+	
+	public abstract CreativeModeTab getCreativeTab();
 }

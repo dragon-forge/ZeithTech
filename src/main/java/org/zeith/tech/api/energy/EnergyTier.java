@@ -8,6 +8,7 @@ package org.zeith.tech.api.energy;
 public record EnergyTier(int maxFE)
 {
 	public static final EnergyTier LOW_VOLTAGE = new EnergyTier(64);
+	public static final EnergyTier SEMI_MID_VOLTAGE = new EnergyTier(256);
 	public static final EnergyTier MID_VOLTAGE = new EnergyTier(512);
 	public static final EnergyTier HIGH_VOLTAGE = new EnergyTier(4096);
 	public static final EnergyTier EXTREME_VOLTAGE = new EnergyTier(32768);

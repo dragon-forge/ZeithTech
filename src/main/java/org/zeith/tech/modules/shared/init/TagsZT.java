@@ -23,6 +23,8 @@ public class TagsZT
 		public static final TagKey<Item> INGOTS_TIN = tag("ingots/tin");
 		public static final TagKey<Item> INGOTS_LEAD = tag("ingots/lead");
 		public static final TagKey<Item> INGOTS_ALUMINUM = tag("ingots/aluminum");
+		public static final TagKey<Item> INGOTS_ZINC = tag("ingots/zinc");
+		public static final TagKey<Item> INGOTS_TUNGSTEN = tag("ingots/tungsten");
 		
 		public static final TagKey<Item> PLATES_IRON = tag("plates/iron");
 		public static final TagKey<Item> PLATES_GOLD = tag("plates/gold");
@@ -30,6 +32,8 @@ public class TagsZT
 		public static final TagKey<Item> PLATES_TIN = tag("plates/tin");
 		public static final TagKey<Item> PLATES_LEAD = tag("plates/lead");
 		public static final TagKey<Item> PLATES_ALUMINUM = tag("plates/aluminum");
+		public static final TagKey<Item> PLATES_ZINC = tag("plates/zinc");
+		public static final TagKey<Item> PLATES_TUNGSTEN = tag("plates/tungsten");
 		
 		public static final TagKey<Item> COILS_COPPER = tag("coils/copper");
 		public static final TagKey<Item> COILS_GOLD = tag("coils/gold");
@@ -41,20 +45,31 @@ public class TagsZT
 		public static final TagKey<Item> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Item> ORES_LEAD = tag("ores/lead");
 		public static final TagKey<Item> ORES_ALUMINUM = tag("ores/aluminum");
+		public static final TagKey<Item> ORES_ZINC = tag("ores/zinc");
+		public static final TagKey<Item> ORES_TUNGSTEN = tag("ores/tungsten");
 		public static final TagKey<Item> ORES_LITHIUM = tag("ores/lithium");
 		public static final TagKey<Item> ORES_URANIUM = tag("ores/uranium");
 		
 		public static final TagKey<Item> STORAGE_BLOCKS_TIN = tag("storage_blocks/tin");
 		public static final TagKey<Item> STORAGE_BLOCKS_LEAD = tag("storage_blocks/lead");
 		public static final TagKey<Item> STORAGE_BLOCKS_ALUMINUM = tag("storage_blocks/aluminum");
+		public static final TagKey<Item> STORAGE_BLOCKS_ZINC = tag("storage_blocks/zinc");
+		public static final TagKey<Item> STORAGE_BLOCKS_TUNGSTEN = tag("storage_blocks/tungsten");
 		
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_TIN = tag("storage_blocks/raw_tin");
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_LEAD = tag("storage_blocks/raw_lead");
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_ALUMINUM = tag("storage_blocks/raw_aluminum");
+		public static final TagKey<Item> STORAGE_BLOCKS_RAW_ZINC = tag("storage_blocks/raw_zinc");
+		public static final TagKey<Item> STORAGE_BLOCKS_RAW_TUNGSTEN = tag("storage_blocks/raw_tungsten");
 		
 		private static TagKey<Item> tag(String name)
 		{
 			return ItemTags.create(new ResourceLocation("forge", name));
+		}
+		
+		private static TagKey<Item> vanillaTag(String name)
+		{
+			return ItemTags.create(new ResourceLocation("minecraft", name));
 		}
 	}
 	
@@ -64,23 +79,36 @@ public class TagsZT
 		{
 		}
 		
+		public static final TagKey<Block> MINEABLE_WITH_WIRE_CUTTER = vanillaTag("mineable/wire_cutter");
+		
 		public static final TagKey<Block> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Block> ORES_LEAD = tag("ores/lead");
 		public static final TagKey<Block> ORES_ALUMINUM = tag("ores/aluminum");
+		public static final TagKey<Block> ORES_ZINC = tag("ores/zinc");
+		public static final TagKey<Block> ORES_TUNGSTEN = tag("ores/tungsten");
 		public static final TagKey<Block> ORES_LITHIUM = tag("ores/lithium");
 		public static final TagKey<Block> ORES_URANIUM = tag("ores/uranium");
 		
 		public static final TagKey<Block> STORAGE_BLOCKS_TIN = tag("storage_blocks/tin");
 		public static final TagKey<Block> STORAGE_BLOCKS_LEAD = tag("storage_blocks/lead");
 		public static final TagKey<Block> STORAGE_BLOCKS_ALUMINUM = tag("storage_blocks/aluminum");
+		public static final TagKey<Block> STORAGE_BLOCKS_ZINC = tag("storage_blocks/zinc");
+		public static final TagKey<Block> STORAGE_BLOCKS_TUNGSTEN = tag("storage_blocks/tungsten");
 		
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_TIN = tag("storage_blocks/raw_tin");
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_LEAD = tag("storage_blocks/raw_lead");
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_ALUMINUM = tag("storage_blocks/raw_aluminum");
+		public static final TagKey<Block> STORAGE_BLOCKS_RAW_ZINC = tag("storage_blocks/raw_zinc");
+		public static final TagKey<Block> STORAGE_BLOCKS_RAW_TUNGSTEN = tag("storage_blocks/raw_tungsten");
 		
 		private static TagKey<Block> tag(String name)
 		{
 			return BlockTags.create(new ResourceLocation("forge", name));
+		}
+		
+		private static TagKey<Block> vanillaTag(String name)
+		{
+			return BlockTags.create(new ResourceLocation("minecraft", name));
 		}
 	}
 }

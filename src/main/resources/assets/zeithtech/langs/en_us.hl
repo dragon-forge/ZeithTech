@@ -10,8 +10,11 @@ item.zeithtech.copper_plate=Copper Plate
 item.zeithtech.tin_plate=Tin Plate
 item.zeithtech.lead_plate=Lead Plate
 item.zeithtech.aluminum_plate=Aluminum Plate
+item.zeithtech.zinc_plate=Zinc Plate
+item.zeithtech.tungsten_plate=Tungsten Plate
 
 item.zeithtech.iron_hammer=Iron Hammer
+item.zeithtech.wire_cutter=Wire Cutter
 item.zeithtech.hevea_boat=Hevea Boat
 item.zeithtech.hevea_chest_boat=Hevea Boat with Chest
 
@@ -39,6 +42,13 @@ block.zeithtech.hevea_chest=Hevea Chest
 block.zeithtech.hevea_trapped_chest=Trapped Hevea Chest
 
 block.zeithtech.copper_item_pipe=Copper Item Pipe
+block.zeithtech.wires.copper.uninsulated=Copper Wire
+block.zeithtech.wires.copper.insulated=Insulated Copper Wire
+block.zeithtech.wires.aluminum.uninsulated=Aluminum Wire
+block.zeithtech.wires.aluminum.insulated=Insulated Aluminum Wire
+block.zeithtech.wires.gold.uninsulated=Gold Wire
+block.zeithtech.wires.gold.insulated=Insulated Gold Wire
+
 block.zeithtech.fuel_generator.basic=Basic Solid Fuel Generator
 block.zeithtech.machine_assembler.basic=Basic Machine Assembler
 
@@ -63,6 +73,20 @@ block.zeithtech.raw_aluminum_block=Block of Raw Aluminum
 item.zeithtech.aluminum_ingot=Aluminum Ingot
 block.zeithtech.aluminum_block=Block of Aluminum
 
+block.zeithtech.deepslate_zinc_ore=Deepslate Zinc Ore
+block.zeithtech.zinc_ore=Zinc Ore
+item.zeithtech.raw_zinc=Raw Zinc
+block.zeithtech.raw_zinc_block=Block of Raw Zinc
+item.zeithtech.zinc_ingot=Zinc Ingot
+block.zeithtech.zinc_block=Block of Zinc
+
+block.zeithtech.deepslate_tungsten_ore=Deepslate Tungsten Ore
+block.zeithtech.tungsten_ore=Tungsten Ore
+item.zeithtech.raw_tungsten=Raw Tungsten
+block.zeithtech.raw_tungsten_block=Block of Raw Tungsten
+item.zeithtech.tungsten_ingot=Tungsten Ingot
+block.zeithtech.tungsten_block=Block of Tungsten
+
 block.zeithtech.deepslate_lithium_ore=Deepslate Lithium Ore
 block.zeithtech.lithium_ore=Lithium Ore
 
@@ -71,4 +95,6 @@ block.zeithtech.uranium_ore=Uranium Ore
 
 gui.zeithtech.start_crafting=Start Crafting
 
+info.zeithtech_transport.wire_max_io=Max transfer: %s FE/op
+info.zeithtech_transport.wire_loss=Energy loss: %s FE/block
 jei.info.zeithtech.bowl_of_resin=To obtain a Bowl of Resin, you need to find Hevea Tree, strip it's barks with your axe, use 5 sticks on the Stripped Hevea Log, then place Tree Tap (click the sticks) and put a Bowl on the sticks. After some time, the Bowl will fill up with resin, which you can gather with your hand.

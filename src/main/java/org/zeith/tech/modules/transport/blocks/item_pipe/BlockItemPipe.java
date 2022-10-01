@@ -22,14 +22,14 @@ import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.tile.BlockEntityTypeModifier;
+import org.zeith.tech.api.voxels.VoxelShapeCache;
+import org.zeith.tech.modules.shared.blocks.BaseEntityBlockZT;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class BlockItemPipe
-		extends BaseEntityBlock
+		extends BaseEntityBlockZT
 		implements ICreativeTabBlock, IRegisterListener, SimpleWaterloggedBlock
 {
 	static final Direction[] DIRECTIONS = Direction.values();
@@ -67,20 +67,6 @@ public class BlockItemPipe
 	);
 	
 	protected final ItemPipeProperties properties;
-	
-	private final Map<BlockState, VoxelShape> shapeCache = new HashMap<>();
-	private final Function<BlockState, VoxelShape> shapeGenerator = (state) ->
-	{
-		var central = state.getValue(CORE_CENTRAL) ? CORE_CENTRAL_SHAPE : CORE_SMOL_SHAPE;
-		
-		return Shapes.or(central,
-				DIR2PROP.entrySet()
-						.stream()
-						.filter(dir -> state.getValue(dir.getValue()))
-						.map(dir -> DIR2SHAPE.get(dir.getKey()))
-						.toArray(VoxelShape[]::new)
-		);
-	};
 	
 	public BlockItemPipe(ItemPipeProperties props)
 	{
@@ -135,10 +121,23 @@ public class BlockItemPipe
 		return false;
 	}
 	
+	private final VoxelShapeCache shapeCache = new VoxelShapeCache((state, $) ->
+	{
+		var central = state.getValue(CORE_CENTRAL) ? CORE_CENTRAL_SHAPE : CORE_SMOL_SHAPE;
+		
+		return Shapes.or(central,
+				DIR2PROP.entrySet()
+						.stream()
+						.filter(dir -> state.getValue(dir.getValue()))
+						.map(dir -> DIR2SHAPE.get(dir.getKey()))
+						.toArray(VoxelShape[]::new)
+		);
+	});
+	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
 	{
-		return shapeCache.computeIfAbsent(state, shapeGenerator);
+		return shapeCache.get(state);
 	}
 	
 	@Override

@@ -36,7 +36,7 @@ public class ItemHammer
 	
 	public ItemHammer(Properties props, Optional<TagKey<Item>> repairItem)
 	{
-		super(props);
+		super(props.defaultDurability(256));
 		this.repairItem = repairItem;
 	}
 	

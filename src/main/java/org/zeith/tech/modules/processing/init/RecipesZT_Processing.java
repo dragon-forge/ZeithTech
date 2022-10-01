@@ -63,6 +63,7 @@ public interface RecipesZT_Processing
 			Map<String, Integer> materialHitOverride = new HashMap<>();
 			Map<String, TechTier> minTierOverride = new HashMap<>();
 			
+			excludePlates.add("tungsten");
 			minTierOverride.put("steel", TechTier.ADVANCED);
 			materialHitOverride.put("gold", 3);
 			materialHitOverride.put("aluminum", 2);

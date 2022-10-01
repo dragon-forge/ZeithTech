@@ -1,0 +1,63 @@
+{
+  "textures": {
+    "0": "zeithtech:block/wires/aluminum_insulated",
+    "particle": "zeithtech:block/wires/aluminum_insulated"
+  },
+  "elements": [
+    {
+      "name": "up",
+      "from": [
+        6.5,
+        9.5,
+        6.5
+      ],
+      "to": [
+        9.5,
+        16,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            3,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            3,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            3,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            3,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}

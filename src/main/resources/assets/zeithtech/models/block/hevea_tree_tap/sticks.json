@@ -1,7 +1,7 @@
 {
   "textures": {
     "3": "zeithtech:block/tree_tap_sticks",
-    "particle": "zeithtech:item/tree_tap_sticks"
+    "particle": "zeithtech:block/tree_tap_sticks"
   },
   "elements": [
     {
