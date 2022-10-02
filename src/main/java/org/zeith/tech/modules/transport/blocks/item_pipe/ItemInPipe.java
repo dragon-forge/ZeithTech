@@ -117,11 +117,12 @@ public class ItemInPipe
 		nbt.putFloat("Move", currentPipeProgress);
 		nbt.putFloat("PMove", prevPipeProgress);
 		nbt.put("Item", contents.serializeNBT());
-		nbt.putByteArray("ToDo", path.stream().map(Direction::ordinal).map(Integer::byteValue).collect(Collectors.toList()));
 		nbt.putUUID("Id", itemId);
 		nbt.put("Endpoint", endpoint.serializeNBT());
 		nbt.putByte("From", (byte) from.ordinal());
 		nbt.putFloat("SpMul", speedMultiplied);
+		
+		nbt.putByteArray("ToDo", path.stream().map(Direction::ordinal).map(Integer::byteValue).collect(Collectors.toList()));
 		
 		return nbt;
 	}

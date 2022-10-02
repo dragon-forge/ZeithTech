@@ -54,8 +54,6 @@ public class ContainerMachineAssemblerB
 		}
 		
 		this.addSlot(new SlotOutput(tile.resultInventory, 0, 148, 45));
-		
-		this.addSlot(new SlotInput(tile.toolInventory, 0, 110, 9));
 	}
 	
 	@Override

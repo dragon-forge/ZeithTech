@@ -15,6 +15,8 @@ import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.compat.jei.hammering.ManualHammeringCategory;
+import org.zeith.tech.compat.jei.machine_assembly.MachineAssemblyCategoryB;
+import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 
@@ -36,13 +38,25 @@ public class JeiZT
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration)
 	{
-		registration.addRecipeCategories(new ManualHammeringCategory(registration.getJeiHelpers().getGuiHelper()));
+		var gui$ = registration.getJeiHelpers().getGuiHelper();
+		
+		registration.addRecipeCategories(
+				new ManualHammeringCategory(gui$),
+				new MachineAssemblyCategoryB(gui$)
+		);
 	}
 	
 	@Override
 	public void registerRecipes(IRecipeRegistration registration)
 	{
 		registration.addRecipes(RecipeTypesZT.MANUAL_HAMMERING, RecipeRegistriesZT_Processing.HAMMERING
+				.getRecipes()
+				.stream()
+				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
+				.toList()
+		);
+		
+		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY
 				.getRecipes()
 				.stream()
 				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
@@ -59,6 +73,13 @@ public class JeiZT
 	{
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FUEL_GENERATOR_BASIC), RecipeTypes.FUELING);
 		registration.addRecipeCatalyst(new ItemStack(ItemsZT_Processing.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.MACHINE_ASSEMBLER_BASIC), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+	}
+	
+	@Override
+	public void registerGuiHandlers(IGuiHandlerRegistration registration)
+	{
+		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 	}
 	
 	private static Stream<RepairData> getRepairData()

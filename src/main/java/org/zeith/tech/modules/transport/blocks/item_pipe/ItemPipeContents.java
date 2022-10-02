@@ -5,7 +5,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.*;
 
-public class PipeContents
+public class ItemPipeContents
 		implements INBTSerializable<ListTag>
 {
 	private final List<ItemInPipe> all = new ArrayList<>();
@@ -14,14 +14,21 @@ public class PipeContents
 	
 	public void update(TileItemPipe tile)
 	{
-		while(!insertQueue.isEmpty())
-			all.add(insertQueue.remove());
+		allIds.clear();
 		
-		all.removeIf(item ->
+		synchronized(all)
 		{
-			allIds.add(item.itemId);
-			return item.getContents().isEmpty() || item.update(tile);
-		});
+			while(!insertQueue.isEmpty())
+				all.add(insertQueue.remove());
+			
+			all.removeIf(item ->
+			{
+				if(!allIds.add(item.itemId))
+					return true;
+				
+				return item.getContents().isEmpty() || item.update(tile);
+			});
+		}
 		
 		if(!allIds.equals(tmpIds))
 		{
@@ -49,6 +56,14 @@ public class PipeContents
 		insertQueue.add(item);
 	}
 	
+	public void addNow(ItemInPipe item)
+	{
+		synchronized(all)
+		{
+			all.add(item);
+		}
+	}
+	
 	@Override
 	public ListTag serializeNBT()
 	{
@@ -63,5 +78,13 @@ public class PipeContents
 		all.clear();
 		var count = nbt.size();
 		for(int i = 0; i < count; ++i) all.add(new ItemInPipe(nbt.getCompound(i)));
+	}
+	
+	public void removeById(UUID itemId)
+	{
+		synchronized(all)
+		{
+			all.removeIf(i -> itemId.equals(i.itemId));
+		}
 	}
 }

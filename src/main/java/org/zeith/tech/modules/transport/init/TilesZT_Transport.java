@@ -6,7 +6,7 @@ import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.tech.modules.transport.blocks.energy_wire.TileEnergyWire;
 import org.zeith.tech.modules.transport.blocks.item_pipe.TileItemPipe;
-import org.zeith.tech.modules.transport.client.renderer.tile.TileRendererItemPipe;
+import org.zeith.tech.modules.transport.client.renderer.TileRendererItemPipe;
 
 import java.util.HashSet;
 

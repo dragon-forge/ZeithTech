@@ -5,7 +5,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import org.zeith.hammerlib.client.utils.FXUtils;
 import org.zeith.hammerlib.client.utils.RenderUtils;
-import org.zeith.hammerlib.net.Network;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.base.machine.GuiBaseMachine;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
@@ -23,11 +22,6 @@ public class GuiMachineAssemblerB
 	@Override
 	protected boolean renderForeground(PoseStack pose, int mouseX, int mouseY)
 	{
-		if(mouseX >= leftPos + 110 && mouseY >= topPos + 45 && mouseX < leftPos + 110 + 16 && mouseY < topPos + 45 + 16)
-		{
-			renderTooltip(pose, Component.translatable("gui." + ZeithTech.MOD_ID + ".start_crafting"), mouseX - leftPos, mouseY - topPos);
-		}
-		
 		return true;
 	}
 	
@@ -62,35 +56,5 @@ public class GuiMachineAssemblerB
 			
 			pose.popPose();
 		}
-		
-		resultSlotIdx = menu.findSlot(tile.toolInventory, 0).orElse(-1);
-		if(resultSlotIdx >= 0 && tile.craftResult.get().isEmpty() && craftProgress <= 0)
-		{
-			pose.pushPose();
-			
-			var slot = menu.getSlot(resultSlotIdx);
-			
-			if(slot.hasItem())
-			{
-				int x = leftPos + 110;
-				int y = topPos + 45;
-				
-				WidgetAPI.drawGhostItem(pose, x, y, slot.getItem());
-			}
-			
-			pose.popPose();
-		}
-	}
-	
-	@Override
-	public boolean mouseClicked(double x, double y, int btn)
-	{
-		if(x >= leftPos + 110 && y >= topPos + 45 && x < leftPos + 110 + 16 && y < topPos + 45 + 16)
-		{
-			Network.sendToServer(new PktMABStartCrafting(menu.tile.getBlockPos()));
-			return true;
-		}
-		
-		return super.mouseClicked(x, y, btn);
 	}
 }

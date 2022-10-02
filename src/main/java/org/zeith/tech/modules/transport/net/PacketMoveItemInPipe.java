@@ -12,14 +12,12 @@ import org.zeith.hammerlib.net.*;
 import org.zeith.tech.modules.transport.blocks.item_pipe.ItemInPipe;
 import org.zeith.tech.modules.transport.blocks.item_pipe.TileItemPipe;
 
-import java.util.UUID;
-
 @MainThreaded
 public class PacketMoveItemInPipe
 		implements IPacket
 {
+	ItemInPipe item;
 	BlockPos pipe;
-	UUID itemId;
 	Direction to;
 	
 	public static void send(TileItemPipe current, ItemInPipe item, Direction to)
@@ -28,8 +26,8 @@ public class PacketMoveItemInPipe
 		var pos = current.getPosition();
 		var pkt = new PacketMoveItemInPipe();
 		pkt.pipe = pos;
-		pkt.itemId = item.itemId;
 		pkt.to = to;
+		pkt.item = item;
 		Network.sendToTracking(current.getLevel().getChunkAt(pos), pkt);
 	}
 	
@@ -37,16 +35,16 @@ public class PacketMoveItemInPipe
 	public void write(FriendlyByteBuf buf)
 	{
 		buf.writeBlockPos(pipe);
-		buf.writeUUID(itemId);
 		buf.writeEnum(to);
+		buf.writeNbt(item.serializeNBT());
 	}
 	
 	@Override
 	public void read(FriendlyByteBuf buf)
 	{
 		pipe = buf.readBlockPos();
-		itemId = buf.readUUID();
 		to = buf.readEnum(Direction.class);
+		item = new ItemInPipe(buf.readNbt());
 	}
 	
 	@Override
@@ -56,11 +54,14 @@ public class PacketMoveItemInPipe
 		Level world = LogicalSidedProvider.CLIENTWORLD.get(LogicalSide.CLIENT).orElse(null);
 		if(world.getBlockEntity(pipe) instanceof TileItemPipe ourPipe)
 		{
-			var item = ourPipe.contents.byId(itemId);
-			item.ifPresent(it ->
+			item = ourPipe.contents.byId(item.itemId).orElse(item);
+			ourPipe.transferItem(item, to);
+			if(world.getBlockEntity(pipe.relative(to)) instanceof TileItemPipe remPipe)
 			{
-				ourPipe.transferItem(it, to);
-			});
+				item.update(remPipe);
+				item.prevPipeProgress = 0;
+				item.currentPipeProgress *= 0.25;
+			}
 		}
 	}
 }

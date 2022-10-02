@@ -14,6 +14,7 @@ import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
 import org.zeith.tech.api.recipes.RecipeHammering;
 import org.zeith.tech.api.recipes.RecipeMachineAssembler;
 import org.zeith.tech.modules.shared.init.ItemsZT;
+import org.zeith.tech.modules.shared.init.TagsZT;
 
 import java.util.*;
 
@@ -22,9 +23,11 @@ public interface RecipesZT_Processing
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
 		event.shaped().shape("iin", "is ", " s ").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).map('n', Tags.Items.NUGGETS_IRON).result(ItemsZT_Processing.IRON_HAMMER).register();
+		event.shaped().shape("i i", " i ", "s s").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT_Processing.WIRE_CUTTER).register();
 		
 		event.shaped()
-				.shape("ici", "ici", "sss")
+				.shape("ppp", "ici", "sss")
+				.map('p', TagsZT.Items.PLATES_IRON)
 				.map('i', Tags.Items.STORAGE_BLOCKS_IRON)
 				.map('c', Blocks.CRAFTING_TABLE)
 				.map('s', Blocks.SMOOTH_STONE)

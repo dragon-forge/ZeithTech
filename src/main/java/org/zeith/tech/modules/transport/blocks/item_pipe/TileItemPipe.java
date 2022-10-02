@@ -21,8 +21,7 @@ import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 import org.zeith.tech.modules.transport.net.PacketMoveItemInPipe;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -31,7 +30,7 @@ public class TileItemPipe
 		implements ITraversable<ItemInPipe>
 {
 	@NBTSerializable("Contents")
-	public final PipeContents contents = new PipeContents();
+	public final ItemPipeContents contents = new ItemPipeContents();
 	
 	@NBTSerializable("Sides")
 	public final SideConfig6 sideConfigs = new SideConfig6(SideConfig.NONE);
@@ -67,6 +66,10 @@ public class TileItemPipe
 	{
 		ItemInPipe item = new ItemInPipe().setContents(stack);
 		
+		// Guaranteed to be unique.
+		while(contents.byId(item.itemId).isPresent())
+			item.itemId = UUID.randomUUID();
+		
 		var path = TraversableHelper.findClosestPath(this, from, item).orElse(null);
 		
 		if(path != null && item.applyPath(from, path))
@@ -89,8 +92,14 @@ public class TileItemPipe
 			item.prevPipeProgress = item.currentPipeProgress = 0;
 			item.currentPos = pipe.getPosition();
 			item.prevPos = getPosition();
-			pipe.contents.add(item);
+			pipe.contents.addNow(item);
+			
 			PacketMoveItemInPipe.send(this, item, to);
+			
+			for(Direction dir : BlockItemPipe.DIRECTIONS)
+				if(dir != to && level.getBlockEntity(worldPosition.relative(dir)) instanceof TileItemPipe rp)
+					rp.contents.removeById(item.itemId);
+			
 			return true;
 		}
 		

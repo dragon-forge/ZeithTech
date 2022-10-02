@@ -22,7 +22,7 @@ public class EnergyWireContents
 	{
 		max = wire.getWireProps().tier().maxFE();
 		
-		Direction.stream().forEach(dir ->
+		for(Direction dir : BlockEnergyWire.DIRECTIONS)
 		{
 			var fe = energy[dir.ordinal()];
 			if(fe >= 1.0F)
@@ -30,7 +30,7 @@ public class EnergyWireContents
 				fe -= wire.emitToDirect(dir, (int) fe, false);
 				energy[dir.ordinal()] = fe;
 			}
-		});
+		}
 	}
 	
 	@Override

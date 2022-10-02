@@ -36,9 +36,19 @@ public class RecipeMachineAssembler
 		this.recipeItems = shape.createIngredientMap(dictionary);
 	}
 	
+	public ItemStack getRecipeOutput()
+	{
+		return output.getBaseOutput();
+	}
+	
 	public ItemStack getRecipeOutput(ICraftingExecutor executor)
 	{
 		return output.getOutput(executor);
+	}
+	
+	public boolean isTierGoodEnough(TechTier tier)
+	{
+		return tier.isOrHigher(getMinTier());
 	}
 	
 	public TechTier getMinTier()

@@ -1,11 +1,16 @@
 package org.zeith.tech.modules.processing.blocks.machine_assembler.basic;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.fml.LogicalSide;
 import org.zeith.hammerlib.api.crafting.ICraftingExecutor;
 import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.api.io.NBTSerializable;
@@ -13,10 +18,10 @@ import org.zeith.hammerlib.net.properties.*;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.api.tile.IHammerable;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
-import org.zeith.tech.modules.processing.items.ItemHammer;
 import org.zeith.tech.utils.ItemStackHelper;
 
 import java.util.ArrayList;
@@ -24,13 +29,10 @@ import java.util.List;
 
 public class TileMachineAssemblerB
 		extends TileBaseMachine<TileMachineAssemblerB>
-		implements ICraftingExecutor
+		implements ICraftingExecutor, IHammerable
 {
 	@NBTSerializable
 	public final SimpleInventory craftingInventory = new SimpleInventory(25);
-	
-	@NBTSerializable("ToolInv")
-	public final SimpleInventory toolInventory = new SimpleInventory(1);
 	
 	@NBTSerializable("ResultInv")
 	public final SimpleInventory resultInventory = new SimpleInventory(1);
@@ -40,6 +42,7 @@ public class TileMachineAssemblerB
 	
 	@NBTSerializable("CraftProgress")
 	private int _progress;
+	private int prevProgress;
 	
 	@NBTSerializable("CraftTime")
 	private int _craftTime = 100;
@@ -62,13 +65,14 @@ public class TileMachineAssemblerB
 		super(TilesZT_Processing.MACHINE_ASSEMBLER_BASIC, pos, state);
 		this.dispatcher.registerProperty("ar_id", activeRecipeId);
 		
-		toolInventory.isStackValid = (slot, stack) -> !stack.isEmpty() && stack.getItem() instanceof ItemHammer;
 		resultInventory.isStackValid = (slot, stack) -> false;
 	}
 	
 	@Override
 	public void update()
 	{
+		prevProgress = _progress;
+		
 		if(isOnServer())
 		{
 			var r = getActiveRecipe();
@@ -87,7 +91,13 @@ public class TileMachineAssemblerB
 			
 			if(r == null && atTickRate(2) && !playerWithOpenMenu.isEmpty())
 			{
-				var recipe = RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY.getRecipes().stream().filter(this::isValidRecipe).findFirst().orElse(null);
+				var recipe = RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY
+						.getRecipes()
+						.stream()
+						.filter(this::isValidRecipe)
+						.findFirst()
+						.orElse(null);
+				
 				if(recipe != null)
 				{
 					activeRecipeId.set(recipe.getRecipeName());
@@ -95,24 +105,19 @@ public class TileMachineAssemblerB
 				}
 			}
 			
-			if(!_craftResult.isEmpty())
+			if(_progress >= _craftTime)
 			{
-				var hammer = toolInventory.getItem(0);
+				var ar = getActiveRecipe();
+				if(_craftResult.isEmpty() && ar != null)
+					_craftResult = ar.getRecipeOutput(this);
 				
-				var hasHammer = !hammer.isEmpty() && hammer.getItem() instanceof ItemHammer;
-				
-				if(_progress < _craftTime && hasHammer)
-					++_progress;
-				
-				if(_progress >= _craftTime && hasHammer)
+				if(!_craftResult.isEmpty())
 				{
-					if(hammer.hurt(1, level.random, null))
-					{
-						hammer.shrink(1);
-						hammer.setDamageValue(0);
-					}
-					
 					var stored = resultInventory.getItem(0);
+					
+					for(ItemStack stack : craftingInventory)
+						if(!stack.isEmpty())
+							stack.shrink(1);
 					
 					if(stored.isEmpty())
 					{
@@ -127,6 +132,9 @@ public class TileMachineAssemblerB
 					}
 				}
 			}
+			
+			if(r == null && _progress > 0)
+				craftingProgress.setInt(0);
 		}
 		
 		if(isOnClient())
@@ -135,27 +143,9 @@ public class TileMachineAssemblerB
 		}
 	}
 	
-	public boolean performCraftOperation()
+	public float getProgress(float partial)
 	{
-		if(isOnServer() && _craftResult.isEmpty())
-		{
-			var r = getActiveRecipe();
-			if(r != null)
-			{
-				var out = r.getRecipeOutput(this);
-				if(!out.isEmpty())
-				{
-					for(ItemStack stack : craftingInventory)
-						if(!stack.isEmpty())
-							stack.shrink(1);
-					craftResult.set(out);
-					craftingProgress.setInt(0);
-					return true;
-				}
-			}
-		}
-		
-		return false;
+		return Mth.lerp(partial, prevProgress, _progress);
 	}
 	
 	@Override
@@ -178,6 +168,27 @@ public class TileMachineAssemblerB
 	@Override
 	public List<Container> getAllInventories()
 	{
-		return List.of(craftingInventory, resultInventory, toolInventory);
+		return List.of(craftingInventory, resultInventory);
+	}
+	
+	@Override
+	public boolean onHammerLeftClicked(ItemStack hammerStack, LogicalSide side, Direction face, Player player, InteractionHand hand, BlockHitResult vec)
+	{
+		if(face != Direction.UP || vec.getLocation().y < worldPosition.getY() + 0.875F)
+			return false;
+		
+		var recipe = getActiveRecipe();
+		
+		if(recipe != null && craftingProgress.getInt() < craftTime.getInt())
+		{
+			if(side == LogicalSide.SERVER)
+			{
+				craftingProgress.setInt(_progress + 10);
+				sync();
+			}
+			return true;
+		}
+		
+		return false;
 	}
 }
