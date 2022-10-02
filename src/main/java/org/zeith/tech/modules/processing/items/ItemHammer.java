@@ -13,14 +13,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AnvilBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
+import org.zeith.tech.api.events.recipe.HammerHitEvent;
 import org.zeith.tech.api.tile.IHammerable;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
+import org.zeith.tech.modules.shared.init.SoundsZT;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -32,6 +36,7 @@ public class ItemHammer
 	{
 		MinecraftForge.EVENT_BUS.addListener(ItemHammer::leftClickBlock);
 		MinecraftForge.EVENT_BUS.addListener(ItemHammer::rightClickBlock);
+		MinecraftForge.EVENT_BUS.addListener(ItemHammer::damageAnvil);
 	}
 	
 	final Optional<TagKey<Item>> repairItem;
@@ -87,7 +92,34 @@ public class ItemHammer
 						item.setDefaultPickUpDelay();
 						srv.addFreshEntity(item);
 					}
+					
 					e.setCanceled(true);
+				}
+			}
+		}
+	}
+	
+	private static void damageAnvil(HammerHitEvent e)
+	{
+		var lvl = e.getEntity().getLevel();
+		if(!lvl.isClientSide())
+		{
+			var hit = e.getHit();
+			var pos = hit.getBlockPos();
+			var state = lvl.getBlockState(pos);
+			
+			var damaged = AnvilBlock.damage(state);
+			if(lvl.random.nextFloat() < 0.12F / 5F)
+			{
+				if(damaged != null)
+				{
+					lvl.setBlock(pos, damaged, 2);
+				} else if(state.is(Blocks.DAMAGED_ANVIL))
+				{
+					lvl.removeBlock(pos, false);
+					
+					if(lvl instanceof ServerLevel srv)
+						srv.playSound(null, e.getEntity(), SoundsZT.ANVIL_DESTROY, SoundSource.PLAYERS, 0.5F, 1F);
 				}
 			}
 		}
@@ -113,6 +145,7 @@ public class ItemHammer
 				{
 					var key = ZeithTech.MOD_ID + "_hammer_hits";
 					var keyTotal = ZeithTech.MOD_ID + "_hammer_hits_total";
+					var keyLast = ZeithTech.MOD_ID + "_hammer_hit_last";
 					
 					var hitLoc = res.getLocation();
 					var hitBox = new AABB(hitLoc, hitLoc).inflate(0.125F);
@@ -124,9 +157,11 @@ public class ItemHammer
 					{
 						var dropStack = ent.getItem();
 						
+						int timeSinceHit = ent.getAge() - ent.getPersistentData().getInt(keyLast);
+						
 						var recipe = RecipeRegistriesZT_Processing.HAMMERING.getRecipes().stream().filter(r -> r.matches(state, dropStack, TechTier.BASIC)).findFirst().orElse(null);
 						
-						if(recipe != null)
+						if(recipe != null && timeSinceHit > 5 && !MinecraftForge.EVENT_BUS.post(new HammerHitEvent(player, hammerStack, res, recipe, ent)))
 						{
 							var bb = ent.getBoundingBox();
 							var pp = bb.getCenter();
@@ -135,11 +170,10 @@ public class ItemHammer
 							
 							if(level instanceof ServerLevel srv)
 							{
-								srv.sendParticles(ParticleTypes.CRIT, pp.x, bb.maxY, pp.z, 10, 0.1, -0.1, 0.1, 0.2);
-								srv.playSound(null, player, SoundEvents.ANVIL_PLACE, SoundSource.PLAYERS, 1F, 1F);
-								
 								if(!data.contains(keyTotal))
 									data.putInt(keyTotal, recipe.getHitCount(hammerStack, ent, hitLoc, player, srv));
+								
+								var done = false;
 								
 								int hits = data.getInt(key) + 1;
 								if(hits >= data.getInt(keyTotal))
@@ -156,8 +190,15 @@ public class ItemHammer
 									
 									data.remove(key);
 									data.remove(keyTotal);
+									
+									done = true;
 								} else
 									data.putInt(key, hits);
+								
+								data.putInt(keyLast, ent.getAge());
+								
+								srv.sendParticles(ParticleTypes.CRIT, pp.x, bb.maxY, pp.z, 10, 0.1, -0.1, 0.1, 0.2);
+								srv.playSound(null, player, done ? SoundsZT.ANVIL_USE_DONE : SoundsZT.ANVIL_USE, SoundSource.PLAYERS, 1F, 1F);
 							}
 							
 							hammerStack.hurtAndBreak(1, player, pl -> pl.broadcastBreakEvent(e.getHand()));

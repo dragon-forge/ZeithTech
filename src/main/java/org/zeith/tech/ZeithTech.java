@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -43,6 +44,7 @@ public class ZeithTech
 		TagsZT.init();
 		LanguageAdapter.registerMod(MOD_ID);
 		apply(this);
+		ForgeMod.enableMilkFluid();
 		
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(RecipeRegistriesZT_Processing::setup);

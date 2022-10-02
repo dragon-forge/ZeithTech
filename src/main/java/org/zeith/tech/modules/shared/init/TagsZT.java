@@ -4,12 +4,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 public class TagsZT
 {
 	public static void init()
 	{
 		TagsZT.Items.init();
+		TagsZT.Blocks.init();
+		TagsZT.Fluids.init();
 	}
 	
 	public static class Items
@@ -109,6 +112,25 @@ public class TagsZT
 		private static TagKey<Block> vanillaTag(String name)
 		{
 			return BlockTags.create(new ResourceLocation("minecraft", name));
+		}
+	}
+	
+	public static class Fluids
+	{
+		private static void init()
+		{
+		}
+		
+		public static final TagKey<Fluid> HONEY = tag("honey");
+		
+		private static TagKey<Fluid> tag(String name)
+		{
+			return FluidTags.create(new ResourceLocation("forge", name));
+		}
+		
+		private static TagKey<Fluid> vanillaTag(String name)
+		{
+			return FluidTags.create(new ResourceLocation("minecraft", name));
 		}
 	}
 }

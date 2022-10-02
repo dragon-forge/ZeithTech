@@ -5,7 +5,7 @@ import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 
-public interface RecipesZT_Shared
+public interface RecipesZT
 {
 	static void provideRecipes(RegisterRecipesEvent event)
 	{

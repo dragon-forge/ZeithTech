@@ -100,6 +100,9 @@ public class TileItemPipe
 				if(dir != to && level.getBlockEntity(worldPosition.relative(dir)) instanceof TileItemPipe rp)
 					rp.contents.removeById(item.itemId);
 			
+			if(to.getAxisDirection() == Direction.AxisDirection.NEGATIVE)
+				item.update(pipe);
+			
 			return true;
 		}
 		

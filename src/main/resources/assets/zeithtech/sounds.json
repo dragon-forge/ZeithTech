@@ -1,0 +1,20 @@
+{
+  "block.anvil.destroy": {
+    "sounds": [
+      "zeithtech:random/anvil_destroy"
+    ],
+    "subtitle": "subtitles.block.anvil.destroy"
+  },
+  "block.anvil.use": {
+    "sounds": [
+      "zeithtech:random/anvil_use"
+    ],
+    "subtitle": "subtitles.block.anvil.use"
+  },
+  "block.anvil.use.done": {
+    "sounds": [
+      "zeithtech:random/anvil_use_done"
+    ],
+    "subtitle": "subtitles.block.anvil.use"
+  }
+}
