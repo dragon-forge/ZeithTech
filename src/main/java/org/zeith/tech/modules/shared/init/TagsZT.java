@@ -5,6 +5,7 @@ import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
+import org.zeith.tech.ZeithTech;
 
 public class TagsZT
 {
@@ -20,6 +21,8 @@ public class TagsZT
 		private static void init()
 		{
 		}
+		
+		public static final TagKey<Item> MINING_PIPE = modTag("mining_pipe");
 		
 		public static final TagKey<Item> HEVEA_LOGS = tag("hevea_logs");
 		
@@ -70,6 +73,11 @@ public class TagsZT
 			return ItemTags.create(new ResourceLocation("forge", name));
 		}
 		
+		private static TagKey<Item> modTag(String name)
+		{
+			return ItemTags.create(new ResourceLocation(ZeithTech.MOD_ID, name));
+		}
+		
 		private static TagKey<Item> vanillaTag(String name)
 		{
 			return ItemTags.create(new ResourceLocation("minecraft", name));
@@ -82,7 +90,9 @@ public class TagsZT
 		{
 		}
 		
+		public static final TagKey<Block> MINING_PIPE = modTag("mining_pipe");
 		public static final TagKey<Block> MINEABLE_WITH_WIRE_CUTTER = vanillaTag("mineable/wire_cutter");
+		public static final TagKey<Block> MINEABLE_WITH_MINING_HEAD = modTag("mineable/mining_head");
 		
 		public static final TagKey<Block> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Block> ORES_LEAD = tag("ores/lead");
@@ -112,6 +122,11 @@ public class TagsZT
 		private static TagKey<Block> vanillaTag(String name)
 		{
 			return BlockTags.create(new ResourceLocation("minecraft", name));
+		}
+		
+		private static TagKey<Block> modTag(String name)
+		{
+			return BlockTags.create(new ResourceLocation(ZeithTech.MOD_ID, name));
 		}
 	}
 	

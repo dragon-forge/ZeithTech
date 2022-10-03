@@ -31,4 +31,7 @@ public interface ItemsZT
 	
 	@RegistryName("plastic")
 	Item PLASTIC = BaseZT.newItem();
+	
+	@RegistryName("motor")
+	Item MOTOR = BaseZT.newItem();
 }

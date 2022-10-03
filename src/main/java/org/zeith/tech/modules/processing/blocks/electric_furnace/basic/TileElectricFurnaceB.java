@@ -209,6 +209,6 @@ public class TileElectricFurnaceB
 	@Override
 	public List<Container> getAllInventories()
 	{
-		return List.of(inventory);
+		return List.of(inventory, energy.batteryInventory);
 	}
 }

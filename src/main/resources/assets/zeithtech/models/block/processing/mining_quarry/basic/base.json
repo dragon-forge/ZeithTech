@@ -1,0 +1,148 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "0": "zeithtech:processing/block/base_horizontal",
+    "1": "zeithtech:processing/block/mining_quarry/basic/up",
+    "2": "zeithtech:processing/block/mining_quarry/basic/down",
+    "4": "#front",
+    "particle": "zeithtech:processing/block/base_horizontal"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#4"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        4,
+        -0.25
+      ],
+      "to": [
+        12,
+        12,
+        1
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#4"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            5,
+            12
+          ],
+          "texture": "#4"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "texture": "#4"
+        },
+        "west": {
+          "uv": [
+            11,
+            4,
+            12,
+            12
+          ],
+          "texture": "#4"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            5.25
+          ],
+          "texture": "#4"
+        },
+        "down": {
+          "uv": [
+            4,
+            10.75,
+            12,
+            12
+          ],
+          "texture": "#4"
+        }
+      }
+    }
+  ]
+}

@@ -106,7 +106,7 @@ public class TileFuelGeneratorB
 				}
 			}
 			
-			energy.charge(chargeInventory.getItem(0));
+			energy.chargeItem(chargeInventory.getItem(0));
 		}
 		
 		if(isOnClient() && isEnabled())
@@ -150,7 +150,7 @@ public class TileFuelGeneratorB
 	@Override
 	public List<Container> getAllInventories()
 	{
-		return List.of(fuelInventory, chargeInventory);
+		return List.of(fuelInventory, chargeInventory, energy.batteryInventory);
 	}
 	
 	private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);

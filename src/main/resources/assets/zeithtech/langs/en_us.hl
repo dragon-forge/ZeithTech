@@ -74,15 +74,23 @@ item.zeithtech.gold_coil=Gold Coil
 item.zeithtech.bowl_of_resin=Bowl of Resin
 item.zeithtech.latex=Latex Orb
 item.zeithtech.tree_tap=Tree Tap
+item.zeithtech.motor=Motor
 item.zeithtech.plastic=Plastic
 
 ### Processing Module ###
+block.zeithtech.processing.mining_pipe=Mining Pipe
+
 block.zeithtech.processing.fuel_generator.basic=Basic Solid Fuel Generator
 block.zeithtech.processing.machine_assembler.basic=Basic Machine Assembler
 block.zeithtech.processing.electric_furnace.basic=Basic Electric Furnace
+block.zeithtech.processing.mining_quarry.basic=Basic Miner
 
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter
+item.zeithtech.processing.mining_head=Drilling Head
+item.zeithtech.processing.mining_heads.iron=Iron Drilling Head
+item.zeithtech.processing.mining_heads.diamond=Diamond Drilling Head
+item.zeithtech.processing.mining_heads.netherite=Netherite Drilling Head
 
 info.zeithtech_processing.hammer_hit_count=%s hits
 

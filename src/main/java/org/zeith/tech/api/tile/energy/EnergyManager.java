@@ -2,6 +2,7 @@ package org.zeith.tech.api.tile.energy;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -10,6 +11,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.util.charging.IChargeHandler;
 import org.zeith.hammerlib.util.charging.ItemChargeHelper;
 import org.zeith.hammerlib.util.charging.fe.FECharge;
@@ -17,12 +19,14 @@ import org.zeith.tech.api.enums.SidedConfigTyped;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 
 public class EnergyManager
-		implements INBTSerializable<Tag>, IEnergyStorage
+		implements INBTSerializable<CompoundTag>, IEnergyStorage
 {
 	protected BlockPos lastPosition;
 	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(() -> lastPosition);
 	
 	public final LazyOptional<IEnergyMeasurable> measurableCap = LazyOptional.of(() -> measurables);
+	
+	public final SimpleInventory batteryInventory = new SimpleInventory(1);
 	
 	public final EnergyStorage2 fe;
 	public final int maxAccept, maxSend;
@@ -35,18 +39,35 @@ public class EnergyManager
 		this.maxSend = maxSend;
 	}
 	
-	public void charge(ItemStack stack)
+	public void chargeItem(ItemStack stack)
 	{
-		charge(maxSend, stack);
+		chargeItem(maxSend, stack);
 	}
 	
-	public void charge(int maxTransfer, ItemStack stack)
+	public void chargeItem(int maxTransfer, ItemStack stack)
 	{
 		if(stack.isEmpty()) return;
 		int sent = fe.extractEnergy(maxTransfer, true);
-		sent = sent - ItemChargeHelper.charge(stack, new FECharge(sent), IChargeHandler.ChargeAction.EXECUTE).FE;
+		sent -= ItemChargeHelper.charge(stack, new FECharge(sent), IChargeHandler.ChargeAction.EXECUTE).FE;
 		fe.extractEnergy(sent, false);
 		measurables.onEnergyTransfer(sent);
+	}
+	
+	public void chargeMachineFromItem(ItemStack stack)
+	{
+		chargeMachineFromItem(maxAccept, stack);
+	}
+	
+	public void chargeMachineFromItem(int maxTransfer, ItemStack stack)
+	{
+		if(stack.isEmpty()) return;
+		
+		stack.getCapability(ForgeCapabilities.ENERGY).ifPresent(energy ->
+		{
+			int sent = energy.extractEnergy(maxTransfer, true);
+			energy.extractEnergy(fe.receiveEnergy(sent, false), false);
+			measurables.onEnergyTransfer(sent);
+		});
 	}
 	
 	public void update(Level level, BlockPos pos, ITileSidedConfig configs)
@@ -165,14 +186,18 @@ public class EnergyManager
 	}
 	
 	@Override
-	public Tag serializeNBT()
+	public CompoundTag serializeNBT()
 	{
-		return fe.serializeNBT();
+		var nbt = new CompoundTag();
+		nbt.put("FE", fe.serializeNBT());
+		nbt.put("Items", batteryInventory.serializeNBT());
+		return nbt;
 	}
 	
 	@Override
-	public void deserializeNBT(Tag nbt)
+	public void deserializeNBT(CompoundTag nbt)
 	{
-		fe.deserializeNBT(nbt);
+		fe.setEnergyStored(nbt.getInt("FE"));
+		batteryInventory.deserializeNBT(nbt.getList("Items", Tag.TAG_COMPOUND));
 	}
 }

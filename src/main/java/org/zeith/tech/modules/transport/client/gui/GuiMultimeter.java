@@ -55,13 +55,13 @@ public class GuiMultimeter
 		var lim = Math.max(1, menu.age);
 		
 		drawString(pose, font, "Generation: ", 140, y, 0xFF_FFFF00);
-		drawString(pose, font, String.format("%.2f", DoubleStream.of(menu.graphs[0]).limit(lim).average().orElse(0)), 140, y + lineSpacing * 1, 0xFF_FFFF00);
+		drawString(pose, font, "%.2f".formatted(DoubleStream.of(menu.graphs[0]).limit(lim).average().orElse(0)), 140, y + lineSpacing * 1, 0xFF_FFFF00);
 		
 		drawString(pose, font, "Usage: ", 140, y + lineSpacing * 2, 0xFF_00FFFF);
-		drawString(pose, font, String.format("%.2f", DoubleStream.of(menu.graphs[1]).limit(lim).average().orElse(0)), 140, y + lineSpacing * 3, 0xFF_00FFFF);
+		drawString(pose, font, "%.2f".formatted(DoubleStream.of(menu.graphs[1]).limit(lim).average().orElse(0)), 140, y + lineSpacing * 3, 0xFF_00FFFF);
 		
 		drawString(pose, font, "Transfer: ", 140, y + lineSpacing * 4, 0xFF_FF00FF);
-		drawString(pose, font, String.format("%.2f", DoubleStream.of(menu.graphs[2]).limit(lim).average().orElse(0)), 140, y + lineSpacing * 5, 0xFF_FF00FF);
+		drawString(pose, font, "%.2f".formatted(DoubleStream.of(menu.graphs[2]).limit(lim).average().orElse(0)), 140, y + lineSpacing * 5, 0xFF_FF00FF);
 		
 		return true;
 	}

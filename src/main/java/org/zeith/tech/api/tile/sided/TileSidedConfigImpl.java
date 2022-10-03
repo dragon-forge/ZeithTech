@@ -6,8 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.util.java.DirectStorage;
-import org.zeith.tech.api.enums.SideConfig;
-import org.zeith.tech.api.enums.SidedConfigTyped;
+import org.zeith.tech.api.enums.*;
 import org.zeith.tech.utils.ISidedItemAccess;
 
 import java.util.Arrays;
@@ -19,6 +18,8 @@ import java.util.stream.Stream;
 public class TileSidedConfigImpl
 		implements ITileSidedConfig, INBTSerializable<CompoundTag>
 {
+	static final SidedConfigTyped[] ALL_TYPES = SidedConfigTyped.values();
+	
 	public final SpecificSidedConfigManager energy, fluids, items;
 	
 	public TileSidedConfigImpl(DirectStorage<Direction> currentDirection, EnumSet<SidedConfigTyped> types)
@@ -37,6 +38,16 @@ public class TileSidedConfigImpl
 	{
 		var cfgs = getSideConfigs(type);
 		if(cfgs != null) cfgs.setDefaults(config);
+		return this;
+	}
+	
+	public TileSidedConfigImpl setForAll(RelativeDirection dir, SideConfig config)
+	{
+		for(var t : ALL_TYPES)
+		{
+			var cfgs = getSideConfigs(t);
+			if(cfgs != null) cfgs.setDefaults(config);
+		}
 		return this;
 	}
 	

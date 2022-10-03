@@ -2,11 +2,15 @@ package org.zeith.tech.modules.processing.init;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.UpgradeRecipe;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.tech.ZeithTech;
@@ -25,6 +29,14 @@ public interface RecipesZT_Processing
 	{
 		event.shaped().shape("iin", "is ", " s ").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).map('n', Tags.Items.NUGGETS_IRON).result(ItemsZT_Processing.IRON_HAMMER).register();
 		event.shaped().shape("i i", " i ", "s s").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT_Processing.WIRE_CUTTER).register();
+		
+		event.shaped().shape(" p ", "ptp", " p ").map('p', TagsZT.Items.PLATES_IRON).map('t', BlocksZT_Processing.MINING_PIPE).result(ItemsZT_Processing.MINING_HEAD).register();
+		
+		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.INGOTS_IRON).map('t', ItemsZT_Processing.MINING_HEAD).result(ItemsZT_Processing.IRON_MINING_HEAD).register();
+		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.GEMS_DIAMOND).map('t', ItemsZT_Processing.MINING_HEAD).result(ItemsZT_Processing.DIAMOND_MINING_HEAD).register();
+		event.register(ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD), new UpgradeRecipe(ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD), Ingredient.of(ItemsZT_Processing.DIAMOND_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
+		
+		event.shaped().shape("p p", "i i", "p p").map('p', TagsZT.Items.PLATES_IRON).map('i', Tags.Items.INGOTS_IRON).result(new ItemStack(BlocksZT_Processing.MINING_PIPE, 6)).register();
 		
 		event.shaped()
 				.shape("ppp", "ici", "sss")
@@ -61,6 +73,18 @@ public interface RecipesZT_Processing
 					.map('g', Tags.Items.GLASS)
 					.map('f', Items.FURNACE)
 					.result(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE)
+					.register();
+			
+			f.get().minTier(TechTier.BASIC)
+					.shape("  h  ", " ccc ", "iCwCi", " mpm ", "  p  ")
+					.map('h', Items.HOPPER)
+					.map('c', TagsZT.Items.PLATES_COPPER)
+					.map('i', Tags.Items.INGOTS_IRON)
+					.map('C', ItemsZT.COPPER_COIL)
+					.map('w', Tags.Items.CHESTS)
+					.map('m', ItemsZT.MOTOR)
+					.map('p', BlocksZT_Processing.MINING_PIPE)
+					.result(BlocksZT_Processing.BASIC_QUARRY)
 					.register();
 		}
 	}

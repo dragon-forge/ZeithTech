@@ -84,7 +84,7 @@ public class JeiZT
 	{
 		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
-		registration.addRecipeClickArea(GuiFuelGeneratorB.class, 81, 29, 13, 13, RecipeTypes.FUELING);
+		registration.addRecipeClickArea(GuiFuelGeneratorB.class, 81, 29, 13, 14, RecipeTypes.FUELING);
 	}
 	
 	private static Stream<RepairData> getRepairData()
@@ -92,7 +92,12 @@ public class JeiZT
 		return Stream.of(
 				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_IRON),
 						new ItemStack(ItemsZT_Processing.IRON_HAMMER),
-						new ItemStack(ItemsZT_Processing.WIRE_CUTTER))
+						new ItemStack(ItemsZT_Processing.WIRE_CUTTER),
+						new ItemStack(ItemsZT_Processing.IRON_MINING_HEAD)),
+				new RepairData(RecipeHelper.fromTag(Tags.Items.GEMS_DIAMOND),
+						new ItemStack(ItemsZT_Processing.DIAMOND_MINING_HEAD)),
+				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE),
+						new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD))
 		);
 	}
 	

@@ -1,0 +1,6 @@
+{
+  "parent": "zeithtech:block/processing/mining_quarry/basic/base",
+  "textures": {
+    "front": "zeithtech:processing/block/mining_quarry/basic/front_on"
+  }
+}
