@@ -19,8 +19,7 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
-import org.zeith.hammerlib.net.properties.PropertyInt;
-import org.zeith.hammerlib.net.properties.PropertyResourceLocation;
+import org.zeith.hammerlib.net.properties.*;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
@@ -92,9 +91,13 @@ public class TileElectricFurnaceB
 	public final PropertyInt maxProgress = new PropertyInt(DirectStorage.create(i -> _maxProgress = i, () -> _maxProgress));
 	public final PropertyResourceLocation activeRecipe = new PropertyResourceLocation(DirectStorage.create(i -> _activeRecipe = i, () -> _activeRecipe));
 	
+	public final PropertyItemStack inputItemDisplay = new PropertyItemStack(DirectStorage.allocate(ItemStack.EMPTY));
+	
 	public TileElectricFurnaceB(BlockPos pos, BlockState state)
 	{
 		super(TilesZT_Processing.BASIC_ELECTRIC_FURNACE, pos, state);
+		dispatcher.registerProperty("ar", activeRecipe);
+		dispatcher.registerProperty("display", inputItemDisplay);
 	}
 	
 	public TileElectricFurnaceB(BlockEntityType<TileElectricFurnaceB> type, BlockPos pos, BlockState state)
@@ -106,6 +109,13 @@ public class TileElectricFurnaceB
 	public void update()
 	{
 		energy.update(level, worldPosition, sidedConfig);
+		
+		if(isOnServer() && atTickRate(5))
+		{
+			ItemStack first = inventory.getItem(0).copy();
+			if(first.isEmpty()) first = inventory.getItem(1).copy();
+			inputItemDisplay.set(first);
+		}
 		
 		var recipe = getActiveRecipe();
 		if(recipe != null)
@@ -123,6 +133,7 @@ public class TileElectricFurnaceB
 			{
 				inventory.getItem(0).shrink(1);
 				_progress = 0;
+				sync();
 			}
 		} else if(_progress > 0)
 			_progress = Math.max(0, _progress - 2);
@@ -138,7 +149,7 @@ public class TileElectricFurnaceB
 			inventory.setItem(1, stack);
 			return true;
 		}
-		if(os.sameItem(stack) && os.getCount() + stack.getCount() < Math.min(os.getMaxStackSize(), stack.getMaxStackSize()))
+		if(os.sameItem(stack) && os.getCount() + stack.getCount() <= Math.min(os.getMaxStackSize(), stack.getMaxStackSize()))
 		{
 			os.grow(stack.getCount());
 			return true;

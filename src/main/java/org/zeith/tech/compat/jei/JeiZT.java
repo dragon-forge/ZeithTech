@@ -17,6 +17,7 @@ import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.compat.jei.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
+import org.zeith.tech.modules.processing.blocks.fuelgen.basic.GuiFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -83,6 +84,7 @@ public class JeiZT
 	{
 		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
+		registration.addRecipeClickArea(GuiFuelGeneratorB.class, 81, 29, 13, 13, RecipeTypes.FUELING);
 	}
 	
 	private static Stream<RepairData> getRepairData()

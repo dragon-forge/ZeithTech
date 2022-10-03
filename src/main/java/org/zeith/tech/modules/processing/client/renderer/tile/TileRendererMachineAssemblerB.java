@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
+import org.zeith.tech.modules.shared.client.renderer.RotatedRenderHelper;
 
 public class TileRendererMachineAssemblerB
 		implements IBESR<TileMachineAssemblerB>
@@ -18,28 +19,7 @@ public class TileRendererMachineAssemblerB
 		var mc = Minecraft.getInstance();
 		var ir = mc.getItemRenderer();
 		
-		switch(entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))
-		{
-			case NORTH ->
-			{
-				matrix.translate(0.5, 0.90625, 0.44);
-			}
-			case SOUTH ->
-			{
-				matrix.translate(0.5, 0.90625, 0.56);
-				matrix.mulPose(Vector3f.YP.rotationDegrees(180F));
-			}
-			case WEST ->
-			{
-				matrix.translate(0.44, 0.90625, 0.5);
-				matrix.mulPose(Vector3f.YP.rotationDegrees(90F));
-			}
-			case EAST ->
-			{
-				matrix.translate(0.56, 0.90625, 0.5);
-				matrix.mulPose(Vector3f.YP.rotationDegrees(270F));
-			}
-		}
+		RotatedRenderHelper.rotateHorizontalPoseStack(matrix, entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), 0.5F, 0.90625F, 0.44F);
 		
 		matrix.mulPose(Vector3f.XP.rotationDegrees(90F));
 		
