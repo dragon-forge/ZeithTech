@@ -57,6 +57,12 @@ public class BlockHeveaTreeTap
 	}
 	
 	@Override
+	public String getDescriptionId()
+	{
+		return ItemsZT.TREE_TAP.getDescriptionId();
+	}
+	
+	@Override
 	public RenderShape getRenderShape(BlockState state)
 	{
 		return RenderShape.MODEL;
@@ -210,7 +216,7 @@ public class BlockHeveaTreeTap
 				
 				if(lvl.isUnobstructed(lvl.getBlockState(placePos), placePos, CollisionContext.of(e.getEntity())))
 				{
-					var newState = BlocksZT_World.HEVEA_TREE_TAP.defaultBlockState()
+					var newState = BlocksZT_World.TREE_TAP.defaultBlockState()
 							.setValue(FACING, e.getFace())
 							.setValue(TAP, false)
 							.setValue(BOWL, false)

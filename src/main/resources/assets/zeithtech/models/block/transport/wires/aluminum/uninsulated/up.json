@@ -1,0 +1,6 @@
+{
+  "parent": "zeithtech:block/transport/base/uninsulated/up",
+  "textures": {
+    "wire": "zeithtech:transport/block/wires/aluminum/uninsulated"
+  }
+}

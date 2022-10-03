@@ -1,0 +1,11 @@
+{
+  "parent": "zeithtech:block/processing/fuel_generator/basic/base",
+  "textures": {
+    "0": "zeithtech:processing/block/base_vertical",
+    "1": "zeithtech:processing/block/base_vertical",
+    "2": "zeithtech:processing/block/fuel_generator/basic/back",
+    "3": "zeithtech:processing/block/fuel_generator/basic/front_on",
+    "4": "zeithtech:processing/block/base_horizontal",
+    "particle": "zeithtech:processing/block/fuel_generator/basic/front_on"
+  }
+}

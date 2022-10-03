@@ -1,0 +1,9 @@
+{
+  "parent": "zeithtech:block/processing/electric_furnace/basic/base",
+  "textures": {
+    "0": "zeithtech:processing/block/electric_furnace/basic/on",
+    "1": "zeithtech:processing/block/base_vertical",
+    "2": "zeithtech:processing/block/base_horizontal",
+    "particle": "zeithtech:processing/block/electric_furnace/basic/on"
+  }
+}

@@ -2,30 +2,35 @@ modLoader = "javafml"
 loaderVersion = "[43,)"
 issueTrackerURL = "https://github.com/dragon-forge/ZeithTech/issues"
 license = "All rights reserved"
+
 [[mods]]
 modId = "zeithtech"
 version = "${file.jarVersion}"
 displayName = "ZeithTech"
-updateJSONURL = "http://dccg.herokuapp.com/api/fmluc/<CFID>"
-displayURL = "http://dccg.herokuapp.com/api/fmlhp/<CFID>"
-logoFile = "zeithtech.png" #optional
-credits = "None" #optional
-authors = "Zeitheron" #optional
+updateJSONURL = "http://dccg.herokuapp.com/api/fmluc/684539"
+displayURL = "https://tech.zeith.org/"
+logoFile = "zeithtech.png"
+credits = "Zeitheron, Yukensha, Borindeus"
+authors = "Zeitheron"
+
 description = '''
-Tech mod for modern Minecraft, developed by Zeitheron.
+Tech mod for modern Minecraft versions. Brings a lot of tiered technology into the game. Inspired by classic Industrial Craft 2, Buildcraft and a few other mods, while also bringing a lot of new and unique mechanics, blocks and complex machinery to automate your world.
 '''
+
 [[dependencies.zeithtech]]
 modId = "forge"
 mandatory = true
 versionRange = "[43,)"
-ordering = "NONE" # NONE/BEFORE/AFTER
+ordering = "NONE"
 side = "BOTH"
+
 [[dependencies.zeithtech]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.19.2,1.20)"
 ordering = "NONE"
 side = "BOTH"
+
 [[dependencies.zeithtech]]
 modId = "hammerlib"
 mandatory = true

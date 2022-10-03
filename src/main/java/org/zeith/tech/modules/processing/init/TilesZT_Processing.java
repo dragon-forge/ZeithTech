@@ -5,6 +5,7 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.hammerlib.api.forge.BlockAPI;
+import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.TileElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.TileFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
 import org.zeith.tech.modules.processing.client.renderer.tile.TileRendererMachineAssemblerB;
@@ -12,10 +13,13 @@ import org.zeith.tech.modules.processing.client.renderer.tile.TileRendererMachin
 @SimplyRegister
 public interface TilesZT_Processing
 {
-	@RegistryName("fuel_generator/basic")
-	BlockEntityType<TileFuelGeneratorB> FUEL_GENERATOR_BASIC = BlockAPI.createBlockEntityType(TileFuelGeneratorB::new, BlocksZT_Processing.FUEL_GENERATOR_BASIC);
-	
-	@RegistryName("machine_assembler/basic")
+	@RegistryName("processing/machine_assembler/basic")
 	@TileRenderer(TileRendererMachineAssemblerB.class)
-	BlockEntityType<TileMachineAssemblerB> MACHINE_ASSEMBLER_BASIC = BlockAPI.createBlockEntityType(TileMachineAssemblerB::new, BlocksZT_Processing.MACHINE_ASSEMBLER_BASIC);
+	BlockEntityType<TileMachineAssemblerB> BASIC_MACHINE_ASSEMBLER = BlockAPI.createBlockEntityType(TileMachineAssemblerB::new, BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER);
+	
+	@RegistryName("processing/fuel_generator/basic")
+	BlockEntityType<TileFuelGeneratorB> BASIC_FUEL_GENERATOR = BlockAPI.createBlockEntityType(TileFuelGeneratorB::new, BlocksZT_Processing.BASIC_FUEL_GENERATOR);
+	
+	@RegistryName("processing/electric_furnace/basic")
+	BlockEntityType<TileElectricFurnaceB> BASIC_ELECTRIC_FURNACE = BlockAPI.createBlockEntityType(TileElectricFurnaceB::new, BlocksZT_Processing.BASIC_ELECTRIC_FURNACE);
 }

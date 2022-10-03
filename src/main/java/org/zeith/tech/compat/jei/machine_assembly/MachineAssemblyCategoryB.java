@@ -31,9 +31,9 @@ public class MachineAssemblyCategoryB
 	
 	public MachineAssemblyCategoryB(IGuiHelper guiHelper)
 	{
-		this.icon = guiHelper.createDrawableItemStack(new ItemStack(BlocksZT_Processing.MACHINE_ASSEMBLER_BASIC));
+		this.icon = guiHelper.createDrawableItemStack(new ItemStack(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER));
 		this.background = guiHelper.createDrawable(MACHINE_ASSEMBLER, 0, 0, 152, 90);
-		this.localizedName = BlocksZT_Processing.MACHINE_ASSEMBLER_BASIC.getName();
+		this.localizedName = BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER.getName();
 		
 		this.arrow = guiHelper.drawableBuilder(Constants.RECIPE_GUI_VANILLA, 82, 128, 24, 17)
 				.buildAnimated(100, IDrawableAnimated.StartDirection.LEFT, false);

@@ -35,7 +35,7 @@ public class ZeithTech
 		@Override
 		public ItemStack makeIcon()
 		{
-			return new ItemStack(BlocksZT_Processing.FUEL_GENERATOR_BASIC);
+			return new ItemStack(BlocksZT_Processing.BASIC_FUEL_GENERATOR);
 		}
 	};
 	

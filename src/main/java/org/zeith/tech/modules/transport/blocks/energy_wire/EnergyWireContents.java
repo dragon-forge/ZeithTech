@@ -18,19 +18,25 @@ public class EnergyWireContents
 		energy[to.ordinal()] += fe;
 	}
 	
-	public void emit(TileEnergyWire wire)
+	public int emit(TileEnergyWire wire)
 	{
 		max = wire.getWireProps().tier().maxFE();
+		
+		int emit = 0;
 		
 		for(Direction dir : BlockEnergyWire.DIRECTIONS)
 		{
 			var fe = energy[dir.ordinal()];
 			if(fe >= 1.0F)
 			{
-				fe -= wire.emitToDirect(dir, (int) fe, false);
+				int sent = wire.emitToDirect(dir, (int) fe, false);
+				fe -= sent;
+				emit += sent;
 				energy[dir.ordinal()] = fe;
 			}
 		}
+		
+		return emit;
 	}
 	
 	@Override

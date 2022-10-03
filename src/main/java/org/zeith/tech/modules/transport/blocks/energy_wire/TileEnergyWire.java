@@ -18,7 +18,10 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.charging.fe.FECharge;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.SideConfig;
+import org.zeith.tech.api.tile.energy.EnergyMeasurableWrapper;
+import org.zeith.tech.api.tile.energy.IEnergyMeasurable;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.modules.transport.blocks.base.traversable.EndpointData;
 import org.zeith.tech.modules.transport.blocks.base.traversable.ITraversable;
@@ -33,13 +36,15 @@ public class TileEnergyWire
 		implements ITraversable<FECharge>
 {
 	@NBTSerializable("EnergyPassed")
-	public int energyPassed;
+	public float energyPassed;
 	
 	@NBTSerializable("Contents")
 	public final EnergyWireContents contents = new EnergyWireContents();
 	
 	@NBTSerializable("Sides")
 	public final SideConfig6 sideConfigs = new SideConfig6(SideConfig.NONE);
+	
+	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(this::getPosition);
 	
 	public TileEnergyWire(BlockPos pos, BlockState state)
 	{
@@ -67,37 +72,44 @@ public class TileEnergyWire
 	@Override
 	public void update()
 	{
-		contents.emit(this);
+		measurables.update();
 		
-		if(energyPassed > 0 && level != null && isOnServer())
+		if(energyPassed > 0)
 		{
-			var props = getWireProps();
+			measurables.onEnergyTransfer(energyPassed);
 			
-			float maxFE = props.tier().maxFE();
-			float loadFactor = energyPassed / maxFE;
-			
-			if(loadFactor > 1F && props.burns())
+			if(level != null && isOnServer())
 			{
-				// burn down the cable
-				level.levelEvent(1502, worldPosition, 0);
-				level.removeBlock(worldPosition, false);
-			}
-			
-			if(!props.insulated())
-			{
-				float damage = Mth.sqrt((float) (loadFactor * Math.cbrt(maxFE)));
-				float radius = Math.max(0.25F, Math.min(5, energyPassed / maxFE));
+				var props = getWireProps();
 				
-				var peaceful = level.getDifficulty() == Difficulty.PEACEFUL;
-				var dmgSrc = peaceful ? DamageSourcesZT_Transport.ELECTROCUTION_PEACEFUL : DamageSourcesZT_Transport.ELECTROCUTION;
-				if(peaceful) damage /= 2;
+				float maxFE = props.tier().maxFE();
+				float loadFactor = energyPassed / maxFE;
 				
-				for(LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, new AABB(worldPosition).inflate(radius)))
-					entity.hurt(dmgSrc, damage);
+				if(loadFactor > 1F && props.burns())
+				{
+					// burn down the cable
+					level.levelEvent(1502, worldPosition, 0);
+					level.removeBlock(worldPosition, false);
+				}
+				
+				if(!props.insulated())
+				{
+					float damage = Mth.sqrt((float) (loadFactor * Math.cbrt(maxFE)));
+					float radius = Math.max(0.25F, Math.min(5, energyPassed / maxFE));
+					
+					var peaceful = level.getDifficulty() == Difficulty.PEACEFUL;
+					var dmgSrc = peaceful ? DamageSourcesZT_Transport.ELECTROCUTION_PEACEFUL : DamageSourcesZT_Transport.ELECTROCUTION;
+					if(peaceful) damage /= 2;
+					
+					for(LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, new AABB(worldPosition).inflate(radius)))
+						entity.hurt(dmgSrc, damage);
+				}
 			}
-			
-			energyPassed = 0;
 		}
+		
+		// Count in the energy that has been extracted from the wire into the machine, but DO NOT count the energy that has been passed through the wire itself.
+		measurables.onEnergyTransfer(Math.max(0, contents.emit(this) - energyPassed));
+		energyPassed = 0;
 	}
 	
 	public boolean doesConnectTo(Direction to)
@@ -111,11 +123,15 @@ public class TileEnergyWire
 					.map(dir -> LazyOptional.of(() -> new WireEnergyHandler(dir, this)))
 					.toArray(LazyOptional[]::new);
 	
+	private final LazyOptional<IEnergyMeasurable> energyMeasurable = LazyOptional.of(() -> measurables);
+	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
 		if(side != null && cap == ForgeCapabilities.ENERGY)
 			return sidedEnergyHandlers[side.ordinal()].cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
+			return energyMeasurable.cast();
 		return super.getCapability(cap, side);
 	}
 	
@@ -145,7 +161,9 @@ public class TileEnergyWire
 	
 	public int emitToDirect(Direction to, int fe, boolean simulate)
 	{
-		return relativeEnergyHandler(to).map(storage -> storage.receiveEnergy(fe, simulate)).orElse(0);
+		return relativeEnergyHandler(to)
+				.map(storage -> storage.receiveEnergy(fe, simulate))
+				.orElse(0);
 	}
 	
 	@Override
@@ -159,7 +177,11 @@ public class TileEnergyWire
 	public List<EndpointData> getEndpoints(FECharge contents)
 	{
 		return Stream.of(BlockEnergyWire.DIRECTIONS)
-				.filter(dir -> emitToDirect(dir, contents.FE, true) > 0)
+				.filter(dir ->
+				{
+					int canEmit = emitToDirect(dir, contents.FE, true);
+					return canEmit > 0 && canEmit > this.contents.energy[dir.ordinal()];
+				})
 				.map(dir -> new EndpointData(dir, getPriority(dir), true))
 				.toList();
 	}

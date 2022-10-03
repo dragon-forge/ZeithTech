@@ -87,8 +87,8 @@ public interface BlocksZT_World
 	@RegistryName("hevea_trapped_chest")
 	BlockHeveaChest HEVEA_TRAPPED_CHEST = new BlockHeveaTrappedChest(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD), () -> BlockEntityType.TRAPPED_CHEST).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.FEATURES_CANNOT_REPLACE, BlockTags.GUARDED_BY_PIGLINS, BlockTags.LAVA_POOL_STONE_CANNOT_REPLACE, Tags.Blocks.CHESTS, Tags.Blocks.CHESTS_TRAPPED)).addItemTags(List.of(Tags.Items.CHESTS, Tags.Items.CHESTS_TRAPPED));
 	
-	@RegistryName("hevea_tree_tap")
-	BlockHeveaTreeTap HEVEA_TREE_TAP = new BlockHeveaTreeTap(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD));
+	@RegistryName("tree_tap")
+	BlockHeveaTreeTap TREE_TAP = new BlockHeveaTreeTap(BlockBehaviour.Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD));
 	
 	// Normal ores
 	

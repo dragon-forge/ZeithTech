@@ -1,0 +1,94 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "core_central": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/core_central",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "core_x": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/core_x",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "core_y": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/core_y",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "core_z": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/core_z",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/down",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/east",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/north",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/south",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/up",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/item_pipes/copper/west",
+        "uvlock": true
+      }
+    }
+  ]
+}

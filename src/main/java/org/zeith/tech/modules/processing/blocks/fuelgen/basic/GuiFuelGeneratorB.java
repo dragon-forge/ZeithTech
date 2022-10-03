@@ -15,12 +15,20 @@ public class GuiFuelGeneratorB
 	public GuiFuelGeneratorB(ContainerFuelGeneratorB container, Inventory plyerInv, Component name)
 	{
 		super(container, plyerInv, name);
-		
 		setSize(176, 166);
-
-//		this.titleLabelX += 15;
-//		this.inventoryLabelX = 8;
-//		this.inventoryLabelY = this.imageHeight - 92;
+		this.titleLabelX += 16;
+		this.inventoryLabelX += 16;
+	}
+	
+	@Override
+	protected boolean renderForeground(PoseStack pose, int mouseX, int mouseY)
+	{
+		pose.pushPose();
+		pose.translate(-leftPos, -topPos, 0);
+		WidgetAPI.drawPowerBarOverlay(this, pose, 7 + leftPos, 8 + topPos, menu.tile.energyStored.getInt(), mouseX, mouseY);
+		pose.popPose();
+		
+		return false;
 	}
 	
 	@Override
@@ -31,7 +39,7 @@ public class GuiFuelGeneratorB
 		
 		var tile = menu.tile;
 		
-		WidgetAPI.drawPowerBar(pose, leftPos + 135, topPos + 8, tile.energy.getFillRate());
+		WidgetAPI.drawPowerBar(pose, leftPos + 7, topPos + 8, tile.energy.getFillRate());
 		
 		float burnTime = tile.fuelTicksLeft.getFloat();
 		int totalBurnTime = tile.fuelTicksTotal.getInt();

@@ -2,6 +2,7 @@ package org.zeith.tech.modules.processing.init;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
@@ -31,7 +32,7 @@ public interface RecipesZT_Processing
 				.map('i', Tags.Items.STORAGE_BLOCKS_IRON)
 				.map('c', Blocks.CRAFTING_TABLE)
 				.map('s', Blocks.SMOOTH_STONE)
-				.result(BlocksZT_Processing.MACHINE_ASSEMBLER_BASIC)
+				.result(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER)
 				.register();
 	}
 	
@@ -41,15 +42,25 @@ public interface RecipesZT_Processing
 		{
 			var f = evt.<RecipeMachineAssembler.Builder> builderFactory();
 			
-			f.get()
-					.minTier(TechTier.BASIC)
+			f.get().minTier(TechTier.BASIC)
 					.shape("  g  ", " ici ", "gibig", " scs ", "  g  ")
 					.map('i', Tags.Items.INGOTS_IRON)
 					.map('c', ItemsZT.COPPER_COIL)
 					.map('b', Blocks.BLAST_FURNACE)
 					.map('s', Tags.Items.STONE)
 					.map('g', Tags.Items.INGOTS_COPPER)
-					.result(BlocksZT_Processing.FUEL_GENERATOR_BASIC)
+					.result(BlocksZT_Processing.BASIC_FUEL_GENERATOR)
+					.register();
+			
+			f.get().minTier(TechTier.BASIC)
+					.shape("  c  ", " sps ", "bgfgb", " sps ", "  c  ")
+					.map('c', Tags.Items.INGOTS_COPPER)
+					.map('s', Tags.Items.STONE)
+					.map('p', ItemsZT.COPPER_COIL)
+					.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
+					.map('g', Tags.Items.GLASS)
+					.map('f', Items.FURNACE)
+					.result(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE)
 					.register();
 		}
 	}

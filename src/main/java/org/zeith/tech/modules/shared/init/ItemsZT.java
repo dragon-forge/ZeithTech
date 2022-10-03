@@ -5,13 +5,14 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.BaseZT;
+import org.zeith.tech.modules.transport.init.ItemsZT_Transport;
 import org.zeith.tech.modules.world.init.ItemsZT_World;
 
 import static org.zeith.tech.modules.shared.BaseZT.newItem;
 
 @SimplyRegister
 public interface ItemsZT
-		extends ItemsZT_World, ItemsZT_Processing
+		extends ItemsZT_World, ItemsZT_Processing, ItemsZT_Transport
 {
 	@RegistryName("copper_coil")
 	Item COPPER_COIL = newItem(TagsZT.Items.COILS_COPPER);
@@ -27,4 +28,7 @@ public interface ItemsZT
 	
 	@RegistryName("tree_tap")
 	Item TREE_TAP = BaseZT.newItem();
+	
+	@RegistryName("plastic")
+	Item PLASTIC = BaseZT.newItem();
 }

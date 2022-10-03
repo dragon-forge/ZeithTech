@@ -16,6 +16,7 @@ import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.compat.jei.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.machine_assembly.MachineAssemblyCategoryB;
+import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -71,15 +72,17 @@ public class JeiZT
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
 	{
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FUEL_GENERATOR_BASIC), RecipeTypes.FUELING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_FUEL_GENERATOR), RecipeTypes.FUELING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE), RecipeTypes.SMELTING);
 		registration.addRecipeCatalyst(new ItemStack(ItemsZT_Processing.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.MACHINE_ASSEMBLER_BASIC), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 	}
 	
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration)
 	{
 		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
 	}
 	
 	private static Stream<RepairData> getRepairData()

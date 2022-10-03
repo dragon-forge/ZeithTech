@@ -1,6 +1,0 @@
-{
-  "parent": "zeithtech:item/wires/uninsulated",
-  "textures": {
-    "wire": "zeithtech:block/wires/aluminum_uninsulated"
-  }
-}

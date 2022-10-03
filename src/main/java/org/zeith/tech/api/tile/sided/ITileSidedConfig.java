@@ -15,6 +15,12 @@ public interface ITileSidedConfig
 		return cfg != null && cfg.getAbsolute(direction) != SideConfig.DISABLE;
 	}
 	
+	default SideConfig getAccess(SidedConfigTyped type, Direction direction)
+	{
+		var cfg = getSideConfigs(type);
+		return cfg != null ? cfg.getAbsolute(direction) : SideConfig.NONE;
+	}
+	
 	interface ISpecificSidedConfig
 	{
 		ISpecificSidedConfig setDefaults(SideConfig config);

@@ -1,6 +1,11 @@
 package org.zeith.tech.modules.transport.proxy;
 
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.zeith.hammerlib.api.inv.IScreenContainer;
+import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.tech.modules.transport.container.ContainerMultimeter;
 
 public class ClientTransportProxyZT
 		extends CommonTransportProxyZT
@@ -8,5 +13,14 @@ public class ClientTransportProxyZT
 	@Override
 	public void subEvents(IEventBus modBus)
 	{
+		modBus.addListener(this::clientSetup);
+	}
+	
+	private void clientSetup(FMLClientSetupEvent e)
+	{
+		MenuScreens.register(ContainerMultimeter.MULTIMETER_MT, (MenuScreens.ScreenConstructor) (ctr, inv, txt) -> Cast
+				.optionally(ctr, IScreenContainer.class)
+				.map(c -> c.openScreen(inv, txt))
+				.orElse(null));
 	}
 }

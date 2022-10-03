@@ -11,5 +11,5 @@ import java.util.Set;
 public interface TilesZT_World
 {
 	@RegistryName("hevea_tree_tap")
-	BlockEntityType<TileHeveaTreeTap> HEVEA_TREE_TAP = new BlockEntityType<>(TileHeveaTreeTap::new, Set.of(BlocksZT_World.HEVEA_TREE_TAP), null);
+	BlockEntityType<TileHeveaTreeTap> HEVEA_TREE_TAP = new BlockEntityType<>(TileHeveaTreeTap::new, Set.of(BlocksZT_World.TREE_TAP), null);
 }

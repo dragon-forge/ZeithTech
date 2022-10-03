@@ -13,9 +13,9 @@ import java.util.Optional;
 @SimplyRegister
 public interface ItemsZT_Processing
 {
-	@RegistryName("iron_hammer")
+	@RegistryName("processing/iron_hammer")
 	ItemHammer IRON_HAMMER = new ItemHammer(BaseZT.itemProps(), Optional.of(Tags.Items.INGOTS_IRON));
 	
-	@RegistryName("wire_cutter")
+	@RegistryName("processing/wire_cutter")
 	ItemWireCutter WIRE_CUTTER = new ItemWireCutter(BaseZT.itemProps(), Tiers.IRON);
 }

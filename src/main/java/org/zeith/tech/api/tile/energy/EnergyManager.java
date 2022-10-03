@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.zeith.hammerlib.util.charging.IChargeHandler;
 import org.zeith.hammerlib.util.charging.ItemChargeHelper;
@@ -18,8 +19,14 @@ import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 public class EnergyManager
 		implements INBTSerializable<Tag>, IEnergyStorage
 {
+	protected BlockPos lastPosition;
+	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(() -> lastPosition);
+	
+	public final LazyOptional<IEnergyMeasurable> measurableCap = LazyOptional.of(() -> measurables);
+	
 	public final EnergyStorage2 fe;
 	public final int maxAccept, maxSend;
+	
 	
 	public EnergyManager(int capacity, int maxAccept, int maxSend)
 	{
@@ -39,10 +46,15 @@ public class EnergyManager
 		int sent = fe.extractEnergy(maxTransfer, true);
 		sent = sent - ItemChargeHelper.charge(stack, new FECharge(sent), IChargeHandler.ChargeAction.EXECUTE).FE;
 		fe.extractEnergy(sent, false);
+		measurables.onEnergyTransfer(sent);
 	}
 	
 	public void update(Level level, BlockPos pos, ITileSidedConfig configs)
 	{
+		lastPosition = pos;
+		
+		measurables.update();
+		
 		// Split energy based on side configuration.
 		if(level.isClientSide || (maxSend <= 0 && maxAccept <= 0))
 			return;
@@ -63,7 +75,7 @@ public class EnergyManager
 								.ifPresent(ies ->
 								{
 									var max = Math.min(maxAccept, fe.getEnergyTillFull());
-									fe.receiveEnergy(ies.extractEnergy(max, false), false);
+									measurables.onEnergyTransfer(fe.receiveEnergy(ies.extractEnergy(max, false), false));
 								});
 				}
 				case PUSH ->
@@ -75,7 +87,7 @@ public class EnergyManager
 								.ifPresent(ies ->
 								{
 									var max = Math.min(maxSend, fe.getEnergyStored());
-									fe.extractEnergy(ies.receiveEnergy(max, false), false);
+									measurables.onEnergyTransfer(fe.extractEnergy(ies.receiveEnergy(max, false), false));
 								});
 				}
 			}
@@ -85,30 +97,40 @@ public class EnergyManager
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate)
 	{
-		return maxAccept > 0 ? this.fe.receiveEnergy(Math.min(maxAccept, maxReceive), simulate) : 0;
+		var in = maxAccept > 0 ? this.fe.receiveEnergy(Math.min(maxAccept, maxReceive), simulate) : 0;
+		if(!simulate) measurables.onEnergyTransfer(in);
+		return in;
 	}
 	
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate)
 	{
-		return maxSend > 0 ? this.fe.extractEnergy(Math.min(maxSend, maxExtract), simulate) : 0;
+		var out = maxSend > 0 ? this.fe.extractEnergy(Math.min(maxSend, maxExtract), simulate) : 0;
+		if(!simulate) measurables.onEnergyTransfer(out);
+		return out;
 	}
 	
-	public boolean storeEnergy(int store)
+	public boolean generateEnergy(int gen)
 	{
-		var canSave = this.fe.receiveEnergy(store, true);
-		return canSave == store && this.fe.receiveEnergy(store, false) == canSave;
+		var canSave = this.fe.receiveEnergy(gen, true);
+		var did = canSave == gen && this.fe.receiveEnergy(gen, false) == canSave;
+		if(did) measurables.onEnergyGenerated(gen);
+		return did;
 	}
 	
-	public boolean storeNonZeroEnergy(int store)
+	public boolean generateAnyEnergy(int gen)
 	{
-		return this.fe.receiveEnergy(store, false) > 0;
+		var rec = this.fe.receiveEnergy(gen, false);
+		measurables.onEnergyGenerated(rec);
+		return rec > 0;
 	}
 	
-	public boolean takeEnergy(int needed)
+	public boolean consumeEnergy(int req)
 	{
-		var canGet = this.fe.extractEnergy(needed, true);
-		return canGet == needed && this.fe.extractEnergy(needed, false) == canGet;
+		var canGet = this.fe.extractEnergy(req, true);
+		var did = canGet == req && this.fe.extractEnergy(req, false) == canGet;
+		if(did) measurables.onEnergyConsumed(req);
+		return did;
 	}
 	
 	@Override

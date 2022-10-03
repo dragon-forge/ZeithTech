@@ -68,7 +68,7 @@ public class TileFuelGeneratorB
 	
 	public TileFuelGeneratorB(BlockPos pos, BlockState state)
 	{
-		super(TilesZT_Processing.FUEL_GENERATOR_BASIC, pos, state);
+		super(TilesZT_Processing.BASIC_FUEL_GENERATOR, pos, state);
 		
 		fuelInventory.isStackValid = (slot, stack) -> ForgeHooks.getBurnTime(stack, null) > 0;
 	}
@@ -92,7 +92,7 @@ public class TileFuelGeneratorB
 			if(_fuelTicksLeft > 0)
 			{
 				float take = Math.min(1, _fuelTicksLeft);
-				if(energy.storeNonZeroEnergy(Math.round(currentGenPerTick * take)))
+				if(energy.generateAnyEnergy(Math.round(currentGenPerTick * take)))
 					_fuelTicksLeft -= take;
 				else
 					_fuelTicksLeft -= 0.05F;
@@ -163,6 +163,8 @@ public class TileFuelGeneratorB
 			return energyCap.cast();
 		if(cap == ZeithTechCapabilities.SIDED_CONFIG)
 			return sidedConfigCap.cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
+			return energy.measurableCap.cast();
 		return super.getCapability(cap, side);
 	}
 }

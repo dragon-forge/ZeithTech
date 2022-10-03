@@ -62,7 +62,7 @@ public class TileMachineAssemblerB
 	
 	public TileMachineAssemblerB(BlockPos pos, BlockState state)
 	{
-		super(TilesZT_Processing.MACHINE_ASSEMBLER_BASIC, pos, state);
+		super(TilesZT_Processing.BASIC_MACHINE_ASSEMBLER, pos, state);
 		this.dispatcher.registerProperty("ar_id", activeRecipeId);
 		
 		resultInventory.isStackValid = (slot, stack) -> false;
