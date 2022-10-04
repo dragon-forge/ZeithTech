@@ -39,9 +39,11 @@ import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.modules.processing.items.ItemMiningHead;
 import org.zeith.tech.modules.shared.init.TagsZT;
+import org.zeith.tech.utils.InventoryHelper;
 import org.zeith.tech.utils.SidedInventory;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class TileMiningQuarryB
 		extends TileBaseMachine<TileMiningQuarryB>
@@ -266,34 +268,7 @@ public class TileMiningQuarryB
 	
 	public boolean storeAll(List<ItemStack> stacks, boolean simulate)
 	{
-		for(ItemStack sub : stacks)
-			if(!storeAll(sub, simulate))
-				return false;
-		return true;
-	}
-	
-	public boolean storeAll(ItemStack stack, boolean simulate)
-	{
-		for(int i = 3; i < inventory.getSlots() && !stack.isEmpty(); ++i)
-		{
-			var os = inventory.getItem(i);
-			
-			if(os.isEmpty())
-			{
-				if(!simulate) inventory.setItem(i, stack);
-				return true;
-			}
-			
-			int mss;
-			if(os.sameItem(stack) && os.getCount() < (mss = Math.min(os.getMaxStackSize(), stack.getMaxStackSize())))
-			{
-				int canAccept = Math.min(mss - os.getCount(), stack.getCount());
-				stack.split(canAccept);
-				if(!simulate) os.grow(canAccept);
-			}
-		}
-		
-		return stack.isEmpty();
+		return InventoryHelper.storeAllStacks(inventory, IntStream.range(3, inventory.getSlots()), stacks, simulate);
 	}
 	
 	public MineResponse mineOnLevel()

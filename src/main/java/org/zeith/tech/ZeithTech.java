@@ -16,7 +16,9 @@ import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.modules.IZeithTechModules;
+import org.zeith.tech.api.recipes.IRecipeRegistries;
 import org.zeith.tech.compat.BaseCompat;
+import org.zeith.tech.compat.api.ModRecipeRegistries;
 import org.zeith.tech.modules.ZeithTechModulesImpl;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
@@ -31,6 +33,7 @@ public class ZeithTech
 		extends ZeithTechAPI
 {
 	private final ZeithTechModulesImpl MODULES;
+	private final ModRecipeRegistries REGISTRIES;
 	
 	public static final String MOD_ID = "zeithtech";
 	
@@ -93,6 +96,8 @@ public class ZeithTech
 		
 		this.MODULES = new ZeithTechModulesImpl();
 		this.MODULES.enable();
+		
+		this.REGISTRIES = new ModRecipeRegistries();
 	}
 	
 	private void setup(FMLCommonSetupEvent e)
@@ -104,6 +109,12 @@ public class ZeithTech
 	public IZeithTechModules getModules()
 	{
 		return MODULES;
+	}
+	
+	@Override
+	public IRecipeRegistries getRecipeRegistries()
+	{
+		return REGISTRIES;
 	}
 	
 	@Override

@@ -26,4 +26,9 @@ public enum TechTier
 	{
 		return ordinal() >= than.ordinal();
 	}
+	
+	public boolean isOrLower(TechTier than)
+	{
+		return ordinal() <= than.ordinal();
+	}
 }

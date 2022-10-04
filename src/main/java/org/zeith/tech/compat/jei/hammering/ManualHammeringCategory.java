@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.zeith.tech.ZeithTech;
-import org.zeith.tech.api.recipes.RecipeHammering;
+import org.zeith.tech.api.recipes.processing.RecipeHammering;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 

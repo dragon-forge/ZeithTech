@@ -1,4 +1,4 @@
-package org.zeith.tech.api.recipes;
+package org.zeith.tech.api.recipes.base;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

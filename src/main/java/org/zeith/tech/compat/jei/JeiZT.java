@@ -17,13 +17,14 @@ import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.RecipeHammering;
-import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.compat.BaseCompat;
+import org.zeith.tech.compat.jei.grinder.GrinderCategoryB;
 import org.zeith.tech.compat.jei.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.GuiFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -64,7 +65,8 @@ public class JeiZT
 		
 		registration.addRecipeCategories(
 				new ManualHammeringCategory(gui$),
-				new MachineAssemblyCategoryB(gui$)
+				new MachineAssemblyCategoryB(gui$),
+				new GrinderCategoryB(gui$)
 		);
 	}
 	
@@ -85,6 +87,13 @@ public class JeiZT
 				.toList()
 		);
 		
+		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, RecipeRegistriesZT_Processing.GRINDING
+				.getRecipes()
+				.stream()
+				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
+				.toList()
+		);
+		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
 		registration.addItemStackInfo(new ItemStack(ItemsZT.BOWL_OF_RESIN), Component.translatable("jei.info.zeithtech.bowl_of_resin"));
@@ -97,14 +106,16 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE), RecipeTypes.SMELTING);
 		registration.addRecipeCatalyst(new ItemStack(ItemsZT_Processing.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
 	}
 	
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration)
 	{
 		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
-		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
 		registration.addRecipeClickArea(GuiFuelGeneratorB.class, 81, 29, 13, 14, RecipeTypes.FUELING);
+		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
+		registration.addRecipeClickArea(GuiGrinderB.class, 72, 35, 22, 15, RecipeTypesZT.GRINDER_BASIC);
 	}
 	
 	private static Stream<RepairData> getRepairData()
@@ -179,39 +190,41 @@ public class JeiZT
 	public void acceptRecipe(RecipeMachineAssembler assembler)
 	{
 		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-		{
-			System.out.println("register assembly: " + assembler.id);
 			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, List.of(assembler));
-		}
 	}
 	
 	@Override
 	public void deregisterRecipe(RecipeMachineAssembler assembler)
 	{
 		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-		{
-			System.out.println("DE-register assembly: " + assembler.id);
 			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, List.of(assembler));
-		}
 	}
 	
 	@Override
 	public void acceptRecipe(RecipeHammering hammering)
 	{
 		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-		{
-			System.out.println("register hammering: " + hammering.id);
 			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.MANUAL_HAMMERING, List.of(hammering));
-		}
 	}
 	
 	@Override
 	public void deregisterRecipe(RecipeHammering hammering)
 	{
 		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-		{
-			System.out.println("DE-register hammering: " + hammering.id);
 			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.MANUAL_HAMMERING, List.of(hammering));
-		}
+	}
+	
+	@Override
+	public void acceptRecipe(RecipeGrinding grinding)
+	{
+		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
+			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.GRINDER_BASIC, List.of(grinding));
+	}
+	
+	@Override
+	public void deregisterRecipe(RecipeGrinding grinding)
+	{
+		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
+			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.GRINDER_BASIC, List.of(grinding));
 	}
 }

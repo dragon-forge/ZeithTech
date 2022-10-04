@@ -2,6 +2,7 @@ package org.zeith.tech.api;
 
 import net.minecraft.world.item.CreativeModeTab;
 import org.zeith.tech.api.modules.IZeithTechModules;
+import org.zeith.tech.api.recipes.IRecipeRegistries;
 
 public abstract class ZeithTechAPI
 {
@@ -26,6 +27,8 @@ public abstract class ZeithTechAPI
 	}
 	
 	public abstract IZeithTechModules getModules();
+	
+	public abstract IRecipeRegistries getRecipeRegistries();
 	
 	public abstract CreativeModeTab getCreativeTab();
 }

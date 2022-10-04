@@ -1,4 +1,4 @@
-package org.zeith.tech.api.recipes;
+package org.zeith.tech.api.recipes.processing;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +13,7 @@ import org.zeith.hammerlib.core.adapter.recipe.RecipeShape;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
+import org.zeith.tech.api.recipes.base.BuilderWithStackResult;
 
 import java.util.HashMap;
 import java.util.Map;

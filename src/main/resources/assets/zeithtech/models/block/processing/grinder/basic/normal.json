@@ -1,0 +1,6 @@
+{
+  "parent": "zeithtech:block/processing/grinder/basic/base",
+  "textures": {
+    "top": "zeithtech:processing/block/grinder/basic/off"
+  }
+}

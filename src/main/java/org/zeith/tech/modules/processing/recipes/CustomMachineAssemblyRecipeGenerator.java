@@ -19,7 +19,7 @@ import org.zeith.hammerlib.api.crafting.itf.IFileDecoder;
 import org.zeith.hammerlib.core.adapter.recipe.RecipeShape;
 import org.zeith.hammerlib.util.mcf.itf.INetworkable;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 
 import java.util.Map;
 import java.util.Optional;

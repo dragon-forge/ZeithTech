@@ -1,4 +1,4 @@
-package org.zeith.tech.api.recipes;
+package org.zeith.tech.api.recipes.processing;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.zeith.hammerlib.api.crafting.impl.*;
@@ -18,12 +19,15 @@ import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
+import org.zeith.tech.api.recipes.base.BuilderWithStackResult;
+import org.zeith.tech.api.recipes.base.IUnaryRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeHammering
 		extends BaseNameableRecipe
+		implements IUnaryRecipe
 {
 	final List<TagKey<Block>> blockHammeringTags;
 	final int hitCount;
@@ -89,14 +93,28 @@ public class RecipeHammering
 		return tier.isOrHigher(getTier());
 	}
 	
+	@Override
 	public Ingredient getInput()
 	{
 		return input;
 	}
 	
+	@Override
+	public ItemStack assemble(BlockEntity tile)
+	{
+		return output.copy();
+	}
+	
+	@Override
 	public TechTier getTier()
 	{
 		return tier;
+	}
+	
+	@Override
+	public int getCraftTime()
+	{
+		return hitCount * 50;
 	}
 	
 	public static class Builder

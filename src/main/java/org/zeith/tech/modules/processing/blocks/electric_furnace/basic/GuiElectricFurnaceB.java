@@ -34,7 +34,7 @@ public class GuiElectricFurnaceB
 	@Override
 	protected void renderBackground(PoseStack pose, float partialTime, int mouseX, int mouseY)
 	{
-		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/processing/gui/electric_furnace/basic.png");
+		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/processing/gui/unary_recipe_machine/basic.png");
 		RenderUtils.drawTexturedModalRect(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		
 		var tile = menu.tile;

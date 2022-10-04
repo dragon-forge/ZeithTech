@@ -105,7 +105,7 @@ public interface BlocksZT_World
 	SimpleBlockZT ZINC_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ZINC).addItemTag(TagsZT.Items.ORES_ZINC);
 	
 	@RegistryName("tungsten_ore")
-	SimpleBlockZT TUNGSTEN_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TUNGSTEN).addItemTag(TagsZT.Items.ORES_TUNGSTEN).dropsSelf();
+	SimpleBlockZT TUNGSTEN_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TUNGSTEN).addItemTag(TagsZT.Items.ORES_TUNGSTEN);
 	
 	@RegistryName("lithium_ore")
 	SimpleBlockZT LITHIUM_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_LITHIUM).addItemTag(TagsZT.Items.ORES_LITHIUM).dropsSelf();
@@ -128,7 +128,7 @@ public interface BlocksZT_World
 	SimpleBlockZT DEEPSLATE_ZINC_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ZINC).addItemTag(TagsZT.Items.ORES_ZINC);
 	
 	@RegistryName("deepslate_tungsten_ore")
-	SimpleBlockZT DEEPSLATE_TUNGSTEN_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TUNGSTEN).addItemTag(TagsZT.Items.ORES_TUNGSTEN).dropsSelf();
+	SimpleBlockZT DEEPSLATE_TUNGSTEN_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_TUNGSTEN).addItemTag(TagsZT.Items.ORES_TUNGSTEN);
 	
 	@RegistryName("deepslate_lithium_ore")
 	SimpleBlockZT DEEPSLATE_LITHIUM_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_LITHIUM).addItemTag(TagsZT.Items.ORES_LITHIUM).dropsSelf();

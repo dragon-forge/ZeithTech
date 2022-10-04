@@ -9,6 +9,7 @@ import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.tech.modules.processing.blocks.BlockMiningPipe;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.BlockElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.BlockFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQuarryB;
 
@@ -23,6 +24,9 @@ public interface BlocksZT_Processing
 	
 	@RegistryName("processing/electric_furnace/basic")
 	BlockElectricFurnaceB BASIC_ELECTRIC_FURNACE = new BlockElectricFurnaceB();
+	
+	@RegistryName("processing/grinder/basic")
+	BlockGrinderB BASIC_GRINDER = new BlockGrinderB();
 	
 	@RegistryName("processing/mining_quarry/basic")
 	BlockMiningQuarryB BASIC_QUARRY = new BlockMiningQuarryB();

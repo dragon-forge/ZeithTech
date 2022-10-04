@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
-import org.zeith.tech.api.recipes.RecipeHammering;
+import org.zeith.tech.api.recipes.processing.RecipeHammering;
 
 @Cancelable
 public class HammerHitEvent

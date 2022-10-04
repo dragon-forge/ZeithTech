@@ -7,6 +7,7 @@ import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.TileElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.TileFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.TileMiningQuarryB;
 import org.zeith.tech.modules.processing.client.renderer.tile.TileRendererElectricFurnaceB;
@@ -25,6 +26,9 @@ public interface TilesZT_Processing
 	@RegistryName("processing/electric_furnace/basic")
 	@TileRenderer(TileRendererElectricFurnaceB.class)
 	BlockEntityType<TileElectricFurnaceB> BASIC_ELECTRIC_FURNACE = BlockAPI.createBlockEntityType(TileElectricFurnaceB::new, BlocksZT_Processing.BASIC_ELECTRIC_FURNACE);
+	
+	@RegistryName("processing/grinder/basic")
+	BlockEntityType<TileGrinderB> BASIC_GRINDER = BlockAPI.createBlockEntityType(TileGrinderB::new, BlocksZT_Processing.BASIC_GRINDER);
 	
 	@RegistryName("processing/mining_quarry/basic")
 	BlockEntityType<TileMiningQuarryB> BASIC_QUARRY = BlockAPI.createBlockEntityType(TileMiningQuarryB::new, BlocksZT_Processing.BASIC_QUARRY);

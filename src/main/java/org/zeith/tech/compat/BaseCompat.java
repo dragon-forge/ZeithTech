@@ -1,7 +1,6 @@
 package org.zeith.tech.compat;
 
-import org.zeith.tech.api.recipes.RecipeHammering;
-import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.api.recipes.processing.*;
 
 public class BaseCompat
 {
@@ -10,6 +9,14 @@ public class BaseCompat
 	}
 	
 	public void deregisterRecipe(RecipeMachineAssembler assembler)
+	{
+	}
+	
+	public void acceptRecipe(RecipeGrinding grinding)
+	{
+	}
+	
+	public void deregisterRecipe(RecipeGrinding grinding)
 	{
 	}
 	

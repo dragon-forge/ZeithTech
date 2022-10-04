@@ -17,7 +17,7 @@ import org.zeith.hammerlib.api.crafting.building.GsonFileDecoder;
 import org.zeith.hammerlib.api.crafting.itf.IFileDecoder;
 import org.zeith.hammerlib.util.mcf.itf.INetworkable;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.RecipeHammering;
+import org.zeith.tech.api.recipes.processing.RecipeHammering;
 
 import java.util.*;
 

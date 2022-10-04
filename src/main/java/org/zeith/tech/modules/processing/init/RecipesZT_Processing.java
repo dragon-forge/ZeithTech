@@ -16,8 +16,9 @@ import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
-import org.zeith.tech.api.recipes.RecipeHammering;
-import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.api.events.recipe.GrindingRegistryEvent;
+import org.zeith.tech.api.recipes.base.RecipeUnaryBase;
+import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
 
@@ -76,6 +77,16 @@ public interface RecipesZT_Processing
 					.register();
 			
 			f.get().minTier(TechTier.BASIC)
+					.shape("  c  ", " ppp ", "cmdmc", " php ", "  c  ")
+					.map('c', Tags.Items.INGOTS_COPPER)
+					.map('p', TagsZT.Items.PLATES_IRON)
+					.map('m', ItemsZT.MOTOR)
+					.map('h', Tags.Items.CHESTS)
+					.map('d', ItemsZT_Processing.IRON_MINING_HEAD)
+					.result(BlocksZT_Processing.BASIC_GRINDER)
+					.register();
+			
+			f.get().minTier(TechTier.BASIC)
 					.shape("  h  ", " ccc ", "iCwCi", " mpm ", "  p  ")
 					.map('h', Items.HOPPER)
 					.map('c', TagsZT.Items.PLATES_COPPER)
@@ -128,6 +139,59 @@ public interface RecipesZT_Processing
 									.register();
 						else
 							ZeithTech.LOG.warn("Unable to find plate for metal " + metalType + ", but the plate tag (" + plateTag + ") is present...");
+					}
+				}
+			}
+		}
+	}
+	
+	static void addGrindingRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeGrinding> evt)
+	{
+		if(evt.is(RecipeRegistriesZT_Processing.GRINDING))
+		{
+			var f = evt.<RecipeUnaryBase.Builder<RecipeGrinding>> builderFactory();
+			
+			f.get().input(Items.STONE).result(Items.COBBLESTONE).register();
+			f.get().input(Items.DEEPSLATE).result(Items.COBBLED_DEEPSLATE).register();
+			f.get().input(Tags.Items.COBBLESTONE).result(Items.GRAVEL).register();
+			f.get().input(Tags.Items.GRAVEL).result(Items.SAND).craftTime(100).register();
+			f.get().input(Items.AMETHYST_BLOCK).result(new ItemStack(Items.AMETHYST_SHARD, 4)).craftTime(80).register();
+			
+			Set<String> excludeDusts = new HashSet<>();
+			Map<String, Integer> materialHitOverride = new HashMap<>();
+			Map<String, TechTier> minTierOverride = new HashMap<>();
+			
+			var hevt = new GrindingRegistryEvent(excludeDusts, materialHitOverride, minTierOverride);
+			MinecraftForge.EVENT_BUS.post(hevt);
+			
+			var itemTags = evt.getContext().getAllTags(ForgeRegistries.Keys.ITEMS);
+			
+			for(var tag : itemTags.keySet())
+			{
+				String grindType = null;
+				
+				if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("ingots/"))
+					grindType = tag.getPath().substring(7);
+				
+				if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("gems/"))
+					grindType = tag.getPath().substring(5);
+				
+				if(grindType != null)
+				{
+					var dustTag = new ResourceLocation("forge", "dusts/" + grindType);
+					
+					if(itemTags.containsKey(dustTag) && !excludeDusts.contains(grindType))
+					{
+						var dustItem = itemTags.get(dustTag).stream().findFirst().orElse(null);
+						if(dustItem != null)
+							f.get()
+									.input(ItemTags.create(tag))
+									.result(dustItem.get())
+									.craftTime(hevt.getTimeForMaterial(grindType))
+									.withTier(hevt.getMaterialTier(grindType))
+									.register();
+						else
+							ZeithTech.LOG.warn("Unable to find dust for material " + grindType + ", but the dust tag (" + dustTag + ") is present...");
 					}
 				}
 			}

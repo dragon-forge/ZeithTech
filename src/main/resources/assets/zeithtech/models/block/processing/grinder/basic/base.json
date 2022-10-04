@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "zeithtech:processing/block/base_vertical",
+    "north": "zeithtech:processing/block/grinder/basic/side",
+    "east": "zeithtech:processing/block/grinder/basic/side",
+    "south": "zeithtech:processing/block/grinder/basic/side",
+    "west": "zeithtech:processing/block/grinder/basic/side",
+    "up": "#top",
+    "particle": "#top"
+  }
+}

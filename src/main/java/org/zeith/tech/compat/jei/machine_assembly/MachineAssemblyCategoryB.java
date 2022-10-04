@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.zeith.tech.ZeithTech;
-import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
@@ -66,7 +66,7 @@ public class MachineAssemblyCategoryB
 	@Override
 	public void draw(RecipeMachineAssembler recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
 	{
-		arrow.draw(stack, 97, 37);
+		arrow.draw(stack, 96, 37);
 	}
 	
 	final Rectangle infoRect = new Rectangle(97, 37, 22, 15);

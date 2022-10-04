@@ -18,7 +18,7 @@ import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.net.properties.PropertyItemStack;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 import org.zeith.tech.api.tile.IHammerable;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
@@ -88,7 +88,7 @@ public class TileMachineAssemblerB
 			if(atTickRate(5))
 				playerWithOpenMenu.removeIf(p -> !(p.containerMenu instanceof ContainerMachineAssemblerB a && a.tile == this));
 			
-			if(r == null && atTickRate(2) && !playerWithOpenMenu.isEmpty())
+			if(r == null && atTickRate(5))
 			{
 				var recipe = RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY
 						.getRecipes()
@@ -99,6 +99,7 @@ public class TileMachineAssemblerB
 				
 				if(recipe != null)
 				{
+					_activeRecipeId = recipe.id;
 					craftResult.set(recipe.getRecipeOutput(this));
 					setEnabledState(true);
 				} else
@@ -157,7 +158,16 @@ public class TileMachineAssemblerB
 	
 	public RecipeMachineAssembler getActiveRecipe()
 	{
-		return RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY.getRecipe(_activeRecipeId);
+		var rec = RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY.getRecipe(_activeRecipeId);
+		if(rec != null && !isValidRecipe(rec))
+		{
+			_activeRecipeId = null;
+			craftResult.set(ItemStack.EMPTY);
+			craftResult.markChanged(true);
+			craftingProgress.setInt(0);
+			return null;
+		}
+		return rec;
 	}
 	
 	private boolean isValidRecipe(RecipeMachineAssembler recipe)
