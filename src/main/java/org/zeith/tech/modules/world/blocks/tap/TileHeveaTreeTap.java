@@ -36,7 +36,7 @@ public class TileHeveaTreeTap
 	public void update()
 	{
 		var state = level.getBlockState(worldPosition);
-		if(atTickRate(100))
+		if(atTickRate(100) && getType().isValid(state))
 		{
 			var treePos = worldPosition.relative(state.getValue(BlockHeveaTreeTap.FACING).getOpposite());
 			

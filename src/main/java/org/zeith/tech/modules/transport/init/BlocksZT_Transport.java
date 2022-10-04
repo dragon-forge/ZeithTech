@@ -19,20 +19,20 @@ public interface BlocksZT_Transport
 	BlockItemPipe COPPER_ITEM_PIPE = (BlockItemPipe) new BlockItemPipe(new ItemPipeProperties()).addBlockTags(List.of(BlockTags.MINEABLE_WITH_PICKAXE));
 	
 	@RegistryName("transport/wires/copper/uninsulated")
-	BlockEnergyWire UNINSULATED_COPPER_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.LOW_VOLTAGE).setEnergyLoss(1F).setInsulated(false).build()).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE)).dropsSelf();
+	BlockEnergyWire UNINSULATED_COPPER_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.LOW_VOLTAGE).setEnergyLoss(1F).setInsulated(false).build()).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE));
 	
 	@RegistryName("transport/wires/copper/insulated")
-	BlockEnergyWire INSULATED_COPPER_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.LOW_VOLTAGE).setEnergyLoss(0.25F).setInsulated(true).visitBlockProps(p -> p.sound(SoundType.WOOL)).build()).dropsSelf();
+	BlockEnergyWire INSULATED_COPPER_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.LOW_VOLTAGE).setEnergyLoss(0.25F).setInsulated(true).visitBlockProps(p -> p.sound(SoundType.WOOL)).build());
 	
 	@RegistryName("transport/wires/aluminum/uninsulated")
-	BlockEnergyWire UNINSULATED_ALUMINUM_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.SEMI_MID_VOLTAGE).setEnergyLoss(1.6F).setInsulated(false).build()).dropsSelf();
+	BlockEnergyWire UNINSULATED_ALUMINUM_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.SEMI_MID_VOLTAGE).setEnergyLoss(1.6F).setInsulated(false).build());
 	
 	@RegistryName("transport/wires/aluminum/insulated")
-	BlockEnergyWire INSULATED_ALUMINUM_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.SEMI_MID_VOLTAGE).setEnergyLoss(0.45F).setInsulated(true).visitBlockProps(p -> p.sound(SoundType.WOOL)).build()).dropsSelf();
+	BlockEnergyWire INSULATED_ALUMINUM_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.SEMI_MID_VOLTAGE).setEnergyLoss(0.45F).setInsulated(true).visitBlockProps(p -> p.sound(SoundType.WOOL)).build());
 	
 	@RegistryName("transport/wires/gold/uninsulated")
-	BlockEnergyWire UNINSULATED_GOLD_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.MID_VOLTAGE).setEnergyLoss(1.5F).setInsulated(false).build()).dropsSelf();
+	BlockEnergyWire UNINSULATED_GOLD_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.MID_VOLTAGE).setEnergyLoss(1.5F).setInsulated(false).build());
 	
 	@RegistryName("transport/wires/gold/insulated")
-	BlockEnergyWire INSULATED_GOLD_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.MID_VOLTAGE).setEnergyLoss(0.4F).setInsulated(true).visitBlockProps(p -> p.sound(SoundType.WOOL)).build()).dropsSelf();
+	BlockEnergyWire INSULATED_GOLD_WIRE = (BlockEnergyWire) new BlockEnergyWire(EnergyWireProperties.builder().setTier(EnergyTier.MID_VOLTAGE).setEnergyLoss(0.4F).setInsulated(true).visitBlockProps(p -> p.sound(SoundType.WOOL)).build());
 }

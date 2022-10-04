@@ -83,6 +83,7 @@ public class BlockItemPipe
 			bs = bs.setValue(DIR2PROP.get(d), false);
 		
 		registerDefaultState(bs);
+		dropsSelf();
 	}
 	
 	public float getPipeSpeed()

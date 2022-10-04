@@ -35,6 +35,12 @@ public interface ItemsZT_World
 	@RegistryName("raw_aluminum")
 	Item RAW_ALUMINUM = newItem(TagsZT.Items.RAW_MATERIALS_ALUMINUM);
 	
+	@RegistryName("raw_zinc")
+	Item RAW_ZINC = newItem(TagsZT.Items.RAW_MATERIALS_ZINC);
+	
+	@RegistryName("raw_tungsten")
+	Item RAW_TUNGSTEN = newItem(TagsZT.Items.RAW_MATERIALS_TUNGSTEN);
+	
 	// Ingots
 	
 	@RegistryName("tin_ingot")

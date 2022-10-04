@@ -42,12 +42,10 @@ public class GuiMachineAssemblerB
 			pose.pushPose();
 			
 			var slot = menu.getSlot(resultSlotIdx);
-			var recipe = tile.getActiveRecipe();
+			var output = tile.craftResult.get();
 			
-			if(recipe != null)
+			if(!output.isEmpty())
 			{
-				var output = recipe.getRecipeOutput(tile);
-				
 				int x = leftPos + slot.x;
 				int y = topPos + slot.y;
 				

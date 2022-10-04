@@ -6,6 +6,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,10 +16,15 @@ import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.modules.IZeithTechModules;
+import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.modules.ZeithTechModulesImpl;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.shared.init.TagsZT;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 @Mod(ZeithTech.MOD_ID)
 public class ZeithTech
@@ -47,7 +53,7 @@ public class ZeithTech
 		ForgeMod.enableMilkFluid();
 		
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
-		bus.addListener(RecipeRegistriesZT_Processing::setup);
+		bus.addListener(this::setup);
 		
 		var illegalSourceNotice = ModSourceAdapter.getModSource(HammerLib.class)
 				.filter(ModSourceAdapter.ModSource::wasDownloadedIllegally)
@@ -89,6 +95,11 @@ public class ZeithTech
 		this.MODULES.enable();
 	}
 	
+	private void setup(FMLCommonSetupEvent e)
+	{
+		RecipeRegistriesZT_Processing.setup(e);
+	}
+	
 	@Override
 	public IZeithTechModules getModules()
 	{
@@ -99,5 +110,12 @@ public class ZeithTech
 	public CreativeModeTab getCreativeTab()
 	{
 		return TAB;
+	}
+	
+	public static final List<BaseCompat> compats = new ArrayList<>();
+	
+	public static void forCompats(Consumer<BaseCompat> handler)
+	{
+		compats.forEach(handler);
 	}
 }

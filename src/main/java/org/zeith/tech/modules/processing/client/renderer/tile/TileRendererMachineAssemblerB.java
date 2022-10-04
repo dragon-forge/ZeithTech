@@ -27,7 +27,7 @@ public class TileRendererMachineAssemblerB
 		
 		float distance = 1 / 1.8F;
 		
-		if(entity.getActiveRecipe() != null && entity.craftTime.get() > 0)
+		if(!entity.craftResult.get().isEmpty() && entity.craftTime.get() > 0)
 			distance *= 1F - entity.getProgress(partial) / (float) entity.craftTime.getInt();
 		
 		for(int x = 0; x < 5; ++x)

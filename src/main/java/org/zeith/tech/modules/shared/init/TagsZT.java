@@ -47,6 +47,8 @@ public class TagsZT
 		public static final TagKey<Item> RAW_MATERIALS_TIN = tag("raw_materials/tin");
 		public static final TagKey<Item> RAW_MATERIALS_LEAD = tag("raw_materials/lead");
 		public static final TagKey<Item> RAW_MATERIALS_ALUMINUM = tag("raw_materials/aluminum");
+		public static final TagKey<Item> RAW_MATERIALS_ZINC = tag("raw_materials/zinc");
+		public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN = tag("raw_materials/tungsten");
 		
 		public static final TagKey<Item> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Item> ORES_LEAD = tag("ores/lead");

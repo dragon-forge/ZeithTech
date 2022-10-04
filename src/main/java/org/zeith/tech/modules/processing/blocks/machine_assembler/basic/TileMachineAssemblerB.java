@@ -14,7 +14,8 @@ import net.minecraftforge.fml.LogicalSide;
 import org.zeith.hammerlib.api.crafting.ICraftingExecutor;
 import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.api.io.NBTSerializable;
-import org.zeith.hammerlib.net.properties.*;
+import org.zeith.hammerlib.net.properties.PropertyInt;
+import org.zeith.hammerlib.net.properties.PropertyItemStack;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.RecipeMachineAssembler;
@@ -50,7 +51,6 @@ public class TileMachineAssemblerB
 	@NBTSerializable("CraftResult")
 	private ItemStack _craftResult = ItemStack.EMPTY;
 	
-	public final PropertyResourceLocation activeRecipeId = new PropertyResourceLocation(DirectStorage.create(r -> _activeRecipeId = r, () -> _activeRecipeId));
 	public final PropertyItemStack craftResult = new PropertyItemStack(DirectStorage.create(v -> _craftResult = v, () -> _craftResult));
 	
 	// GUI-synced parameters.
@@ -63,7 +63,7 @@ public class TileMachineAssemblerB
 	public TileMachineAssemblerB(BlockPos pos, BlockState state)
 	{
 		super(TilesZT_Processing.BASIC_MACHINE_ASSEMBLER, pos, state);
-		this.dispatcher.registerProperty("ar_id", activeRecipeId);
+		this.dispatcher.registerProperty("result", craftResult);
 		
 		resultInventory.isStackValid = (slot, stack) -> false;
 	}
@@ -81,7 +81,6 @@ public class TileMachineAssemblerB
 			{
 				if(!isValidRecipe(r))
 				{
-					activeRecipeId.set(null);
 					setEnabledState(false);
 				}
 			}
@@ -100,16 +99,17 @@ public class TileMachineAssemblerB
 				
 				if(recipe != null)
 				{
-					activeRecipeId.set(recipe.getRecipeName());
+					craftResult.set(recipe.getRecipeOutput(this));
 					setEnabledState(true);
-				}
+				} else
+					craftResult.set(ItemStack.EMPTY);
 			}
 			
 			if(_progress >= _craftTime)
 			{
 				var ar = getActiveRecipe();
 				if(_craftResult.isEmpty() && ar != null)
-					_craftResult = ar.getRecipeOutput(this);
+					craftResult.set(ar.getRecipeOutput(this));
 				
 				if(!_craftResult.isEmpty())
 				{
@@ -123,12 +123,12 @@ public class TileMachineAssemblerB
 					{
 						resultInventory.setItem(0, _craftResult);
 						craftResult.set(ItemStack.EMPTY);
-						_progress = 0;
+						craftingProgress.setInt(0);
 					} else if(ItemStackHelper.matchesIgnoreCount(stored, _craftResult) && stored.getCount() + _craftResult.getCount() <= stored.getMaxStackSize())
 					{
 						stored.grow(_craftResult.getCount());
 						craftResult.set(ItemStack.EMPTY);
-						_progress = 0;
+						craftingProgress.setInt(0);
 					}
 				}
 			}

@@ -6,14 +6,20 @@ import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.*;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fml.LogicalSide;
 import org.zeith.hammerlib.core.RecipeHelper;
+import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
 import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
+import org.zeith.tech.api.recipes.RecipeHammering;
+import org.zeith.tech.api.recipes.RecipeMachineAssembler;
+import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.compat.jei.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
@@ -27,14 +33,28 @@ import java.util.stream.Stream;
 
 @JeiPlugin
 public class JeiZT
+		extends BaseCompat
 		implements IModPlugin
 {
 	public static final ResourceLocation UID = new ResourceLocation(ZeithTech.MOD_ID, "jei");
+	
+	public IJeiRuntime jeiRuntime;
+	
+	public JeiZT()
+	{
+	}
 	
 	@Override
 	public ResourceLocation getPluginUid()
 	{
 		return UID;
+	}
+	
+	@Override
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime)
+	{
+		if(this.jeiRuntime == null) ZeithTech.compats.add(this);
+		this.jeiRuntime = jeiRuntime;
 	}
 	
 	@Override
@@ -153,5 +173,45 @@ public class JeiZT
 			}
 			
 		});
+	}
+	
+	@Override
+	public void acceptRecipe(RecipeMachineAssembler assembler)
+	{
+		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
+		{
+			System.out.println("register assembly: " + assembler.id);
+			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, List.of(assembler));
+		}
+	}
+	
+	@Override
+	public void deregisterRecipe(RecipeMachineAssembler assembler)
+	{
+		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
+		{
+			System.out.println("DE-register assembly: " + assembler.id);
+			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, List.of(assembler));
+		}
+	}
+	
+	@Override
+	public void acceptRecipe(RecipeHammering hammering)
+	{
+		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
+		{
+			System.out.println("register hammering: " + hammering.id);
+			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.MANUAL_HAMMERING, List.of(hammering));
+		}
+	}
+	
+	@Override
+	public void deregisterRecipe(RecipeHammering hammering)
+	{
+		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
+		{
+			System.out.println("DE-register hammering: " + hammering.id);
+			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.MANUAL_HAMMERING, List.of(hammering));
+		}
 	}
 }

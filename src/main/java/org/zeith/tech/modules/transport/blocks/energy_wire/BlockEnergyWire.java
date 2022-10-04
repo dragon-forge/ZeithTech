@@ -61,6 +61,8 @@ public class BlockEnergyWire
 						.map(dir -> (this.properties.insulated() ? DIR2SHAPE_INSULATED : DIR2SHAPE_UNINSULATED).get(dir.getKey()))
 						.toArray(VoxelShape[]::new)
 		));
+		
+		dropsSelf();
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.core.adapter.recipe.RecipeShape;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
+import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
 
 import java.util.HashMap;
@@ -34,6 +35,24 @@ public class RecipeMachineAssembler
 		this.width = shape.width;
 		this.height = shape.height;
 		this.recipeItems = shape.createIngredientMap(dictionary);
+	}
+	
+	public RecipeMachineAssembler(ResourceLocation id, TechTier minTier, ItemStackResult output, int width, int height, NonNullList<Ingredient> recipeItems)
+	{
+		super(id, output, NonNullList.of(new MCIngredient(Ingredient.EMPTY), recipeItems.stream().map(MCIngredient::new).toArray(MCIngredient[]::new)));
+		if(recipeItems.size() > 25 || width * height != recipeItems.size())
+			throw new IllegalArgumentException("Recipe input map is larger than allowed (5x5)");
+		this.output = output;
+		this.minTier = minTier;
+		this.width = width;
+		this.height = height;
+		this.recipeItems = recipeItems;
+	}
+	
+	@Override
+	public void onDeregistered()
+	{
+		ZeithTech.forCompats(c -> c.deregisterRecipe(this));
 	}
 	
 	public ItemStack getRecipeOutput()
