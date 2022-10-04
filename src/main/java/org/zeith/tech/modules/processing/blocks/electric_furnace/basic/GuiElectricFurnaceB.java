@@ -42,7 +42,7 @@ public class GuiElectricFurnaceB
 		if(tile._maxProgress > 0 && tile._progress > 0)
 		{
 			float prog = tile._progress / (float) tile._maxProgress;
-			RenderUtils.drawTexturedModalRect(pose, leftPos + 72, topPos + 35, 177, 0, 22 * prog, 16);
+			RenderUtils.drawTexturedModalRect(pose, leftPos + 72, topPos + 35, 176, 0, 22 * prog, 16);
 		}
 		WidgetAPI.drawPowerBar(pose, leftPos + 7, topPos + 8, tile.energy.getFillRate());
 	}
