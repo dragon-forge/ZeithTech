@@ -69,6 +69,37 @@ public class CustomMachineAssemblyRecipeGenerator
 		return new RecipeMachineAssembler(recipeId, tier, new ItemStackResult(itemstack), new RecipeShape(patter), mappings);
 	}
 	
+	@Override
+	public Optional<JsonElement> createTemplate()
+	{
+		JsonObject $ = new JsonObject();
+		
+		$.addProperty("tier__comment", "Tier 0 is BASIC, 1 is ADVANCED, 2 is QUANTUM");
+		$.addProperty("tier", 0);
+		
+		{
+			var pat = new JsonArray();
+			pat.add("  1  ");
+			pat.add(" 232 ");
+			pat.add("23132");
+			pat.add(" 232 ");
+			pat.add("  1  ");
+			$.add("pattern", pat);
+		}
+		
+		{
+			var keys = new JsonObject();
+			keys.add("1", ingredientTemplate());
+			keys.add("2", ingredientTemplate());
+			keys.add("3", ingredientTemplate());
+			$.add("key", keys);
+		}
+		
+		$.add("result", itemStackTemplate());
+		
+		return Optional.of($);
+	}
+	
 	private static int firstNonSpace(String p_44185_)
 	{
 		int i;

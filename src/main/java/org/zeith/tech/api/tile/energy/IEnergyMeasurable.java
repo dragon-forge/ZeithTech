@@ -14,6 +14,8 @@ public interface IEnergyMeasurable
 {
 	void addListener(EnergyMeasureListener listener);
 	
+	float getLoad();
+	
 	static LazyOptional<IEnergyMeasurable> get(Level level, BlockPos pos)
 	{
 		var be = level.getBlockEntity(pos);

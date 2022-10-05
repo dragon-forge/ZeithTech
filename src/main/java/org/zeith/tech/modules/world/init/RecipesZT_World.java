@@ -33,7 +33,7 @@ public interface RecipesZT_World
 		event.shaped().shape("ppp", "p p", "ppp").map('p', BlocksZT_World.HEVEA_PLANKS).result(BlocksZT_World.HEVEA_CHEST).register();
 		event.shaped().shape("ppp", "p p", "ppp").map('p', TagsZT.Items.HEVEA_LOGS).result(new ItemStack(BlocksZT_World.HEVEA_CHEST, 4)).register();
 		event.shapeless().addAll(BlocksZT_World.HEVEA_CHEST, Items.TRIPWIRE_HOOK).result(BlocksZT_World.HEVEA_TRAPPED_CHEST).register();
-		event.shaped().shape(" pp", "  p", " pp").map('p', ItemTags.PLANKS).result(ItemsZT.TREE_TAP).register();
+		event.shaped().shape("s s", "sps").map('p', ItemTags.PLANKS).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT.TREE_TAP).register();
 		
 		event.smelting().xp(0.5F).input(ItemsZT.BOWL_OF_RESIN).cookTime(100).result(new ItemStack(ItemsZT.LATEX, 3)).register();
 		

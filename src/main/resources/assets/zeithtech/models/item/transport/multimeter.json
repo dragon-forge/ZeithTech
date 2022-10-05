@@ -1,6 +1,86 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "zeithtech:transport/item/multimeter"
-  }
+    "layer0": "zeithtech:transport/item/multimeter/00"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "power": 0.250000
+      },
+      "model": "zeithtech:item/transport/multimeter/00"
+    },
+    {
+      "predicate": {
+        "power": 0.288462
+      },
+      "model": "zeithtech:item/transport/multimeter/01"
+    },
+    {
+      "predicate": {
+        "power": 0.326923
+      },
+      "model": "zeithtech:item/transport/multimeter/02"
+    },
+    {
+      "predicate": {
+        "power": 0.365385
+      },
+      "model": "zeithtech:item/transport/multimeter/03"
+    },
+    {
+      "predicate": {
+        "power": 0.403846
+      },
+      "model": "zeithtech:item/transport/multimeter/04"
+    },
+    {
+      "predicate": {
+        "power": 0.442307
+      },
+      "model": "zeithtech:item/transport/multimeter/05"
+    },
+    {
+      "predicate": {
+        "power": 0.480769
+      },
+      "model": "zeithtech:item/transport/multimeter/06"
+    },
+    {
+      "predicate": {
+        "power": 0.519231
+      },
+      "model": "zeithtech:item/transport/multimeter/07"
+    },
+    {
+      "predicate": {
+        "power": 0.557692
+      },
+      "model": "zeithtech:item/transport/multimeter/08"
+    },
+    {
+      "predicate": {
+        "power": 0.596154
+      },
+      "model": "zeithtech:item/transport/multimeter/09"
+    },
+    {
+      "predicate": {
+        "power": 0.634616
+      },
+      "model": "zeithtech:item/transport/multimeter/10"
+    },
+    {
+      "predicate": {
+        "power": 0.673077
+      },
+      "model": "zeithtech:item/transport/multimeter/11"
+    },
+    {
+      "predicate": {
+        "power": 0.711539
+      },
+      "model": "zeithtech:item/transport/multimeter/12"
+    }
+  ]
 }

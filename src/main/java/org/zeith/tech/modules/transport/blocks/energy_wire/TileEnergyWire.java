@@ -44,7 +44,7 @@ public class TileEnergyWire
 	@NBTSerializable("Sides")
 	public final SideConfig6 sideConfigs = new SideConfig6(SideConfig.NONE);
 	
-	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(this::getPosition);
+	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(this::getPosition, this::getLoad);
 	
 	public TileEnergyWire(BlockPos pos, BlockState state)
 	{
@@ -69,6 +69,13 @@ public class TileEnergyWire
 		return getWireBlock().properties;
 	}
 	
+	public float getLoad()
+	{
+		return lastLoad;
+	}
+	
+	private float lastLoad;
+	
 	@Override
 	public void update()
 	{
@@ -84,6 +91,8 @@ public class TileEnergyWire
 				
 				float maxFE = props.tier().maxFE();
 				float loadFactor = energyPassed / maxFE;
+				
+				this.lastLoad = loadFactor;
 				
 				if(loadFactor > 1F && props.burns())
 				{
@@ -105,7 +114,7 @@ public class TileEnergyWire
 						entity.hurt(dmgSrc, damage);
 				}
 			}
-		}
+		} else this.lastLoad = 0;
 		
 		// Count in the energy that has been extracted from the wire into the machine, but DO NOT count the energy that has been passed through the wire itself.
 		measurables.onEnergyTransfer(Math.max(0, contents.emit(this) - energyPassed));

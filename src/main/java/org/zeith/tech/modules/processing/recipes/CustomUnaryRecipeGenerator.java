@@ -68,6 +68,19 @@ public class CustomUnaryRecipeGenerator<R extends RecipeUnaryBase>
 	}
 	
 	@Override
+	public Optional<JsonElement> createTemplate()
+	{
+		JsonObject $ = new JsonObject();
+		$.addProperty("tier__comment", "Tier 0 is BASIC, 1 is ADVANCED, 2 is QUANTUM");
+		$.addProperty("tier", 0);
+		$.add("input", ingredientTemplate());
+		$.addProperty("input_count", 1);
+		$.add("result", itemStackTemplate());
+		$.addProperty("time", 200);
+		return Optional.of($);
+	}
+	
+	@Override
 	public void toNetwork(FriendlyByteBuf buf, R obj)
 	{
 		buf.writeResourceLocation(obj.id);

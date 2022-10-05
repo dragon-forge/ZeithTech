@@ -62,11 +62,29 @@ public class CustomHammeringRecipeGenerator
 		
 		List<TagKey<Block>> blockHammeringTags = new ArrayList<>();
 		
-		var arr = GsonHelper.getAsJsonArray(root, "block");
+		var arr = GsonHelper.getAsJsonArray(root, "block", new JsonArray());
 		for(int i = 0; i < arr.size(); i++)
 			blockHammeringTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(arr.getAsString())));
 		
 		return new RecipeHammering(recipeId, input, output, hits, List.copyOf(blockHammeringTags), tier);
+	}
+	
+	@Override
+	public Optional<JsonElement> createTemplate()
+	{
+		JsonObject $ = new JsonObject();
+		
+		$.addProperty("tier__comment", "Tier 0 is BASIC, 1 is ADVANCED, 2 is QUANTUM");
+		$.addProperty("tier", 0);
+		$.add("input", ingredientTemplate());
+		$.add("result", itemStackTemplate());
+		
+		$.addProperty("block__comment", "A list of block tags (for BASIC tier only, a.k.a. Iron Hammer)");
+		var blocks = new JsonArray();
+		blocks.add("forge:cobblestone/deepslate");
+		$.add("block", blocks);
+		
+		return Optional.of($);
 	}
 	
 	@Override

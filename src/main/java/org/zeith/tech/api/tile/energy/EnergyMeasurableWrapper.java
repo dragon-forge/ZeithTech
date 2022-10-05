@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class EnergyMeasurableWrapper
@@ -15,9 +16,18 @@ public class EnergyMeasurableWrapper
 	
 	private float generated, transferred, consumed;
 	
-	public EnergyMeasurableWrapper(Supplier<BlockPos> position)
+	private final DoubleSupplier loadFactor;
+	
+	public EnergyMeasurableWrapper(Supplier<BlockPos> position, DoubleSupplier loadFactor)
 	{
 		this.position = position;
+		this.loadFactor = loadFactor;
+	}
+	
+	@Override
+	public float getLoad()
+	{
+		return (float) loadFactor.getAsDouble();
 	}
 	
 	public void update()

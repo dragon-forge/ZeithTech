@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -21,8 +22,11 @@ import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 public class EnergyManager
 		implements INBTSerializable<CompoundTag>, IEnergyStorage
 {
+	protected int lastIn, lastOut;
+	protected float lastLoad;
+	
 	protected BlockPos lastPosition;
-	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(() -> lastPosition);
+	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(() -> lastPosition, () -> lastLoad);
 	
 	public final LazyOptional<IEnergyMeasurable> measurableCap = LazyOptional.of(() -> measurables);
 	
@@ -74,6 +78,12 @@ public class EnergyManager
 	{
 		lastPosition = pos;
 		
+		lastLoad = 0;
+		if(maxAccept > 0) lastLoad = Math.max(lastLoad, lastIn / (float) maxAccept);
+		if(maxSend > 0) lastLoad = Math.max(lastLoad, lastOut / (float) maxSend);
+		lastLoad = Mth.clamp(lastLoad, 0F, 1F);
+		lastIn = lastOut = 0;
+		
 		measurables.update();
 		
 		// Split energy based on side configuration.
@@ -119,7 +129,11 @@ public class EnergyManager
 	public int receiveEnergy(int maxReceive, boolean simulate)
 	{
 		var in = maxAccept > 0 ? this.fe.receiveEnergy(Math.min(maxAccept, maxReceive), simulate) : 0;
-		if(!simulate) measurables.onEnergyTransfer(in);
+		if(!simulate)
+		{
+			measurables.onEnergyTransfer(in);
+			lastIn += in;
+		}
 		return in;
 	}
 	
@@ -127,7 +141,11 @@ public class EnergyManager
 	public int extractEnergy(int maxExtract, boolean simulate)
 	{
 		var out = maxSend > 0 ? this.fe.extractEnergy(Math.min(maxSend, maxExtract), simulate) : 0;
-		if(!simulate) measurables.onEnergyTransfer(out);
+		if(!simulate)
+		{
+			measurables.onEnergyTransfer(out);
+			lastOut += out;
+		}
 		return out;
 	}
 	
@@ -135,7 +153,11 @@ public class EnergyManager
 	{
 		var canSave = this.fe.receiveEnergy(gen, true);
 		var did = canSave == gen && this.fe.receiveEnergy(gen, false) == canSave;
-		if(did) measurables.onEnergyGenerated(gen);
+		if(did)
+		{
+			measurables.onEnergyGenerated(gen);
+			lastIn += gen;
+		}
 		return did;
 	}
 	
@@ -143,6 +165,7 @@ public class EnergyManager
 	{
 		var rec = this.fe.receiveEnergy(gen, false);
 		measurables.onEnergyGenerated(rec);
+		lastIn += rec;
 		return rec > 0;
 	}
 	
@@ -150,7 +173,11 @@ public class EnergyManager
 	{
 		var canGet = this.fe.extractEnergy(req, true);
 		var did = canGet == req && this.fe.extractEnergy(req, false) == canGet;
-		if(did) measurables.onEnergyConsumed(req);
+		if(did)
+		{
+			measurables.onEnergyConsumed(req);
+			lastOut += req;
+		}
 		return did;
 	}
 	

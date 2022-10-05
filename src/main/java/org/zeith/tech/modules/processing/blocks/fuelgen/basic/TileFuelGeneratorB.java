@@ -58,7 +58,7 @@ public class TileFuelGeneratorB
 	}
 	
 	@NBTSerializable("FE")
-	public final EnergyManager energy = new EnergyManager(20000, 0, 200);
+	public final EnergyManager energy = new EnergyManager(20000, 0, 64);
 	
 	public final PropertyInt fuelTicksTotal = new PropertyInt(DirectStorage.create(i -> _fuelTicksTotal = i, () -> _fuelTicksTotal));
 	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
