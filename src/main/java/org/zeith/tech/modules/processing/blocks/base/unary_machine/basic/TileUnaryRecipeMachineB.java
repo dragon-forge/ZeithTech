@@ -110,39 +110,42 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	{
 		energy.update(level, worldPosition, sidedConfig);
 		
-		if(isOnServer() && atTickRate(5))
+		if(isOnServer())
 		{
-			ItemStack first = inventory.getItem(0).copy();
-			if(first.isEmpty()) first = inventory.getItem(1).copy();
-			inputItemDisplay.set(first);
-		}
-		
-		getActiveRecipe().ifPresentOrElse(recipe ->
-		{
-			maxProgress.setInt(recipe.getCraftTime());
-			
-			if(_progress < _maxProgress && isOnServer() && energy.consumeEnergy(getConsumptionPerTick())
-					&& (_progress > 0 || store(recipe.assemble(this), true)))
-				_progress += 1;
-			
-			var enable = _progress > 0;
-			if(isEnabled() != enable)
-				setEnabledState(enable);
-			
-			if(isOnServer() && _progress >= _maxProgress && store(recipe.assemble(this), false))
+			if(atTickRate(5))
 			{
-				inventory.getItem(0)
-						.shrink(recipe.getInputCount());
-				_progress = 0;
-				sync();
+				ItemStack first = inventory.getItem(0).copy();
+				if(first.isEmpty()) first = inventory.getItem(1).copy();
+				inputItemDisplay.set(first);
 			}
-		}, () ->
-		{
-			if(_progress > 0)
-				_progress = Math.max(0, _progress - 2);
-			else if(isEnabled())
-				setEnabledState(false);
-		});
+			
+			getActiveRecipe().ifPresentOrElse(recipe ->
+			{
+				maxProgress.setInt(recipe.getCraftTime());
+				
+				if(_progress < _maxProgress && isOnServer() && energy.consumeEnergy(getConsumptionPerTick())
+						&& (_progress > 0 || store(recipe.assemble(this), true)))
+					_progress += 1;
+				
+				var enable = _progress > 0;
+				if(isEnabled() != enable)
+					setEnabledState(enable);
+				
+				if(isOnServer() && _progress >= _maxProgress && store(recipe.assemble(this), false))
+				{
+					inventory.getItem(0)
+							.shrink(recipe.getInputCount());
+					_progress = 0;
+					sync();
+				}
+			}, () ->
+			{
+				if(_progress > 0)
+					_progress = Math.max(0, _progress - 2);
+				else if(isEnabled())
+					setEnabledState(false);
+			});
+		}
 	}
 	
 	public boolean store(ItemStack stacks, boolean simulate)

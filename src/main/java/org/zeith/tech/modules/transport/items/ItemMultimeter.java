@@ -1,6 +1,5 @@
 package org.zeith.tech.modules.transport.items;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -24,30 +23,37 @@ import org.zeith.tech.modules.transport.container.ContainerMultimeter;
 import org.zeith.tech.modules.transport.net.PacketUpdateMultimeterLoad;
 
 import javax.annotation.Nullable;
+import java.util.*;
 
 public class ItemMultimeter
 		extends Item
 {
-	private static float lastClientLoad = 0;
+	public static final UUID ZERO_ID = new UUID(0, 0);
+	private static final Map<UUID, Float> loads = new HashMap<>();
 	
 	public ItemMultimeter(Properties props)
 	{
 		super(props);
 	}
 	
-	public static float getLoadFromLook(Player player)
+	public static float getLoadFromLook(ItemStack stack)
 	{
-		return 0.25F + lastClientLoad * 0.5F;
+		var tag = stack.getOrCreateTag();
+		return 0.25F + loads.getOrDefault(tag.contains("Identity") ? tag.getUUID("Identity") : ZERO_ID, 0F) * 0.5F;
 	}
 	
 	public static void handleClient(PacketUpdateMultimeterLoad pkt)
 	{
-		lastClientLoad = pkt.getLoad();
+		loads.put(pkt.getIdentity(), pkt.getLoad());
 	}
 	
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean inHand)
 	{
+		var tags = stack.getOrCreateTag();
+		if(!tags.contains("Identity") && level != null && !level.isClientSide)
+			tags.putUUID("Identity", UUID.randomUUID());
+		
 		if(entity instanceof ServerPlayer player)
 		{
 			if(inHand)
@@ -81,17 +87,16 @@ public class ItemMultimeter
 						}
 					}
 					
-					Network.sendTo(new PacketUpdateMultimeterLoad(load), player);
+					Network.sendTo(new PacketUpdateMultimeterLoad(load, stack), player);
 					
 					stack.getOrCreateTag().putBoolean("InHand", true);
 				}
 			} else
 			{
-				CompoundTag tags = stack.getTag();
-				if(tags != null && tags.contains("InHand") && tags.getBoolean("InHand"))
+				if(tags.getBoolean("InHand"))
 				{
 					stack.removeTagKey("InHand");
-					Network.sendTo(new PacketUpdateMultimeterLoad(0F), player);
+					Network.sendTo(new PacketUpdateMultimeterLoad(0F, stack), player);
 				}
 			}
 		}

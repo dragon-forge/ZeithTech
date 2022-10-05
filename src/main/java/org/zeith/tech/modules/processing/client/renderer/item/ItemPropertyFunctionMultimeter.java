@@ -9,14 +9,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.zeith.tech.modules.transport.items.ItemMultimeter;
 
+import java.util.*;
+import java.util.function.Function;
+
 public class ItemPropertyFunctionMultimeter
 		implements ClampedItemPropertyFunction
 {
-	public static final int DEFAULT_ROTATION = 0;
-	private final CompassWobble wobble = new CompassWobble();
+	private final Map<UUID, CompassWobble> wobble = new HashMap<>();
+	private final Function<UUID, CompassWobble> wobbleGen = uuid -> new CompassWobble();
 	
 	public ItemPropertyFunctionMultimeter()
 	{
+	}
+	
+	private CompassWobble wobble(ItemStack stack)
+	{
+		var tag = stack.getOrCreateTag();
+		return wobble.computeIfAbsent(tag.contains("Identity") ? tag.getUUID("Identity") : ItemMultimeter.ZERO_ID, wobbleGen);
 	}
 	
 	@Override
@@ -35,10 +44,10 @@ public class ItemPropertyFunctionMultimeter
 	private float getCompassRotation(ItemStack stack, ClientLevel level, int hash, Entity entity)
 	{
 		long i = level.getGameTime();
-		return this.getRotationTowardsCompassTarget(entity, i);
+		return this.getRotationTowardsCompassTarget(entity, stack, i);
 	}
 	
-	private float getRotationTowardsCompassTarget(Entity entity, long gameTime)
+	private float getRotationTowardsCompassTarget(Entity entity, ItemStack item, long gameTime)
 	{
 		float currentRotation = 0;
 		
@@ -46,10 +55,12 @@ public class ItemPropertyFunctionMultimeter
 		{
 			if(player.isLocalPlayer())
 			{
-				if(this.wobble.shouldUpdate(gameTime))
-					this.wobble.update(gameTime, ItemMultimeter.getLoadFromLook(player));
+				var wobble = this.wobble(item);
 				
-				double finalRotation = currentRotation + this.wobble.rotation;
+				if(wobble.shouldUpdate(gameTime))
+					wobble.update(gameTime, ItemMultimeter.getLoadFromLook(item));
+				
+				double finalRotation = currentRotation + wobble.rotation;
 				
 				return Mth.clamp((float) finalRotation, 0.0F, 1.0F);
 			}
@@ -77,13 +88,9 @@ public class ItemPropertyFunctionMultimeter
 		void update(long time, double next)
 		{
 			this.lastUpdateTick = time;
-			
 			double step = next - this.rotation;
-//			step = Mth.positiveModulo(step + 0.5D, 1.0D) - 0.5D;
-			
 			this.deltaRotation += step * 0.1D;
 			this.deltaRotation *= 0.8D;
-			
 			this.rotation = Mth.positiveModulo(this.rotation + this.deltaRotation, 1.0D);
 		}
 	}
