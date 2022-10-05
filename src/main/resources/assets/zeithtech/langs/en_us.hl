@@ -76,6 +76,8 @@ item.zeithtech.latex=Latex Orb
 item.zeithtech.tree_tap=Tree Tap
 item.zeithtech.motor=Motor
 item.zeithtech.plastic=Plastic
+item.zeithtech.sawdust=Sawdust
+item.zeithtech.circular_saw=Circular Saw
 
 ### Processing Module ###
 block.zeithtech.processing.mining_pipe=Mining Pipe
@@ -84,6 +86,7 @@ block.zeithtech.processing.fuel_generator.basic=Basic Solid Fuel Generator
 block.zeithtech.processing.machine_assembler.basic=Basic Machine Assembler
 block.zeithtech.processing.electric_furnace.basic=Basic Electric Furnace
 block.zeithtech.processing.grinder.basic=Basic Grinder
+block.zeithtech.processing.sawmill.basic=Basic Sawmill
 block.zeithtech.processing.mining_quarry.basic=Basic Miner
 
 item.zeithtech.processing.iron_hammer=Iron Hammer

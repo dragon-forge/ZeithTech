@@ -19,13 +19,15 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.PropertyFloat;
 import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.util.java.DirectStorage;
-import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
+import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 
 import java.util.EnumSet;
@@ -70,7 +72,8 @@ public class TileFuelGeneratorB
 	{
 		super(TilesZT_Processing.BASIC_FUEL_GENERATOR, pos, state);
 		
-		fuelInventory.isStackValid = (slot, stack) -> ForgeHooks.getBurnTime(stack, null) > 0;
+		fuelInventory.isStackValid = (slot, stack) ->
+				!stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent() && ForgeHooks.getBurnTime(stack, null) > 0;
 	}
 	
 	@Override
@@ -91,6 +94,9 @@ public class TileFuelGeneratorB
 			
 			if(_fuelTicksLeft > 0)
 			{
+				if(!isEnabled())
+					setEnabledState(true);
+				
 				float take = Math.min(1, _fuelTicksLeft);
 				if(energy.generateAnyEnergy(Math.round(currentGenPerTick * take)))
 					_fuelTicksLeft -= take;
@@ -111,6 +117,10 @@ public class TileFuelGeneratorB
 		
 		if(isOnClient() && isEnabled())
 		{
+			ZeithTechAPI.get()
+					.getAudioSystem()
+					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, null);
+			
 			Vec3 pos = Vec3.atBottomCenterOf(worldPosition);
 			if(getRNG().nextInt(5) == 0)
 				level.addParticle(ParticleTypes.SMOKE,
@@ -119,6 +129,12 @@ public class TileFuelGeneratorB
 						pos.z + getRNG().nextFloat(-1 / 16F, 1 / 16F),
 						0, 0.01F, 0);
 		}
+	}
+	
+	@Override
+	public boolean isInterrupted()
+	{
+		return false;
 	}
 	
 	public void consumeFuel()

@@ -11,15 +11,16 @@ import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.core.adapter.recipe.RecipeShape;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.base.BuilderWithStackResult;
+import org.zeith.tech.api.recipes.base.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RecipeMachineAssembler
 		extends BaseNameableRecipe
+		implements IZeithTechRecipe, ITieredRecipe
 {
 	private final TechTier minTier;
 	private final int width, height;
@@ -53,7 +54,12 @@ public class RecipeMachineAssembler
 	@Override
 	public void onDeregistered()
 	{
-		ZeithTech.forCompats(c -> c.deregisterRecipe(this));
+		// Used to remove recipes from JEI, for example
+		ZeithTechAPI.ifPresent(api -> api
+				.getRecipeRegistries()
+				.getRecipeLifecycleListener()
+				.onRecipeDeRegistered(this)
+		);
 	}
 	
 	public ItemStack getRecipeOutput()
@@ -66,14 +72,16 @@ public class RecipeMachineAssembler
 		return output.getOutput(executor);
 	}
 	
-	public boolean isTierGoodEnough(TechTier tier)
-	{
-		return tier.isOrHigher(getMinTier());
-	}
-	
+	@Override
 	public TechTier getMinTier()
 	{
 		return minTier;
+	}
+	
+	@Override
+	public boolean isTierGoodEnough(TechTier tier)
+	{
+		return tier.isOrHigher(getMinTier());
 	}
 	
 	public int getWidth()

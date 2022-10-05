@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.zeith.hammerlib.client.utils.FXUtils;
 import org.zeith.hammerlib.client.utils.RenderUtils;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 
 public class WidgetAPI
 {

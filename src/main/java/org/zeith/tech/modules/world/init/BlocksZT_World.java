@@ -28,7 +28,7 @@ public interface BlocksZT_World
 	// Hevea tree stuff
 	
 	@RegistryName("hevea_planks")
-	SimpleBlockZT HEVEA_PLANKS = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)).addItemTag(ItemTags.PLANKS).dropsSelf();
+	SimpleBlockZT HEVEA_PLANKS = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)).addItemTags(List.of(ItemTags.PLANKS, TagsZT.Items.HEVEA_PLANKS)).dropsSelf();
 	
 	@RegistryName("stripped_hevea_log")
 	BlockHeveaLog STRIPPED_HEVEA_LOG = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, true).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).dropsSelf();

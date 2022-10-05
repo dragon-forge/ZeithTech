@@ -1,0 +1,7 @@
+{
+  "parent": "zeithtech:block/processing/sawmill/basic/base",
+  "textures": {
+    "top": "zeithtech:processing/block/sawmill/basic/off",
+    "back": "zeithtech:processing/block/sawmill/basic/back"
+  }
+}

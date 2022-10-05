@@ -2,7 +2,7 @@ package org.zeith.tech.modules.processing.items;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.*;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TagsZT;
 
 public class ItemWireCutter

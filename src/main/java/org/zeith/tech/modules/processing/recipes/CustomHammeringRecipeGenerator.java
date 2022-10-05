@@ -55,7 +55,7 @@ public class CustomHammeringRecipeGenerator
 	public static RecipeHammering fromJson(ResourceLocation recipeId, JsonObject root, ICondition.IContext context)
 	{
 		var tier = TechTier.values()[GsonHelper.getAsInt(root, "tier", 0)];
-		var hits = GsonHelper.getAsInt(root, "hits", 0);
+		var hits = GsonHelper.getAsInt(root, "hits", 4);
 		
 		var input = Ingredient.fromJson(root.get("input"));
 		var output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(root, "result"));
@@ -77,12 +77,15 @@ public class CustomHammeringRecipeGenerator
 		$.addProperty("tier__comment", "Tier 0 is BASIC, 1 is ADVANCED, 2 is QUANTUM");
 		$.addProperty("tier", 0);
 		$.add("input", ingredientTemplate());
-		$.add("result", itemStackTemplate());
+		
+		$.addProperty("hits", 4);
 		
 		$.addProperty("block__comment", "A list of block tags (for BASIC tier only, a.k.a. Iron Hammer)");
 		var blocks = new JsonArray();
 		blocks.add("forge:cobblestone/deepslate");
 		$.add("block", blocks);
+		
+		$.add("result", itemStackTemplate());
 		
 		return Optional.of($);
 	}
@@ -91,7 +94,7 @@ public class CustomHammeringRecipeGenerator
 	public void toNetwork(FriendlyByteBuf buf, RecipeHammering obj)
 	{
 		buf.writeResourceLocation(obj.id);
-		buf.writeByte(obj.getTier().ordinal());
+		buf.writeByte(obj.getMinTier().ordinal());
 		obj.getInput().toNetwork(buf);
 		buf.writeItemStack(obj.getRecipeOutput(), false);
 		buf.writeInt(obj.getHitCountRaw());

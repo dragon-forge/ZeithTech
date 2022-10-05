@@ -1,8 +1,10 @@
 package org.zeith.tech.api.energy;
 
+import org.zeith.tech.core.ZeithTech;
+
 /**
  * This defines the energy tiers for the mod.
- * You may add more if needed, but these are the voltages used by {@link org.zeith.tech.ZeithTech}.
+ * You may add more if needed, but these are the voltages used by {@link ZeithTech}.
  * Cables in this mod have one of these four transfer rates and are subject to burning, if overpowered.
  */
 public record EnergyTier(int maxFE)

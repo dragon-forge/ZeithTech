@@ -18,7 +18,7 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.charging.fe.FECharge;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
+import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.energy.EnergyMeasurableWrapper;
 import org.zeith.tech.api.tile.energy.IEnergyMeasurable;
@@ -191,7 +191,7 @@ public class TileEnergyWire
 					int canEmit = emitToDirect(dir, contents.FE, true);
 					return canEmit > 0 && canEmit > this.contents.energy[dir.ordinal()];
 				})
-				.map(dir -> new EndpointData(dir, getPriority(dir), true))
+				.map(dir -> new EndpointData(worldPosition, dir, getPriority(dir), true))
 				.toList();
 	}
 	

@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 import net.minecraftforge.common.util.LazyOptional;
-import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
+import org.zeith.tech.api.ZeithTechCapabilities;
 
 import java.util.function.BooleanSupplier;
 

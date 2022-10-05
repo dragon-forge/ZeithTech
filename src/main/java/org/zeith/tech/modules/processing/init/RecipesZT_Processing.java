@@ -4,8 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.UpgradeRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
@@ -13,16 +12,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
-import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
 import org.zeith.tech.api.events.recipe.GrindingRegistryEvent;
+import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.base.RecipeUnaryBase;
 import org.zeith.tech.api.recipes.processing.*;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
+import org.zeith.tech.utils.RecipeManagerHelper;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public interface RecipesZT_Processing
 {
@@ -87,6 +89,16 @@ public interface RecipesZT_Processing
 					.register();
 			
 			f.get().minTier(TechTier.BASIC)
+					.shape("  c  ", " pdp ", "cpmpc", " php ", "  c  ")
+					.map('c', Tags.Items.INGOTS_COPPER)
+					.map('p', TagsZT.Items.PLATES_IRON)
+					.map('m', ItemsZT.MOTOR)
+					.map('h', Tags.Items.CHESTS)
+					.map('d', ItemsZT.CIRCULAR_SAW)
+					.result(BlocksZT_Processing.BASIC_SAWMILL)
+					.register();
+			
+			f.get().minTier(TechTier.BASIC)
 					.shape("  h  ", " ccc ", "iCwCi", " mpm ", "  p  ")
 					.map('h', Items.HOPPER)
 					.map('c', TagsZT.Items.PLATES_COPPER)
@@ -97,6 +109,7 @@ public interface RecipesZT_Processing
 					.map('p', BlocksZT_Processing.MINING_PIPE)
 					.result(BlocksZT_Processing.BASIC_QUARRY)
 					.register();
+			
 		}
 	}
 	
@@ -188,13 +201,51 @@ public interface RecipesZT_Processing
 									.input(ItemTags.create(tag))
 									.result(dustItem.get())
 									.craftTime(hevt.getTimeForMaterial(grindType))
-									.withTier(hevt.getMaterialTier(grindType))
+									.tier(hevt.getMaterialTier(grindType))
 									.register();
 						else
 							ZeithTech.LOG.warn("Unable to find dust for material " + grindType + ", but the dust tag (" + dustTag + ") is present...");
 					}
 				}
 			}
+		}
+	}
+	
+	static void addSawmillRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeSawmill> evt)
+	{
+		if(evt.is(RecipeRegistriesZT_Processing.SAWMILL))
+		{
+			Supplier<RecipeSawmill.SawmillRecipeBuilder> f = () -> new RecipeSawmill.SawmillRecipeBuilder(evt);
+			
+			var logs = evt.getContext().getTag(ItemTags.LOGS);
+			var planks = evt.getContext().getTag(ItemTags.PLANKS);
+			
+			final ExtraOutput sawdust = new ExtraOutput.Ranged(new ItemStack(ItemsZT.SAWDUST), 1, 2, 0.75F);
+			
+			RecipeManagerHelper.getRecipeManager(evt)
+					.stream()
+					.flatMap(r -> r.getAllRecipesFor(RecipeType.CRAFTING).stream())
+					.filter(recipe -> !recipe.isSpecial() && recipe.getResultItem().is(planks::contains))
+					.forEach(recipe ->
+					{
+						var input = recipe.getIngredients();
+						if(input.size() == 1)
+						{
+							var main = input.get(0);
+							if(Arrays.stream(main.getItems()).anyMatch(out -> out.is(logs::contains)))
+							{
+								var plankStack = recipe.getResultItem().copy();
+								plankStack.setCount(plankStack.getCount() * 3 / 2);
+								
+								f.get().extraOutput(sawdust)
+										.tier(TechTier.BASIC)
+										.input(main)
+										.result(plankStack)
+										.craftTime(100)
+										.register();
+							}
+						}
+					});
 		}
 	}
 }

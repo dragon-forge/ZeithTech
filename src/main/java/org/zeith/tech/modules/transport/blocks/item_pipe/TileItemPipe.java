@@ -146,7 +146,7 @@ public class TileItemPipe
 	{
 		return Stream.of(BlockItemPipe.DIRECTIONS)
 				.filter(dir -> storeAnything(dir, contents, true))
-				.map(dir -> new EndpointData(dir, getPriority(dir), true))
+				.map(dir -> new EndpointData(worldPosition, dir, getPriority(dir), true))
 				.toList();
 	}
 	

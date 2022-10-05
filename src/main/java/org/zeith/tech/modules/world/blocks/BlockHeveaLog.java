@@ -18,8 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
-import org.zeith.tech.ZeithTech;
-import org.zeith.tech.api.data.IToolModifyHandler;
+import org.zeith.tech.api.block.IToolModifyHandler;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 
 import java.util.ArrayList;

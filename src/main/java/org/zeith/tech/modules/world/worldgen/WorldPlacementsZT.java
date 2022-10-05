@@ -9,7 +9,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
 import net.minecraft.world.level.levelgen.placement.*;
 import org.zeith.hammerlib.annotations.Setup;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 
 import java.util.List;

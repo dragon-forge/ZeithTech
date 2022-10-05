@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,10 +20,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.HammerHitEvent;
 import org.zeith.tech.api.tile.IHammerable;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.shared.init.SoundsZT;
 
@@ -32,6 +33,8 @@ import java.util.Optional;
 public class ItemHammer
 		extends Item
 {
+	private final RandomSource random = RandomSource.create();
+	
 	static
 	{
 		MinecraftForge.EVENT_BUS.addListener(ItemHammer::leftClickBlock);
@@ -57,6 +60,19 @@ public class ItemHammer
 	public boolean isRepairable(ItemStack stack)
 	{
 		return !repairItem.isEmpty();
+	}
+	
+	@Override
+	public boolean hasCraftingRemainingItem(ItemStack stack)
+	{
+		return true;
+	}
+	
+	@Override
+	public ItemStack getCraftingRemainingItem(ItemStack itemStack)
+	{
+		ItemStack damagedStack = itemStack.copy();
+		return damagedStack.hurt(1, this.random, null) ? ItemStack.EMPTY : damagedStack;
 	}
 	
 	@Override
@@ -109,7 +125,7 @@ public class ItemHammer
 			var state = lvl.getBlockState(pos);
 			
 			var damaged = AnvilBlock.damage(state);
-			if(lvl.random.nextFloat() < 0.12F / 5F)
+			if(lvl.random.nextFloat() < 0.12F / 8F)
 			{
 				if(damaged != null)
 				{
@@ -198,7 +214,7 @@ public class ItemHammer
 								data.putInt(keyLast, ent.getAge());
 								
 								srv.sendParticles(ParticleTypes.CRIT, pp.x, bb.maxY, pp.z, 10, 0.1, -0.1, 0.1, 0.2);
-								srv.playSound(null, player, done ? SoundsZT.ANVIL_USE_DONE : SoundsZT.ANVIL_USE, SoundSource.PLAYERS, 1F, 1F);
+								srv.playSound(null, pp.x, pp.y, pp.z, done ? SoundsZT.ANVIL_USE_DONE : SoundsZT.ANVIL_USE, SoundSource.PLAYERS, 1F, 1F);
 							}
 							
 							hammerStack.hurtAndBreak(1, player, pl -> pl.broadcastBreakEvent(e.getHand()));

@@ -1,15 +1,18 @@
 package org.zeith.tech.modules.transport.blocks.base.traversable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public record EndpointData(Direction dir, int priority, boolean valid)
+import java.util.Objects;
+
+public record EndpointData(BlockPos pos, Direction dir, int priority, boolean valid)
 		implements INBTSerializable<CompoundTag>
 {
 	public EndpointData(CompoundTag tag)
 	{
-		this(DIRECTIONS[tag.getByte("Dir")], tag.getInt("Priority"), tag.getBoolean("Valid"));
+		this(BlockPos.of(tag.getLong("Pos")), DIRECTIONS[tag.getByte("Dir")], tag.getInt("Priority"), tag.getBoolean("Valid"));
 	}
 	
 	static final Direction[] DIRECTIONS = Direction.values();
@@ -19,6 +22,7 @@ public record EndpointData(Direction dir, int priority, boolean valid)
 	{
 		var nbt = new CompoundTag();
 		
+		nbt.putLong("Pos", pos.asLong());
 		nbt.putByte("Dir", (byte) dir.ordinal());
 		nbt.putInt("Priority", priority);
 		nbt.putBoolean("Valid", valid);
@@ -29,5 +33,10 @@ public record EndpointData(Direction dir, int priority, boolean valid)
 	@Override
 	public void deserializeNBT(CompoundTag nbt)
 	{
+	}
+	
+	public boolean sameBlock(EndpointData endpoint)
+	{
+		return Objects.equals(pos, endpoint.pos) && Objects.equals(dir, endpoint.dir);
 	}
 }

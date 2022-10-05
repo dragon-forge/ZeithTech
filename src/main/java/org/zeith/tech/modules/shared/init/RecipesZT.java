@@ -11,5 +11,6 @@ public interface RecipesZT
 		event.shaped().shape("wsw", "wsw", "wsw").map('w', BlocksZT_Transport.UNINSULATED_COPPER_WIRE).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT.COPPER_COIL).register();
 		event.shaped().shape("wsw", "wsw", "wsw").map('w', BlocksZT_Transport.UNINSULATED_GOLD_WIRE).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT.GOLD_COIL).register();
 		event.shaped().shape("icc", "iii", "icc").map('i', Tags.Items.INGOTS_IRON).map('c', ItemsZT.COPPER_COIL).result(ItemsZT.MOTOR).register();
+		event.shaped().shape("ppp", "p p", "ppp").map('p', TagsZT.Items.PLATES_IRON).result(ItemsZT.CIRCULAR_SAW).register();
 	}
 }

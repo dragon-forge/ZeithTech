@@ -6,15 +6,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.zeith.hammerlib.api.crafting.INameableRecipe;
 import org.zeith.hammerlib.api.crafting.NamespacedRecipeRegistry;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.tile.ITieredTile;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public interface IUnaryRecipe
+		extends ITieredRecipe
 {
-	default TechTier getTier()
+	@Override
+	default TechTier getMinTier()
 	{
 		return TechTier.BASIC;
 	}
@@ -34,18 +35,6 @@ public interface IUnaryRecipe
 	{
 		return getInput().test(input)
 				&& input.getCount() >= getInputCount();
-	}
-	
-	default boolean isTierGoodEnough(TechTier tier)
-	{
-		return tier.isOrHigher(getTier());
-	}
-	
-	default boolean techTierMatches(BlockEntity tile)
-	{
-		return ITieredTile.get(tile)
-				.map(getTier()::isOrLower)
-				.orElse(false);
 	}
 	
 	interface IUnaryRecipeProvider<T extends IUnaryRecipe>

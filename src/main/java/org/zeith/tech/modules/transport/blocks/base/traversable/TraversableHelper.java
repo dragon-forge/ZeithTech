@@ -28,10 +28,18 @@ public class TraversableHelper
 	public static <T> List<TraversablePath<T>> findAllPaths(ITraversable<T> start, Direction from, T contents)
 	{
 		List<TraversablePath<T>> listOfPaths = new ArrayList<>();
+		
 		Stack<ITraversable<T>> currentBranch = new Stack<>();
 		currentBranch.push(start);
+		
 		collectPaths(listOfPaths, currentBranch, from, contents);
-		return listOfPaths;
+		
+		// De-duplicate paths by using EndpointDistinct, effectively fixing all loops and branches that lead to the same endpoint.
+		return listOfPaths.stream()
+				.map(EndpointDistinct::new)
+				.distinct()
+				.map(EndpointDistinct::path)
+				.toList();
 	}
 	
 	private static <T> void collectPaths(List<TraversablePath<T>> path, Stack<ITraversable<T>> branch, Direction from, T contents)

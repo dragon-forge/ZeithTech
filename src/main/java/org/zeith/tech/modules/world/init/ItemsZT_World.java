@@ -5,7 +5,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import org.zeith.hammerlib.annotations.*;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.modules.world.entity.BoatZT;
 import org.zeith.tech.modules.world.items.ItemBoat;

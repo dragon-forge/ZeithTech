@@ -84,7 +84,7 @@ public class CustomUnaryRecipeGenerator<R extends RecipeUnaryBase>
 	public void toNetwork(FriendlyByteBuf buf, R obj)
 	{
 		buf.writeResourceLocation(obj.id);
-		buf.writeByte(obj.getTier().ordinal());
+		buf.writeByte(obj.getMinTier().ordinal());
 		obj.getInput().toNetwork(buf);
 		buf.writeShort(obj.getInputCount());
 		buf.writeItemStack(obj.getRecipeOutput(), false);

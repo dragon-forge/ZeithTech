@@ -9,11 +9,12 @@ import org.zeith.hammerlib.api.crafting.building.IRecipeBuilderFactory;
 import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.enums.TechTier;
 
 public class RecipeUnaryBase
 		extends BaseNameableRecipe
-		implements IUnaryRecipe
+		implements IUnaryRecipe, IZeithTechRecipe
 {
 	final int time, inputCount;
 	final Ingredient input;
@@ -33,6 +34,12 @@ public class RecipeUnaryBase
 	@Override
 	public void onDeregistered()
 	{
+		// Used to remove recipes from JEI, for example
+		ZeithTechAPI.ifPresent(api -> api
+				.getRecipeRegistries()
+				.getRecipeLifecycleListener()
+				.onRecipeDeRegistered(this)
+		);
 	}
 	
 	public ItemStack getRecipeOutput()
@@ -53,7 +60,7 @@ public class RecipeUnaryBase
 	}
 	
 	@Override
-	public TechTier getTier()
+	public TechTier getMinTier()
 	{
 		return tier;
 	}
@@ -78,11 +85,11 @@ public class RecipeUnaryBase
 	public static class Builder<T extends RecipeUnaryBase>
 			extends BuilderWithStackResult<T, Builder<T>>
 	{
-		private Ingredient inputItem = Ingredient.EMPTY;
-		private int time = 200, inputCount = 1;
-		private TechTier tier = TechTier.BASIC;
+		protected Ingredient inputItem = Ingredient.EMPTY;
+		protected int time = 200, inputCount = 1;
+		protected TechTier tier = TechTier.BASIC;
 		
-		private final IUnaryRecipeConstructor<T> constructor;
+		protected final IUnaryRecipeConstructor<T> constructor;
 		
 		public Builder(IRecipeRegistrationEvent<T> event, IUnaryRecipeConstructor<T> constructor)
 		{
@@ -90,7 +97,7 @@ public class RecipeUnaryBase
 			this.constructor = constructor;
 		}
 		
-		public Builder<T> withTier(TechTier tier)
+		public Builder<T> tier(TechTier tier)
 		{
 			this.tier = tier;
 			return this;

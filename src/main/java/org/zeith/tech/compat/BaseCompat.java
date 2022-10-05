@@ -1,30 +1,20 @@
 package org.zeith.tech.compat;
 
-import org.zeith.tech.api.recipes.processing.*;
+import org.zeith.tech.api.recipes.IRecipeLifecycleListener;
+import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 
 public class BaseCompat
+		implements IRecipeLifecycleListener
 {
-	public void acceptRecipe(RecipeMachineAssembler assembler)
+	@Override
+	public <T extends IZeithTechRecipe> void onRecipeDeRegistered(T recipe)
 	{
+		IRecipeLifecycleListener.super.onRecipeDeRegistered(recipe);
 	}
 	
-	public void deregisterRecipe(RecipeMachineAssembler assembler)
+	@Override
+	public <T extends IZeithTechRecipe> void onRecipeRegistered(T recipe)
 	{
-	}
-	
-	public void acceptRecipe(RecipeGrinding grinding)
-	{
-	}
-	
-	public void deregisterRecipe(RecipeGrinding grinding)
-	{
-	}
-	
-	public void acceptRecipe(RecipeHammering hammering)
-	{
-	}
-	
-	public void deregisterRecipe(RecipeHammering hammering)
-	{
+		IRecipeLifecycleListener.super.onRecipeRegistered(recipe);
 	}
 }

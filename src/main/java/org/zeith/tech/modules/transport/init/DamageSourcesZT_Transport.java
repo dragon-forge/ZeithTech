@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.transport.init;
 
 import net.minecraft.world.damagesource.DamageSource;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 
 public interface DamageSourcesZT_Transport
 {

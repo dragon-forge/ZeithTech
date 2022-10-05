@@ -21,7 +21,7 @@ import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.api.forge.ContainerAPI;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 
 import java.util.List;
 

@@ -11,30 +11,48 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.api.wrench.IWrenchable;
+import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.api.tiles.IContainerTile;
+import org.zeith.hammerlib.net.properties.PropertyBool;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
+import org.zeith.hammerlib.util.java.DirectStorage;
+import org.zeith.tech.api.tile.IEnableableTile;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 public abstract class TileBaseMachine<T extends TileBaseMachine<T>>
 		extends TileSyncableTickable
-		implements IContainerTile, IWrenchable
+		implements IContainerTile, IWrenchable, IEnableableTile
 {
+	
+	@NBTSerializable("Interrupted")
+	public boolean interrupted;
+	
+	public final PropertyBool isInterrupted = new PropertyBool(DirectStorage.create(i -> interrupted = i, () -> interrupted));
+	
 	public TileBaseMachine(BlockEntityType<T> type, BlockPos pos, BlockState state)
 	{
 		super(type, pos, state);
+		dispatcher.registerProperty("interrupted", isInterrupted);
 	}
 	
 	@Override
 	public abstract void update();
 	
+	@Override
 	public boolean isEnabled()
 	{
 		var s = level.getBlockState(worldPosition);
 		if(s.getBlock() == getBlockState().getBlock() && s.hasProperty(BlockStateProperties.ENABLED))
 			return s.getValue(BlockStateProperties.ENABLED);
 		return false;
+	}
+	
+	@Override
+	public boolean isInterrupted()
+	{
+		return isInterrupted.getBoolean();
 	}
 	
 	public void setEnabledState(boolean enabled)

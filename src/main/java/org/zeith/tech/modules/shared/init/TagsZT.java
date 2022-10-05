@@ -5,7 +5,7 @@ import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 
 public class TagsZT
 {
@@ -24,7 +24,8 @@ public class TagsZT
 		
 		public static final TagKey<Item> MINING_PIPE = modTag("mining_pipe");
 		
-		public static final TagKey<Item> HEVEA_LOGS = tag("hevea_logs");
+		public static final TagKey<Item> HEVEA_LOGS = modTag("hevea_logs");
+		public static final TagKey<Item> HEVEA_PLANKS = modTag("hevea_planks");
 		
 		public static final TagKey<Item> INGOTS_TIN = tag("ingots/tin");
 		public static final TagKey<Item> INGOTS_LEAD = tag("ingots/lead");

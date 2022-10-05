@@ -3,6 +3,8 @@ package org.zeith.tech.compat.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.*;
@@ -14,22 +16,30 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.LogicalSide;
 import org.zeith.hammerlib.core.RecipeHelper;
+import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.compat.jei.ITieredRecipeType;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.processing.*;
+import org.zeith.tech.api.recipes.base.ITieredRecipe;
+import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.compat.BaseCompat;
-import org.zeith.tech.compat.jei.grinder.GrinderCategoryB;
-import org.zeith.tech.compat.jei.hammering.ManualHammeringCategory;
-import org.zeith.tech.compat.jei.machine_assembly.MachineAssemblyCategoryB;
+import org.zeith.tech.compat.jei.category.SawmillCategoryB;
+import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
+import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
+import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.GuiFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
-import org.zeith.tech.modules.processing.init.*;
+import org.zeith.tech.modules.processing.blocks.sawmill.basic.GuiSawmillB;
+import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
+import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @JeiPlugin
@@ -39,7 +49,8 @@ public class JeiZT
 {
 	public static final ResourceLocation UID = new ResourceLocation(ZeithTech.MOD_ID, "jei");
 	
-	public IJeiRuntime jeiRuntime;
+	IJeiRuntime jeiRuntime;
+	List<RecipeType<?>> jeiRecipeTypes = List.of();
 	
 	public JeiZT()
 	{
@@ -63,36 +74,23 @@ public class JeiZT
 	{
 		var gui$ = registration.getJeiHelpers().getGuiHelper();
 		
-		registration.addRecipeCategories(
+		registerRecipeCategories(registration,
 				new ManualHammeringCategory(gui$),
 				new MachineAssemblyCategoryB(gui$),
-				new GrinderCategoryB(gui$)
+				new GrinderCategoryB(gui$),
+				new SawmillCategoryB(gui$)
 		);
 	}
 	
 	@Override
 	public void registerRecipes(IRecipeRegistration registration)
 	{
-		registration.addRecipes(RecipeTypesZT.MANUAL_HAMMERING, RecipeRegistriesZT_Processing.HAMMERING
-				.getRecipes()
-				.stream()
-				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
-				.toList()
-		);
+		var api = ZeithTechAPI.get().getRecipeRegistries();
 		
-		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY
-				.getRecipes()
-				.stream()
-				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
-				.toList()
-		);
-		
-		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, RecipeRegistriesZT_Processing.GRINDING
-				.getRecipes()
-				.stream()
-				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
-				.toList()
-		);
+		registration.addRecipes(RecipeTypesZT.MANUAL_HAMMERING, api.getRecipesUpToTier(api.hammering(), TechTier.BASIC));
+		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, api.getRecipesUpToTier(api.machineAssembly(), TechTier.BASIC));
+		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, api.getRecipesUpToTier(api.grinding(), TechTier.BASIC));
+		registration.addRecipes(RecipeTypesZT.SAWMILL, api.sawmill().getRecipes().stream().toList());
 		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
@@ -107,6 +105,7 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(ItemsZT_Processing.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
 	}
 	
 	@Override
@@ -116,6 +115,7 @@ public class JeiZT
 		registration.addRecipeClickArea(GuiFuelGeneratorB.class, 81, 29, 13, 14, RecipeTypes.FUELING);
 		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
 		registration.addRecipeClickArea(GuiGrinderB.class, 72, 35, 22, 15, RecipeTypesZT.GRINDER_BASIC);
+		registration.addRecipeClickArea(GuiSawmillB.class, 61, 35, 22, 15, RecipeTypesZT.SAWMILL);
 	}
 	
 	private static Stream<RepairData> getRepairData()
@@ -125,8 +125,10 @@ public class JeiZT
 						new ItemStack(ItemsZT_Processing.IRON_HAMMER),
 						new ItemStack(ItemsZT_Processing.WIRE_CUTTER),
 						new ItemStack(ItemsZT_Processing.IRON_MINING_HEAD)),
+				
 				new RepairData(RecipeHelper.fromTag(Tags.Items.GEMS_DIAMOND),
 						new ItemStack(ItemsZT_Processing.DIAMOND_MINING_HEAD)),
+				
 				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE),
 						new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD))
 		);
@@ -186,45 +188,52 @@ public class JeiZT
 		});
 	}
 	
-	@Override
-	public void acceptRecipe(RecipeMachineAssembler assembler)
+	private void registerRecipeCategories(IRecipeCategoryRegistration registration, IRecipeCategory<?>... categories)
 	{
-		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, List.of(assembler));
+		jeiRecipeTypes = Stream.of(categories).map(IRecipeCategory::getRecipeType).collect(Collectors.toList());
+		registration.addRecipeCategories(categories);
 	}
 	
 	@Override
-	public void deregisterRecipe(RecipeMachineAssembler assembler)
+	public <T extends IZeithTechRecipe> void onRecipeRegistered(T recipe)
 	{
+		super.onRecipeRegistered(recipe);
+		
 		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, List.of(assembler));
+		{
+			for(RecipeType<?> type : jeiRecipeTypes)
+			{
+				if(recipe.is(type.getRecipeClass()))
+				{
+					RecipeType<T> type1 = Cast.cast(type);
+					
+					if(recipe instanceof ITieredRecipe tiered && !ITieredRecipeType.get(type)
+							.map(itrt -> itrt.canHandle(tiered.getMinTier()))
+							.orElse(true))
+						continue;
+					
+					jeiRuntime.getRecipeManager().addRecipes(type1, List.of(recipe));
+				}
+			}
+		}
 	}
 	
 	@Override
-	public void acceptRecipe(RecipeHammering hammering)
+	public <T extends IZeithTechRecipe> void onRecipeDeRegistered(T recipe)
 	{
+		super.onRecipeDeRegistered(recipe);
+		
 		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.MANUAL_HAMMERING, List.of(hammering));
-	}
-	
-	@Override
-	public void deregisterRecipe(RecipeHammering hammering)
-	{
-		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.MANUAL_HAMMERING, List.of(hammering));
-	}
-	
-	@Override
-	public void acceptRecipe(RecipeGrinding grinding)
-	{
-		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-			jeiRuntime.getRecipeManager().addRecipes(RecipeTypesZT.GRINDER_BASIC, List.of(grinding));
-	}
-	
-	@Override
-	public void deregisterRecipe(RecipeGrinding grinding)
-	{
-		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-			jeiRuntime.getRecipeManager().hideRecipes(RecipeTypesZT.GRINDER_BASIC, List.of(grinding));
+		{
+			for(RecipeType<?> type : jeiRecipeTypes)
+			{
+				if(recipe.is(type.getRecipeClass()))
+				{
+					RecipeType<T> type1 = Cast.cast(type);
+					
+					jeiRuntime.getRecipeManager().hideRecipes(type1, List.of(recipe));
+				}
+			}
+		}
 	}
 }

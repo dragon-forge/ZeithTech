@@ -10,6 +10,7 @@ import org.zeith.tech.modules.processing.blocks.fuelgen.basic.TileFuelGeneratorB
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.TileMiningQuarryB;
+import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
 import org.zeith.tech.modules.processing.client.renderer.tile.TileRendererElectricFurnaceB;
 import org.zeith.tech.modules.processing.client.renderer.tile.TileRendererMachineAssemblerB;
 
@@ -29,6 +30,9 @@ public interface TilesZT_Processing
 	
 	@RegistryName("processing/grinder/basic")
 	BlockEntityType<TileGrinderB> BASIC_GRINDER = BlockAPI.createBlockEntityType(TileGrinderB::new, BlocksZT_Processing.BASIC_GRINDER);
+	
+	@RegistryName("processing/sawmill/basic")
+	BlockEntityType<TileSawmillB> BASIC_SAWMILL = BlockAPI.createBlockEntityType(TileSawmillB::new, BlocksZT_Processing.BASIC_SAWMILL);
 	
 	@RegistryName("processing/mining_quarry/basic")
 	BlockEntityType<TileMiningQuarryB> BASIC_QUARRY = BlockAPI.createBlockEntityType(TileMiningQuarryB::new, BlocksZT_Processing.BASIC_QUARRY);

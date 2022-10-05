@@ -10,7 +10,7 @@ import org.zeith.hammerlib.client.screen.ScreenWTFMojang;
 import org.zeith.hammerlib.client.utils.FXUtils;
 import org.zeith.hammerlib.client.utils.RenderUtils;
 import org.zeith.hammerlib.util.colors.ColorHelper;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.transport.container.ContainerMultimeter;
 
 import java.util.stream.DoubleStream;
@@ -40,17 +40,22 @@ public class GuiMultimeter
 		
 		pose.pushPose();
 		pose.translate(leftPos + 8, topPos + 8, 0);
+		
 		var max = Stream.of(menu.graphs).flatMapToDouble(DoubleStream::of).max().orElse(1);
 		renderGraph(pose, menu.graphs[2], menu.age, 0xFF_FF00FF, max); // transfer
 		renderGraph(pose, menu.graphs[0], menu.age, 0xFF_FFFF00, max); // generation
 		renderGraph(pose, menu.graphs[1], menu.age, 0xFF_00FFFF, max); // consumption
+		
+		pose.translate(132, -3, 0);
+		pose.scale(0.5F, 0.5F, 0.5F);
+		drawString(pose, font, "Max: %.2f FE".formatted(max), 0, 0, 0xFF_FFFFFF);
 		pose.popPose();
 	}
 	
 	@Override
 	protected boolean renderForeground(PoseStack pose, int mouseX, int mouseY)
 	{
-		int y = 9;
+		int y = 12;
 		int lineSpacing = font.lineHeight + 3;
 		var lim = Math.max(1, menu.age);
 		

@@ -16,5 +16,45 @@
       "zeithtech:random/anvil_use_done"
     ],
     "subtitle": "subtitles.block.anvil.use"
+  },
+  "processing.block.basic_interrupt": {
+    "sounds": [
+      "zeithtech:processing/block/basic_interrupt"
+    ]
+  },
+  "processing.block.fuel_generator.basic": {
+    "sounds": [
+      "zeithtech:processing/block/fuel_generator/basic/1",
+      "zeithtech:processing/block/fuel_generator/basic/2",
+      "zeithtech:processing/block/fuel_generator/basic/3",
+      "zeithtech:processing/block/fuel_generator/basic/4",
+      "zeithtech:processing/block/fuel_generator/basic/5"
+    ]
+  },
+  "processing.block.electric_furnace.basic": {
+    "sounds": [
+      "zeithtech:processing/block/electric_furnace/basic/1",
+      "zeithtech:processing/block/electric_furnace/basic/2",
+      "zeithtech:processing/block/electric_furnace/basic/3",
+      "zeithtech:processing/block/electric_furnace/basic/4",
+      "zeithtech:processing/block/electric_furnace/basic/5"
+    ]
+  },
+  "processing.block.grinder.basic": {
+    "sounds": [
+      "zeithtech:processing/block/grinder/basic/1",
+      "zeithtech:processing/block/grinder/basic/2",
+      "zeithtech:processing/block/grinder/basic/3",
+      "zeithtech:processing/block/grinder/basic/4"
+    ]
+  },
+  "processing.block.sawmill.basic": {
+    "sounds": [
+      "zeithtech:processing/block/sawmill/basic/1",
+      "zeithtech:processing/block/sawmill/basic/2",
+      "zeithtech:processing/block/sawmill/basic/3",
+      "zeithtech:processing/block/sawmill/basic/4",
+      "zeithtech:processing/block/sawmill/basic/5"
+    ]
   }
 }

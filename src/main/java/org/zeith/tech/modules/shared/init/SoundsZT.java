@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 
 @SimplyRegister
 public interface SoundsZT

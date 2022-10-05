@@ -1,7 +1,13 @@
 package org.zeith.tech.api.recipes;
 
+import org.jetbrains.annotations.ApiStatus;
+import org.zeith.hammerlib.api.crafting.INameableRecipe;
 import org.zeith.hammerlib.api.crafting.NamespacedRecipeRegistry;
+import org.zeith.tech.api.enums.TechTier;
+import org.zeith.tech.api.recipes.base.ITieredRecipe;
 import org.zeith.tech.api.recipes.processing.*;
+
+import java.util.List;
 
 public interface IRecipeRegistries
 {
@@ -10,4 +16,11 @@ public interface IRecipeRegistries
 	NamespacedRecipeRegistry<RecipeMachineAssembler> machineAssembly();
 	
 	NamespacedRecipeRegistry<RecipeGrinding> grinding();
+	
+	NamespacedRecipeRegistry<RecipeSawmill> sawmill();
+	
+	<T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier);
+	
+	@ApiStatus.Internal
+	IRecipeLifecycleListener getRecipeLifecycleListener();
 }

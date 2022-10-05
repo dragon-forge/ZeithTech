@@ -10,7 +10,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 
 import java.util.*;
 

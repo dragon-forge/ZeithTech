@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -12,14 +13,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.recipes.base.IUnaryRecipe;
 import org.zeith.tech.api.recipes.processing.RecipeGrinding;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.ContainerUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.TileUnaryRecipeMachineB;
-import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
-import org.zeith.tech.modules.processing.init.TilesZT_Processing;
+import org.zeith.tech.modules.processing.init.*;
 
 public class TileGrinderB
 		extends TileUnaryRecipeMachineB<TileGrinderB, RecipeGrinding>
@@ -40,6 +40,12 @@ public class TileGrinderB
 		ecfg.setRelative(RelativeDirection.BACK, SideConfig.PULL);
 		ecfg.setRelative(RelativeDirection.LEFT, SideConfig.PULL);
 		ecfg.setRelative(RelativeDirection.RIGHT, SideConfig.PULL);
+	}
+	
+	@Override
+	protected SoundEvent getWorkingSound()
+	{
+		return SoundsZT_Processing.BASIC_GRINDER;
 	}
 	
 	@Override
@@ -65,7 +71,7 @@ public class TileGrinderB
 	{
 		super.update();
 		
-		if(isEnabled() && isOnClient())
+		if(isEnabled() && isOnClient() && !isInterrupted())
 		{
 			var item = inputItemDisplay.get();
 			

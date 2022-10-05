@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlac
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 
 import java.util.List;

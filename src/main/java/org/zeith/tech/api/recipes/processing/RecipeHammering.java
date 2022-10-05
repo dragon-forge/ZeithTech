@@ -17,17 +17,16 @@ import net.minecraft.world.phys.Vec3;
 import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
-import org.zeith.tech.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.base.BuilderWithStackResult;
-import org.zeith.tech.api.recipes.base.IUnaryRecipe;
+import org.zeith.tech.api.recipes.base.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeHammering
 		extends BaseNameableRecipe
-		implements IUnaryRecipe
+		implements IUnaryRecipe, IZeithTechRecipe
 {
 	final List<TagKey<Block>> blockHammeringTags;
 	final int hitCount;
@@ -50,7 +49,11 @@ public class RecipeHammering
 	@Override
 	public void onDeregistered()
 	{
-		ZeithTech.forCompats(c -> c.deregisterRecipe(this));
+		ZeithTechAPI.ifPresent(api -> api
+				.getRecipeRegistries()
+				.getRecipeLifecycleListener()
+				.onRecipeDeRegistered(this)
+		);
 	}
 	
 	public int getHitCountRaw()
@@ -90,7 +93,7 @@ public class RecipeHammering
 	
 	public boolean isTierGoodEnough(TechTier tier)
 	{
-		return tier.isOrHigher(getTier());
+		return tier.isOrHigher(getMinTier());
 	}
 	
 	@Override
@@ -106,7 +109,7 @@ public class RecipeHammering
 	}
 	
 	@Override
-	public TechTier getTier()
+	public TechTier getMinTier()
 	{
 		return tier;
 	}

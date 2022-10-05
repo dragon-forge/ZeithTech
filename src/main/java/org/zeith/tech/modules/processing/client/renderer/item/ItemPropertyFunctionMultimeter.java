@@ -51,19 +51,16 @@ public class ItemPropertyFunctionMultimeter
 	{
 		float currentRotation = 0;
 		
-		if(entity instanceof Player player)
+		if(entity instanceof Player player && player.isLocalPlayer())
 		{
-			if(player.isLocalPlayer())
-			{
-				var wobble = this.wobble(item);
-				
-				if(wobble.shouldUpdate(gameTime))
-					wobble.update(gameTime, ItemMultimeter.getLoadFromLook(item));
-				
-				double finalRotation = currentRotation + wobble.rotation;
-				
-				return Mth.clamp((float) finalRotation, 0.0F, 1.0F);
-			}
+			var wobble = this.wobble(item);
+			
+			if(wobble.shouldUpdate(gameTime))
+				wobble.update(gameTime, ItemMultimeter.getLoadFromLook(item));
+			
+			double finalRotation = currentRotation + wobble.rotation;
+			
+			return Mth.clamp((float) finalRotation, 0.0F, 1.0F);
 		}
 		
 		return 0F;

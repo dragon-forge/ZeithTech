@@ -30,7 +30,7 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.mcf.BlockPosList;
-import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
+import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
@@ -172,7 +172,18 @@ public class TileMiningQuarryB
 		
 		if(cooldown > 0)
 		{
-			if(halted || energy.consumeEnergy(40))
+			boolean decreaseCooldown = halted;
+			
+			if(!decreaseCooldown)
+			{
+				if(energy.consumeEnergy(40))
+				{
+					isInterrupted.setBool(false);
+					decreaseCooldown = true;
+				} else isInterrupted.setBool(true);
+			}
+			
+			if(decreaseCooldown)
 			{
 				--cooldown;
 				if(!isEnabled())

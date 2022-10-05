@@ -20,9 +20,9 @@ import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.ZeithTech;
 import org.zeith.tech.api.tile.BlockEntityTypeModifier;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.blocks.BaseEntityBlockZT;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 

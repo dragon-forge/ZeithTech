@@ -22,13 +22,15 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.*;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.DirectStorage;
-import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
+import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.utils.SidedInventory;
 
@@ -90,7 +92,7 @@ public class TileElectricFurnaceB
 	public final PropertyInt progress = new PropertyInt(DirectStorage.create(i -> _progress = i, () -> _progress));
 	public final PropertyInt maxProgress = new PropertyInt(DirectStorage.create(i -> _maxProgress = i, () -> _maxProgress));
 	public final PropertyResourceLocation activeRecipe = new PropertyResourceLocation(DirectStorage.create(i -> _activeRecipe = i, () -> _activeRecipe));
-	
+
 	public final PropertyItemStack inputItemDisplay = new PropertyItemStack(DirectStorage.allocate(ItemStack.EMPTY));
 	
 	public TileElectricFurnaceB(BlockPos pos, BlockState state)
@@ -117,28 +119,45 @@ public class TileElectricFurnaceB
 			inputItemDisplay.set(first);
 		}
 		
-		var recipe = getActiveRecipe();
-		if(recipe != null)
+		if(isOnServer())
 		{
-			maxProgress.setInt(recipe.getCookingTime());
-			
-			if(_progress < _maxProgress && isOnServer() && energy.consumeEnergy(20))
-				_progress += 1;
-			
-			var enable = _progress > 0;
-			if(isEnabled() != enable)
-				setEnabledState(enable);
-			
-			if(isOnServer() && _progress >= _maxProgress && storeAll(recipe.assemble(inventory)))
+			var recipe = getActiveRecipe();
+			if(recipe != null)
 			{
-				inventory.getItem(0).shrink(1);
-				_progress = 0;
-				sync();
-			}
-		} else if(_progress > 0)
-			_progress = Math.max(0, _progress - 2);
-		else if(isEnabled())
-			setEnabledState(false);
+				maxProgress.setInt(recipe.getCookingTime());
+				
+				if(_progress < _maxProgress && isOnServer())
+				{
+					if(energy.consumeEnergy(20))
+					{
+						_progress += 1;
+						isInterrupted.setBool(false);
+					} else
+						isInterrupted.setBool(true);
+				}
+				
+				var enable = _progress > 0;
+				if(isEnabled() != enable)
+					setEnabledState(enable);
+				
+				if(isOnServer() && _progress >= _maxProgress && storeAll(recipe.assemble(inventory)))
+				{
+					inventory.getItem(0).shrink(1);
+					_progress = 0;
+					sync();
+				}
+			} else if(_progress > 0)
+				_progress = Math.max(0, _progress - 2);
+			else if(isEnabled())
+				setEnabledState(false);
+		}
+		
+		if(isOnClient() && isEnabled())
+		{
+			ZeithTechAPI.get()
+					.getAudioSystem()
+					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_ELECTRIC_FURNACE, null); // TODO: SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
+		}
 	}
 	
 	public boolean storeAll(ItemStack stack)

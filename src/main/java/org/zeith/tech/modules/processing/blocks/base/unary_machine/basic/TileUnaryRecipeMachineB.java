@@ -3,6 +3,7 @@ package org.zeith.tech.modules.processing.blocks.base.unary_machine.basic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,8 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.net.properties.PropertyItemStack;
 import org.zeith.hammerlib.util.java.DirectStorage;
-import org.zeith.tech.api.capabilities.ZeithTechCapabilities;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.recipes.base.IUnaryRecipe;
 import org.zeith.tech.api.tile.ITieredTile;
@@ -49,18 +51,7 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 			.setDefaults(SidedConfigTyped.ITEM, SideConfig.NONE);
 	
 	@NBTSerializable("Items")
-	public final SidedInventory inventory = new SidedInventory(2, sidedConfig.createItemAccess(new int[] { 0 }, new int[] { 1 }));
-	
-	{
-		inventory.isStackValid = (slot, stack) ->
-		{
-			if(level != null && slot == 0)
-				return recipeProvider
-						.findMatching(this, stack)
-						.isPresent();
-			return false;
-		};
-	}
+	public final SidedInventory inventory = createSidedInventory();
 	
 	@NBTSerializable("FE")
 	public final EnergyManager energy = createEnergyManager();
@@ -89,6 +80,13 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	
 	protected abstract IUnaryRecipe.IUnaryRecipeProvider<R> createRecipeProvider();
 	
+	protected SidedInventory createSidedInventory()
+	{
+		var inv = new SidedInventory(2, sidedConfig.createItemAccess(new int[] { 0 }, new int[] { 1 }));
+		inv.isStackValid = (slot, stack) -> level != null && slot == 0 && recipeProvider.findMatching(this, stack).isPresent();
+		return inv;
+	}
+	
 	protected int getConsumptionPerTick()
 	{
 		return 20;
@@ -103,6 +101,16 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	protected EnergyManager createEnergyManager()
 	{
 		return new EnergyManager(20000, 64, 0);
+	}
+	
+	protected SoundEvent getWorkingSound()
+	{
+		return null;
+	}
+	
+	protected SoundEvent getInterruptSound()
+	{
+		return null; // TODO: make SoundsZT_Processing.BASIC_MACHINE_INTERRUPT;
 	}
 	
 	@Override
@@ -123,15 +131,24 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 			{
 				maxProgress.setInt(recipe.getCraftTime());
 				
-				if(_progress < _maxProgress && isOnServer() && energy.consumeEnergy(getConsumptionPerTick())
-						&& (_progress > 0 || store(recipe.assemble(this), true)))
-					_progress += 1;
+				if(_progress < _maxProgress && isOnServer()
+						&& (_progress > 0 || storeRecipeResult(recipe, true)))
+				{
+					if(energy.consumeEnergy(getConsumptionPerTick()))
+					{
+						_progress += 1;
+						isInterrupted.setBool(false);
+					} else
+					{
+						isInterrupted.setBool(true);
+					}
+				}
 				
 				var enable = _progress > 0;
 				if(isEnabled() != enable)
 					setEnabledState(enable);
 				
-				if(isOnServer() && _progress >= _maxProgress && store(recipe.assemble(this), false))
+				if(isOnServer() && _progress >= _maxProgress && storeRecipeResult(recipe, false))
 				{
 					inventory.getItem(0)
 							.shrink(recipe.getInputCount());
@@ -146,6 +163,20 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 					setEnabledState(false);
 			});
 		}
+		
+		if(isOnClient() && isEnabled())
+		{
+			var work = getWorkingSound();
+			if(work != null)
+				ZeithTechAPI.get()
+						.getAudioSystem()
+						.playMachineSoundLoop(this, work, getInterruptSound());
+		}
+	}
+	
+	protected boolean storeRecipeResult(R recipe, boolean simulate)
+	{
+		return store(recipe.assemble(this), simulate);
 	}
 	
 	public boolean store(ItemStack stacks, boolean simulate)

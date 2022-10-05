@@ -12,6 +12,7 @@ import org.zeith.tech.modules.processing.blocks.fuelgen.basic.BlockFuelGenerator
 import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQuarryB;
+import org.zeith.tech.modules.processing.blocks.sawmill.basic.BlockSawmillB;
 
 @SimplyRegister
 public interface BlocksZT_Processing
@@ -27,6 +28,9 @@ public interface BlocksZT_Processing
 	
 	@RegistryName("processing/grinder/basic")
 	BlockGrinderB BASIC_GRINDER = new BlockGrinderB();
+	
+	@RegistryName("processing/sawmill/basic")
+	BlockSawmillB BASIC_SAWMILL = new BlockSawmillB();
 	
 	@RegistryName("processing/mining_quarry/basic")
 	BlockMiningQuarryB BASIC_QUARRY = new BlockMiningQuarryB();

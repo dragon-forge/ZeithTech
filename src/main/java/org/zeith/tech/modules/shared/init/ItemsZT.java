@@ -1,8 +1,8 @@
 package org.zeith.tech.modules.shared.init;
 
 import net.minecraft.world.item.Item;
-import org.zeith.hammerlib.annotations.RegistryName;
-import org.zeith.hammerlib.annotations.SimplyRegister;
+import net.minecraft.world.level.block.ComposterBlock;
+import org.zeith.hammerlib.annotations.*;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.BaseZT;
 import org.zeith.tech.modules.transport.init.ItemsZT_Transport;
@@ -34,4 +34,15 @@ public interface ItemsZT
 	
 	@RegistryName("motor")
 	Item MOTOR = BaseZT.newItem();
+	
+	@RegistryName("circular_saw")
+	Item CIRCULAR_SAW = BaseZT.newItem();
+	
+	@RegistryName("sawdust")
+	Item SAWDUST = BaseZT.newItem();
+	
+	static @Setup void setup()
+	{
+		ComposterBlock.COMPOSTABLES.put(SAWDUST, 0.3F);
+	}
 }
