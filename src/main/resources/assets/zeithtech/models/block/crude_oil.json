@@ -1,0 +1,7 @@
+{
+  "textures": {
+    "particle": "zeithtech:block/crude_oil",
+    "flow": "zeithtech:block/crude_oil_flow"
+  }
+}
+

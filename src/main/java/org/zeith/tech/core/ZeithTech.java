@@ -2,13 +2,17 @@ package org.zeith.tech.core;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +20,7 @@ import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
+import org.zeith.hammerlib.event.recipe.BuildTagsEvent;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.audio.IAudioSystem;
 import org.zeith.tech.api.modules.IZeithTechModules;
@@ -26,18 +31,20 @@ import org.zeith.tech.core.audio.CommonAudioSystem;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.shared.init.TagsZT;
+import org.zeith.tech.utils.LegacyEventBus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 @Mod(ZeithTech.MOD_ID)
 public class ZeithTech
 		extends ZeithTechAPI
 {
-	private final ModulesImpl MODULES;
-	private final RecipeRegistries REGISTRIES;
-	private final CommonAudioSystem AUDIO_SYSTEM;
+	static final Map<TagKey<Fluid>, Set<Fluid>> fluidTags = new ConcurrentHashMap<>();
+	private final ModulesImpl modules;
+	private final RecipeRegistries registries;
+	private final CommonAudioSystem audioSystem;
 	
 	public static final String MOD_ID = "zeithtech";
 	
@@ -52,6 +59,8 @@ public class ZeithTech
 		}
 	};
 	
+	public final LegacyEventBus busses;
+	
 	public ZeithTech()
 	{
 		TagsZT.init();
@@ -61,6 +70,8 @@ public class ZeithTech
 		
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::setup);
+		
+		this.busses = new LegacyEventBus(bus, MinecraftForge.EVENT_BUS);
 		
 		var illegalSourceNotice = ModSourceAdapter.getModSource(HammerLib.class)
 				.filter(ModSourceAdapter.ModSource::wasDownloadedIllegally)
@@ -98,34 +109,49 @@ public class ZeithTech
 			);
 		}
 		
-		this.MODULES = new ModulesImpl();
+		this.modules = new ModulesImpl();
+		this.modules.construct(this.busses);
 		
-		this.REGISTRIES = new RecipeRegistries();
-		this.AUDIO_SYSTEM = DistExecutor.unsafeRunForDist(() -> ClientAudioSystem::new, () -> CommonAudioSystem::new);
+		this.registries = new RecipeRegistries();
+		this.audioSystem = DistExecutor.unsafeRunForDist(() -> ClientAudioSystem::new, () -> CommonAudioSystem::new);
+		
+		HammerLib.EVENT_BUS.addListener(this::applyTags);
 	}
 	
 	private void setup(FMLCommonSetupEvent e)
 	{
-		this.MODULES.enable();
+		this.modules.enable();
 		RecipeRegistriesZT_Processing.setup(e);
+	}
+	
+	public void applyTags(BuildTagsEvent evt)
+	{
+		if(evt.reg == ForgeRegistries.FLUIDS)
+			fluidTags.forEach(evt::addAllToTag);
+	}
+	
+	public static void bindStaticTag(TagKey<Fluid> tag, Fluid... fluids)
+	{
+		Set<Fluid> set = fluidTags.computeIfAbsent(tag, b -> new HashSet<>());
+		set.addAll(List.of(fluids));
 	}
 	
 	@Override
 	public IZeithTechModules getModules()
 	{
-		return MODULES;
+		return modules;
 	}
 	
 	@Override
 	public IRecipeRegistries getRecipeRegistries()
 	{
-		return REGISTRIES;
+		return registries;
 	}
 	
 	@Override
 	public IAudioSystem getAudioSystem()
 	{
-		return AUDIO_SYSTEM;
+		return audioSystem;
 	}
 	
 	@Override

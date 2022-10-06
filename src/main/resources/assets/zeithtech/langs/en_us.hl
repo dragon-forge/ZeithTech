@@ -46,6 +46,7 @@ block.zeithtech.tin_block=Block of Tin
 block.zeithtech.tungsten_block=Block of Tungsten
 block.zeithtech.zinc_block=Block of Zinc
 
+item.zeithtech.crude_oil_bucket=Bucket of Crude Oil
 item.zeithtech.hevea_boat=Hevea Boat
 item.zeithtech.hevea_chest_boat=Hevea Boat with Chest
 item.zeithtech.raw_aluminum=Raw Aluminum
@@ -66,6 +67,8 @@ item.zeithtech.lead_plate=Lead Plate
 item.zeithtech.tin_plate=Tin Plate
 item.zeithtech.tungsten_plate=Tungsten Plate
 item.zeithtech.zinc_plate=Zinc Plate
+
+fluid_type.zeithtech.crude_oil=Crude Oil
 
 
 ### Shared Module ###

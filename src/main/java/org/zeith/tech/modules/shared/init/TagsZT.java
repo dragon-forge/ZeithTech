@@ -140,6 +140,7 @@ public class TagsZT
 		}
 		
 		public static final TagKey<Fluid> HONEY = tag("honey");
+		public static final TagKey<Fluid> OIL = tag("oil");
 		
 		private static TagKey<Fluid> tag(String name)
 		{

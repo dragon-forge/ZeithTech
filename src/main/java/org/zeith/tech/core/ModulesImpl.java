@@ -6,6 +6,9 @@ import org.zeith.tech.modules.processing.ProcessingModule;
 import org.zeith.tech.modules.shared.SharedModule;
 import org.zeith.tech.modules.transport.TransportModule;
 import org.zeith.tech.modules.world.WorldModule;
+import org.zeith.tech.utils.LegacyEventBus;
+
+import java.util.List;
 
 class ModulesImpl
 		implements IZeithTechModules, IInternalCode
@@ -14,6 +17,15 @@ class ModulesImpl
 	final WorldModule worldModule = new WorldModule();
 	final TransportModule transportModule = new TransportModule();
 	final ProcessingModule processingModule = new ProcessingModule();
+	
+	final List<IInternalCode> subs = List.of(sharedModule, worldModule, transportModule, processingModule);
+	
+	@Override
+	public void construct(LegacyEventBus bus)
+	{
+		for(IInternalCode sub : subs)
+			sub.construct(bus);
+	}
 	
 	@Override
 	public void enable()

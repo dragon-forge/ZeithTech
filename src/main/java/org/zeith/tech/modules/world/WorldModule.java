@@ -1,13 +1,14 @@
 package org.zeith.tech.modules.world;
 
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.tech.api.modules.IModuleWorld;
 import org.zeith.tech.core.IInternalCode;
+import org.zeith.tech.modules.world.init.FluidTypesZT_World;
 import org.zeith.tech.modules.world.init.RecipesZT_World;
 import org.zeith.tech.modules.world.proxy.ClientWorldProxyZT;
 import org.zeith.tech.modules.world.proxy.CommonWorldProxyZT;
+import org.zeith.tech.utils.LegacyEventBus;
 
 public class WorldModule
 		implements IModuleWorld, IInternalCode
@@ -16,10 +17,11 @@ public class WorldModule
 	
 	private boolean wasEnabled = false;
 	
-	public WorldModule()
+	@Override
+	public void construct(LegacyEventBus bus)
 	{
-		var bus = FMLJavaModLoadingContext.get().getModEventBus();
-		PROXY.subEvents(bus);
+		PROXY.subEvents(bus.modBus());
+		FluidTypesZT_World.register(bus);
 	}
 	
 	@Override

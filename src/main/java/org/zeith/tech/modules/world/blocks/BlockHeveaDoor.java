@@ -5,6 +5,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
@@ -77,7 +78,7 @@ public class BlockHeveaDoor
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
 	{
-		if(dropsSelf)
+		if(dropsSelf && state.getValue(HALF) == DoubleBlockHalf.LOWER)
 			return List.of(new ItemStack(this));
 		else
 			return super.getDrops(state, builder);
