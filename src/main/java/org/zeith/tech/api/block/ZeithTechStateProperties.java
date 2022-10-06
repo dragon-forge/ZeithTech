@@ -5,4 +5,5 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 public class ZeithTechStateProperties
 {
 	public static final BooleanProperty CRUDE_OIL_LOGGED = BooleanProperty.create("crude_oil_logged");
+	public static final BooleanProperty LAVA_LOGGED = BooleanProperty.create("lavalogged");
 }

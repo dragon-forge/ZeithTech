@@ -4,7 +4,7 @@ import net.minecraftforge.fml.DistExecutor;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.tech.api.modules.IModuleWorld;
 import org.zeith.tech.core.IInternalCode;
-import org.zeith.tech.modules.world.init.FluidTypesZT_World;
+import org.zeith.tech.modules.world.init.FluidsZT_World;
 import org.zeith.tech.modules.world.init.RecipesZT_World;
 import org.zeith.tech.modules.world.proxy.ClientWorldProxyZT;
 import org.zeith.tech.modules.world.proxy.CommonWorldProxyZT;
@@ -21,7 +21,7 @@ public class WorldModule
 	public void construct(LegacyEventBus bus)
 	{
 		PROXY.subEvents(bus.modBus());
-		FluidTypesZT_World.register(bus);
+		FluidsZT_World.register(bus);
 	}
 	
 	@Override

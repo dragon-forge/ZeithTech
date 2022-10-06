@@ -4,6 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorato
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
+import org.zeith.tech.modules.world.worldgen.oil.OilLakeFeature;
 
 import java.util.List;
 
@@ -111,11 +113,25 @@ public class WorldFeaturesZT
 	
 	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> HEVEA_TREES_PLAINS = register("hevea_trees_plains", Feature.RANDOM_SELECTOR,
 			new RandomFeatureConfiguration(List.of(),
-					PlacementUtils.inlinePlaced(HEVEA_TREE))
+					PlacementUtils.inlinePlaced(HEVEA_TREE_WITH_BEES))
 	);
 	
-	private static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String p_206489_, F p_206490_, FC p_206491_)
+	// Oil
+	
+	public static final Holder<ConfiguredFeature<OilLakeFeature.OilLakeConfiguration, ?>> SMALL_OIL_LAKE = register("small_oil_lake", FeaturesZT.OIL_LAKE,
+			new OilLakeFeature.OilLakeConfiguration(OilLakeFeature.LakeType.SMALL, UniformFloat.of(0.5F, 1F))
+	);
+	
+	public static final Holder<ConfiguredFeature<OilLakeFeature.OilLakeConfiguration, ?>> MEDIUM_OIL_LAKE = register("medium_oil_lake", FeaturesZT.OIL_LAKE,
+			new OilLakeFeature.OilLakeConfiguration(OilLakeFeature.LakeType.MEDIUM, UniformFloat.of(0.5F, 1F))
+	);
+	
+	public static final Holder<ConfiguredFeature<OilLakeFeature.OilLakeConfiguration, ?>> LARGE_OIL_LAKE = register("large_oil_lake", FeaturesZT.OIL_LAKE,
+			new OilLakeFeature.OilLakeConfiguration(OilLakeFeature.LakeType.LARGE, UniformFloat.of(0.8F, 1.2F))
+	);
+	
+	private static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String id, F feature, FC configs)
 	{
-		return FeatureUtils.register(ZeithTech.MOD_ID + ":" + p_206489_, p_206490_, p_206491_);
+		return FeatureUtils.register(ZeithTech.MOD_ID + ":" + id, feature, configs);
 	}
 }

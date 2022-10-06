@@ -5,6 +5,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.*;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -85,6 +86,11 @@ public class FluidFactory
 	public ForgeFlowingFluid.Source getSource()
 	{
 		return source;
+	}
+	
+	public BlockState getSourceBlockState()
+	{
+		return source.getSource(false).createLegacyBlock();
 	}
 	
 	public ForgeFlowingFluid.Flowing getFlowing()

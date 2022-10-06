@@ -1,12 +1,12 @@
 package org.zeith.tech.modules.processing.proxy;
 
-import net.minecraftforge.eventbus.api.IEventBus;
+import org.zeith.tech.utils.LegacyEventBus;
 
 public class ClientProcessingProxyZT
 		extends CommonProcessingProxyZT
 {
 	@Override
-	public void subEvents(IEventBus modBus)
+	public void subEvents(LegacyEventBus modBus)
 	{
 	}
 }

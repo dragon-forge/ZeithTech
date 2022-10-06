@@ -46,7 +46,7 @@ block.zeithtech.tin_block=Block of Tin
 block.zeithtech.tungsten_block=Block of Tungsten
 block.zeithtech.zinc_block=Block of Zinc
 
-item.zeithtech.crude_oil_bucket=Bucket of Crude Oil
+item.zeithtech.crude_oil_bucket=Crude Oil Bucket
 item.zeithtech.hevea_boat=Hevea Boat
 item.zeithtech.hevea_chest_boat=Hevea Boat with Chest
 item.zeithtech.raw_aluminum=Raw Aluminum
@@ -98,6 +98,9 @@ item.zeithtech.processing.mining_head=Drilling Head
 item.zeithtech.processing.mining_heads.iron=Iron Drilling Head
 item.zeithtech.processing.mining_heads.diamond=Diamond Drilling Head
 item.zeithtech.processing.mining_heads.netherite=Netherite Drilling Head
+item.zeithtech.processing.refined_oil_bucket=Refined Oil Bucket
+
+fluid_type.zeithtech.processing.refined_oil=Refined Oil
 
 info.zeithtech_processing.hammer_hit_count=%s hits
 

@@ -1,14 +1,15 @@
 package org.zeith.tech.modules.processing;
 
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.tech.api.modules.IModuleProcessing;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.IInternalCode;
+import org.zeith.tech.modules.processing.init.FluidsZT_Processing;
 import org.zeith.tech.modules.processing.init.RecipesZT_Processing;
 import org.zeith.tech.modules.processing.proxy.ClientProcessingProxyZT;
 import org.zeith.tech.modules.processing.proxy.CommonProcessingProxyZT;
+import org.zeith.tech.utils.LegacyEventBus;
 
 public class ProcessingModule
 		implements IModuleProcessing, IInternalCode
@@ -17,10 +18,11 @@ public class ProcessingModule
 	
 	private boolean wasEnabled = false;
 	
-	public ProcessingModule()
+	@Override
+	public void construct(LegacyEventBus bus)
 	{
-		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		PROXY.subEvents(bus);
+		FluidsZT_Processing.register(bus);
 	}
 	
 	@Override

@@ -1,0 +1,7 @@
+{
+  "textures": {
+    "particle": "zeithtech:processing/block/refined_oil",
+    "flow": "zeithtech:processing/block/refined_oil_flow"
+  }
+}
+

@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": [
+    "zeithtech:small_underground_oil_lake",
+    "zeithtech:medium_underground_oil_lake",
+    "zeithtech:large_underground_oil_lake"
+  ],
+  "step": "lakes"
+}

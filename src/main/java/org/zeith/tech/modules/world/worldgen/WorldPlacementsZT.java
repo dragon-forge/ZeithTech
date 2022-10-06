@@ -1,12 +1,13 @@
 package org.zeith.tech.modules.world.worldgen;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
+import net.minecraft.core.*;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.heightproviders.BiasedToBottomHeight;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
 import org.zeith.hammerlib.annotations.Setup;
 import org.zeith.tech.core.ZeithTech;
@@ -44,8 +45,11 @@ public class WorldPlacementsZT
 	public static final Holder<PlacedFeature> ORE_URANIUM_MIDDLE = register("ore_uranium_middle", WorldFeaturesZT.URANIUM_ORE, commonOrePlacement(4, HeightRangePlacement.triangle(VerticalAnchor.bottom(), VerticalAnchor.aboveBottom(72))));
 	public static final Holder<PlacedFeature> ORE_URANIUM_DEEP = register("ore_uranium_deep", WorldFeaturesZT.BIG_URANIUM_ORE, commonOrePlacement(6, HeightRangePlacement.of(BiasedToBottomHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(8), 1))));
 	
-	
 	public static final Holder<PlacedFeature> HEVEA_TREES_PLAINS = register("hevea_trees_plains", WorldFeaturesZT.HEVEA_TREES_PLAINS, List.of(PlacementUtils.countExtra(0, 0.25F, 1), InSquarePlacement.spread(), TREE_THRESHOLD, PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(BlocksZT_World.HEVEA_SAPLING.defaultBlockState(), BlockPos.ZERO)), BiomeFilter.biome()));
+	
+	public static final Holder<PlacedFeature> SMALL_UNDERGROUND_OIL_LAKES = register("small_underground_oil_lake", WorldFeaturesZT.SMALL_OIL_LAKE, List.of(RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread(), HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.aboveBottom(8), VerticalAnchor.absolute(24))), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.allOf(BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), BlockPredicate.insideWorld(new BlockPos(0, -5, 0))), 32), SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> MEDIUM_UNDERGROUND_OIL_LAKES = register("medium_underground_oil_lake", WorldFeaturesZT.MEDIUM_OIL_LAKE, List.of(RarityFilter.onAverageOnceEvery(20), InSquarePlacement.spread(), HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.aboveBottom(8), VerticalAnchor.absolute(12))), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.allOf(BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), BlockPredicate.insideWorld(new BlockPos(0, -5, 0))), 32), SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5), BiomeFilter.biome()));
+	public static final Holder<PlacedFeature> LARGE_UNDERGROUND_OIL_LAKES = register("large_underground_oil_lake", WorldFeaturesZT.LARGE_OIL_LAKE, List.of(RarityFilter.onAverageOnceEvery(40), InSquarePlacement.spread(), HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.aboveBottom(8), VerticalAnchor.aboveBottom(40))), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.allOf(BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), BlockPredicate.insideWorld(new BlockPos(0, -5, 0))), 32), SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5), BiomeFilter.biome()));
 	
 	@Setup // Causes this class to initialize.
 	public static void setup()

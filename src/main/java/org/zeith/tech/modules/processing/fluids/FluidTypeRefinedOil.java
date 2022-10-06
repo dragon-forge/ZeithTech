@@ -1,9 +1,11 @@
-package org.zeith.tech.modules.world.fluids.crude_oil;
+package org.zeith.tech.modules.processing.fluids;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.ScreenEffectRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -17,23 +19,28 @@ import org.zeith.tech.core.ZeithTech;
 
 import java.util.function.Consumer;
 
-public class FluidTypeCrudeOil
+public class FluidTypeRefinedOil
 		extends FluidType
 {
+	public static final ResourceLocation OIL_STILL = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/refined_oil"),
+			OIL_FLOW = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/refined_oil_flow"),
+			OIL_RENDER_OVERLAY = new ResourceLocation(ZeithTech.MOD_ID, "textures/misc/under_refined_oil.png");
+	
 	public static FluidType create()
 	{
-		return new FluidTypeCrudeOil(FluidType.Properties.create()
+		return new FluidTypeRefinedOil(Properties.create()
 				.canDrown(true)
-				.density(3000)
-				.viscosity(6000)
-				.motionScale(0.002D)
+				.canSwim(false)
+				.density(5000)
+				.viscosity(8000)
+				.motionScale(0.014D)
 				.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
 				.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 				.sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
 		);
 	}
 	
-	protected FluidTypeCrudeOil(Properties properties)
+	protected FluidTypeRefinedOil(Properties properties)
 	{
 		super(properties);
 	}
@@ -49,10 +56,6 @@ public class FluidTypeCrudeOil
 	{
 		consumer.accept(new IClientFluidTypeExtensions()
 		{
-			private static final ResourceLocation OIL_STILL = new ResourceLocation(ZeithTech.MOD_ID, "block/crude_oil"),
-					OIL_FLOW = new ResourceLocation(ZeithTech.MOD_ID, "block/crude_oil_flow"),
-					OIL_RENDER_OVERLAY = new ResourceLocation(ZeithTech.MOD_ID, "textures/misc/under_crude_oil.png");
-			
 			@Override
 			public ResourceLocation getStillTexture()
 			{
@@ -72,9 +75,16 @@ public class FluidTypeCrudeOil
 			}
 			
 			@Override
+			public void renderOverlay(Minecraft mc, PoseStack poseStack)
+			{
+				for(int i = 0; i < 24; ++i)
+					ScreenEffectRenderer.renderFluid(mc, poseStack, OIL_RENDER_OVERLAY);
+			}
+			
+			@Override
 			public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor)
 			{
-				fluidFogColor.mul(0.2F);
+				fluidFogColor.mul(0.1F);
 				return fluidFogColor;
 			}
 		});
