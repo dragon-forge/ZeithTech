@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.LogicalSide;
+import org.zeith.hammerlib.api.forge.ContainerAPI;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
@@ -29,11 +30,15 @@ import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.ContainerElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.GuiFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
+import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
+import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.ContainerMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.GuiSawmillB;
+import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -95,6 +100,15 @@ public class JeiZT
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
 		registration.addItemStackInfo(new ItemStack(ItemsZT.BOWL_OF_RESIN), Component.translatable("jei.info.zeithtech.bowl_of_resin"));
+	}
+	
+	@Override
+	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration)
+	{
+		registration.addRecipeTransferHandler(ContainerElectricFurnaceB.class, ContainerAPI.TILE_CONTAINER, RecipeTypes.SMELTING, 36, 1, 0, 36);
+		registration.addRecipeTransferHandler(ContainerMachineAssemblerB.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, 36, 13, 0, 36);
+		registration.addRecipeTransferHandler(TileGrinderB.ContainerGrinder.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.GRINDER_BASIC, 36, 1, 0, 36);
+		registration.addRecipeTransferHandler(TileSawmillB.ContainerSawmill.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.SAWMILL, 36, 1, 0, 36);
 	}
 	
 	@Override

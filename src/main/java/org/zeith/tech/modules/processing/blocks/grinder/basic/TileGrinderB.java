@@ -90,14 +90,22 @@ public class TileGrinderB
 	@Override
 	public ContainerUnaryRecipeMachineB<TileGrinderB> openContainer(Player player, int windowId)
 	{
-		return new ContainerUnaryRecipeMachineB<>(this, player, windowId)
+		return new ContainerGrinder(this, player, windowId);
+	}
+	
+	public static class ContainerGrinder
+			extends ContainerUnaryRecipeMachineB<TileGrinderB>
+	{
+		public ContainerGrinder(TileGrinderB tile, Player player, int windowId)
 		{
-			@Override
-			@OnlyIn(Dist.CLIENT)
-			public GuiGrinderB openScreen(Inventory inv, Component label)
-			{
-				return new GuiGrinderB(this, inv, label);
-			}
-		};
+			super(tile, player, windowId);
+		}
+		
+		@Override
+		@OnlyIn(Dist.CLIENT)
+		public GuiGrinderB openScreen(Inventory inv, Component label)
+		{
+			return new GuiGrinderB(this, inv, label);
+		}
 	}
 }

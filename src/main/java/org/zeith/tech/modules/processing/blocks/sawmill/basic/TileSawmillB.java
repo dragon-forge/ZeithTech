@@ -131,22 +131,30 @@ public class TileSawmillB
 	@Override
 	public ContainerUnaryRecipeMachineB<TileSawmillB> openContainer(Player player, int windowId)
 	{
-		return new ContainerUnaryRecipeMachineB<>(this, player, windowId)
+		return new ContainerSawmill(this, player, windowId);
+	}
+	
+	public static class ContainerSawmill
+			extends ContainerUnaryRecipeMachineB<TileSawmillB>
+	{
+		public ContainerSawmill(TileSawmillB tile, Player player, int windowId)
 		{
-			@Override
-			protected void addMachineSlots(TileSawmillB tile)
-			{
-				this.addSlot(new SlotInput(tile.inventory, 0, 37, 35));
-				this.addSlot(new SlotOutput(tile.inventory, 1, 97, 35));
-				this.addSlot(new SlotOutput(tile.inventory, 2, 123, 35));
-			}
-			
-			@Override
-			@OnlyIn(Dist.CLIENT)
-			public GuiSawmillB openScreen(Inventory inv, Component label)
-			{
-				return new GuiSawmillB(this, inv, label);
-			}
-		};
+			super(tile, player, windowId);
+		}
+		
+		@Override
+		protected void addMachineSlots(TileSawmillB tile)
+		{
+			this.addSlot(new SlotInput(tile.inventory, 0, 37, 35));
+			this.addSlot(new SlotOutput(tile.inventory, 1, 97, 35));
+			this.addSlot(new SlotOutput(tile.inventory, 2, 123, 35));
+		}
+		
+		@Override
+		@OnlyIn(Dist.CLIENT)
+		public GuiSawmillB openScreen(Inventory inv, Component label)
+		{
+			return new GuiSawmillB(this, inv, label);
+		}
 	}
 }
