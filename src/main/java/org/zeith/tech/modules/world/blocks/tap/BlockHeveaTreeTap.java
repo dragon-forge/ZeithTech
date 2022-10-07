@@ -114,7 +114,7 @@ public class BlockHeveaTreeTap
 		}
 	}
 	
-	private final VoxelShapeCache voxelCache = new VoxelShapeCache((state, $) ->
+	private final VoxelShapeCache voxelCache = new VoxelShapeCache(this, (state, $) ->
 	{
 		Direction d = state.getValue(FACING);
 		

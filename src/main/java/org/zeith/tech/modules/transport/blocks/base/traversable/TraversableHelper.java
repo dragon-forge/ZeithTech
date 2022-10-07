@@ -55,7 +55,7 @@ public class TraversableHelper
 					.filter(endpoint -> endpoint.dir() != from) // for same-block endpoints, we should ignore the facing from where the item originates
 					.forEach(endpoint -> path.add(TraversablePath.of(branch, endpoint)));
 		
-		currentPart.allNeighbors()
+		currentPart.allNeighbors(contents)
 				.filter(elem -> !branch.contains(elem))
 				.forEach(elem ->
 				{

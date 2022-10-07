@@ -9,12 +9,12 @@ import java.util.stream.Stream;
 
 public interface ITraversable<T>
 {
-	Optional<? extends ITraversable<T>> getRelativeTraversable(Direction side);
+	Optional<? extends ITraversable<T>> getRelativeTraversable(Direction side, T contents);
 	
-	default Stream<ITraversable<T>> allNeighbors()
+	default Stream<ITraversable<T>> allNeighbors(T contents)
 	{
 		return Arrays.stream(EndpointData.DIRECTIONS)
-				.map(this::getRelativeTraversable)
+				.map(dir -> getRelativeTraversable(dir, contents))
 				.flatMap(Optional::stream);
 	}
 	

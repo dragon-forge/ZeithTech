@@ -20,6 +20,7 @@ import org.zeith.hammerlib.util.charging.fe.FECharge;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.SideConfig;
+import org.zeith.tech.api.tile.IHasPriority;
 import org.zeith.tech.api.tile.energy.EnergyMeasurableWrapper;
 import org.zeith.tech.api.tile.energy.IEnergyMeasurable;
 import org.zeith.tech.api.tile.sided.SideConfig6;
@@ -123,7 +124,7 @@ public class TileEnergyWire
 	
 	public boolean doesConnectTo(Direction to)
 	{
-		return getRelativeTraversable(to).isPresent()
+		return getRelativeTraversable(to, null).isPresent()
 				|| (sideConfigs.get(to.ordinal()) != SideConfig.DISABLE && relativeEnergyHandler(to).isPresent());
 	}
 	
@@ -137,7 +138,7 @@ public class TileEnergyWire
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(side != null && cap == ForgeCapabilities.ENERGY)
+		if(side != null && cap == ForgeCapabilities.ENERGY && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE)
 			return sidedEnergyHandlers[side.ordinal()].cast();
 		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
 			return energyMeasurable.cast();
@@ -146,7 +147,9 @@ public class TileEnergyWire
 	
 	public int getPriority(Direction dir)
 	{
-		return 0;
+		return Cast.optionally(level.getBlockEntity(worldPosition.relative(dir)), IHasPriority.class)
+				.map(p -> p.getPriorityForFace(dir.getOpposite(), ForgeCapabilities.ENERGY))
+				.orElse(0);
 	}
 	
 	public LazyOptional<IEnergyStorage> relativeEnergyHandler(Direction to)
@@ -176,7 +179,7 @@ public class TileEnergyWire
 	}
 	
 	@Override
-	public Optional<? extends ITraversable<FECharge>> getRelativeTraversable(Direction side)
+	public Optional<? extends ITraversable<FECharge>> getRelativeTraversable(Direction side, FECharge ignored)
 	{
 		return Cast.optionally(level.getBlockEntity(worldPosition.relative(side)), TileEnergyWire.class)
 				.filter(pipe -> connectsTo(side, pipe));

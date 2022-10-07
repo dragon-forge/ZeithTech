@@ -23,7 +23,7 @@ public class BlockElectricFurnaceB
 		return new TileElectricFurnaceB(pos, state);
 	}
 	
-	public final VoxelShapeCache shapeCache = new VoxelShapeCache((state, $) ->
+	public final VoxelShapeCache shapeCache = new VoxelShapeCache(this, (state, $) ->
 	{
 		return Shapes.join(
 				box(0, 0, 0, 16, 16, 16),

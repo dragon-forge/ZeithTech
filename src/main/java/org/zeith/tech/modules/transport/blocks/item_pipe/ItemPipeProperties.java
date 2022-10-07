@@ -14,7 +14,7 @@ public record ItemPipeProperties(BlockBehaviour.Properties properties, float pip
 {
 	public ItemPipeProperties()
 	{
-		this(BlockBehaviour.Properties.of(Material.METAL).strength(2.5F).sound(SoundType.METAL), 0.01666F);
+		this(BlockBehaviour.Properties.of(Material.METAL).dynamicShape().strength(2.5F).sound(SoundType.METAL), 0.01666F);
 	}
 	
 	public static ItemPipePropertiesBuilder builder()
@@ -24,7 +24,7 @@ public record ItemPipeProperties(BlockBehaviour.Properties properties, float pip
 	
 	public static class ItemPipePropertiesBuilder
 	{
-		private BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.METAL).strength(2.5F).sound(SoundType.METAL);
+		private BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.METAL).dynamicShape().strength(2.5F).sound(SoundType.METAL);
 		private float pipeSpeed = 0.01666F;
 		
 		private ItemPipePropertiesBuilder()

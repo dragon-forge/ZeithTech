@@ -11,7 +11,7 @@ public record EnergyWireProperties(BlockBehaviour.Properties blockProps, EnergyT
 {
 	public EnergyWireProperties(EnergyTier tier, float energyLoss, boolean burns, boolean insulated)
 	{
-		this(BlockBehaviour.Properties.of(Material.METAL).strength(2.5F).sound(SoundType.METAL), tier, energyLoss, burns, insulated);
+		this(BlockBehaviour.Properties.of(Material.METAL).strength(2.5F).dynamicShape().sound(SoundType.METAL), tier, energyLoss, burns, insulated);
 	}
 	
 	public static EnergyWirePropertiesBuilder builder()
@@ -21,7 +21,7 @@ public record EnergyWireProperties(BlockBehaviour.Properties blockProps, EnergyT
 	
 	public static class EnergyWirePropertiesBuilder
 	{
-		private BlockBehaviour.Properties blockProps = BlockBehaviour.Properties.of(Material.METAL).strength(0.5F).sound(SoundType.METAL);
+		private BlockBehaviour.Properties blockProps = BlockBehaviour.Properties.of(Material.METAL).dynamicShape().strength(0.5F).sound(SoundType.METAL);
 		private EnergyTier tier;
 		private float energyLoss;
 		private boolean burns = true;

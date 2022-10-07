@@ -1,0 +1,6 @@
+{
+  "parent": "zeithtech:item/transport/fluid_pipes/base",
+  "textures": {
+    "pipe": "zeithtech:transport/block/fluid_pipes/wooden"
+  }
+}

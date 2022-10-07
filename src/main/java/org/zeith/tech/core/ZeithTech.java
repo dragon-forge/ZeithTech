@@ -26,6 +26,7 @@ import org.zeith.tech.api.audio.IAudioSystem;
 import org.zeith.tech.api.modules.IZeithTechModules;
 import org.zeith.tech.api.recipes.IRecipeRegistries;
 import org.zeith.tech.compat.BaseCompat;
+import org.zeith.tech.compat.Compats;
 import org.zeith.tech.core.audio.ClientAudioSystem;
 import org.zeith.tech.core.audio.CommonAudioSystem;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
@@ -116,6 +117,10 @@ public class ZeithTech
 		this.audioSystem = DistExecutor.unsafeRunForDist(() -> ClientAudioSystem::new, () -> CommonAudioSystem::new);
 		
 		HammerLib.EVENT_BUS.addListener(this::applyTags);
+		
+		compats.addAll(Compats.gatherAll());
+		
+		forCompats(c -> c.setup(busses));
 	}
 	
 	private void setup(FMLCommonSetupEvent e)

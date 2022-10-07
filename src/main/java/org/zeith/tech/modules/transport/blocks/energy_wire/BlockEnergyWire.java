@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.transport.blocks.energy_wire;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -54,7 +55,7 @@ public class BlockEnergyWire
 		
 		addBlockTag(TagsZT.Blocks.MINEABLE_WITH_WIRE_CUTTER);
 		
-		shapeCache = new VoxelShapeCache((state, $) -> Shapes.or(this.properties.insulated() ? CORE_SHAPE_INSULATED : CORE_SHAPE_UNINSULATED,
+		shapeCache = new VoxelShapeCache(this, (state, $) -> Shapes.or(this.properties.insulated() ? CORE_SHAPE_INSULATED : CORE_SHAPE_UNINSULATED,
 				DIR2PROP.entrySet()
 						.stream()
 						.filter(dir -> state.getValue(dir.getValue()))
@@ -73,8 +74,8 @@ public class BlockEnergyWire
 			@Override
 			public void appendHoverText(ItemStack stack, @Nullable Level lvl, List<Component> tooltip, TooltipFlag flags)
 			{
-				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_max_io", Component.literal(Integer.toString(properties.tier().maxFE()))));
-				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_loss", Component.literal(Float.toString(properties.energyLoss()))));
+				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_max_io", Component.literal(Integer.toString(properties.tier().maxFE()))).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_loss", Component.literal(Float.toString(properties.energyLoss()))).withStyle(ChatFormatting.GRAY));
 			}
 		};
 	}

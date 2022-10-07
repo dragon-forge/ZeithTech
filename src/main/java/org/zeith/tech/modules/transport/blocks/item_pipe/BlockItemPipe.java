@@ -1,6 +1,7 @@
 package org.zeith.tech.modules.transport.blocks.item_pipe;
 
 import net.minecraft.core.*;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -73,6 +74,8 @@ public class BlockItemPipe
 		super(props.properties());
 		this.properties = props;
 		
+		addBlockTag(BlockTags.MINEABLE_WITH_PICKAXE);
+		
 		var bs = defaultBlockState()
 				.setValue(WATERLOGGED, false)
 				.setValue(CORE_X, false)
@@ -122,7 +125,7 @@ public class BlockItemPipe
 		return false;
 	}
 	
-	private final VoxelShapeCache shapeCache = new VoxelShapeCache((state, $) ->
+	private final VoxelShapeCache shapeCache = new VoxelShapeCache(this, (state, $) ->
 	{
 		var central = state.getValue(CORE_CENTRAL) ? CORE_CENTRAL_SHAPE : CORE_SMOL_SHAPE;
 		

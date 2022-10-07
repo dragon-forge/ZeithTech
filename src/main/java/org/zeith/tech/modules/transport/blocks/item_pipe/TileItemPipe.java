@@ -15,6 +15,7 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.enums.SideConfig;
+import org.zeith.tech.api.tile.IHasPriority;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.modules.transport.blocks.base.traversable.*;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
@@ -123,14 +124,14 @@ public class TileItemPipe
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(side != null && cap == ForgeCapabilities.ITEM_HANDLER)
+		if(side != null && cap == ForgeCapabilities.ITEM_HANDLER && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE)
 			return sidedItemHandlers[side.ordinal()].cast();
 		
 		return super.getCapability(cap, side);
 	}
 	
 	@Override
-	public Optional<? extends ITraversable<ItemInPipe>> getRelativeTraversable(Direction side)
+	public Optional<? extends ITraversable<ItemInPipe>> getRelativeTraversable(Direction side, ItemInPipe ignored)
 	{
 		return Cast.optionally(level.getBlockEntity(worldPosition.relative(side)), TileItemPipe.class)
 				.filter(pipe -> connectsTo(side, pipe));
@@ -138,10 +139,12 @@ public class TileItemPipe
 	
 	public int getPriority(Direction dir)
 	{
-		return 0;
+		return Cast.optionally(level.getBlockEntity(worldPosition.relative(dir)), IHasPriority.class)
+				.map(p -> p.getPriorityForFace(dir.getOpposite(), ForgeCapabilities.ITEM_HANDLER))
+				.orElse(0);
 	}
 	
-	@Override // All inventory handlers wil
+	@Override // All inventory handlers which can store the contents at least partially will be added.
 	public List<EndpointData> getEndpoints(ItemInPipe contents)
 	{
 		return Stream.of(BlockItemPipe.DIRECTIONS)
@@ -176,7 +179,7 @@ public class TileItemPipe
 	
 	public boolean doesConnectTo(Direction to)
 	{
-		return getRelativeTraversable(to).isPresent()
+		return getRelativeTraversable(to, null).isPresent()
 				|| (sideConfigs.get(to.ordinal()) != SideConfig.DISABLE && relativeItemHandler(to).isPresent());
 	}
 	

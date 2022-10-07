@@ -5,7 +5,9 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.tech.modules.transport.blocks.energy_wire.TileEnergyWire;
+import org.zeith.tech.modules.transport.blocks.fluid_pipe.TileFluidPipe;
 import org.zeith.tech.modules.transport.blocks.item_pipe.TileItemPipe;
+import org.zeith.tech.modules.transport.client.renderer.TileRendererFluidPipe;
 import org.zeith.tech.modules.transport.client.renderer.TileRendererItemPipe;
 
 import java.util.HashSet;
@@ -19,4 +21,8 @@ public interface TilesZT_Transport
 	
 	@RegistryName("transport/energy_wire")
 	BlockEntityType<TileEnergyWire> ENERGY_WIRE = new BlockEntityType<>(TileEnergyWire::new, new HashSet<>(), null);
+	
+	@RegistryName("transport/fluid_pipe")
+	@TileRenderer(TileRendererFluidPipe.class)
+	BlockEntityType<TileFluidPipe> FLUID_PIPE = new BlockEntityType<>(TileFluidPipe::new, new HashSet<>(), null);
 }

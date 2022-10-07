@@ -1,0 +1,64 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_pipes/iron/core",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_pipes/iron/down",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_pipes/iron/east",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_pipes/iron/north",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_pipes/iron/south",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_pipes/iron/up",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_pipes/iron/west",
+        "uvlock": true
+      }
+    }
+  ]
+}

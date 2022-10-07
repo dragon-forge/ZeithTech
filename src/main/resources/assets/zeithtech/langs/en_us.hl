@@ -106,7 +106,12 @@ info.zeithtech_processing.hammer_hit_count=%s hits
 
 ### Transport Module ###
 item.zeithtech.transport.multimeter=Multimeter
+
 block.zeithtech.transport.item_pipes.copper=Copper Item Pipe
+
+block.zeithtech.transport.fluid_pipes.wooden=Wooden Fluid Pipe
+block.zeithtech.transport.fluid_pipes.iron=Iron Fluid Pipe
+
 block.zeithtech.transport.wires.copper.uninsulated=Copper Wire
 block.zeithtech.transport.wires.copper.insulated=Insulated Copper Wire
 block.zeithtech.transport.wires.aluminum.uninsulated=Aluminum Wire
@@ -115,8 +120,9 @@ block.zeithtech.transport.wires.gold.uninsulated=Gold Wire
 block.zeithtech.transport.wires.gold.insulated=Insulated Gold Wire
 
 
-info.zeithtech_transport.wire_max_io=Max transfer: %s FE/op
+info.zeithtech_transport.wire_max_io=Max transfer: %s FE/tick
 info.zeithtech_transport.wire_loss=Energy loss: %s FE/block
+info.zeithtech_transport.fluid_pipe_transfer=Max transfer: %s mB/tick
 
 ### Misc ###
 
