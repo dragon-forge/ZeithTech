@@ -16,6 +16,6 @@ public class BlockHeveaFlowerPot
 	public BlockHeveaFlowerPot(@Nullable Supplier<FlowerPotBlock> emptyPot, Supplier<? extends Block> p_53528_, Properties properties)
 	{
 		super(emptyPot, p_53528_, properties);
-		TagAdapter.bindStaticTag(BlockTags.FLOWER_POTS, this);
+		TagAdapter.bind(BlockTags.FLOWER_POTS, this);
 	}
 }

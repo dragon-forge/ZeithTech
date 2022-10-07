@@ -84,8 +84,8 @@ public interface ItemsZT_World
 	
 	static @Setup void registerExtra()
 	{
-		TagAdapter.bindStaticTag(ItemTags.BOATS, HEVEA_BOAT);
-		TagAdapter.bindStaticTag(ItemTags.CHEST_BOATS, HEVEA_CHEST_BOAT);
-		TagAdapter.bindStaticTag(ItemTags.SIGNS, HEVEA_SIGN);
+		TagAdapter.bind(ItemTags.BOATS, HEVEA_BOAT);
+		TagAdapter.bind(ItemTags.CHEST_BOATS, HEVEA_CHEST_BOAT);
+		TagAdapter.bind(ItemTags.SIGNS, HEVEA_SIGN);
 	}
 }

@@ -126,7 +126,7 @@ public class BlockHeveaLog
 		for(var tag : tags)
 		{
 			if(itemBlock != null)
-				TagAdapter.bindStaticTag(tag, itemBlock);
+				TagAdapter.bind(tag, itemBlock);
 			itemTags.add(tag);
 		}
 		return this;
@@ -135,7 +135,7 @@ public class BlockHeveaLog
 	public BlockHeveaLog addBlockTags(List<TagKey<Block>> tags)
 	{
 		for(var tag : tags)
-			TagAdapter.bindStaticTag(tag, this);
+			TagAdapter.bind(tag, this);
 		return this;
 	}
 	
@@ -148,7 +148,7 @@ public class BlockHeveaLog
 		var gen = new BlockItem(this, props);
 		itemBlock = gen;
 		for(var tag : itemTags)
-			TagAdapter.bindStaticTag(tag, gen);
+			TagAdapter.bind(tag, gen);
 		return gen;
 	}
 	

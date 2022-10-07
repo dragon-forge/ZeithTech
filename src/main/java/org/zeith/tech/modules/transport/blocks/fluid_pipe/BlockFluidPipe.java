@@ -7,22 +7,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.material.*;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.api.forge.BlockAPI;
+import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.api.tile.BlockEntityTypeModifier;
+import org.zeith.tech.api.block.IMultiFluidLoggableBlock;
+import org.zeith.tech.api.block.ZeithTechStateProperties;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.blocks.BaseEntityBlockZT;
@@ -33,7 +34,7 @@ import java.util.Map;
 
 public class BlockFluidPipe
 		extends BaseEntityBlockZT
-		implements ICreativeTabBlock, IRegisterListener, SimpleWaterloggedBlock
+		implements ICreativeTabBlock, IRegisterListener, IMultiFluidLoggableBlock
 {
 	static final Direction[] DIRECTIONS = Direction.values();
 	public static final Map<Direction, BooleanProperty> DIR2PROP = Map.of(
@@ -46,11 +47,13 @@ public class BlockFluidPipe
 	);
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	
+	public static final IntegerProperty LIGHT_LEVEL = ZeithTechStateProperties.LIGHT_LEVEL;
+	
 	public final FluidPipeProperties properties;
 	
 	public BlockFluidPipe(FluidPipeProperties properties, BlockHarvestAdapter.MineableType toolType)
 	{
-		super(properties.properties());
+		super(properties.properties().lightLevel(s -> s.getValue(LIGHT_LEVEL)));
 		this.properties = properties;
 		
 		addBlockTag(toolType.blockTag());
@@ -64,6 +67,16 @@ public class BlockFluidPipe
 		));
 		
 		dropsSelf();
+	}
+	
+	public static final Map<FlowingFluid, BooleanProperty> MINING_PIPE_FLUID_STATES = Map.of(
+			Fluids.WATER, WATERLOGGED
+	);
+	
+	@Override
+	public Map<FlowingFluid, BooleanProperty> getFluidLoggableProperties()
+	{
+		return MINING_PIPE_FLUID_STATES;
 	}
 	
 	@Override
@@ -80,6 +93,7 @@ public class BlockFluidPipe
 	}
 	
 	public static final VoxelShape CORE_SHAPE = box(5, 5, 5, 11, 11, 11);
+	
 	public static final Map<Direction, VoxelShape> DIR2SHAPE = Map.of(
 			Direction.UP, box(5, 11, 5, 11, 16, 11),
 			Direction.DOWN, box(5, 0, 5, 11, 5, 11),
@@ -100,14 +114,50 @@ public class BlockFluidPipe
 	@Override
 	public FluidState getFluidState(BlockState state)
 	{
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+		return getFluidLoggedState(state);
 	}
 	
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
+		getFluidLoggableProperties().values().forEach(builder::add);
 		DIR2PROP.values().forEach(builder::add);
-		builder.add(WATERLOGGED);
+		builder.add(LIGHT_LEVEL);
+	}
+	
+	@Override
+	public BlockState updateShape(BlockState state, Direction ignore0, BlockState ignore1, LevelAccessor accessor, BlockPos pos, BlockPos ignore2)
+	{
+		state = updateFluidLoggedShape(accessor, pos, state);
+		
+		var pipe = Cast.cast(accessor.getBlockEntity(pos), TileFluidPipe.class);
+		if(pipe != null)
+			for(Direction d : DIRECTIONS)
+				state = state.setValue(DIR2PROP.get(d), pipe.doesConnectTo(d));
+		
+		return state;
+	}
+	
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx)
+	{
+		var accessor = ctx.getLevel();
+		var pos = ctx.getClickedPos();
+		
+		var state = getFluidLoggedStateForPlacement(ctx, defaultBlockState());
+		
+		var pipe = Cast.cast(accessor.getBlockEntity(pos), TileFluidPipe.class);
+		if(pipe == null)
+		{
+			pipe = new TileFluidPipe(pos, state);
+			pipe.setLevel(accessor);
+		}
+		
+		for(Direction d : DIRECTIONS)
+			state = state.setValue(DIR2PROP.get(d), pipe.doesConnectTo(d));
+		
+		return state;
 	}
 	
 	@Override
@@ -129,46 +179,9 @@ public class BlockFluidPipe
 	}
 	
 	@Override
-	public BlockState updateShape(BlockState state, Direction ignore0, BlockState ignore1, LevelAccessor accessor, BlockPos pos, BlockPos ignore2)
-	{
-		if(state.getValue(WATERLOGGED))
-			accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-		
-		var pipe = Cast.cast(accessor.getBlockEntity(pos), TileFluidPipe.class);
-		if(pipe != null)
-			for(Direction d : DIRECTIONS)
-				state = state.setValue(DIR2PROP.get(d), pipe.doesConnectTo(d));
-		
-		return state;
-	}
-	
-	@Nullable
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx)
-	{
-		var accessor = ctx.getLevel();
-		var pos = ctx.getClickedPos();
-		
-		var state = defaultBlockState()
-				.setValue(WATERLOGGED, accessor.getFluidState(pos).getType() == Fluids.WATER);
-		
-		var pipe = Cast.cast(accessor.getBlockEntity(pos), TileFluidPipe.class);
-		if(pipe == null)
-		{
-			pipe = new TileFluidPipe(pos, state);
-			pipe.setLevel(accessor);
-		}
-		
-		for(Direction d : DIRECTIONS)
-			state = state.setValue(DIR2PROP.get(d), pipe.doesConnectTo(d));
-		
-		return state;
-	}
-	
-	@Override
 	public void onPostRegistered()
 	{
-		BlockEntityTypeModifier.addBlocksToEntityType(TilesZT_Transport.FLUID_PIPE, this);
+		BlockEntityAdapter.addBlocksToEntityType(TilesZT_Transport.FLUID_PIPE, this);
 	}
 	
 	@Nullable

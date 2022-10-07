@@ -2,17 +2,14 @@ package org.zeith.tech.core;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +17,6 @@ import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
-import org.zeith.hammerlib.event.recipe.BuildTagsEvent;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.audio.IAudioSystem;
 import org.zeith.tech.api.modules.IZeithTechModules;
@@ -34,15 +30,14 @@ import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.utils.LegacyEventBus;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 @Mod(ZeithTech.MOD_ID)
 public class ZeithTech
 		extends ZeithTechAPI
 {
-	static final Map<TagKey<Fluid>, Set<Fluid>> fluidTags = new ConcurrentHashMap<>();
 	private final ModulesImpl modules;
 	private final RecipeRegistries registries;
 	private final CommonAudioSystem audioSystem;
@@ -116,8 +111,6 @@ public class ZeithTech
 		this.registries = new RecipeRegistries();
 		this.audioSystem = DistExecutor.unsafeRunForDist(() -> ClientAudioSystem::new, () -> CommonAudioSystem::new);
 		
-		HammerLib.EVENT_BUS.addListener(this::applyTags);
-		
 		compats.addAll(Compats.gatherAll());
 		
 		forCompats(c -> c.setup(busses));
@@ -127,18 +120,6 @@ public class ZeithTech
 	{
 		this.modules.enable();
 		RecipeRegistriesZT_Processing.setup(e);
-	}
-	
-	public void applyTags(BuildTagsEvent evt)
-	{
-		if(evt.reg == ForgeRegistries.FLUIDS)
-			fluidTags.forEach(evt::addAllToTag);
-	}
-	
-	public static void bindStaticTag(TagKey<Fluid> tag, Fluid... fluids)
-	{
-		Set<Fluid> set = fluidTags.computeIfAbsent(tag, b -> new HashSet<>());
-		set.addAll(List.of(fluids));
 	}
 	
 	@Override

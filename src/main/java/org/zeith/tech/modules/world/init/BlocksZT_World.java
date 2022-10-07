@@ -9,7 +9,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.annotations.*;
-import org.zeith.tech.api.tile.BlockEntityTypeModifier;
+import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.tech.modules.shared.BaseZT;
 import org.zeith.tech.modules.shared.blocks.SimpleBlockZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
@@ -168,8 +168,8 @@ public interface BlocksZT_World
 	{
 		((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(net.minecraftforge.registries.ForgeRegistries.BLOCKS.getKey(HEVEA_SAPLING), () -> POTTED_HEVEA_SAPLING);
 		
-		BlockEntityTypeModifier.addBlocksToEntityType(BlockEntityType.SIGN, HEVEA_SIGN, HEVEA_WALL_SIGN);
-		BlockEntityTypeModifier.addBlocksToEntityType(BlockEntityType.CHEST, HEVEA_CHEST);
-		BlockEntityTypeModifier.addBlocksToEntityType(BlockEntityType.TRAPPED_CHEST, HEVEA_TRAPPED_CHEST);
+		BlockEntityAdapter.addBlocksToEntityType(BlockEntityType.SIGN, HEVEA_SIGN, HEVEA_WALL_SIGN);
+		BlockEntityAdapter.addBlocksToEntityType(BlockEntityType.CHEST, HEVEA_CHEST);
+		BlockEntityAdapter.addBlocksToEntityType(BlockEntityType.TRAPPED_CHEST, HEVEA_TRAPPED_CHEST);
 	}
 }

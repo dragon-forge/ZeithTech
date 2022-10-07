@@ -49,7 +49,7 @@ public abstract class BaseEntityBlockZT
 	{
 		if(itemBlock != null)
 			for(var tag : tags)
-				TagAdapter.bindStaticTag(tag, itemBlock);
+				TagAdapter.bind(tag, itemBlock);
 		itemTags.addAll(tags);
 		return this;
 	}
@@ -57,7 +57,7 @@ public abstract class BaseEntityBlockZT
 	public BaseEntityBlockZT addItemTag(TagKey<Item> tag)
 	{
 		if(itemBlock != null)
-			TagAdapter.bindStaticTag(tag, itemBlock);
+			TagAdapter.bind(tag, itemBlock);
 		itemTags.add(tag);
 		return this;
 	}
@@ -65,13 +65,13 @@ public abstract class BaseEntityBlockZT
 	public BaseEntityBlockZT addBlockTags(Collection<TagKey<Block>> tags)
 	{
 		for(var tag : tags)
-			TagAdapter.bindStaticTag(tag, this);
+			TagAdapter.bind(tag, this);
 		return this;
 	}
 	
 	public BaseEntityBlockZT addBlockTag(TagKey<Block> tag)
 	{
-		TagAdapter.bindStaticTag(tag, this);
+		TagAdapter.bind(tag, this);
 		return this;
 	}
 	
@@ -89,7 +89,7 @@ public abstract class BaseEntityBlockZT
 		var gen = newBlockItem(props);
 		itemBlock = gen;
 		for(var tag : itemTags)
-			TagAdapter.bindStaticTag(tag, gen);
+			TagAdapter.bind(tag, gen);
 		return gen;
 	}
 	

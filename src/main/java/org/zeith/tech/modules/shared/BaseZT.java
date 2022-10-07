@@ -39,7 +39,7 @@ public class BaseZT
 	public static Item newItem(TagKey<Item> tag)
 	{
 		var item = newItem();
-		TagAdapter.bindStaticTag(tag, item);
+		TagAdapter.bind(tag, item);
 		return item;
 	}
 	

@@ -20,8 +20,8 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.api.forge.BlockAPI;
+import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.api.tile.BlockEntityTypeModifier;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.blocks.BaseEntityBlockZT;
@@ -234,7 +234,7 @@ public class BlockItemPipe
 	@Override
 	public void onPostRegistered()
 	{
-		BlockEntityTypeModifier.addBlocksToEntityType(TilesZT_Transport.ITEM_PIPE, this);
+		BlockEntityAdapter.addBlocksToEntityType(TilesZT_Transport.ITEM_PIPE, this);
 	}
 	
 	@Override

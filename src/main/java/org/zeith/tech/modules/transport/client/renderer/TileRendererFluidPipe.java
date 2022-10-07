@@ -22,7 +22,7 @@ public class TileRendererFluidPipe
 	@Override
 	public void render(TileFluidPipe entity, float partial, PoseStack matrix, MultiBufferSource buf, int lighting, int overlay)
 	{
-		var fluid = entity.displayFluid.get();
+		var fluid = entity.getClientAverage(partial);
 		if(!fluid.isEmpty())
 		{
 			cuboid.setTexture(ZeithTechRenderer.getFluidTexture(fluid, FluidTextureType.STILL));
@@ -34,22 +34,34 @@ public class TileRendererFluidPipe
 			
 			float fill = fluid.getAmount() / (float) entity.tank.getCapacity();
 			
+			Direction prev = null;
+			Direction.Axis opposites = null;
+			
 			for(var dir : DIRECTIONS)
 				if(entity.getBlockState().getValue(BlockFluidPipe.DIR2PROP.get(dir)))
 				{
-					float fillRel = fill;
-
-//					var pipe = entity.getRelativeTraversable(dir, fluid).orElse(null);
-//					if(pipe != null)
-//					{
-//						float fillRem = pipe.tank.getFluidAmount() / (float) pipe.tank.getCapacity();
-//						fillRel = (fill + fillRem) / 2F;
-//					}
+					if(prev == null)
+						prev = dir;
+					else if(prev.getAxis() == dir.getAxis())
+						opposites = prev.getAxis();
+					else
+						opposites = null;
+					
+					float fillRel = 1F;
+					
+					var pipe = entity.getRelativeTraversable(dir, fluid).orElse(null);
+					if(pipe != null)
+					{
+						var rel = pipe.getClientAverage(partial);
+						float fillRem = rel.getAmount() / (float) pipe.tank.getCapacity();
+						fillRel = (fill + fillRem) / 2F;
+					}
 					
 					renderFluid(fluid, argb, dir, fillRel, partial, matrix, fluidsSrc, lighting, overlay);
 				}
 			
-			renderFluid(fluid, argb, null, fill, partial, matrix, fluidsSrc, lighting, overlay);
+			if(opposites != Direction.Axis.Y)
+				renderFluid(fluid, argb, null, fill, partial, matrix, fluidsSrc, lighting, overlay);
 		}
 	}
 	
@@ -71,13 +83,13 @@ public class TileRendererFluidPipe
 			
 			switch(to)
 			{
-				case DOWN -> cuboid.bounds(0.5F - thicc * thiccByTwo, zero, 0.5F - thiccByTwo * fill, 0.5F + thiccByTwo * fill, min, 0.5F + thiccByTwo * fill);
-				case UP -> cuboid.bounds(0.5F - thicc * thiccByTwo, min + thicc * fill, 0.5F - thiccByTwo * fill, 0.5F + thiccByTwo * fill, one, 0.5F + thiccByTwo * fill);
+				case DOWN -> cuboid.bounds(0.5F - thiccByTwo * fill, zero, 0.5F - thiccByTwo * fill, 0.5F + thiccByTwo * fill, min, 0.5F + thiccByTwo * fill);
+				case UP -> cuboid.bounds(0.5F - thiccByTwo * fill, min, 0.5F - thiccByTwo * fill, 0.5F + thiccByTwo * fill, one, 0.5F + thiccByTwo * fill);
 				
-				case WEST -> cuboid.bounds(zero, min, min, max, min + thicc * fill, max);
+				case WEST -> cuboid.bounds(zero, min, min, min, min + thicc * fill, max);
 				case EAST -> cuboid.bounds(max, min, min, one, min + thicc * fill, max);
 				
-				case NORTH -> cuboid.bounds(min, min, zero, max, min + thicc * fill, max);
+				case NORTH -> cuboid.bounds(min, min, zero, max, min + thicc * fill, min);
 				case SOUTH -> cuboid.bounds(min, min, max, max, min + thicc * fill, one);
 			}
 		}

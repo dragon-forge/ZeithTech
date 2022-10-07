@@ -42,6 +42,19 @@ public class TraversableHelper
 				.toList();
 	}
 	
+	public static <T> List<ITraversable<T>> allTraversables(ITraversable<T> start, T contents, boolean includeStart)
+	{
+		List<ITraversable<T>> lst = new ArrayList<>();
+		lst.add(start);
+		for(int i = 0; i < lst.size(); ++i)
+			lst.get(i).allNeighbors(contents)
+					.filter(t -> !lst.contains(t))
+					.forEach(lst::add);
+		if(!includeStart)
+			lst.remove(0);
+		return lst;
+	}
+	
 	private static <T> void collectPaths(List<TraversablePath<T>> path, Stack<ITraversable<T>> branch, Direction from, T contents)
 	{
 		var currentPart = branch.peek();

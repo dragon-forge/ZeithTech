@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
+import org.zeith.hammerlib.core.adapter.TagAdapter;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.utils.LegacyEventBus;
 
@@ -47,14 +48,14 @@ public class FluidFactory
 	
 	public FluidFactory addFluidTag(TagKey<Fluid> tag)
 	{
-		ZeithTech.bindStaticTag(tag, this.source, this.flowing);
+		TagAdapter.bind(tag, this.source, this.flowing);
 		return this;
 	}
 	
 	public FluidFactory addFluidTags(List<TagKey<Fluid>> fluidTags)
 	{
 		for(var tag : fluidTags)
-			ZeithTech.bindStaticTag(tag, this.source, this.flowing);
+			TagAdapter.bind(tag, this.source, this.flowing);
 		return this;
 	}
 	

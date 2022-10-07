@@ -47,7 +47,7 @@ public class SimpleBlockZT
 	{
 		if(itemBlock != null)
 			for(var tag : tags)
-				TagAdapter.bindStaticTag(tag, itemBlock);
+				TagAdapter.bind(tag, itemBlock);
 		itemTags.addAll(tags);
 		return this;
 	}
@@ -55,7 +55,7 @@ public class SimpleBlockZT
 	public SimpleBlockZT addItemTag(TagKey<Item> tag)
 	{
 		if(itemBlock != null)
-			TagAdapter.bindStaticTag(tag, itemBlock);
+			TagAdapter.bind(tag, itemBlock);
 		itemTags.add(tag);
 		return this;
 	}
@@ -63,13 +63,13 @@ public class SimpleBlockZT
 	public SimpleBlockZT addBlockTags(Collection<TagKey<Block>> tags)
 	{
 		for(var tag : tags)
-			TagAdapter.bindStaticTag(tag, this);
+			TagAdapter.bind(tag, this);
 		return this;
 	}
 	
 	public SimpleBlockZT addBlockTag(TagKey<Block> tag)
 	{
-		TagAdapter.bindStaticTag(tag, this);
+		TagAdapter.bind(tag, this);
 		return this;
 	}
 	
@@ -82,7 +82,7 @@ public class SimpleBlockZT
 		var gen = new BlockItem(this, props);
 		itemBlock = gen;
 		for(var tag : itemTags)
-			TagAdapter.bindStaticTag(tag, gen);
+			TagAdapter.bind(tag, gen);
 		return gen;
 	}
 	

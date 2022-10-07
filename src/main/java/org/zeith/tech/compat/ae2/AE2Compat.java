@@ -6,12 +6,12 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.ReflectionUtil;
 import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.core.ZeithTech;
-import org.zeith.tech.mixins.BlockEntityTypeAccessor;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 import org.zeith.tech.utils.LegacyEventBus;
 
@@ -27,13 +27,13 @@ public class AE2Compat
 		
 		bus.addListener(FMLCommonSetupEvent.class, evt ->
 		{
-			for(var blk : ((BlockEntityTypeAccessor) TilesZT_Transport.ENERGY_WIRE).getValidBlocks())
+			for(var blk : BlockEntityAdapter.getValidBlocks(TilesZT_Transport.ENERGY_WIRE))
 				registerAttunementApi(blk, ForgeCapabilities.ENERGY);
 			
-			for(var blk : ((BlockEntityTypeAccessor) TilesZT_Transport.FLUID_PIPE).getValidBlocks())
+			for(var blk : BlockEntityAdapter.getValidBlocks(TilesZT_Transport.FLUID_PIPE))
 				registerAttunementApi(blk, ForgeCapabilities.FLUID_HANDLER);
 			
-			for(var blk : ((BlockEntityTypeAccessor) TilesZT_Transport.ITEM_PIPE).getValidBlocks())
+			for(var blk : BlockEntityAdapter.getValidBlocks(TilesZT_Transport.ITEM_PIPE))
 				registerAttunementApi(blk, ForgeCapabilities.ITEM_HANDLER);
 		});
 	}
@@ -60,7 +60,7 @@ public class AE2Compat
 			
 			TagKey<Item> tag = Cast.cast(P2PTunnelAttunement.getDeclaredMethod("getAttunementTag", ItemLike.class).invoke(null, item));
 			
-			TagAdapter.bindStaticTag(tag, tunnelPart.asItem());
+			TagAdapter.bind(tag, tunnelPart.asItem());
 		} catch(ReflectiveOperationException e)
 		{
 			throw new RuntimeException(e);

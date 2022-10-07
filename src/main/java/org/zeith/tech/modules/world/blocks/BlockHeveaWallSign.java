@@ -28,13 +28,13 @@ public class BlockHeveaWallSign
 	public BlockHeveaWallSign addBlockTags(Collection<TagKey<Block>> tags)
 	{
 		for(var tag : tags)
-			TagAdapter.bindStaticTag(tag, this);
+			TagAdapter.bind(tag, this);
 		return this;
 	}
 	
 	public BlockHeveaWallSign addBlockTag(TagKey<Block> tag)
 	{
-		TagAdapter.bindStaticTag(tag, this);
+		TagAdapter.bind(tag, this);
 		return this;
 	}
 	

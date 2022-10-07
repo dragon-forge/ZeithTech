@@ -37,6 +37,6 @@ public record EndpointData(BlockPos pos, Direction dir, int priority, boolean va
 	
 	public boolean sameBlock(EndpointData endpoint)
 	{
-		return Objects.equals(pos, endpoint.pos) && Objects.equals(dir, endpoint.dir);
+		return Objects.equals(pos.relative(dir), endpoint.pos.relative(endpoint.dir));
 	}
 }
