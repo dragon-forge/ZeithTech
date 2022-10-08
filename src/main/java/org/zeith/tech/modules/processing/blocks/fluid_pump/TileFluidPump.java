@@ -8,7 +8,12 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -17,7 +22,12 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.api.io.NBTSerializable;
+import org.zeith.hammerlib.net.Network;
+import org.zeith.hammerlib.net.packets.SyncTileEntityPacket;
+import org.zeith.hammerlib.net.properties.PropertyInt;
+import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.mcf.BlockPosList;
 import org.zeith.hammerlib.util.physics.FrictionRotator;
 import org.zeith.tech.api.ZeithTechAPI;
@@ -30,11 +40,13 @@ import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachin
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
+import org.zeith.tech.modules.shared.init.TagsZT;
+import org.zeith.tech.utils.InventoryHelper;
 import org.zeith.tech.utils.SerializableFluidTank;
-import org.zeith.tech.utils.fluid.FluidHelper;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class TileFluidPump
 		extends TileBaseMachine<TileFluidPump>
@@ -56,11 +68,16 @@ public class TileFluidPump
 	@NBTSerializable("OutputFluid")
 	public final SerializableFluidTank fluidTank = new SerializableFluidTank(5000);
 	
+	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
+	
 	@NBTSerializable("Positions")
 	public final BlockPosList discoveredPositions = new BlockPosList();
 	
 	@NBTSerializable("Lock")
 	public final FluidPumpLock lock = new FluidPumpLock();
+	
+	@NBTSerializable("Items")
+	public final SimpleInventory inventory = new SimpleInventory(2);
 	
 	public int cooldownTime = 40;
 	
@@ -69,17 +86,33 @@ public class TileFluidPump
 	
 	public final FrictionRotator rotator = new FrictionRotator();
 	
+	@NBTSerializable("ActiveY")
+	public int currentY;
+	
+	@NBTSerializable("DonePumping")
+	public boolean isDone;
+	
+	@NBTSerializable("PumpingAt")
+	public long donePumpingXZ;
+	
 	public TileFluidPump(BlockPos pos, BlockState state)
 	{
 		super(TilesZT_Processing.FLUID_PUMP, pos, state);
 		this.rotator.friction = 1F;
 		this.tankSmooth = new FluidSmoothing("out_display", this);
+		inventory.isStackValid = (slot, stack) -> stack.is(TagsZT.Items.MINING_PIPE);
 	}
 	
 	@Override
 	public void update()
 	{
 		energy.update(level, worldPosition, sidedConfig);
+		
+		if(isDone && atTickRate(20) && donePumpingXZ != BlockPos.asLong(worldPosition.getX(), 0, worldPosition.getZ()))
+		{
+			currentY = worldPosition.getY() - 1;
+			isDone = false;
+		}
 		
 		if(isOnClient())
 		{
@@ -90,10 +123,9 @@ public class TileFluidPump
 				// TODO: replace with pump sounds
 				ZeithTechAPI.get()
 						.getAudioSystem()
-						.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, null);
+						.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
 			}
 			
-			rotator.friction = 1F;
 			rotator.update();
 		}
 		
@@ -106,7 +138,8 @@ public class TileFluidPump
 			{
 				if(energy.consumeEnergy(20))
 				{
-					isInterrupted.setBool(false);
+					if(!discoveredPositions.isEmpty())
+						isInterrupted.setBool(false);
 					--cooldown;
 				} else isInterrupted.setBool(true);
 			}
@@ -116,12 +149,32 @@ public class TileFluidPump
 				for(var y = worldPosition.getY() - 1; y >= level.getMinBuildHeight(); --y)
 				{
 					var pos = new BlockPos(worldPosition.getX(), y, worldPosition.getZ());
-					if(level.isEmptyBlock(pos)) continue;
+					
+					// Mining pipes are okay to go through
+					if(level.getBlockState(pos).is(TagsZT.Blocks.MINING_PIPE)) continue;
+					
+					if(level.isEmptyBlock(pos))
+					{
+						for(ItemStack it : inventory)
+							if(it.is(TagsZT.Items.MINING_PIPE))
+							{
+								var block = Block.byItem(it.getItem());
+								if(block != Blocks.AIR)
+								{
+									it.split(1);
+									level.setBlockAndUpdate(pos, block.defaultBlockState());
+									cooldown += cooldownTime;
+									break;
+								}
+							}
+						break;
+					}
+					
 					var fs = level.getFluidState(pos);
 					if(fs.isEmpty() || !lock.lock(fs))
 						// We can't find a fluid... / Could not lock to a fluid (it is probably not a source block)
 						return;
-					
+					currentY = pos.getY();
 					discoveredPositions.add(pos);
 					discoverMoreFluid();
 					setEnabledState(true);
@@ -146,9 +199,10 @@ public class TileFluidPump
 						// NEVER EVER do anything with unloaded blocks!
 						if(!level.isLoaded(position)) return false;
 						
-						var fs = level.getFluidState(position);
+						// Don't pump anything below the currently active Y level!
+						if(position.getY() < currentY) return false;
 						
-						// Remove empty positions, and those which don't match the lock.
+						var fs = level.getFluidState(position);
 						
 						if(lock.test(fs))
 						{
@@ -158,10 +212,11 @@ public class TileFluidPump
 								if(fill == FluidType.BUCKET_VOLUME)
 								{
 									if(FluidUtil.tryPickUpFluid(new ItemStack(Items.BUCKET), null, level, position, Direction.UP).isSuccess())
+									{
 										fluidTank.fill(new FluidStack(fs.getType(), FluidType.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE);
-									
+										sync();
+									}
 									cooldown += cooldownTime;
-									
 									return true;
 								}
 							}
@@ -169,18 +224,88 @@ public class TileFluidPump
 							return false;
 						}
 						
+						// Remove empty positions, and those which don't match the lock.
 						return true;
 					});
 					
 					if(update)
 						discoverMoreFluid();
+					
+					if(discoveredPositions.isEmpty())
+						isInterrupted.setBool(true);
+					else
+					{
+						var qpos = new BlockPos(worldPosition.getX(), currentY, worldPosition.getZ());
+						
+						if(level.isEmptyBlock(qpos))
+							for(ItemStack it : inventory)
+								if(it.is(TagsZT.Items.MINING_PIPE))
+								{
+									var block = Block.byItem(it.getItem());
+									if(block != Blocks.AIR)
+									{
+										it.split(1);
+										level.setBlockAndUpdate(qpos, block.defaultBlockState());
+										cooldown += cooldownTime;
+										isInterrupted.setBool(false);
+										break;
+									}
+								}
+						
+						// If all fluids that have been located, were pumped out (no fluids left on any levels that have been processed, then go down by a block!
+						if(discoveredPositions.stream().noneMatch(p -> p.getY() >= currentY) && cooldown <= 0)
+						{
+							if(level.getBlockState(qpos).is(TagsZT.Blocks.MINING_PIPE))
+								--currentY;
+							else
+							{
+								isInterrupted.setBool(true);
+							}
+						}
+					}
+				}
+			}
+			
+			if(isDone && currentY < worldPosition.getY() && atTickRate(10))
+			{
+				var qpos = new BlockPos(worldPosition.getX(), currentY, worldPosition.getZ());
+				
+				var state = level.getBlockState(qpos);
+				
+				if(state.is(TagsZT.Blocks.MINING_PIPE))
+				{
+					List<ItemStack> blockDrops = state.getDrops(new LootContext.Builder(srv)
+							.withRandom(srv.random)
+							.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(qpos))
+							.withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(qpos))
+							.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())
+					);
+					
+					// Create copy of all drops!
+					List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);
+					blockDropsCopy.replaceAll(ItemStack::copy);
+					
+					if(storeAll(blockDrops, true))
+					{
+						storeAll(blockDropsCopy, false);
+						level.destroyBlock(qpos, false);
+						++currentY;
+					}
+				} else
+				{
+					++currentY;
 				}
 			}
 			
 			if(atTickRate(2) && !fluidTank.isEmpty())
 				relativeFluidHandler(Direction.UP)
-						.ifPresent(handler -> FluidHelper.transfer(fluidTank, handler, 100));
+						.ifPresent(handler -> FluidUtil.tryFluidTransfer(handler, fluidTank, 100, true));
 		}
+	}
+	
+	public boolean storeAll(List<ItemStack> stacks, boolean simulate)
+	{
+		return InventoryHelper.storeAllStacks(inventory, IntStream.range(0, inventory.getSlots()), stacks, simulate);
 	}
 	
 	private static final Direction[] DIRECTIONS = Direction.values();
@@ -242,13 +367,14 @@ public class TileFluidPump
 	@Override
 	public ContainerBaseMachine<TileFluidPump> openContainer(Player player, int windowId)
 	{
-		return null;
+		Network.sendTo(new SyncTileEntityPacket(this, true), player);
+		return new ContainerFluidPump(this, player, windowId);
 	}
 	
 	@Override
 	public List<Container> getAllInventories()
 	{
-		return List.of();
+		return List.of(inventory, energy.batteryInventory);
 	}
 	
 	private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);

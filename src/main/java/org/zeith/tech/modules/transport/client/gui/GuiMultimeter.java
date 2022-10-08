@@ -4,8 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import org.zeith.hammerlib.client.screen.IAdvancedGui;
 import org.zeith.hammerlib.client.screen.ScreenWTFMojang;
 import org.zeith.hammerlib.client.utils.FXUtils;
 import org.zeith.hammerlib.client.utils.RenderUtils;
@@ -13,16 +15,36 @@ import org.zeith.hammerlib.util.colors.ColorHelper;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.transport.container.ContainerMultimeter;
 
+import java.util.List;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
+@IAdvancedGui.ApplyToJEI
 public class GuiMultimeter
 		extends ScreenWTFMojang<ContainerMultimeter>
+		implements IAdvancedGui<GuiMultimeter>
 {
 	public GuiMultimeter(ContainerMultimeter container, Inventory plyerInv, Component name)
 	{
 		super(container, plyerInv, name);
-		setSize(202, 166);
+		setSize(176, 166);
+	}
+	
+	Rect2i rect;
+	
+	@Override
+	public List<Rect2i> getExtraAreas()
+	{
+		if(rect != null)
+			return List.of(rect);
+		return List.of();
+	}
+	
+	@Override
+	protected void init()
+	{
+		super.init();
+		rect = new Rect2i(leftPos + 176, topPos, 26, 86);
 	}
 	
 	@Override
@@ -36,7 +58,7 @@ public class GuiMultimeter
 	protected void renderBackground(PoseStack pose, float partialTime, int mouseX, int mouseY)
 	{
 		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/transport/gui/multimeter.png");
-		RenderUtils.drawTexturedModalRect(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		RenderUtils.drawTexturedModalRect(pose, leftPos, topPos, 0, 0, 202, imageHeight);
 		
 		pose.pushPose();
 		pose.translate(leftPos + 8, topPos + 8, 0);

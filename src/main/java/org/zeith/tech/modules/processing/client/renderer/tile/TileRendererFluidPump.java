@@ -8,7 +8,9 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
+import org.zeith.hammerlib.client.utils.FluidTextureType;
 import org.zeith.hammerlib.util.colors.ColorHelper;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.client.renderer.*;
@@ -50,17 +52,17 @@ public class TileRendererFluidPump
 		var fluid = entity.tankSmooth.getClientAverage(partial);
 		if(!fluid.isEmpty())
 		{
-			cuboid.setTexture(ZeithTechRenderer.getFluidTexture(fluid, FluidTextureType.STILL));
+			cuboid.setTexture(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.STILL));
 			lighting = ZeithTechRenderer.calculateGlowLight(lighting, fluid);
 			
-			int argb = ZeithTechRenderer.getColorARGB(fluid);
+			int argb = FluidRendererHelper.getColorARGB(fluid);
 			
 			argb = ColorHelper.packARGB(ColorHelper.getAlpha(argb) * 0.98F, ColorHelper.getRed(argb), ColorHelper.getGreen(argb), ColorHelper.getBlue(argb));
 			
 			var fluidsSrc = buf.getBuffer(Sheets.translucentCullBlockSheet());
 			float fill = fluid.getAmount() / (float) entity.fluidTank.getCapacity();
 			
-			cuboid.bounds(1F / 16F, 3.01F / 16F, 1F / 16F, 15F / 16F, 3.01F / 16F + 8.98F * fill / 16F, 15F / 16F);
+			cuboid.bounds(0.0625F, 0.188125F, 0.0625F, 0.9375F, 0.188125F + 0.56125F * fill, 0.9375F);
 			
 			CuboidRenderer.renderCube(cuboid, matrix, fluidsSrc, argb, lighting, overlay, CuboidRenderer.FaceDisplay.FRONT, true);
 		}

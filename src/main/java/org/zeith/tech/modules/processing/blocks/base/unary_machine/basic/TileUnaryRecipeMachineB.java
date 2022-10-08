@@ -30,6 +30,7 @@ import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
+import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.utils.InventoryHelper;
 import org.zeith.tech.utils.SidedInventory;
 
@@ -110,7 +111,7 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	
 	protected SoundEvent getInterruptSound()
 	{
-		return null; // TODO: make SoundsZT_Processing.BASIC_MACHINE_INTERRUPT;
+		return SoundsZT_Processing.BASIC_MACHINE_INTERRUPT;
 	}
 	
 	@Override

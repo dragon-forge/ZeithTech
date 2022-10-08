@@ -11,6 +11,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
@@ -30,7 +31,6 @@ import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachin
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.utils.*;
-import org.zeith.tech.utils.fluid.FluidHelper;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
 import java.util.EnumSet;
@@ -64,7 +64,7 @@ public class TileFluidCentrifuge
 	public final FluidSmoothing outputTank;
 	
 	@NBTSerializable("InputFluid")
-	public final SerializableFluidTank inputFluid = new SerializableFluidTank(1000, fluid -> RecipeRegistriesZT_Processing.FLUID_CENTRIFUGE.getRecipes().stream().anyMatch(r -> r.getInput().fluidsMatch(fluid)));
+	public final SerializableFluidTank inputFluid = new SerializableFluidTank(1000, fluid -> RecipeRegistriesZT_Processing.FLUID_CENTRIFUGE.getRecipes().stream().anyMatch(r -> r.getInput().fluid().test(fluid)));
 	
 	@NBTSerializable("OutputFluid")
 	public final SerializableFluidTank outputFluid = new SerializableFluidTank(1000);
@@ -93,10 +93,9 @@ public class TileFluidCentrifuge
 				// TODO: replace with centrifuge sounds
 				ZeithTechAPI.get()
 						.getAudioSystem()
-						.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, null);
+						.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
 			}
 			
-			rotator.friction = 1F;
 			rotator.update();
 		}
 		
@@ -120,6 +119,21 @@ public class TileFluidCentrifuge
 		
 		outputTank.update(outputFluid.getFluid());
 		
+		if(isOnServer() && activeRecipe != null)
+		{
+			var recipe = activeRecipe;
+			
+			int need = recipe.getEnergy() - accumulated;
+			
+			int toConsume = Math.min(need, 20);
+			if(energy.consumeEnergy(toConsume))
+			{
+				accumulated += toConsume;
+				isInterrupted.setBool(false);
+			} else
+				isInterrupted.setBool(true);
+		}
+		
 		if(isOnServer() && atTickRate(2))
 		{
 			var recipe = getActiveRecipe();
@@ -132,20 +146,10 @@ public class TileFluidCentrifuge
 			recipe:
 			if(active)
 			{
-				int need = recipe.getEnergy() - accumulated;
-				
-				int toConsume = Math.min(need, 20);
-				if(energy.consumeEnergy(toConsume))
-				{
-					accumulated += toConsume;
-					isInterrupted.setBool(false);
-				} else
-					isInterrupted.setBool(true);
-				
-				if(need <= 0)
+				if(recipe.getEnergy() <= accumulated)
 				{
 					accumulated = 0;
-					var drained = inputFluid.drain(recipe.getInput().fluidAmount(), IFluidHandler.FluidAction.SIMULATE);
+					var drained = inputFluid.drain(recipe.getInput().amount(), IFluidHandler.FluidAction.SIMULATE);
 					if(recipe.getInput().test(drained))
 					{
 						var canStoreExtra = recipe.getExtra().map(out -> InventoryHelper.storeStack(inventory, IntStream.of(0), out.getMinimalResult(), true)).orElse(true);
@@ -156,7 +160,7 @@ public class TileFluidCentrifuge
 							if(filled == recipe.getOutputAmount())
 							{
 								outputFluid.fill(recipe.getOutput(), IFluidHandler.FluidAction.EXECUTE);
-								inputFluid.drain(recipe.getInput().fluidAmount(), IFluidHandler.FluidAction.EXECUTE);
+								inputFluid.drain(recipe.getInput().amount(), IFluidHandler.FluidAction.EXECUTE);
 								recipe.getExtra().ifPresent(out -> InventoryHelper.storeStack(inventory, IntStream.of(0), out.assemble(level.getRandom()), false));
 							}
 						}
@@ -169,7 +173,7 @@ public class TileFluidCentrifuge
 				inventory.setItem(0, storeAnything(RelativeDirection.getAbsolute(getFront(), RelativeDirection.RIGHT), inventory.getItem(0), false));
 				
 				relativeFluidHandler(RelativeDirection.getAbsolute(getFront(), RelativeDirection.BACK))
-						.ifPresent(handler -> FluidHelper.transfer(outputFluid, handler, 50));
+						.ifPresent(handler -> FluidUtil.tryFluidTransfer(handler, outputFluid, 50, true));
 			}
 		}
 	}

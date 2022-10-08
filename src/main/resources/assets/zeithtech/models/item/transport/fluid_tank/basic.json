@@ -1,0 +1,14 @@
+{
+  "parent": "zeithtech:item/builtin/ister",
+  "textures": {
+    "particle": "zeithtech:transport/block/fluid_tank/basic"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "alt": 0.5
+      },
+      "model": "zeithtech:block/transport/fluid_tank/basic/inventory"
+    }
+  ]
+}

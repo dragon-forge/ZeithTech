@@ -1,6 +1,5 @@
 package org.zeith.tech.modules.processing.blocks.fluid_pump;
 
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -11,8 +10,9 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
 import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.core.client.renderer.item.BlockItemWithAltISTER;
 import org.zeith.tech.modules.processing.blocks.base.machine.BlockBaseMachine;
-import org.zeith.tech.modules.processing.client.renderer.item.ISTERPump;
+import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 
 import java.util.function.Consumer;
 
@@ -69,14 +69,9 @@ public class BlockFluidPump
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer)
 			{
-				consumer.accept(new IClientItemExtensions()
-				{
-					@Override
-					public BlockEntityWithoutLevelRenderer getCustomRenderer()
-					{
-						return ISTERPump.INSTANCE;
-					}
-				});
+				BlockItemWithAltISTER.INSTANCE
+						.bind(BlockFluidPump.this, TilesZT_Processing.FLUID_PUMP)
+						.ifPresent(consumer);
 			}
 		};
 	}

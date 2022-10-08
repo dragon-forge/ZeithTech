@@ -25,5 +25,7 @@ public interface RecipesZT_Transport
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_COPPER).result(new ItemStack(BlocksZT_Transport.UNINSULATED_COPPER_WIRE, 3)).register();
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_ALUMINUM).result(new ItemStack(BlocksZT_Transport.UNINSULATED_ALUMINUM_WIRE, 3)).register();
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_GOLD).result(new ItemStack(BlocksZT_Transport.UNINSULATED_GOLD_WIRE, 3)).register();
+		
+		event.shaped().shape("pip", "gGg", "pip").map('p', TagsZT.Items.PLATES_ALUMINUM).map('i', TagsZT.Items.INGOTS_ALUMINUM).map('g', Tags.Items.GLASS_PANES).map('G', Tags.Items.GLASS).result(BlocksZT_Transport.BASIC_FLUID_TANK).register();
 	}
 }

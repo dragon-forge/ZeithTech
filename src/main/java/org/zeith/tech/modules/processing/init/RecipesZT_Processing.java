@@ -13,13 +13,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
 import org.zeith.tech.api.events.recipe.GrindingRegistryEvent;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.base.RecipeUnaryBase;
 import org.zeith.tech.api.recipes.processing.*;
-import org.zeith.tech.api.utils.FluidIngredient;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
@@ -122,6 +123,18 @@ public interface RecipesZT_Processing
 					.map('p', BlocksZT_Transport.IRON_FLUID_PIPE)
 					.map('m', ItemsZT.MOTOR)
 					.result(BlocksZT_Processing.FLUID_CENTRIFUGE)
+					.register();
+			
+			f.get().minTier(TechTier.BASIC)
+					.shape("  p  ", " ama ", "actca", " lMl ", "  M  ")
+					.map('p', BlocksZT_Transport.IRON_FLUID_PIPE)
+					.map('a', TagsZT.Items.INGOTS_ALUMINUM)
+					.map('m', ItemsZT.MOTOR)
+					.map('c', ItemsZT.COPPER_COIL)
+					.map('t', BlocksZT_Transport.BASIC_FLUID_TANK)
+					.map('l', ItemsZT.LATEX)
+					.map('M', BlocksZT_Processing.MINING_PIPE)
+					.result(BlocksZT_Processing.FLUID_PUMP)
 					.register();
 			
 		}
@@ -270,8 +283,8 @@ public interface RecipesZT_Processing
 			var f = evt.<RecipeFluidCentrifuge.FluidCentrifugeRecipeBuilder> builderFactory();
 			
 			f.get()
-					.input(FluidIngredient.ofTags(1000, List.of(TagsZT.Fluids.CRUDE_OIL)))
-					.energy(2000)
+					.input(new FluidIngredientStack(FluidIngredient.ofTags(List.of(TagsZT.Fluids.CRUDE_OIL)), 1000))
+					.energy(5000)
 					.result(new FluidStack(FluidsZT_Processing.REFINED_OIL.getSource(), 700))
 					.extraOutput(new ExtraOutput.Ranged(new ItemStack(ItemsZT.OIL_SLUDGE), 1, 3, 0.75F))
 					.register();

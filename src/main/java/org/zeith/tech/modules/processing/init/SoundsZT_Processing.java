@@ -9,8 +9,8 @@ import org.zeith.tech.core.ZeithTech;
 @SimplyRegister
 public interface SoundsZT_Processing
 {
-//	@RegistryName("processing.block.basic_interrupt")
-//	SoundEvent BASIC_MACHINE_INTERRUPT = register("processing.block.basic_interrupt");
+	@RegistryName("processing.block.basic_interrupt")
+	SoundEvent BASIC_MACHINE_INTERRUPT = register("processing.block.basic_interrupt");
 	
 	@RegistryName("processing.block.fuel_generator.basic")
 	SoundEvent BASIC_FUEL_GENERATOR = register("processing.block.fuel_generator.basic");

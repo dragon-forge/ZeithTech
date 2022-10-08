@@ -15,10 +15,11 @@ import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.api.crafting.building.CustomRecipeGenerator;
 import org.zeith.hammerlib.api.crafting.building.GsonFileDecoder;
 import org.zeith.hammerlib.api.crafting.itf.IFileDecoder;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
 import org.zeith.hammerlib.util.mcf.itf.INetworkable;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.processing.RecipeFluidCentrifuge;
-import org.zeith.tech.api.utils.FluidIngredient;
 import org.zeith.tech.modules.processing.init.FluidsZT_Processing;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.modules.world.init.FluidsZT_World;
@@ -58,6 +59,7 @@ public class CustomFluidCentrifugeRecipeGenerator
 	public RecipeFluidCentrifuge fromJson(ResourceLocation recipeId, JsonObject root, ICondition.IContext context)
 	{
 		var input = FluidIngredient.fromJson(root.get("input"));
+		var inputCount = GsonHelper.getAsInt(GsonHelper.getAsJsonObject(root, "input"), "amount");
 		var output = JsonOps.INSTANCE.withDecoder(FluidStack.CODEC).apply(GsonHelper.getAsJsonObject(root, "result")).result().orElseThrow().getFirst();
 		var energy = GsonHelper.getAsInt(root, "energy", 2000);
 		
@@ -82,7 +84,7 @@ public class CustomFluidCentrifugeRecipeGenerator
 			extra = new ExtraOutput(extraItem, chance);
 		}
 		
-		return new RecipeFluidCentrifuge(recipeId, input, energy, output, extra);
+		return new RecipeFluidCentrifuge(recipeId, new FluidIngredientStack(input, inputCount), energy, output, extra);
 	}
 	
 	@Override
@@ -90,11 +92,12 @@ public class CustomFluidCentrifugeRecipeGenerator
 	{
 		JsonObject $ = new JsonObject();
 		{
-			var ingredient = new FluidIngredient(FluidIngredient.CompareMode.TAGS, List.of(new FluidStack(FluidsZT_World.CRUDE_OIL.getSource(), 1)), List.of(TagsZT.Fluids.CRUDE_OIL), 100);
+			var ingredient = new FluidIngredient(FluidIngredient.CompareMode.TAGS, List.of(new FluidStack(FluidsZT_World.CRUDE_OIL.getSource(), 1)), List.of(TagsZT.Fluids.CRUDE_OIL));
 			$.add("input", JsonOps.INSTANCE.withEncoder(FluidIngredient.CODEC).apply(ingredient).result().orElseThrow());
+			$.getAsJsonObject("input").addProperty("amount", 1000);
 		}
 		{
-			var fluid = new FluidStack(FluidsZT_Processing.REFINED_OIL.getSource(), 100);
+			var fluid = new FluidStack(FluidsZT_Processing.REFINED_OIL.getSource(), 800);
 			$.add("result", JsonOps.INSTANCE.withEncoder(FluidStack.CODEC).apply(fluid).result().orElseThrow());
 		}
 		$.addProperty("energy", 2000);
@@ -115,7 +118,7 @@ public class CustomFluidCentrifugeRecipeGenerator
 	public void toNetwork(FriendlyByteBuf buf, RecipeFluidCentrifuge obj)
 	{
 		buf.writeResourceLocation(obj.id);
-		buf.writeNbt((CompoundTag) NbtOps.INSTANCE.withEncoder(FluidIngredient.CODEC).apply(obj.getInput()).result().orElseThrow());
+		buf.writeNbt((CompoundTag) NbtOps.INSTANCE.withEncoder(FluidIngredientStack.CODEC).apply(obj.getInput()).result().orElseThrow());
 		buf.writeInt(obj.getEnergy());
 		buf.writeFluidStack(obj.getOutput());
 		
@@ -133,7 +136,7 @@ public class CustomFluidCentrifugeRecipeGenerator
 	public RecipeFluidCentrifuge fromNetwork(FriendlyByteBuf buf)
 	{
 		var rl = buf.readResourceLocation();
-		var input = NbtOps.INSTANCE.withDecoder(FluidIngredient.CODEC).apply(buf.readNbt()).result().orElseThrow().getFirst();
+		var input = NbtOps.INSTANCE.withDecoder(FluidIngredientStack.CODEC).apply(buf.readNbt()).result().orElseThrow().getFirst();
 		var energy = buf.readInt();
 		var fs = buf.readFluidStack();
 		var extra = buf.readBoolean() ? ExtraOutput.fromNetwork(buf) : null;

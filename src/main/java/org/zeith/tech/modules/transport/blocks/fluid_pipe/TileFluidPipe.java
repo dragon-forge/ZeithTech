@@ -12,6 +12,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +31,6 @@ import org.zeith.tech.modules.transport.blocks.base.traversable.*;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 import org.zeith.tech.utils.SerializableFluidTank;
-import org.zeith.tech.utils.fluid.FluidHelper;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
 import java.util.*;
@@ -290,7 +290,7 @@ public class TileFluidPipe
 			{
 				relativeFluidHandler(dir).ifPresent(remote ->
 						getCapability(ForgeCapabilities.FLUID_HANDLER, dir).ifPresent(pipe ->
-								FluidHelper.transfer(remote, pipe, maxTransfer)
+								FluidUtil.tryFluidTransfer(pipe, remote, maxTransfer, true)
 						)
 				);
 			}

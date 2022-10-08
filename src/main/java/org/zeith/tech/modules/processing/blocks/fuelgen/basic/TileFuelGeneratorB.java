@@ -119,7 +119,7 @@ public class TileFuelGeneratorB
 		{
 			ZeithTechAPI.get()
 					.getAudioSystem()
-					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, null);
+					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
 			
 			Vec3 pos = Vec3.atBottomCenterOf(worldPosition);
 			if(getRNG().nextInt(5) == 0)

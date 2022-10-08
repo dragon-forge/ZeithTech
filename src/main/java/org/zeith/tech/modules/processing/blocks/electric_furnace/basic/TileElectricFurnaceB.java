@@ -146,11 +146,11 @@ public class TileElectricFurnaceB
 				setEnabledState(false);
 		}
 		
-		if(isOnClient() && isEnabled())
+		if(isOnClient() && isEnabled() && !isInterrupted())
 		{
 			ZeithTechAPI.get()
 					.getAudioSystem()
-					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_ELECTRIC_FURNACE, null); // TODO: SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
+					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_ELECTRIC_FURNACE, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
 		}
 	}
 	

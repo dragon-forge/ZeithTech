@@ -60,7 +60,7 @@ public class ContainerElectricFurnaceB
 			
 			if(slot.container == player.getInventory())
 			{
-				if(!this.moveItemStackTo(origin, 36, 37, true))
+				if(!this.moveItemStackTo(origin, 36, slots.size(), true))
 					return ItemStack.EMPTY;
 			}
 			

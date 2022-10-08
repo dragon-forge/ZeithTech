@@ -1,12 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8.5",
-  "package": "org.zeith.tech.mixins",
+  "package": "org.zeith.tech.core.mixins",
   "refmap": "mixins.zeithtech.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "AddRecipesAccessor",
     "compat.jei.JeiRecipeTypeMixin"
   ],
   "client": [

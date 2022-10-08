@@ -110,6 +110,8 @@ info.zeithtech_processing.hammer_hit_count=%s hits
 ### Transport Module ###
 item.zeithtech.transport.multimeter=Multimeter
 
+block.zeithtech.transport.fluid_tank.basic=Basic Fluid Tank
+
 block.zeithtech.transport.item_pipes.copper=Copper Item Pipe
 
 block.zeithtech.transport.fluid_pipes.wooden=Wooden Fluid Pipe
@@ -130,6 +132,13 @@ info.zeithtech_transport.fluid_pipe_transfer=Max transfer: %s mB/tick
 ### Misc ###
 
 info.zeithtech.fe=%,d FE
+info.zeithtech.fluid_uncapped=%,d mB
+info.zeithtech.fluid_capped=%,d / %,d mB
+info.zeithtech.empty=Empty
+
+info.zeithtech.fluid_tank.fill=Filling item from tank
+info.zeithtech.fluid_tank.drain=Filling tank from item
+info.zeithtech.fluid_tank.toggle_mode=Click to toggle
 
 death.attack.zeithtech.electrocution=%s got electrocuted.
 

@@ -7,7 +7,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
+import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
+import org.zeith.hammerlib.client.utils.FluidTextureType;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.client.renderer.*;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
@@ -61,9 +63,9 @@ public class TileRendererFluidCentrifuge
 		var fluid = entity.outputTank.getClientAverage(partial);
 		if(!fluid.isEmpty())
 		{
-			cuboid.setTexture(ZeithTechRenderer.getFluidTexture(fluid, FluidTextureType.STILL));
+			cuboid.setTexture(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.STILL));
 			lighting = ZeithTechRenderer.calculateGlowLight(lighting, fluid);
-			int argb = ZeithTechRenderer.getColorARGB(fluid);
+			int argb = FluidRendererHelper.getColorARGB(fluid);
 			var fluidsSrc = buf.getBuffer(Sheets.translucentCullBlockSheet());
 			float fill = fluid.getAmount() / (float) entity.outputFluid.getCapacity();
 			

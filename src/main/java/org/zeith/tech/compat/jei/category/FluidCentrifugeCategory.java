@@ -87,7 +87,7 @@ public class FluidCentrifugeCategory
 	@Override
 	public void draw(RecipeFluidCentrifuge recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
 	{
-		arrow.draw(stack, 42, 25);
+		arrow.draw(stack, 41, 25);
 		
 		energyBar.draw(stack, 1, 1);
 		energyGlass.draw(stack, 0, 0);
@@ -110,7 +110,7 @@ public class FluidCentrifugeCategory
 		FluidStack[] matching = recipe.getInput().getValues();
 		
 		layout.addSlot(RecipeIngredientRole.INPUT, 18, 1)
-				.setFluidRenderer(recipe.getInput().fluidAmount(), false, 16, 64)
+				.setFluidRenderer(recipe.getInput().amount(), false, 16, 64)
 				.setOverlay(fluidGlass, -1, -1)
 				.addIngredients(ForgeTypes.FLUID_STACK, List.of(matching));
 		

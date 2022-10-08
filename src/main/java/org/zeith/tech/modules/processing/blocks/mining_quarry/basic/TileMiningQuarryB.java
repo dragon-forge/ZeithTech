@@ -114,6 +114,9 @@ public class TileMiningQuarryB
 	@NBTSerializable("DoneMining")
 	public boolean isDone;
 	
+	@NBTSerializable("MiningAt")
+	public long doneMiningXZ;
+	
 	public int defaultCooldown = 50;
 	
 	public TileMiningQuarryB(BlockPos pos, BlockState state)
@@ -127,15 +130,23 @@ public class TileMiningQuarryB
 		currentY = pos.getY() - 1;
 	}
 	
+	private static final Direction[] DIRECTIONS = Direction.values();
+	
 	@Override
 	public void update()
 	{
 		energy.update(level, worldPosition, sidedConfig);
 		
+		if(isDone && atTickRate(20) && doneMiningXZ != BlockPos.asLong(worldPosition.getX(), 0, worldPosition.getZ()))
+		{
+			currentY = worldPosition.getY() - 1;
+			isDone = false;
+		}
+		
 		if(atTickRate(8))
 		{
 			glob:
-			for(Direction to : Direction.values())
+			for(Direction to : DIRECTIONS)
 			{
 				if(sidedConfig.getAccess(SidedConfigTyped.ITEM, to) == SideConfig.PUSH)
 				{
@@ -203,7 +214,11 @@ public class TileMiningQuarryB
 					cooldown = defaultCooldown;
 					halted = true;
 				}
-				case DONE -> isDone = true;
+				case DONE ->
+				{
+					doneMiningXZ = BlockPos.asLong(worldPosition.getX(), 0, worldPosition.getZ());
+					isDone = true;
+				}
 				case MOVE_DOWN ->
 				{
 					var qp = new BlockPos(worldPosition.getX(), currentY, worldPosition.getZ());
@@ -238,6 +253,8 @@ public class TileMiningQuarryB
 						}
 					} else
 					{
+						doneMiningXZ = BlockPos.asLong(worldPosition.getX(), 0, worldPosition.getZ());
+						isDone = true;
 						cooldown = -1;
 						halted = true;
 						setEnabledState(false);

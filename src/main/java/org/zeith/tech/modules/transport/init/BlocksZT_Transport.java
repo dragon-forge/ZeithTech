@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.transport.init;
 
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -11,12 +12,16 @@ import org.zeith.tech.modules.transport.blocks.energy_wire.BlockEnergyWire;
 import org.zeith.tech.modules.transport.blocks.energy_wire.EnergyWireProperties;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.BlockFluidPipe;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.FluidPipeProperties;
+import org.zeith.tech.modules.transport.blocks.fluid_tank.basic.BlockFluidTankB;
 import org.zeith.tech.modules.transport.blocks.item_pipe.BlockItemPipe;
 import org.zeith.tech.modules.transport.blocks.item_pipe.ItemPipeProperties;
 
 @SimplyRegister
 public interface BlocksZT_Transport
 {
+	@RegistryName("transport/fluid_tank/basic")
+	BlockFluidTankB BASIC_FLUID_TANK = new BlockFluidTankB(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(2.5F).requiresCorrectToolForDrops(), BlockHarvestAdapter.MineableType.PICKAXE, Tiers.STONE);
+	
 	@RegistryName("transport/item_pipes/copper")
 	BlockItemPipe COPPER_ITEM_PIPE = new BlockItemPipe(ItemPipeProperties.builder().build());
 	

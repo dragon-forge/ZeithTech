@@ -43,14 +43,9 @@ public class GuiMiningQuarryB
 		WidgetAPI.drawPowerBar(pose, leftPos + 7, topPos + 8, tile.energy.getFillRate());
 		
 		var output = BlocksZT_Processing.MINING_PIPE.asItem().getDefaultInstance();
-		
-		if(!output.isEmpty())
-		{
-			int x = leftPos + 51;
-			int y = topPos + 17;
-			
-			WidgetAPI.drawGhostItem(pose, x, y, output);
-			WidgetAPI.drawGhostItem(pose, x, y + 18, output);
-		}
+		int x = leftPos + 51;
+		int y = topPos + 17;
+		WidgetAPI.drawGhostItem(pose, x, y, output);
+		WidgetAPI.drawGhostItem(pose, x, y + 18, output);
 	}
 }

@@ -7,6 +7,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.hammerlib.client.render.FluidRendererHelper;
+import org.zeith.hammerlib.client.utils.FluidTextureType;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -151,8 +153,8 @@ public class Cuboid
 	
 	public Cuboid prepFlowing(@NotNull FluidStack fluid)
 	{
-		SpriteInfo still = new SpriteInfo(ZeithTechRenderer.getFluidTexture(fluid, FluidTextureType.STILL), 16);
-		SpriteInfo flowing = new SpriteInfo(ZeithTechRenderer.getFluidTexture(fluid, FluidTextureType.FLOWING), 8);
+		SpriteInfo still = new SpriteInfo(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.STILL), 16);
+		SpriteInfo flowing = new SpriteInfo(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.FLOWING), 8);
 		return this.setTextures(still, still, flowing, flowing, flowing, flowing);
 	}
 	

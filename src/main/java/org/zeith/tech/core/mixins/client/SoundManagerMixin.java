@@ -1,4 +1,4 @@
-package org.zeith.tech.mixins.client;
+package org.zeith.tech.core.mixins.client;
 
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.sounds.Sound;

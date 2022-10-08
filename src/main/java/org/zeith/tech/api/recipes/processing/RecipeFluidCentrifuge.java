@@ -9,11 +9,12 @@ import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.api.energy.EnergyUnit;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
+import org.zeith.tech.api.recipes.RegistrationAllocator;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
-import org.zeith.tech.api.utils.FluidIngredient;
-import org.zeith.tech.utils.RegistrationAllocator;
 
 import java.util.Optional;
 
@@ -21,12 +22,12 @@ public class RecipeFluidCentrifuge
 		extends BaseNameableRecipe
 		implements IZeithTechRecipe
 {
-	private final FluidIngredient input;
+	private final FluidIngredientStack input;
 	private final int energy;
 	private final FluidStack output;
 	private final ExtraOutput byproduct;
 	
-	public RecipeFluidCentrifuge(ResourceLocation id, FluidIngredient input, int energy, FluidStack output, ExtraOutput byproduct)
+	public RecipeFluidCentrifuge(ResourceLocation id, FluidIngredientStack input, int energy, FluidStack output, ExtraOutput byproduct)
 	{
 		super(id, new FluidStackResult(output), NonNullList.of(new EnergyIngredient(energy, EnergyUnit.FE)));
 		this.input = input;
@@ -35,7 +36,7 @@ public class RecipeFluidCentrifuge
 		this.byproduct = byproduct;
 	}
 	
-	public FluidIngredient getInput()
+	public FluidIngredientStack getInput()
 	{
 		return input;
 	}
@@ -70,7 +71,7 @@ public class RecipeFluidCentrifuge
 	{
 		protected final ReloadRecipeRegistryEvent.AddRecipes<RecipeFluidCentrifuge> event;
 		
-		protected FluidIngredient input = FluidIngredient.EMPTY;
+		protected FluidIngredientStack input = new FluidIngredientStack(FluidIngredient.EMPTY, 0);
 		protected int energy = 0;
 		protected FluidStack result = FluidStack.EMPTY;
 		protected ExtraOutput extra;
@@ -81,7 +82,7 @@ public class RecipeFluidCentrifuge
 			this.event = Cast.cast(event);
 		}
 		
-		public FluidCentrifugeRecipeBuilder input(FluidIngredient input)
+		public FluidCentrifugeRecipeBuilder input(FluidIngredientStack input)
 		{
 			this.input = input;
 			return this;
@@ -117,7 +118,7 @@ public class RecipeFluidCentrifuge
 		{
 			if(result.isEmpty())
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have a defined result!");
-			if(input.isEmpty())
+			if(input.amount() <= 0 || input.fluid().isEmpty())
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have a defined input!");
 			if(energy <= 0)
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have set energy!");

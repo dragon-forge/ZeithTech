@@ -1,4 +1,4 @@
-package org.zeith.tech.mixins.client;
+package org.zeith.tech.core.mixins.client;
 
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.geom.ModelPart;

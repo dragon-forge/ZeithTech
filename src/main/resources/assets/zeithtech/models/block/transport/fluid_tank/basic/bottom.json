@@ -1,0 +1,78 @@
+{
+  "render_type": "cutout",
+  "textures": {
+    "0": "zeithtech:transport/block/fluid_tank/basic",
+    "particle": "zeithtech:transport/block/fluid_tank/basic"
+  },
+  "elements": [
+    {
+      "name": "bottom",
+      "from": [
+        2.01,
+        0,
+        2.01
+      ],
+      "to": [
+        13.99,
+        1,
+        13.99
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5.5,
+            6.5,
+            11.49,
+            7
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            5.5,
+            6.5,
+            11.49,
+            7
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            5.5,
+            7,
+            11.49,
+            6.5
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            5.5,
+            6.5,
+            11.49,
+            7
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            5.5,
+            0,
+            11.49,
+            5.99
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            5.51,
+            6.51,
+            11.5,
+            12.5
+          ],
+          "texture": "#0"
+        }
+      }
+    }
+  ]
+}

@@ -6,7 +6,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
+import org.zeith.hammerlib.client.utils.FluidTextureType;
 import org.zeith.tech.core.client.renderer.*;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.BlockFluidPipe;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.TileFluidPipe;
@@ -24,10 +26,10 @@ public class TileRendererFluidPipe
 		var fluid = entity.getClientAverage(partial);
 		if(!fluid.isEmpty())
 		{
-			cuboid.setTexture(ZeithTechRenderer.getFluidTexture(fluid, FluidTextureType.STILL));
+			cuboid.setTexture(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.STILL));
 			
 			lighting = ZeithTechRenderer.calculateGlowLight(lighting, fluid);
-			int argb = ZeithTechRenderer.getColorARGB(fluid);
+			int argb = FluidRendererHelper.getColorARGB(fluid);
 			
 			var fluidsSrc = buf.getBuffer(Sheets.translucentCullBlockSheet());
 			

@@ -3,16 +3,23 @@ package org.zeith.tech.modules.shared.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import org.zeith.hammerlib.client.utils.FXUtils;
-import org.zeith.hammerlib.client.utils.RenderUtils;
+import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.zeith.hammerlib.client.render.FluidRendererHelper;
+import org.zeith.hammerlib.client.utils.*;
 import org.zeith.tech.core.ZeithTech;
+
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class WidgetAPI
 {
@@ -39,6 +46,70 @@ public class WidgetAPI
 			
 			screen.renderTooltip(pose, Component.literal(I18n.get("info.zeithtech.fe", displayFE)), mouseX, mouseY);
 		}
+	}
+	
+	public static void drawFluidBarOverlay(Screen screen, PoseStack pose, int x, int y, IFluidTank tank, boolean showCapacity, int mouseX, int mouseY)
+	{
+		if(mouseX >= x && mouseY >= y && mouseX < x + 18 && mouseY < y + 66)
+		{
+			renderSlotHighlight(pose, x + 1, y + 1, 16, 64, 0);
+			
+			var player = Minecraft.getInstance().player;
+			if(player != null && player.containerMenu != null && !player.containerMenu.getCarried().isEmpty())
+				return;
+			
+			var fluid = tank.getFluid();
+			
+			List<Component> drawables = new ArrayList<>();
+			
+			if(!fluid.isEmpty())
+			{
+				drawables.add(fluid.getDisplayName());
+				
+				drawables.add((showCapacity
+						? Component.literal(I18n.get("info.zeithtech.fluid_capped", tank.getFluidAmount(), tank.getCapacity()))
+						: Component.literal(I18n.get("info.zeithtech.fluid_uncapped", tank.getFluidAmount())))
+						.withStyle(ChatFormatting.GRAY));
+				
+				if(screen.getMinecraft().options.advancedItemTooltips)
+					drawables.add(Component.literal(ForgeRegistries.FLUID_TYPES.get().getKey(fluid.getFluid().getFluidType()).toString())
+							.withStyle(ChatFormatting.DARK_GRAY));
+			} else
+				drawables.add(Component.translatable("info.zeithtech.empty"));
+			
+			screen.renderTooltip(pose, drawables,
+					Optional.empty(), mouseX, mouseY);
+		}
+	}
+	
+	public static void drawFluidBar(PoseStack pose, int x, int y, IFluidTank tank)
+	{
+		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+		RenderUtils.drawTexturedModalRect(pose, x, y, 0, 66, 18, 66); // draw the base
+		
+		var fluid = tank.getFluid();
+		float full = tank.getFluidAmount() / (float) tank.getCapacity();
+		FluidRendererHelper.renderFluidInGui(pose, fluid, FluidTextureType.STILL, full, x + 1, y + 1, 16, 64);
+		
+		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+		RenderUtils.drawTexturedModalRect(pose, x, y, 18, 66, 18, 66); // draw glass
+	}
+	
+	public static void drawSprite(PoseStack pose, float xCoord, float yCoord, @Nullable TextureAtlasSprite textureSprite, float widthIn, float heightIn, float yFull)
+	{
+		Matrix4f pose4f = pose.last().pose();
+		float minX = textureSprite == null ? 0 : textureSprite.getU(0);
+		float minY = textureSprite == null ? 0 : textureSprite.getV(16 - yFull);
+		float maxX = textureSprite == null ? 1 : textureSprite.getU(16);
+		float maxY = textureSprite == null ? 1 : textureSprite.getV(16);
+		Tesselator tessellator = Tesselator.getInstance();
+		BufferBuilder vertexbuffer = tessellator.getBuilder();
+		vertexbuffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		vertexbuffer.vertex(pose4f, xCoord, yCoord + heightIn, 0).uv(minX, maxY).endVertex();
+		vertexbuffer.vertex(pose4f, xCoord + widthIn, yCoord + heightIn, 0).uv(maxX, maxY).endVertex();
+		vertexbuffer.vertex(pose4f, xCoord + widthIn, yCoord, 0).uv(maxX, minY).endVertex();
+		vertexbuffer.vertex(pose4f, xCoord, yCoord, 0).uv(minX, minY).endVertex();
+		tessellator.end();
 	}
 	
 	public static void drawPowerBar(PoseStack pose, int x, int y, float full)

@@ -1,0 +1,28 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_tank/basic/main",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "false"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_tank/basic/bottom",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/fluid_tank/basic/top",
+        "uvlock": true
+      }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-package org.zeith.tech.mixins.compat.jei;
+package org.zeith.tech.core.mixins.compat.jei;
 
 import mezz.jei.api.recipe.RecipeType;
 import org.spongepowered.asm.mixin.*;
