@@ -25,7 +25,6 @@ import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.utils.ItemStackHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileMachineAssemblerB
@@ -57,9 +56,6 @@ public class TileMachineAssemblerB
 	public final PropertyInt craftingProgress = new PropertyInt(DirectStorage.create(v -> _progress = v, () -> _progress));
 	public final PropertyInt craftTime = new PropertyInt(DirectStorage.create(v -> _craftTime = v, () -> _craftTime));
 	
-	
-	private final List<Player> playerWithOpenMenu = new ArrayList<>();
-	
 	public TileMachineAssemblerB(BlockPos pos, BlockState state)
 	{
 		super(TilesZT_Processing.BASIC_MACHINE_ASSEMBLER, pos, state);
@@ -84,9 +80,6 @@ public class TileMachineAssemblerB
 					setEnabledState(false);
 				}
 			}
-			
-			if(atTickRate(5))
-				playerWithOpenMenu.removeIf(p -> !(p.containerMenu instanceof ContainerMachineAssemblerB a && a.tile == this));
 			
 			if(r == null && atTickRate(5))
 			{
@@ -137,11 +130,6 @@ public class TileMachineAssemblerB
 			if(r == null && _progress > 0)
 				craftingProgress.setInt(0);
 		}
-		
-		if(isOnClient())
-		{
-			playerWithOpenMenu.clear();
-		}
 	}
 	
 	public float getProgress(float partial)
@@ -152,7 +140,6 @@ public class TileMachineAssemblerB
 	@Override
 	public ContainerMachineAssemblerB openContainer(Player player, int windowId)
 	{
-		playerWithOpenMenu.add(player);
 		return new ContainerMachineAssemblerB(this, player, windowId);
 	}
 	

@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -92,7 +91,7 @@ public class TileElectricFurnaceB
 	public final PropertyInt progress = new PropertyInt(DirectStorage.create(i -> _progress = i, () -> _progress));
 	public final PropertyInt maxProgress = new PropertyInt(DirectStorage.create(i -> _maxProgress = i, () -> _maxProgress));
 	public final PropertyResourceLocation activeRecipe = new PropertyResourceLocation(DirectStorage.create(i -> _activeRecipe = i, () -> _activeRecipe));
-
+	
 	public final PropertyItemStack inputItemDisplay = new PropertyItemStack(DirectStorage.allocate(ItemStack.EMPTY));
 	
 	public TileElectricFurnaceB(BlockPos pos, BlockState state)
@@ -100,11 +99,6 @@ public class TileElectricFurnaceB
 		super(TilesZT_Processing.BASIC_ELECTRIC_FURNACE, pos, state);
 		dispatcher.registerProperty("ar", activeRecipe);
 		dispatcher.registerProperty("display", inputItemDisplay);
-	}
-	
-	public TileElectricFurnaceB(BlockEntityType<TileElectricFurnaceB> type, BlockPos pos, BlockState state)
-	{
-		super(type, pos, state);
 	}
 	
 	@Override

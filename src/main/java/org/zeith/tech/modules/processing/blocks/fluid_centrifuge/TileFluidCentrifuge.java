@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -19,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.util.physics.FrictionRotator;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.recipes.processing.RecipeFluidCentrifuge;
@@ -28,8 +28,7 @@ import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
-import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
-import org.zeith.tech.modules.processing.init.TilesZT_Processing;
+import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.utils.*;
 import org.zeith.tech.utils.fluid.FluidHelper;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
@@ -74,12 +73,7 @@ public class TileFluidCentrifuge
 	
 	public TileFluidCentrifuge(BlockPos pos, BlockState state)
 	{
-		this(TilesZT_Processing.FLUID_CENTRIFUGE, pos, state);
-	}
-	
-	public TileFluidCentrifuge(BlockEntityType<TileFluidCentrifuge> type, BlockPos pos, BlockState state)
-	{
-		super(type, pos, state);
+		super(TilesZT_Processing.FLUID_CENTRIFUGE, pos, state);
 		rotator.friction = 1F;
 		inventory.isStackValid = (slot, stack) -> false;
 		this.outputTank = new FluidSmoothing("out_display", this);
@@ -92,8 +86,15 @@ public class TileFluidCentrifuge
 		
 		if(isOnClient())
 		{
-			if(isEnabled())
+			if(isEnabled() && !isInterrupted.getBoolean())
+			{
 				rotator.speedupTo(45F, 3F);
+				
+				// TODO: replace with centrifuge sounds
+				ZeithTechAPI.get()
+						.getAudioSystem()
+						.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, null);
+			}
 			
 			rotator.friction = 1F;
 			rotator.update();
@@ -135,7 +136,11 @@ public class TileFluidCentrifuge
 				
 				int toConsume = Math.min(need, 20);
 				if(energy.consumeEnergy(toConsume))
+				{
 					accumulated += toConsume;
+					isInterrupted.setBool(false);
+				} else
+					isInterrupted.setBool(true);
 				
 				if(need <= 0)
 				{
@@ -219,7 +224,7 @@ public class TileFluidCentrifuge
 	@Override
 	public List<Container> getAllInventories()
 	{
-		return List.of(inventory);
+		return List.of(inventory, energy.batteryInventory);
 	}
 	
 	@Override

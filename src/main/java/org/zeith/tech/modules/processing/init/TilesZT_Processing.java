@@ -7,6 +7,7 @@ import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.TileElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
+import org.zeith.tech.modules.processing.blocks.fluid_pump.TileFluidPump;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.TileFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
@@ -40,4 +41,8 @@ public interface TilesZT_Processing
 	@RegistryName("processing/fluid_centrifuge")
 	@TileRenderer(TileRendererFluidCentrifuge.class)
 	BlockEntityType<TileFluidCentrifuge> FLUID_CENTRIFUGE = BlockAPI.createBlockEntityType(TileFluidCentrifuge::new, BlocksZT_Processing.FLUID_CENTRIFUGE);
+	
+	@RegistryName("processing/fluid_pump")
+	@TileRenderer(TileRendererFluidPump.class)
+	BlockEntityType<TileFluidPump> FLUID_PUMP = BlockAPI.createBlockEntityType(TileFluidPump::new, BlocksZT_Processing.FLUID_PUMP);
 }

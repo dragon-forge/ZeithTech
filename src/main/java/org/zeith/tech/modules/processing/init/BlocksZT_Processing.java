@@ -9,6 +9,7 @@ import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.tech.modules.processing.blocks.BlockMiningPipe;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.BlockElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.BlockFluidCentrifuge;
+import org.zeith.tech.modules.processing.blocks.fluid_pump.BlockFluidPump;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.BlockFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
@@ -36,9 +37,12 @@ public interface BlocksZT_Processing
 	@RegistryName("processing/mining_quarry/basic")
 	BlockMiningQuarryB BASIC_QUARRY = new BlockMiningQuarryB();
 	
+	@RegistryName("processing/mining_pipe")
+	BlockMiningPipe MINING_PIPE = new BlockMiningPipe(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
+	
 	@RegistryName("processing/fluid_centrifuge")
 	BlockFluidCentrifuge FLUID_CENTRIFUGE = new BlockFluidCentrifuge();
 	
-	@RegistryName("processing/mining_pipe")
-	BlockMiningPipe MINING_PIPE = new BlockMiningPipe(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
+	@RegistryName("processing/fluid_pump")
+	BlockFluidPump FLUID_PUMP = new BlockFluidPump();
 }

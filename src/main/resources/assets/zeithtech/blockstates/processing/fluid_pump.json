@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "zeithtech:block/processing/fluid_pump"
+    },
+    "facing=south": {
+      "model": "zeithtech:block/processing/fluid_pump",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "zeithtech:block/processing/fluid_pump",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "zeithtech:block/processing/fluid_pump",
+      "y": 90
+    }
+  }
+}

@@ -149,7 +149,7 @@ public class TileFluidPipe
 		{
 			FluidStack fluid = fluidSmoothing.getServerAverage();
 			if(!fluid.isEmpty())
-				setLightLevel(Math.round(fluid.getAmount() * 5F / (float) tank.getCapacity()));
+				setLightLevel(Math.round(fluid.getAmount() * (fluid.getFluid().getFluidType().getLightLevel(fluid) / 15F) * 6F / (float) tank.getCapacity()));
 			else
 				setLightLevel(0);
 			

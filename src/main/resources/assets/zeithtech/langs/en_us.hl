@@ -93,6 +93,7 @@ block.zeithtech.processing.grinder.basic=Basic Grinder
 block.zeithtech.processing.sawmill.basic=Basic Sawmill
 block.zeithtech.processing.mining_quarry.basic=Basic Miner
 block.zeithtech.processing.fluid_centrifuge=Fluid Centrifuge
+block.zeithtech.processing.fluid_pump=Fluid Pump
 
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter

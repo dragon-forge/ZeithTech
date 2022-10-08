@@ -2,7 +2,8 @@ package org.zeith.tech.modules.processing.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.minecraft.client.model.geom.*;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
@@ -14,8 +15,6 @@ import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentri
 public class TileRendererFluidCentrifuge
 		implements IBESR<TileFluidCentrifuge>
 {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "static"), "main");
-	
 	final ModelPart animatedPart;
 	
 	final Cuboid cuboid = new Cuboid();

@@ -1,0 +1,14 @@
+{
+  "parent": "zeithtech:item/builtin/ister",
+  "textures": {
+    "particle": "zeithtech:processing/block/fluid_pump/base"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "alt": 0.5
+      },
+      "model": "zeithtech:block/processing/fluid_pump"
+    }
+  ]
+}
