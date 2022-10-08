@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.processing.client.renderer.item;
+package org.zeith.tech.modules.transport.client.renderer.item;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;

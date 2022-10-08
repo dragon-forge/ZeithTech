@@ -81,6 +81,7 @@ item.zeithtech.motor=Motor
 item.zeithtech.plastic=Plastic
 item.zeithtech.sawdust=Sawdust
 item.zeithtech.circular_saw=Circular Saw
+item.zeithtech.oil_sludge=Oil Sludge
 
 ### Processing Module ###
 block.zeithtech.processing.mining_pipe=Mining Pipe
@@ -91,6 +92,7 @@ block.zeithtech.processing.electric_furnace.basic=Basic Electric Furnace
 block.zeithtech.processing.grinder.basic=Basic Grinder
 block.zeithtech.processing.sawmill.basic=Basic Sawmill
 block.zeithtech.processing.mining_quarry.basic=Basic Miner
+block.zeithtech.processing.fluid_centrifuge=Fluid Centrifuge
 
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter

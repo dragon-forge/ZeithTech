@@ -25,6 +25,7 @@ import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.base.ITieredRecipe;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.compat.BaseCompat;
+import org.zeith.tech.compat.jei.category.FluidCentrifugeCategory;
 import org.zeith.tech.compat.jei.category.SawmillCategoryB;
 import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
@@ -83,7 +84,8 @@ public class JeiZT
 				new ManualHammeringCategory(gui$),
 				new MachineAssemblyCategoryB(gui$),
 				new GrinderCategoryB(gui$),
-				new SawmillCategoryB(gui$)
+				new SawmillCategoryB(gui$),
+				new FluidCentrifugeCategory(gui$)
 		);
 	}
 	
@@ -96,6 +98,7 @@ public class JeiZT
 		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, api.getRecipesUpToTier(api.machineAssembly(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, api.getRecipesUpToTier(api.grinding(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.SAWMILL, api.sawmill().getRecipes().stream().toList());
+		registration.addRecipes(RecipeTypesZT.FLUID_CENTRIFUGE, api.fluidCentrifuge().getRecipes().stream().toList());
 		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
@@ -120,6 +123,7 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);
 	}
 	
 	@Override

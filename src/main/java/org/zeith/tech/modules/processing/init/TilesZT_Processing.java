@@ -6,13 +6,13 @@ import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.TileElectricFurnaceB;
+import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
 import org.zeith.tech.modules.processing.blocks.fuelgen.basic.TileFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.TileMiningQuarryB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
-import org.zeith.tech.modules.processing.client.renderer.tile.TileRendererElectricFurnaceB;
-import org.zeith.tech.modules.processing.client.renderer.tile.TileRendererMachineAssemblerB;
+import org.zeith.tech.modules.processing.client.renderer.tile.*;
 
 @SimplyRegister
 public interface TilesZT_Processing
@@ -36,4 +36,8 @@ public interface TilesZT_Processing
 	
 	@RegistryName("processing/mining_quarry/basic")
 	BlockEntityType<TileMiningQuarryB> BASIC_QUARRY = BlockAPI.createBlockEntityType(TileMiningQuarryB::new, BlocksZT_Processing.BASIC_QUARRY);
+	
+	@RegistryName("processing/fluid_centrifuge")
+	@TileRenderer(TileRendererFluidCentrifuge.class)
+	BlockEntityType<TileFluidCentrifuge> FLUID_CENTRIFUGE = BlockAPI.createBlockEntityType(TileFluidCentrifuge::new, BlocksZT_Processing.FLUID_CENTRIFUGE);
 }

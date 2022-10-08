@@ -19,6 +19,8 @@ public interface IRecipeRegistries
 	
 	NamespacedRecipeRegistry<RecipeSawmill> sawmill();
 	
+	NamespacedRecipeRegistry<RecipeFluidCentrifuge> fluidCentrifuge();
+	
 	<T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier);
 	
 	@ApiStatus.Internal

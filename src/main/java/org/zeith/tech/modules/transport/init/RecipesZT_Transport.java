@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.transport.init;
 
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
@@ -17,6 +18,9 @@ public interface RecipesZT_Transport
 		
 		event.shaped().shape("pgp").map('p', TagsZT.Items.PLATES_COPPER).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT_Transport.COPPER_ITEM_PIPE, 3)).register();
 		event.shaped().shape("rpb", "pwp", " p ").map('r', Tags.Items.DYES_RED).map('p', ItemsZT.PLASTIC).map('b', Tags.Items.DYES_BLACK).map('w', BlocksZT_Transport.INSULATED_COPPER_WIRE).result(ItemsZT_Transport.MULTIMETER).register();
+		
+		event.shaped().shape("mmm", "ggg", "mmm").map('m', ItemTags.PLANKS).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT_Transport.WOODEN_FLUID_PIPE, 6)).register();
+		event.shaped().shape("mmm", "ggg", "mmm").map('m', TagsZT.Items.PLATES_IRON).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT_Transport.IRON_FLUID_PIPE, 6)).register();
 		
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_COPPER).result(new ItemStack(BlocksZT_Transport.UNINSULATED_COPPER_WIRE, 3)).register();
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_ALUMINUM).result(new ItemStack(BlocksZT_Transport.UNINSULATED_ALUMINUM_WIRE, 3)).register();

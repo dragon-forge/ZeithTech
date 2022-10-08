@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.zeith.hammerlib.client.render.tile.IBESR;
+import org.zeith.tech.core.client.renderer.RotatedRenderHelper;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
-import org.zeith.tech.modules.shared.client.renderer.RotatedRenderHelper;
 
 public class TileRendererMachineAssemblerB
 		implements IBESR<TileMachineAssemblerB>

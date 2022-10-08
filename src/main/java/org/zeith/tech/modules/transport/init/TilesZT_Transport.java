@@ -7,8 +7,8 @@ import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.tech.modules.transport.blocks.energy_wire.TileEnergyWire;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.TileFluidPipe;
 import org.zeith.tech.modules.transport.blocks.item_pipe.TileItemPipe;
-import org.zeith.tech.modules.transport.client.renderer.TileRendererFluidPipe;
-import org.zeith.tech.modules.transport.client.renderer.TileRendererItemPipe;
+import org.zeith.tech.modules.transport.client.renderer.tile.TileRendererFluidPipe;
+import org.zeith.tech.modules.transport.client.renderer.tile.TileRendererItemPipe;
 
 import java.util.HashSet;
 

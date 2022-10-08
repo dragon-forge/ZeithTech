@@ -34,6 +34,7 @@ public class ProcessingModule
 		HammerLib.EVENT_BUS.addGenericListener(RecipeHammering.class, RecipesZT_Processing::addHammeringRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeGrinding.class, RecipesZT_Processing::addGrindingRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeSawmill.class, RecipesZT_Processing::addSawmillRecipes);
+		HammerLib.EVENT_BUS.addGenericListener(RecipeFluidCentrifuge.class, RecipesZT_Processing::addFluidCentrifugeRecipes);
 	}
 	
 	@Override

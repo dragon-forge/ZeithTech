@@ -17,6 +17,11 @@ public record EndpointData(BlockPos pos, Direction dir, int priority, boolean va
 	
 	static final Direction[] DIRECTIONS = Direction.values();
 	
+	public BlockPos getActualPosition()
+	{
+		return pos.relative(dir);
+	}
+	
 	@Override
 	public CompoundTag serializeNBT()
 	{

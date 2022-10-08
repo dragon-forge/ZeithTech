@@ -36,38 +36,7 @@ public class SpecificSidedConfigManager
 	{
 		var cur = currentDirection.get();
 		if(cur == null) return null;
-		
-		if(cur == direction)
-			return RelativeDirection.FRONT;
-		
-		if(cur == direction.getOpposite())
-			return RelativeDirection.BACK;
-		
-		if(direction.getAxis() != Direction.Axis.Y)
-		{
-			if(cur == direction.getClockWise())
-				return RelativeDirection.RIGHT;
-			if(cur == direction.getCounterClockWise())
-				return RelativeDirection.LEFT;
-		}
-		
-		if(cur.getAxis() == Direction.Axis.Y)
-		{
-			var up = cur == Direction.UP ? Direction.NORTH : Direction.SOUTH;
-			if(up == direction) return RelativeDirection.UP;
-			if(up.getOpposite() == direction) return RelativeDirection.DOWN;
-			if(up.getClockWise() == direction) return RelativeDirection.RIGHT;
-			if(up.getCounterClockWise() == direction) return RelativeDirection.LEFT;
-		} else
-		{
-			if(direction == Direction.UP)
-				return RelativeDirection.UP;
-			if(direction == Direction.DOWN)
-				return RelativeDirection.DOWN;
-		}
-		
-		// This should not happen if all directions are populated properly.
-		throw new NullPointerException();
+		return RelativeDirection.fromHorizontalFront(cur, direction);
 	}
 	
 	@Override

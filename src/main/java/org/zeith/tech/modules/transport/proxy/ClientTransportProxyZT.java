@@ -7,7 +7,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.zeith.hammerlib.api.inv.IScreenContainer;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.modules.processing.client.renderer.item.ItemPropertyFunctionMultimeter;
+import org.zeith.tech.modules.transport.client.renderer.item.ItemPropertyFunctionMultimeter;
 import org.zeith.tech.modules.transport.container.ContainerMultimeter;
 import org.zeith.tech.modules.transport.init.ItemsZT_Transport;
 

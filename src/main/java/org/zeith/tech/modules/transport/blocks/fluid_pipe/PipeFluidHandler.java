@@ -58,18 +58,18 @@ public class PipeFluidHandler
 	@Override
 	public int fill(FluidStack resource, FluidAction action)
 	{
-		return pipe.tank.fill(limit(resource, pipe.transfer), action);
+		return pipe.tank.fill(limit(resource, pipe.maxTransfer), action);
 	}
 	
 	@Override
 	public @NotNull FluidStack drain(FluidStack resource, FluidAction action)
 	{
-		return pipe.tank.drain(limit(resource, pipe.transfer), action);
+		return pipe.tank.drain(limit(resource, pipe.maxTransfer), action);
 	}
 	
 	@Override
 	public @NotNull FluidStack drain(int maxDrain, FluidAction action)
 	{
-		return pipe.tank.drain(Math.min(maxDrain, pipe.transfer), action);
+		return pipe.tank.drain(Math.min(maxDrain, pipe.maxTransfer), action);
 	}
 }

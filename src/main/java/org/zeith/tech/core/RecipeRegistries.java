@@ -40,6 +40,12 @@ class RecipeRegistries
 	}
 	
 	@Override
+	public NamespacedRecipeRegistry<RecipeFluidCentrifuge> fluidCentrifuge()
+	{
+		return RecipeRegistriesZT_Processing.FLUID_CENTRIFUGE;
+	}
+	
+	@Override
 	public <T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier)
 	{
 		return registry

@@ -7,8 +7,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.INBTSerializable;
-import org.zeith.tech.modules.transport.blocks.base.traversable.EndpointData;
-import org.zeith.tech.modules.transport.blocks.base.traversable.TraversablePath;
+import org.zeith.tech.modules.transport.blocks.base.traversable.*;
 
 import java.util.Stack;
 import java.util.UUID;
@@ -68,8 +67,7 @@ public class ItemInPipe
 			} else
 			{
 				// If we were unable to move the item to the nextFace
-				
-				ItemStack remaining = currentPipe.insertItemIntoPipe(getContents(), nextDst, false);
+				ItemStack remaining = currentPipe.insertItemIntoPipe(getContents(), nextDst, false, endpoint != null ? endpoint.getActualPosition() : null);
 				
 				if(!remaining.isEmpty())
 				{
@@ -79,6 +77,23 @@ public class ItemInPipe
 			}
 			
 			return true;
+		} else if(prevPipeProgress < 0.5F && currentPipeProgress >= 0.5F)
+		{
+			var nextDst = path.isEmpty() ? endpoint.dir() : path.get(0);
+			if(currentPipe.getRelativeTraversable(nextDst, this).isEmpty()
+					&& !currentPipe.getPosition().relative(nextDst).equals(endpoint.getActualPosition()))
+			{
+				var path = TraversableHelper.findClosestPath(currentPipe, null, this, endpoint != null ? endpoint.getActualPosition() : null).orElse(null);
+				
+				if(path == null || !applyPath(from, path))
+				{
+					Vec3 pos = getCurrentPosition(1F);
+					Containers.dropItemStack(currentPipe.getLevel(), pos.x, pos.y, pos.z, getContents());
+					setContents(ItemStack.EMPTY);
+					return true;
+				} else if(currentPipe.isOnServer())
+					currentPipe.sync();
+			}
 		}
 		
 		return false;

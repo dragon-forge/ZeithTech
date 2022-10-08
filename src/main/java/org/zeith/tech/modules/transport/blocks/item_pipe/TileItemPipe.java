@@ -86,6 +86,34 @@ public class TileItemPipe
 		return stack;
 	}
 	
+	public ItemStack insertItemIntoPipe(ItemStack stack, Direction from, boolean simulate, BlockPos endpointPos)
+	{
+		return insertItemIntoPipe(stack, from, simulate, ItemInPipe.multiplySpeed(1F), endpointPos);
+	}
+	
+	public ItemStack insertItemIntoPipe(ItemStack stack, Direction from, boolean simulate, Consumer<ItemInPipe> visitor, BlockPos endpointPos)
+	{
+		ItemInPipe item = new ItemInPipe().setContents(stack);
+		
+		// Guaranteed to be unique.
+		while(contents.byId(item.itemId).isPresent())
+			item.itemId = UUID.randomUUID();
+		
+		var path = TraversableHelper.findClosestPath(this, from, item, endpointPos).orElse(null);
+		
+		if(path != null && item.applyPath(from, path))
+		{
+			if(!simulate)
+			{
+				visitor.accept(item);
+				contents.add(item);
+			}
+			return ItemStack.EMPTY;
+		}
+		
+		return stack;
+	}
+	
 	public boolean transferItem(ItemInPipe item, Direction to)
 	{
 		if(level.getBlockEntity(worldPosition.relative(to)) instanceof TileItemPipe pipe)
@@ -179,8 +207,8 @@ public class TileItemPipe
 	
 	public boolean doesConnectTo(Direction to)
 	{
-		return getRelativeTraversable(to, null).isPresent()
-				|| (sideConfigs.get(to.ordinal()) != SideConfig.DISABLE && relativeItemHandler(to).isPresent());
+		return sideConfigs.get(to.ordinal()) != SideConfig.DISABLE
+				&& (getRelativeTraversable(to, null).isPresent() || relativeItemHandler(to).isPresent());
 	}
 	
 	private LazyOptional<IItemHandler> relativeItemHandler(Direction to)

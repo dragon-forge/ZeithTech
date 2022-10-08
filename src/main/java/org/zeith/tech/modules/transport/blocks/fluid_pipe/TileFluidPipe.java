@@ -20,24 +20,25 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.PropertyBool;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.block.ZeithTechStateProperties;
 import org.zeith.tech.api.enums.SideConfig;
+import org.zeith.tech.api.tile.IFluidPipe;
 import org.zeith.tech.api.tile.IHasPriority;
 import org.zeith.tech.api.tile.sided.SideConfig6;
-import org.zeith.tech.core.net.properties.PropertyFluidStack;
 import org.zeith.tech.core.net.properties.PropertyIntArray;
 import org.zeith.tech.modules.transport.blocks.base.traversable.*;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 import org.zeith.tech.utils.SerializableFluidTank;
+import org.zeith.tech.utils.fluid.FluidHelper;
+import org.zeith.tech.utils.fluid.FluidSmoothing;
 
 import java.util.*;
 import java.util.stream.Stream;
 
 public class TileFluidPipe
 		extends TileSyncableTickable
-		implements ITraversable<FluidStack>
+		implements ITraversable<FluidStack>, IFluidPipe
 {
 	public static final EnumSet<Direction> ALL_FLOW_DIRECTIONS = EnumSet.allOf(Direction.class);
 	public static final EnumSet<Direction> NO_FLOW_DIRECTIONS = EnumSet.noneOf(Direction.class);
@@ -49,25 +50,19 @@ public class TileFluidPipe
 	public final SerializableFluidTank tank;
 	
 	/// START NETWORK SYNC VARS
-	@NBTSerializable("Display")
-	private FluidStack _displayFluid = FluidStack.EMPTY;
-	@NBTSerializable("PrevDisplay")
-	private FluidStack _prevDisplayFluid = FluidStack.EMPTY;
-	private final PropertyFluidStack prevDisplayFluid = new PropertyFluidStack(DirectStorage.create(v -> _prevDisplayFluid = v, () -> _prevDisplayFluid));
-	private final PropertyFluidStack displayFluid = new PropertyFluidStack(DirectStorage.create(v ->
-	{
-		_displayFluid = v;
-		if(isOnClient())
-			clientSyncTicks = 0;
-	}, () -> _displayFluid));
+	@NBTSerializable("Smooth")
+	public final FluidSmoothing fluidSmoothing;
 	public final PropertyBool isBurning = new PropertyBool();
 	public final PropertyIntArray sendingDirections = new PropertyIntArray();
 	/// END NETWORK SYNC VARS
 	
-	@NBTSerializable("Pulls")
-	public boolean shouldPullFromContainers;
+	@NBTSerializable("VaccumTime")
+	public int vacuumTicks;
 	
-	public final int transfer, maxTemperature;
+	@NBTSerializable("SkipTicks")
+	public int skipTicks;
+	
+	public final int maxTransfer, maxTemperature;
 	
 	@NBTSerializable("BurnTime")
 	public int burnTime;
@@ -83,15 +78,15 @@ public class TileFluidPipe
 	{
 		super(type, pos, state);
 		
-		dispatcher.registerProperty("display", displayFluid);
-		dispatcher.registerProperty("displayPrev", prevDisplayFluid);
+		fluidSmoothing = new FluidSmoothing("display", this);
+		
 		dispatcher.registerProperty("emitter", sendingDirections);
 		dispatcher.registerProperty("burning", isBurning);
 		
 		var props = getPipeBlock().properties;
 		
 		this.tank = new SerializableFluidTank(props.storageVolume());
-		this.transfer = props.transferVolume();
+		this.maxTransfer = props.transferVolume();
 		this.maxTemperature = props.maxTemperature();
 	}
 	
@@ -103,22 +98,25 @@ public class TileFluidPipe
 		return BlocksZT_Transport.WOODEN_FLUID_PIPE;
 	}
 	
-	final int syncTickRate = 5;
-	int clientSyncTicks = 0;
-	FluidStack[] combined = new FluidStack[syncTickRate];
-	
-	{
-		Arrays.fill(combined, FluidStack.EMPTY);
-	}
+	final List<ITraversable<FluidStack>> preferred = new ArrayList<>();
 	
 	@Override
 	public void update()
 	{
+		if(skipTicks > 0)
+		{
+			--skipTicks;
+			return;
+		}
+		
+		findTargets:
 		if(atTickRate(20) && isOnServer())
 		{
 			if(!tank.isEmpty())
 			{
-				var lst = TraversableHelper.findAllPaths(this, null, tank.getFluid())
+				var paths = TraversableHelper.findAllPaths(this, null, tank.getFluid());
+				
+				var lst = paths
 						.stream()
 						.map(p -> p.size() > 1 ? getTo(p.get(1)) : null)
 						.filter(Objects::nonNull)
@@ -128,21 +126,28 @@ public class TileFluidPipe
 				if(lst.isEmpty())
 					this.flowDirections = NO_FLOW_DIRECTIONS;
 				else
+				{
+					preferred.clear();
+					paths.stream()
+							.filter(p -> (p.size() > 1 ? getTo(p.get(1)) : null) != null)
+							.map(p -> p.get(1))
+							.distinct()
+							.forEach(preferred::add);
+					
 					this.flowDirections = EnumSet.copyOf(lst);
+				}
 			} else this.flowDirections = NO_FLOW_DIRECTIONS;
 			
 			sendingDirections.set(this.flowDirections.stream().mapToInt(Direction::ordinal).toArray());
 		}
 		
-		System.arraycopy(combined, 0, combined, 1, combined.length - 1);
-		combined[0] = tank.getFluid().copy();
+		smooth:
+		fluidSmoothing.update(tank.getFluid());
 		
 		sync:
-		if(atTickRate(syncTickRate) && isOnServer())
+		if(atTickRate(5) && isOnServer())
 		{
-			prevDisplayFluid.set(displayFluid.get());
-			FluidStack fluid = getServerAverage();
-			displayFluid.set(fluid);
+			FluidStack fluid = fluidSmoothing.getServerAverage();
 			if(!fluid.isEmpty())
 				setLightLevel(Math.round(fluid.getAmount() * 5F / (float) tank.getCapacity()));
 			else
@@ -195,11 +200,12 @@ public class TileFluidPipe
 		{
 			Direction[] directions = BlockFluidPipe.DIRECTIONS;
 			
-			for(int i = 0; i < directions.length && !tank.isEmpty(); i++)
-			{
-				Direction to = directions[i];
-				tank.drain(storeAnything(to, tank.getFluid(), false), IFluidHandler.FluidAction.EXECUTE);
-			}
+			if(vacuumTicks <= 0)
+				for(int i = 0; i < directions.length && !tank.isEmpty(); i++)
+				{
+					Direction to = directions[i];
+					tank.drain(storeAnything(to, tank.getFluid(), false), IFluidHandler.FluidAction.EXECUTE);
+				}
 			
 			if(tank.isEmpty())
 				break emit;
@@ -217,15 +223,20 @@ public class TileFluidPipe
 							.flatMap(dir -> getRelativeTraversable(dir, tank.getFluid()).stream())
 							.toArray(TileFluidPipe[]::new), true);
 			} else
-				sendTo(this.flowDirections.stream()
-						.flatMap(dir -> getRelativeTraversable(dir, tank.getFluid()).stream())
-						.toArray(TileFluidPipe[]::new));
+			{
+				sendTo(Stream.concat(
+						this.preferred.stream().map(t -> Cast.cast(t, TileFluidPipe.class))
+								.filter(Objects::nonNull)
+								.limit(1L),
+						this.flowDirections.stream()
+								.flatMap(dir -> getRelativeTraversable(dir, tank.getFluid()).stream())
+				).toArray(TileFluidPipe[]::new));
+			}
 		}
 		
+		smokes:
 		if(isOnClient())
 		{
-			++clientSyncTicks;
-			
 			if(isBurning.getBoolean() && level != null)
 			{
 				VoxelShape voxelshape = getBlockState().getShape(level, worldPosition);
@@ -269,6 +280,21 @@ public class TileFluidPipe
 				});
 			}
 		}
+		
+		vacuum:
+		if(vacuumTicks > 0 && isOnServer())
+		{
+			--vacuumTicks;
+			
+			for(Direction dir : BlockFluidPipe.DIRECTIONS)
+			{
+				relativeFluidHandler(dir).ifPresent(remote ->
+						getCapability(ForgeCapabilities.FLUID_HANDLER, dir).ifPresent(pipe ->
+								FluidHelper.transfer(remote, pipe, maxTransfer)
+						)
+				);
+			}
+		}
 	}
 	
 	public void setLightLevel(int light)
@@ -282,42 +308,7 @@ public class TileFluidPipe
 	
 	public FluidStack getClientAverage(float partial)
 	{
-		var ofs = prevDisplayFluid.get();
-		var fs = displayFluid.get();
-		
-		float progress = Mth.clamp((clientSyncTicks + partial) / syncTickRate, 0F, 1F);
-		
-		if(ofs.isEmpty() && !fs.isEmpty())
-			return PipeFluidHandler.withAmount(fs, Math.round(fs.getAmount() * progress));
-		
-		if(!ofs.isEmpty() && fs.isEmpty())
-			return PipeFluidHandler.withAmount(ofs, Math.round(ofs.getAmount() * progress));
-		
-		if(!ofs.isFluidEqual(fs) || fs.isEmpty())
-			return fs;
-		
-		return PipeFluidHandler.withAmount(fs, Math.round(Mth.lerp(progress, ofs.getAmount(), fs.getAmount())));
-	}
-	
-	private FluidStack getServerAverage()
-	{
-		FluidStack fluid = FluidStack.EMPTY;
-		
-		for(FluidStack fs : combined)
-		{
-			if(fs.isEmpty())
-				continue;
-			
-			if(fluid.isEmpty())
-				fluid = PipeFluidHandler.withAmount(fs, fs.getAmount());
-			else if(fs.isFluidEqual(fluid))
-				fluid.setAmount(fluid.getAmount() + fs.getAmount());
-		}
-		
-		if(!fluid.isEmpty())
-			fluid.setAmount(fluid.getAmount() / combined.length);
-		
-		return fluid;
+		return fluidSmoothing.getClientAverage(partial);
 	}
 	
 	public boolean balanceOut(TileFluidPipe[] pipes, boolean addSelf)
@@ -347,12 +338,23 @@ public class TileFluidPipe
 		for(TileFluidPipe pipe : pipes)
 		{
 			pipe.tank.setFluid(FluidStack.EMPTY);
-			
-			if(left > 0)
-				left -= pipe.tank.fill(PipeFluidHandler.withAmount(result, left), IFluidHandler.FluidAction.EXECUTE);
-			
 			pipe.tank.fill(PipeFluidHandler.withAmount(result, per), IFluidHandler.FluidAction.EXECUTE);
 		}
+		
+		if(!preferred.isEmpty())
+		{
+			for(var rp : preferred)
+				if(rp instanceof TileFluidPipe pipe)
+				{
+					if(left > 0)
+						left -= pipe.tank.fill(PipeFluidHandler.withAmount(result, left), IFluidHandler.FluidAction.EXECUTE);
+					if(left <= 0)
+						break;
+				}
+		}
+		
+		if(left > 0)
+			tank.fill(PipeFluidHandler.withAmount(result, left), IFluidHandler.FluidAction.EXECUTE);
 		
 		return true;
 	}
@@ -372,6 +374,7 @@ public class TileFluidPipe
 		{
 			double coef = tank.getFluidAmount() / (double) totalAccept;
 			
+			final int acceptCapacity = Math.min(tank.getFluidAmount(), totalAccept);
 			totalAccept = 0;
 			
 			for(int i = 0; i < pipes.length; i++)
@@ -379,6 +382,13 @@ public class TileFluidPipe
 				TileFluidPipe pipe = pipes[i];
 				sent[i] *= coef;
 				totalAccept += pipe.tank.fill(PipeFluidHandler.limit(tank.getFluid(), sent[i]), IFluidHandler.FluidAction.EXECUTE);
+			}
+			
+			for(int i = level.random.nextInt(pipes.length); i < pipes.length && totalAccept < acceptCapacity; i++)
+			{
+				TileFluidPipe pipe = pipes[i];
+				int send = acceptCapacity - totalAccept;
+				totalAccept += pipe.tank.fill(PipeFluidHandler.limit(tank.getFluid(), send), IFluidHandler.FluidAction.EXECUTE);
 			}
 			
 			tank.drain(totalAccept, IFluidHandler.FluidAction.EXECUTE);
@@ -400,8 +410,7 @@ public class TileFluidPipe
 	public Optional<TileFluidPipe> getRelativeTraversable(Direction side, FluidStack contents)
 	{
 		return Cast.optionally(level.getBlockEntity(worldPosition.relative(side)), TileFluidPipe.class)
-				.filter(pipe -> connectsTo(side, pipe))
-				.filter(pipe -> pipe.fluidsCompatible(contents));
+				.filter(pipe -> connectsTo(side, pipe) && (contents.isEmpty() || pipe.fluidsCompatible(contents)));
 	}
 	
 	public boolean fluidsCompatible(FluidStack contents)
@@ -444,8 +453,8 @@ public class TileFluidPipe
 	
 	public boolean doesConnectTo(Direction to)
 	{
-		return level.getBlockEntity(worldPosition.relative(to)) instanceof TileFluidPipe
-				|| (sideConfigs.get(to.ordinal()) != SideConfig.DISABLE && relativeFluidHandler(to).isPresent());
+		return sideConfigs.get(to.ordinal()) != SideConfig.DISABLE &&
+				(level.getBlockEntity(worldPosition.relative(to)) instanceof TileFluidPipe || relativeFluidHandler(to).isPresent());
 	}
 	
 	private LazyOptional<IFluidHandler> relativeFluidHandler(Direction to)
@@ -474,5 +483,20 @@ public class TileFluidPipe
 			return sidedFluidHandlers[side.ordinal()].cast();
 		
 		return super.getCapability(cap, side);
+	}
+	
+	@Override
+	public void createVacuum(FluidStack fluid, int ticks)
+	{
+		TraversableHelper.allTraversables(this, fluid, true)
+				.stream()
+				.filter(TileFluidPipe.class::isInstance)
+				.forEach(t -> ((TileFluidPipe) t).vacuumTicks = Math.max(vacuumTicks, ticks));
+	}
+	
+	@Override
+	public FluidStack extractFluidFromPipe(int amount, IFluidHandler.FluidAction action)
+	{
+		return tank.drain(amount, action);
 	}
 }

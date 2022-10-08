@@ -43,6 +43,8 @@ public abstract class TileBaseMachine<T extends TileBaseMachine<T>>
 	@Override
 	public boolean isEnabled()
 	{
+		if(level == null)
+			return false;
 		var s = level.getBlockState(worldPosition);
 		if(s.getBlock() == getBlockState().getBlock() && s.hasProperty(BlockStateProperties.ENABLED))
 			return s.getValue(BlockStateProperties.ENABLED);
@@ -119,7 +121,7 @@ public abstract class TileBaseMachine<T extends TileBaseMachine<T>>
 		BlockState state = level.getBlockState(worldPosition);
 		if(state.getBlock() == getBlockState().getBlock() && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
 			return state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-		return null;
+		return Direction.NORTH;
 	}
 	
 	@Nullable

@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
-import org.zeith.tech.modules.shared.client.renderer.item.ZeithTechISTER;
+import org.zeith.tech.core.client.renderer.item.ZeithTechISTER;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 
 public class HeveaChestISTER

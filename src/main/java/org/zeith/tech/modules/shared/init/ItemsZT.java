@@ -41,6 +41,9 @@ public interface ItemsZT
 	@RegistryName("sawdust")
 	Item SAWDUST = BaseZT.newItem();
 	
+	@RegistryName("oil_sludge")
+	Item OIL_SLUDGE = BaseZT.newItem();
+	
 	static @Setup void setup()
 	{
 		ComposterBlock.COMPOSTABLES.put(SAWDUST, 0.3F);

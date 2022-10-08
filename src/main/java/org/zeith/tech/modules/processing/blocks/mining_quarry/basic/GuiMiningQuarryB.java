@@ -7,6 +7,7 @@ import org.zeith.hammerlib.client.utils.FXUtils;
 import org.zeith.hammerlib.client.utils.RenderUtils;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.base.machine.GuiBaseMachine;
+import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 
 public class GuiMiningQuarryB
@@ -40,5 +41,16 @@ public class GuiMiningQuarryB
 		var tile = menu.tile;
 		
 		WidgetAPI.drawPowerBar(pose, leftPos + 7, topPos + 8, tile.energy.getFillRate());
+		
+		var output = BlocksZT_Processing.MINING_PIPE.asItem().getDefaultInstance();
+		
+		if(!output.isEmpty())
+		{
+			int x = leftPos + 51;
+			int y = topPos + 17;
+			
+			WidgetAPI.drawGhostItem(pose, x, y, output);
+			WidgetAPI.drawGhostItem(pose, x, y + 18, output);
+		}
 	}
 }

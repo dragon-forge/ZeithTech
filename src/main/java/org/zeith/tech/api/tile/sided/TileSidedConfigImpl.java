@@ -41,14 +41,31 @@ public class TileSidedConfigImpl
 		return this;
 	}
 	
+	public TileSidedConfigImpl setFor(SidedConfigTyped t, RelativeDirection dir, SideConfig config)
+	{
+		var cfgs = getSideConfigs(t);
+		if(cfgs != null) cfgs.setRelative(dir, config);
+		return this;
+	}
+	
 	public TileSidedConfigImpl setForAll(RelativeDirection dir, SideConfig config)
 	{
-		for(var t : ALL_TYPES)
-		{
-			var cfgs = getSideConfigs(t);
-			if(cfgs != null) cfgs.setDefaults(config);
-		}
+		for(var t : ALL_TYPES) setFor(t, dir, config);
 		return this;
+	}
+	
+	public SideConfig getFor(SidedConfigTyped t, RelativeDirection dir)
+	{
+		var cfgs = getSideConfigs(t);
+		if(cfgs != null) return cfgs.getRelative(dir);
+		return SideConfig.NONE;
+	}
+	
+	public SideConfig getFor(SidedConfigTyped t, Direction dir)
+	{
+		var cfgs = getSideConfigs(t);
+		if(cfgs != null) return cfgs.getAbsolute(dir);
+		return SideConfig.NONE;
 	}
 	
 	@Override

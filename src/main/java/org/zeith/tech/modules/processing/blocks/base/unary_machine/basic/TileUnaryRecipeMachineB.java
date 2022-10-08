@@ -215,7 +215,6 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	
 	private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);
 	private final LazyOptional<? extends IItemHandler>[] itemHandlers = SidedInvWrapper.create(inventory, Direction.values());
-	
 	private final LazyOptional<ITileSidedConfig> sidedConfigCap = LazyOptional.of(() -> sidedConfig);
 	
 	@Override

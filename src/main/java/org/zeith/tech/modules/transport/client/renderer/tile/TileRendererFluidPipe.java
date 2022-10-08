@@ -1,11 +1,10 @@
-package org.zeith.tech.modules.transport.client.renderer;
+package org.zeith.tech.modules.transport.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.core.Direction;
-import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.tech.core.client.renderer.*;
@@ -57,15 +56,15 @@ public class TileRendererFluidPipe
 						fillRel = (fill + fillRem) / 2F;
 					}
 					
-					renderFluid(fluid, argb, dir, fillRel, partial, matrix, fluidsSrc, lighting, overlay);
+					renderFluid(argb, dir, fillRel, matrix, fluidsSrc, lighting, overlay);
 				}
 			
 			if(opposites != Direction.Axis.Y)
-				renderFluid(fluid, argb, null, fill, partial, matrix, fluidsSrc, lighting, overlay);
+				renderFluid(argb, null, fill, matrix, fluidsSrc, lighting, overlay);
 		}
 	}
 	
-	public void renderFluid(FluidStack fluid, int argb, @Nullable Direction to, float fill, float partial, PoseStack matrix, VertexConsumer buf, int lighting, int overlay)
+	public void renderFluid(int argb, @Nullable Direction to, float fill, PoseStack matrix, VertexConsumer buf, int lighting, int overlay)
 	{
 		float zero = 0F;
 		float one = 1F;

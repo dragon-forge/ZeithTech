@@ -51,6 +51,14 @@ public class RecipeRegistriesZT_Processing
 					.onClientRecipeReceive(broadcast())
 					.build();
 	
+	public static final NamespacedRecipeRegistry<RecipeFluidCentrifuge> FLUID_CENTRIFUGE =
+			RecipeRegistryFactory.namespacedBuilder(RecipeFluidCentrifuge.class)
+					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "fluid_centrifuge"))
+					.recipeBuilderFactory(RecipeFluidCentrifuge.FluidCentrifugeRecipeBuilder::new)
+					.customRecipes(CustomFluidCentrifugeRecipeGenerator::new)
+					.onClientRecipeReceive(broadcast())
+					.build();
+	
 	public static void setup(FMLCommonSetupEvent e)
 	{
 		ZeithTech.LOG.info("Setup recipe registries.");

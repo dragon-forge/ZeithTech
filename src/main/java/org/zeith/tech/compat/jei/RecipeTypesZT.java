@@ -12,4 +12,5 @@ public class RecipeTypesZT
 	public static final RecipeType<RecipeMachineAssembler> MACHINE_ASSEMBLY_BASIC = ITieredRecipeType.setMaxTier(RecipeType.create(ZeithTech.MOD_ID, "machine_assembly_basic", RecipeMachineAssembler.class), TechTier.BASIC);
 	public static final RecipeType<RecipeGrinding> GRINDER_BASIC = ITieredRecipeType.setMaxTier(RecipeType.create(ZeithTech.MOD_ID, "grinding_basic", RecipeGrinding.class), TechTier.BASIC);
 	public static final RecipeType<RecipeSawmill> SAWMILL = RecipeType.create(ZeithTech.MOD_ID, "sawmill", RecipeSawmill.class);
+	public static final RecipeType<RecipeFluidCentrifuge> FLUID_CENTRIFUGE = RecipeType.create(ZeithTech.MOD_ID, "fluid_centrifuge", RecipeFluidCentrifuge.class);
 }

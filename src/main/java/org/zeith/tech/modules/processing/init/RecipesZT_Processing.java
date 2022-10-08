@@ -8,6 +8,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
@@ -18,9 +19,11 @@ import org.zeith.tech.api.events.recipe.GrindingRegistryEvent;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.base.RecipeUnaryBase;
 import org.zeith.tech.api.recipes.processing.*;
+import org.zeith.tech.api.utils.FluidIngredient;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
+import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.utils.RecipeManagerHelper;
 
 import java.util.*;
@@ -108,6 +111,17 @@ public interface RecipesZT_Processing
 					.map('m', ItemsZT.MOTOR)
 					.map('p', BlocksZT_Processing.MINING_PIPE)
 					.result(BlocksZT_Processing.BASIC_QUARRY)
+					.register();
+			
+			f.get().minTier(TechTier.BASIC)
+					.shape("  i  ", " igi ", "iCgCi", " pmp ", "  r  ")
+					.map('i', TagsZT.Items.PLATES_IRON)
+					.map('r', Tags.Items.INGOTS_IRON)
+					.map('g', Tags.Items.GLASS)
+					.map('C', ItemsZT.COPPER_COIL)
+					.map('p', BlocksZT_Transport.IRON_FLUID_PIPE)
+					.map('m', ItemsZT.MOTOR)
+					.result(BlocksZT_Processing.FLUID_CENTRIFUGE)
 					.register();
 			
 		}
@@ -246,6 +260,21 @@ public interface RecipesZT_Processing
 							}
 						}
 					});
+		}
+	}
+	
+	static void addFluidCentrifugeRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeFluidCentrifuge> evt)
+	{
+		if(evt.is(RecipeRegistriesZT_Processing.FLUID_CENTRIFUGE))
+		{
+			var f = evt.<RecipeFluidCentrifuge.FluidCentrifugeRecipeBuilder> builderFactory();
+			
+			f.get()
+					.input(FluidIngredient.ofTags(1000, List.of(TagsZT.Fluids.CRUDE_OIL)))
+					.energy(2000)
+					.result(new FluidStack(FluidsZT_Processing.REFINED_OIL.getSource(), 700))
+					.extraOutput(new ExtraOutput.Ranged(new ItemStack(ItemsZT.OIL_SLUDGE), 1, 3, 0.75F))
+					.register();
 		}
 	}
 }

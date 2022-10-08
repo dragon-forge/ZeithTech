@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.transport.blocks.base.traversable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
 import java.util.*;
@@ -7,6 +8,24 @@ import java.util.*;
 public class TraversableHelper
 {
 	private static ThreadLocal<Random> RNG = ThreadLocal.withInitial(Random::new);
+	
+	public static <T> Optional<TraversablePath<T>> findClosestPath(ITraversable<T> start, Direction from, T contents, BlockPos desiredEndpoint)
+	{
+		var rng = RNG.get();
+		
+		return findAllPaths(start, from, contents)
+				.stream()
+				.max(Comparator.<TraversablePath<T>>
+								comparingInt(p -> Objects.equals(p.endpoint.getActualPosition(), desiredEndpoint) ? Integer.MAX_VALUE : Integer.MIN_VALUE) // First we compare by endpoint
+						.thenComparingInt(p -> p.endpoint.priority()) // Then compare by priority
+						.thenComparingInt(p -> -p.size()) // Then, if the priority is the same, compare by the inverse length of the path (the shortest path will be preferred)
+						.thenComparingInt(p -> // Then compare by hash, this makes a bit of random-ness if previous two fail.
+						{
+							rng.setSeed(p.seed);
+							return rng.nextInt();
+						})
+				);
+	}
 	
 	public static <T> Optional<TraversablePath<T>> findClosestPath(ITraversable<T> start, Direction from, T contents)
 	{
