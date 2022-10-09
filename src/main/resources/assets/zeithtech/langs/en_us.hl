@@ -94,6 +94,7 @@ block.zeithtech.processing.sawmill.basic=Basic Sawmill
 block.zeithtech.processing.mining_quarry.basic=Basic Miner
 block.zeithtech.processing.fluid_centrifuge=Fluid Centrifuge
 block.zeithtech.processing.fluid_pump=Fluid Pump
+block.zeithtech.processing.lfuel_generator.basic=Basic Liquid Fuel Generator
 
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter
@@ -102,8 +103,10 @@ item.zeithtech.processing.mining_heads.iron=Iron Drilling Head
 item.zeithtech.processing.mining_heads.diamond=Diamond Drilling Head
 item.zeithtech.processing.mining_heads.netherite=Netherite Drilling Head
 item.zeithtech.processing.refined_oil_bucket=Refined Oil Bucket
+item.zeithtech.processing.diesel_fuel_bucket=Diesel Fuel Bucket
 
 fluid_type.zeithtech.processing.refined_oil=Refined Oil
+fluid_type.zeithtech.processing.diesel_fuel=Diesel Fuel
 
 info.zeithtech_processing.hammer_hit_count=%s hits
 
@@ -135,6 +138,7 @@ info.zeithtech.fe=%,d FE
 info.zeithtech.fluid_uncapped=%,d mB
 info.zeithtech.fluid_capped=%,d / %,d mB
 info.zeithtech.empty=Empty
+info.zeithtech.liquid_fuel=Liquid Fuel
 
 info.zeithtech.fluid_tank.fill=Filling item from tank
 info.zeithtech.fluid_tank.drain=Filling tank from item
@@ -144,5 +148,5 @@ death.attack.zeithtech.electrocution=%s got electrocuted.
 
 jei.zeithtech.manual_hammering=Hammering on Block
 jei.zeithtech.manual_hammering.info=To perform hammering, you need to drop an item onto the block and hit it with the hammer %s times.
-jei.info.zeithtech.bowl_of_resin=To obtain a Bowl of Resin, you need to find Hevea Tree, strip it's barks with your axe, use 5 sticks on the Stripped Hevea Log, then place Tree Tap (click the sticks) and put a Bowl on the sticks. After some time, the Bowl will fill up with resin, which you can gather with your hand.
+jei.info.zeithtech.bowl_of_resin=To obtain a Bowl of Resin, you need to find Hevea Tree, strip its barks with your axe, use 5 sticks on the Stripped Hevea Log, then place Tree Tap (click the sticks) and put a Bowl on the sticks. After some time, the Bowl will fill up with resin, which you can gather with your hand.
 jei.zeithtech.machine_assembler_t1.info=To perform the assembly, hit the items ontop of the Machine Assembler with Iron Hammer.

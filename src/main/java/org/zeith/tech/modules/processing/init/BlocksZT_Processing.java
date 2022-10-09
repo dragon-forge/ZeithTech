@@ -10,7 +10,8 @@ import org.zeith.tech.modules.processing.blocks.BlockMiningPipe;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.BlockElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.BlockFluidCentrifuge;
 import org.zeith.tech.modules.processing.blocks.fluid_pump.BlockFluidPump;
-import org.zeith.tech.modules.processing.blocks.fuelgen.basic.BlockFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic.BlockLiquidFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic.BlockSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQuarryB;
@@ -23,7 +24,10 @@ public interface BlocksZT_Processing
 	BlockMachineAssemblerB BASIC_MACHINE_ASSEMBLER = new BlockMachineAssemblerB();
 	
 	@RegistryName("processing/fuel_generator/basic")
-	BlockFuelGeneratorB BASIC_FUEL_GENERATOR = new BlockFuelGeneratorB();
+	BlockSolidFuelGeneratorB BASIC_FUEL_GENERATOR = new BlockSolidFuelGeneratorB();
+	
+	@RegistryName("processing/lfuel_generator/basic")
+	BlockLiquidFuelGeneratorB BASIC_LIQUID_FUEL_GENERATOR = new BlockLiquidFuelGeneratorB();
 	
 	@RegistryName("processing/electric_furnace/basic")
 	BlockElectricFurnaceB BASIC_ELECTRIC_FURNACE = new BlockElectricFurnaceB();

@@ -8,7 +8,8 @@ import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.TileElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
 import org.zeith.tech.modules.processing.blocks.fluid_pump.TileFluidPump;
-import org.zeith.tech.modules.processing.blocks.fuelgen.basic.TileFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic.TileLiquidFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic.TileSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.TileMiningQuarryB;
@@ -23,7 +24,11 @@ public interface TilesZT_Processing
 	BlockEntityType<TileMachineAssemblerB> BASIC_MACHINE_ASSEMBLER = BlockAPI.createBlockEntityType(TileMachineAssemblerB::new, BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER);
 	
 	@RegistryName("processing/fuel_generator/basic")
-	BlockEntityType<TileFuelGeneratorB> BASIC_FUEL_GENERATOR = BlockAPI.createBlockEntityType(TileFuelGeneratorB::new, BlocksZT_Processing.BASIC_FUEL_GENERATOR);
+	BlockEntityType<TileSolidFuelGeneratorB> BASIC_SOLID_FUEL_GENERATOR = BlockAPI.createBlockEntityType(TileSolidFuelGeneratorB::new, BlocksZT_Processing.BASIC_FUEL_GENERATOR);
+	
+	@RegistryName("processing/lfuel_generator/basic")
+	@TileRenderer(TileRendererLiquidFuelGeneratorB.class)
+	BlockEntityType<TileLiquidFuelGeneratorB> BASIC_LIQUID_FUEL_GENERATOR = BlockAPI.createBlockEntityType(TileLiquidFuelGeneratorB::new, BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR);
 	
 	@RegistryName("processing/electric_furnace/basic")
 	@TileRenderer(TileRendererElectricFurnaceB.class)

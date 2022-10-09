@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.processing.blocks.fuelgen.basic;
+package org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
@@ -9,10 +9,10 @@ import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.base.machine.GuiBaseMachine;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 
-public class GuiFuelGeneratorB
-		extends GuiBaseMachine<ContainerFuelGeneratorB>
+public class GuiSolidFuelGeneratorB
+		extends GuiBaseMachine<ContainerSolidFuelGeneratorB>
 {
-	public GuiFuelGeneratorB(ContainerFuelGeneratorB container, Inventory plyerInv, Component name)
+	public GuiSolidFuelGeneratorB(ContainerSolidFuelGeneratorB container, Inventory plyerInv, Component name)
 	{
 		super(container, plyerInv, name);
 		setSize(176, 166);

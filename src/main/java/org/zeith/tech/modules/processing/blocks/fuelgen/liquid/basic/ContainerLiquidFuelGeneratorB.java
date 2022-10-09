@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.processing.blocks.fuelgen.basic;
+package org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -10,13 +10,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.shared.ui.SlotInput;
+import org.zeith.tech.modules.shared.ui.SlotOutput;
 
 import java.util.List;
 
-public class ContainerFuelGeneratorB
-		extends ContainerBaseMachine<TileFuelGeneratorB>
+public class ContainerLiquidFuelGeneratorB
+		extends ContainerBaseMachine<TileLiquidFuelGeneratorB>
 {
-	protected ContainerFuelGeneratorB(TileFuelGeneratorB tile, Player player, int windowId)
+	protected ContainerLiquidFuelGeneratorB(TileLiquidFuelGeneratorB tile, Player player, int windowId)
 	{
 		super(tile, player, windowId, List.of(tile.fuelTicksLeft, tile.fuelTicksTotal, tile.energyStored));
 		
@@ -28,7 +29,15 @@ public class ContainerFuelGeneratorB
 		for(x = 0; x < 9; ++x)
 			this.addSlot(new Slot(player.getInventory(), x, 8 + x * 18, 142));
 		
-		addSlot(new SlotInput(tile.fuelInventory, 0, 80, 49));
+		this.addSlot(new SlotInput(tile.inventory, 0, 63, 16));
+		this.addSlot(new SlotOutput(tile.inventory, 1, 63, 54));
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public Screen openScreen(Inventory inv, Component label)
+	{
+		return new GuiLiquidFuelGeneratorB(this, inv, label);
 	}
 	
 	@Override
@@ -42,7 +51,7 @@ public class ContainerFuelGeneratorB
 			ItemStack origin = slot.getItem();
 			duped = origin.copy();
 			
-			if(slot.container == tile.fuelInventory)
+			if(slot.container == tile.inventory)
 			{
 				if(!this.moveItemStackTo(origin, 0, 36, true))
 					return ItemStack.EMPTY;
@@ -50,7 +59,7 @@ public class ContainerFuelGeneratorB
 			
 			if(slot.container == player.getInventory())
 			{
-				if(!this.moveItemStackTo(origin, 36, 37, true))
+				if(!this.moveItemStackTo(origin, 36, slots.size(), true))
 					return ItemStack.EMPTY;
 			}
 			
@@ -60,12 +69,5 @@ public class ContainerFuelGeneratorB
 		}
 		
 		return duped;
-	}
-	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public Screen openScreen(Inventory inv, Component label)
-	{
-		return new GuiFuelGeneratorB(this, inv, label);
 	}
 }

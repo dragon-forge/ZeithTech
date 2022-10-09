@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.processing.blocks.fuelgen.basic;
+package org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +23,7 @@ import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.tile.energy.EnergyManager;
+import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
@@ -33,14 +34,11 @@ import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import java.util.EnumSet;
 import java.util.List;
 
-public class TileFuelGeneratorB
-		extends TileBaseMachine<TileFuelGeneratorB>
+public class TileSolidFuelGeneratorB
+		extends TileBaseMachine<TileSolidFuelGeneratorB>
 {
 	@NBTSerializable("FuelInv")
 	public final SimpleInventory fuelInventory = new SimpleInventory(1);
-	
-	@NBTSerializable("ChargeInv")
-	public final SimpleInventory chargeInventory = new SimpleInventory(1);
 	
 	@NBTSerializable("FuelTotal")
 	private int _fuelTicksTotal;
@@ -50,17 +48,14 @@ public class TileFuelGeneratorB
 	
 	@NBTSerializable("Sides")
 	public final TileSidedConfigImpl sidedConfig = new TileSidedConfigImpl(this::getFront, EnumSet.of(SidedConfigTyped.ENERGY))
-			.setDefaults(SidedConfigTyped.ENERGY, SideConfig.NONE);
-	
-	{
-		var ecfg = sidedConfig.getSideConfigs(SidedConfigTyped.ENERGY);
-		ecfg.setRelative(RelativeDirection.BACK, SideConfig.PUSH);
-		ecfg.setRelative(RelativeDirection.FRONT, SideConfig.DISABLE);
-		ecfg.setRelative(RelativeDirection.UP, SideConfig.DISABLE);
-	}
+			.setDefaults(SidedConfigTyped.ENERGY, SideConfig.NONE)
+			.setFor(SidedConfigTyped.ENERGY, RelativeDirection.BACK, SideConfig.PUSH)
+			.setFor(SidedConfigTyped.ENERGY, RelativeDirection.FRONT, SideConfig.DISABLE)
+			.setFor(SidedConfigTyped.ENERGY, RelativeDirection.UP, SideConfig.DISABLE);
 	
 	@NBTSerializable("FE")
-	public final EnergyManager energy = new EnergyManager(20000, 0, 64);
+	public final EnergyManager energy = new EnergyManager(20000, 0, 64)
+			.setKind(EnumEnergyManagerKind.GENERATOR);
 	
 	public final PropertyInt fuelTicksTotal = new PropertyInt(DirectStorage.create(i -> _fuelTicksTotal = i, () -> _fuelTicksTotal));
 	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
@@ -68,18 +63,18 @@ public class TileFuelGeneratorB
 	
 	public int currentGenPerTick = 20;
 	
-	public TileFuelGeneratorB(BlockPos pos, BlockState state)
+	public TileSolidFuelGeneratorB(BlockPos pos, BlockState state)
 	{
-		super(TilesZT_Processing.BASIC_FUEL_GENERATOR, pos, state);
+		super(TilesZT_Processing.BASIC_SOLID_FUEL_GENERATOR, pos, state);
 		
 		fuelInventory.isStackValid = (slot, stack) ->
 				!stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent() && ForgeHooks.getBurnTime(stack, null) > 0;
 	}
 	
 	@Override
-	public ContainerBaseMachine<TileFuelGeneratorB> openContainer(Player player, int windowId)
+	public ContainerBaseMachine<TileSolidFuelGeneratorB> openContainer(Player player, int windowId)
 	{
-		return new ContainerFuelGeneratorB(this, player, windowId);
+		return new ContainerSolidFuelGeneratorB(this, player, windowId);
 	}
 	
 	@Override
@@ -111,8 +106,6 @@ public class TileFuelGeneratorB
 						setEnabledState(false);
 				}
 			}
-			
-			energy.chargeItem(chargeInventory.getItem(0));
 		}
 		
 		if(isOnClient() && isEnabled())
@@ -166,7 +159,7 @@ public class TileFuelGeneratorB
 	@Override
 	public List<Container> getAllInventories()
 	{
-		return List.of(fuelInventory, chargeInventory, energy.batteryInventory);
+		return List.of(fuelInventory, energy.batteryInventory);
 	}
 	
 	private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);

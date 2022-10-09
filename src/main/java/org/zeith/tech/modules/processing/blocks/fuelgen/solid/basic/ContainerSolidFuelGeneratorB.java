@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.transport.blocks.fluid_tank.basic;
+package org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -10,16 +10,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.shared.ui.SlotInput;
-import org.zeith.tech.modules.shared.ui.SlotOutput;
 
 import java.util.List;
 
-public class ContainerFluidTankB
-		extends ContainerBaseMachine<TileFluidTankB>
+public class ContainerSolidFuelGeneratorB
+		extends ContainerBaseMachine<TileSolidFuelGeneratorB>
 {
-	protected ContainerFluidTankB(TileFluidTankB tile, Player player, int windowId)
+	protected ContainerSolidFuelGeneratorB(TileSolidFuelGeneratorB tile, Player player, int windowId)
 	{
-		super(tile, player, windowId, List.of());
+		super(tile, player, windowId, List.of(tile.fuelTicksLeft, tile.fuelTicksTotal, tile.energyStored));
 		
 		int x;
 		for(x = 0; x < 3; ++x)
@@ -29,28 +28,7 @@ public class ContainerFluidTankB
 		for(x = 0; x < 9; ++x)
 			this.addSlot(new Slot(player.getInventory(), x, 8 + x * 18, 142));
 		
-		this.addSlot(new SlotInput(tile.inventory, 0, 63, 16));
-		this.addSlot(new SlotOutput(tile.inventory, 1, 63, 54));
-	}
-	
-	@Override
-	public boolean clickMenuButton(Player player, int button)
-	{
-		if(button == 0)
-		{
-			if(tile.isOnServer())
-				tile.fillItemProp.setBool(!tile.fillItemProp.getBoolean());
-			return true;
-		}
-		
-		return super.clickMenuButton(player, button);
-	}
-	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public Screen openScreen(Inventory inv, Component label)
-	{
-		return new GuiFluidTankB(this, inv, label);
+		addSlot(new SlotInput(tile.fuelInventory, 0, 80, 49));
 	}
 	
 	@Override
@@ -64,7 +42,7 @@ public class ContainerFluidTankB
 			ItemStack origin = slot.getItem();
 			duped = origin.copy();
 			
-			if(slot.container == tile.inventory)
+			if(slot.container == tile.fuelInventory)
 			{
 				if(!this.moveItemStackTo(origin, 0, 36, true))
 					return ItemStack.EMPTY;
@@ -72,7 +50,7 @@ public class ContainerFluidTankB
 			
 			if(slot.container == player.getInventory())
 			{
-				if(!this.moveItemStackTo(origin, 36, slots.size(), true))
+				if(!this.moveItemStackTo(origin, 36, 37, true))
 					return ItemStack.EMPTY;
 			}
 			
@@ -82,5 +60,12 @@ public class ContainerFluidTankB
 		}
 		
 		return duped;
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public Screen openScreen(Inventory inv, Component label)
+	{
+		return new GuiSolidFuelGeneratorB(this, inv, label);
 	}
 }

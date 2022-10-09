@@ -35,12 +35,20 @@ public class EnergyManager
 	public final EnergyStorage2 fe;
 	public final int maxAccept, maxSend;
 	
+	protected EnumEnergyManagerKind kind = EnumEnergyManagerKind.CONSUMER;
+	
 	
 	public EnergyManager(int capacity, int maxAccept, int maxSend)
 	{
 		this.fe = new EnergyStorage2(capacity);
 		this.maxAccept = maxAccept;
 		this.maxSend = maxSend;
+	}
+	
+	public EnergyManager setKind(EnumEnergyManagerKind kind)
+	{
+		this.kind = kind;
+		return this;
 	}
 	
 	public void chargeItem(ItemStack stack)
@@ -89,6 +97,11 @@ public class EnergyManager
 		// Split energy based on side configuration.
 		if(level.isClientSide || (maxSend <= 0 && maxAccept <= 0))
 			return;
+		
+		if(kind == EnumEnergyManagerKind.CONSUMER)
+			chargeMachineFromItem(batteryInventory.getItem(0));
+		else
+			chargeItem(batteryInventory.getItem(0));
 		
 		var e = configs.getSideConfigs(SidedConfigTyped.ENERGY);
 		if(e == null) return;

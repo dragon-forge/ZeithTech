@@ -53,6 +53,8 @@ public class TileFluidTankB
 	{
 		super(TilesZT_Transport.BASIC_FLUID_TANK, pos, state);
 		
+		inventory.stackSizeLimit = 1;
+		
 		this.tankSmooth = new FluidSmoothing("display", this);
 		this.dispatcher.registerProperty("fill_mode", fillItemProp);
 		this.inventory.isStackValid = (idx, stack) -> idx == 0 && stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();

@@ -259,7 +259,14 @@ public class TileFluidPump
 								--currentY;
 							else
 							{
-								isInterrupted.setBool(true);
+								var fs = level.getFluidState(qpos);
+								if(!fs.isEmpty())
+								{
+									discoveredPositions.add(qpos);
+									discoverMoreFluid();
+									isInterrupted.setBool(false);
+								} else
+									isInterrupted.setBool(true);
 							}
 						}
 					}
@@ -327,7 +334,7 @@ public class TileFluidPump
 			}
 		}
 		
-		if(discoveredPositions.size() > 1024)
+		if(discoveredPositions.size() > 64 * 1024)
 			return;
 		
 		int limit = 128;

@@ -11,7 +11,8 @@ import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.hammerlib.client.utils.FluidTextureType;
 import org.zeith.tech.core.ZeithTech;
-import org.zeith.tech.core.client.renderer.*;
+import org.zeith.tech.core.client.renderer.Cuboid;
+import org.zeith.tech.core.client.renderer.CuboidRenderer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
 
 public class TileRendererFluidCentrifuge
@@ -64,7 +65,7 @@ public class TileRendererFluidCentrifuge
 		if(!fluid.isEmpty())
 		{
 			cuboid.setTexture(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.STILL));
-			lighting = ZeithTechRenderer.calculateGlowLight(lighting, fluid);
+			lighting = FluidRendererHelper.calculateGlowLight(lighting, fluid);
 			int argb = FluidRendererHelper.getColorARGB(fluid);
 			var fluidsSrc = buf.getBuffer(Sheets.translucentCullBlockSheet());
 			float fill = fluid.getAmount() / (float) entity.outputFluid.getCapacity();

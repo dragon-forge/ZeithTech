@@ -8,7 +8,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.hammerlib.client.utils.FluidTextureType;
-import org.zeith.tech.core.client.renderer.*;
+import org.zeith.tech.core.client.renderer.Cuboid;
+import org.zeith.tech.core.client.renderer.CuboidRenderer;
 import org.zeith.tech.modules.transport.blocks.fluid_tank.basic.TileFluidTankB;
 
 public class TileRendererFluidTankB
@@ -36,7 +37,7 @@ public class TileRendererFluidTankB
 			float height = up && down ? 1F : up || down ? 0.9375F : 0.875F;
 			
 			cuboid.setTexture(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.STILL));
-			lighting = ZeithTechRenderer.calculateGlowLight(lighting, fluid);
+			lighting = FluidRendererHelper.calculateGlowLight(lighting, fluid);
 			
 			int argb = FluidRendererHelper.getColorARGB(fluid);
 			

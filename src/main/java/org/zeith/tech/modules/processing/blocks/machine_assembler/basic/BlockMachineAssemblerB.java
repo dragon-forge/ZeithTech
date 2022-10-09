@@ -12,12 +12,9 @@ public class BlockMachineAssemblerB
 		extends BlockBaseMachine<TileMachineAssemblerB>
 {
 	private static final VoxelShape BASIC_ASSEMBLER_SHAPE = Shapes.or(
-			Block.box(0, 0, 0, 16, 5, 16),
-			Block.box(5, 6, 5, 11, 10, 11),
-			Block.box(2, 5, 2, 14, 6, 14),
-			Block.box(3, 10, 3, 13, 13, 13),
-			Block.box(0, 13, 0, 16, 14, 16),
-			Block.box(-1, 14, -1, 17, 14.5, 17)
+			Block.box(0, 0, 0, 16, 4, 16),
+			Block.box(2, 4, 2, 14, 12.5, 14),
+			Block.box(-1, 12.5, -1, 17, 14.5, 17)
 	);
 	
 	public BlockMachineAssemblerB()

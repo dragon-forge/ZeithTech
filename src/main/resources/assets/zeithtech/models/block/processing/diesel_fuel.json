@@ -1,0 +1,7 @@
+{
+  "textures": {
+    "particle": "zeithtech:processing/block/diesel_fuel",
+    "flow": "zeithtech:processing/block/diesel_fuel_flow"
+  }
+}
+

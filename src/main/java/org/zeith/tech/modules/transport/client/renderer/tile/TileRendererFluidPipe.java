@@ -9,7 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.hammerlib.client.utils.FluidTextureType;
-import org.zeith.tech.core.client.renderer.*;
+import org.zeith.tech.core.client.renderer.Cuboid;
+import org.zeith.tech.core.client.renderer.CuboidRenderer;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.BlockFluidPipe;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.TileFluidPipe;
 
@@ -28,7 +29,7 @@ public class TileRendererFluidPipe
 		{
 			cuboid.setTexture(FluidRendererHelper.getFluidTexture(fluid, FluidTextureType.STILL));
 			
-			lighting = ZeithTechRenderer.calculateGlowLight(lighting, fluid);
+			lighting = FluidRendererHelper.calculateGlowLight(lighting, fluid);
 			int argb = FluidRendererHelper.getColorARGB(fluid);
 			
 			var fluidsSrc = buf.getBuffer(Sheets.translucentCullBlockSheet());

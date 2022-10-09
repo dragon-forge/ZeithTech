@@ -137,6 +137,18 @@ public interface RecipesZT_Processing
 					.result(BlocksZT_Processing.FLUID_PUMP)
 					.register();
 			
+			f.get().minTier(TechTier.BASIC)
+					.shape("  o  ", " lll ", "cpgtc", " iii ", "  o  ")
+					.map('o', Tags.Items.INGOTS_COPPER)
+					.map('l', TagsZT.Items.INGOTS_LEAD)
+					.map('c', ItemsZT.COPPER_COIL)
+					.map('p', TagsZT.Items.PLATES_ALUMINUM)
+					.map('g', BlocksZT_Processing.BASIC_FUEL_GENERATOR)
+					.map('t', BlocksZT_Transport.BASIC_FLUID_TANK)
+					.map('i', Tags.Items.INGOTS_IRON)
+					.result(BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR)
+					.register();
+			
 		}
 	}
 	

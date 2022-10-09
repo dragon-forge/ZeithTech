@@ -25,15 +25,16 @@ import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.base.ITieredRecipe;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.compat.BaseCompat;
-import org.zeith.tech.compat.jei.category.FluidCentrifugeCategory;
-import org.zeith.tech.compat.jei.category.SawmillCategoryB;
+import org.zeith.tech.compat.jei.category.*;
 import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
+import org.zeith.tech.compat.jei.internal.RecipeLiquidFuelGenerator;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.ContainerElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
-import org.zeith.tech.modules.processing.blocks.fuelgen.basic.GuiFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic.GuiLiquidFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic.GuiSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.ContainerMachineAssemblerB;
@@ -85,20 +86,23 @@ public class JeiZT
 				new MachineAssemblyCategoryB(gui$),
 				new GrinderCategoryB(gui$),
 				new SawmillCategoryB(gui$),
-				new FluidCentrifugeCategory(gui$)
+				new FluidCentrifugeCategory(gui$),
+				new LiquidFuelCategory(gui$)
 		);
 	}
 	
 	@Override
 	public void registerRecipes(IRecipeRegistration registration)
 	{
-		var api = ZeithTechAPI.get().getRecipeRegistries();
+		var gapi = ZeithTechAPI.get();
+		var api = gapi.getRecipeRegistries();
 		
 		registration.addRecipes(RecipeTypesZT.MANUAL_HAMMERING, api.getRecipesUpToTier(api.hammering(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, api.getRecipesUpToTier(api.machineAssembly(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, api.getRecipesUpToTier(api.grinding(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.SAWMILL, api.sawmill().getRecipes().stream().toList());
 		registration.addRecipes(RecipeTypesZT.FLUID_CENTRIFUGE, api.fluidCentrifuge().getRecipes().stream().toList());
+		registration.addRecipes(RecipeTypesZT.LIQUID_FUEL, gapi.getModules().processing().getLiquidFuelBurnTimes().stream().map(RecipeLiquidFuelGenerator::of).toList());
 		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
@@ -124,16 +128,18 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR), RecipeTypesZT.LIQUID_FUEL);
 	}
 	
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration)
 	{
 		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
-		registration.addRecipeClickArea(GuiFuelGeneratorB.class, 81, 29, 13, 14, RecipeTypes.FUELING);
+		registration.addRecipeClickArea(GuiSolidFuelGeneratorB.class, 81, 29, 13, 14, RecipeTypes.FUELING);
 		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
 		registration.addRecipeClickArea(GuiGrinderB.class, 72, 35, 22, 15, RecipeTypesZT.GRINDER_BASIC);
 		registration.addRecipeClickArea(GuiSawmillB.class, 61, 35, 22, 15, RecipeTypesZT.SAWMILL);
+		registration.addRecipeClickArea(GuiLiquidFuelGeneratorB.class, 84, 36, 13, 14, RecipeTypesZT.LIQUID_FUEL);
 	}
 	
 	private static Stream<RepairData> getRepairData()
