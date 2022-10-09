@@ -101,6 +101,9 @@ public interface BlocksZT_World
 	@RegistryName("aluminum_ore")
 	SimpleBlockZT ALUMINUM_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ALUMINUM).addItemTag(TagsZT.Items.ORES_ALUMINUM);
 	
+	@RegistryName("silver_ore")
+	SimpleBlockZT SILVER_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_SILVER).addItemTag(TagsZT.Items.ORES_SILVER);
+	
 	@RegistryName("zinc_ore")
 	SimpleBlockZT ZINC_ORE = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ZINC).addItemTag(TagsZT.Items.ORES_ZINC);
 	
@@ -124,6 +127,9 @@ public interface BlocksZT_World
 	@RegistryName("deepslate_aluminum_ore")
 	SimpleBlockZT DEEPSLATE_ALUMINUM_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ALUMINUM).addItemTag(TagsZT.Items.ORES_ALUMINUM);
 	
+	@RegistryName("deepslate_silver_ore")
+	SimpleBlockZT DEEPSLATE_SILVER_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_SILVER).addItemTag(TagsZT.Items.ORES_SILVER);
+	
 	@RegistryName("deepslate_zinc_ore")
 	SimpleBlockZT DEEPSLATE_ZINC_ORE = new SimpleBlockZT(of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(4.5F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.ORES_ZINC).addItemTag(TagsZT.Items.ORES_ZINC);
 	
@@ -145,7 +151,16 @@ public interface BlocksZT_World
 	SimpleBlockZT RAW_LEAD_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_RAW_LEAD).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_LEAD).dropsSelf();
 	
 	@RegistryName("raw_aluminum_block")
-	SimpleBlockZT RAW_ALUMINUM_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTags(List.of(TagsZT.Blocks.STORAGE_BLOCKS_RAW_ALUMINUM, BlockTags.BEACON_BASE_BLOCKS)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_ALUMINUM).dropsSelf();
+	SimpleBlockZT RAW_ALUMINUM_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTags(List.of(TagsZT.Blocks.STORAGE_BLOCKS_RAW_ALUMINUM)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_ALUMINUM).dropsSelf();
+	
+	@RegistryName("raw_silver_block")
+	SimpleBlockZT RAW_SILVER_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTags(List.of(TagsZT.Blocks.STORAGE_BLOCKS_RAW_SILVER)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_SILVER).dropsSelf();
+	
+	@RegistryName("raw_zinc_block")
+	SimpleBlockZT RAW_ZINC_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTags(List.of(TagsZT.Blocks.STORAGE_BLOCKS_RAW_ZINC)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_ZINC).dropsSelf();
+	
+	@RegistryName("raw_tungsten_block")
+	SimpleBlockZT RAW_TUNGSTEN_BLOCK = new SimpleBlockZT(of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F), PICKAXE, STONE).addBlockTags(List.of(TagsZT.Blocks.STORAGE_BLOCKS_RAW_TUNGSTEN)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_RAW_TUNGSTEN).dropsSelf();
 	
 	// Metal blocks
 	
@@ -156,13 +171,16 @@ public interface BlocksZT_World
 	SimpleBlockZT LEAD_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTags(List.of(BlockTags.BEACON_BASE_BLOCKS, TagsZT.Blocks.STORAGE_BLOCKS_LEAD)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_LEAD).dropsSelf();
 	
 	@RegistryName("aluminum_block")
-	SimpleBlockZT ALUMINUM_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_ALUMINUM).addItemTag(TagsZT.Items.STORAGE_BLOCKS_ALUMINUM).dropsSelf();
+	SimpleBlockZT ALUMINUM_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTags(List.of(BlockTags.BEACON_BASE_BLOCKS, TagsZT.Blocks.STORAGE_BLOCKS_ALUMINUM)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_ALUMINUM).dropsSelf();
+	
+	@RegistryName("silver_block")
+	SimpleBlockZT SILVER_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTags(List.of(BlockTags.BEACON_BASE_BLOCKS, TagsZT.Blocks.STORAGE_BLOCKS_SILVER)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_SILVER).dropsSelf();
 	
 	@RegistryName("zinc_block")
-	SimpleBlockZT ZINC_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_ZINC).addItemTag(TagsZT.Items.STORAGE_BLOCKS_ZINC).dropsSelf();
+	SimpleBlockZT ZINC_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTags(List.of(BlockTags.BEACON_BASE_BLOCKS, TagsZT.Blocks.STORAGE_BLOCKS_ZINC)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_ZINC).dropsSelf();
 	
 	@RegistryName("tungsten_block")
-	SimpleBlockZT TUNGSTEN_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTag(TagsZT.Blocks.STORAGE_BLOCKS_TUNGSTEN).addItemTag(TagsZT.Items.STORAGE_BLOCKS_TUNGSTEN).dropsSelf();
+	SimpleBlockZT TUNGSTEN_BLOCK = new SimpleBlockZT(of(Material.METAL).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F), PICKAXE, STONE).addBlockTags(List.of(BlockTags.BEACON_BASE_BLOCKS, TagsZT.Blocks.STORAGE_BLOCKS_TUNGSTEN)).addItemTag(TagsZT.Items.STORAGE_BLOCKS_TUNGSTEN).dropsSelf();
 	
 	static @Setup void registerExtra()
 	{

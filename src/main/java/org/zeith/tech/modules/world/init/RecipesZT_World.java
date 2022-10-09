@@ -40,15 +40,23 @@ public interface RecipesZT_World
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.RAW_MATERIALS_TIN).result(BlocksZT_World.RAW_TIN_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.RAW_MATERIALS_LEAD).result(BlocksZT_World.RAW_LEAD_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.RAW_MATERIALS_ALUMINUM).result(BlocksZT_World.RAW_ALUMINUM_BLOCK).register();
+		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.RAW_MATERIALS_SILVER).result(BlocksZT_World.RAW_SILVER_BLOCK).register();
+		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.RAW_MATERIALS_ZINC).result(BlocksZT_World.RAW_ZINC_BLOCK).register();
+		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.RAW_MATERIALS_TUNGSTEN).result(BlocksZT_World.RAW_TUNGSTEN_BLOCK).register();
+		
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_TIN).result(BlocksZT_World.TIN_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_LEAD).result(BlocksZT_World.LEAD_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_ALUMINUM).result(BlocksZT_World.ALUMINUM_BLOCK).register();
+		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_SILVER).result(BlocksZT_World.SILVER_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_ZINC).result(BlocksZT_World.ZINC_BLOCK).register();
 		event.shaped().shape("rrr", "rrr", "rrr").map('r', TagsZT.Items.INGOTS_TUNGSTEN).result(BlocksZT_World.TUNGSTEN_BLOCK).register();
 		
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_TIN).result(new ItemStack(ItemsZT_World.RAW_TIN, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_LEAD).result(new ItemStack(ItemsZT_World.RAW_LEAD, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_ALUMINUM).result(new ItemStack(ItemsZT_World.RAW_ALUMINUM, 9)).register();
+		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_SILVER).result(new ItemStack(ItemsZT_World.RAW_SILVER, 9)).register();
+		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_ZINC).result(new ItemStack(ItemsZT_World.RAW_ZINC, 9)).register();
+		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_RAW_TUNGSTEN).result(new ItemStack(ItemsZT_World.RAW_TUNGSTEN, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_TIN).result(new ItemStack(ItemsZT_World.TIN_INGOT, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_LEAD).result(new ItemStack(ItemsZT_World.LEAD_INGOT, 9)).register();
 		event.shapeless().add(TagsZT.Items.STORAGE_BLOCKS_ALUMINUM).result(new ItemStack(ItemsZT_World.ALUMINUM_INGOT, 9)).register();
@@ -58,9 +66,11 @@ public interface RecipesZT_World
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_TIN).result(ItemsZT_World.TIN_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_LEAD).result(ItemsZT_World.LEAD_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_ALUMINUM).result(ItemsZT_World.ALUMINUM_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_SILVER).result(ItemsZT_World.SILVER_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_TIN).result(ItemsZT_World.TIN_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_LEAD).result(ItemsZT_World.LEAD_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_ALUMINUM).result(ItemsZT_World.ALUMINUM_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_SILVER).result(ItemsZT_World.SILVER_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_ZINC).result(ItemsZT_World.ZINC_INGOT).register();
 	}
 	

@@ -35,6 +35,9 @@ public interface ItemsZT_World
 	@RegistryName("raw_aluminum")
 	Item RAW_ALUMINUM = newItem(TagsZT.Items.RAW_MATERIALS_ALUMINUM);
 	
+	@RegistryName("raw_silver")
+	Item RAW_SILVER = newItem(TagsZT.Items.RAW_MATERIALS_SILVER);
+	
 	@RegistryName("raw_zinc")
 	Item RAW_ZINC = newItem(TagsZT.Items.RAW_MATERIALS_ZINC);
 	
@@ -45,10 +48,15 @@ public interface ItemsZT_World
 	
 	@RegistryName("tin_ingot")
 	Item TIN_INGOT = newItem(TagsZT.Items.INGOTS_TIN);
+	
 	@RegistryName("lead_ingot")
 	Item LEAD_INGOT = newItem(TagsZT.Items.INGOTS_LEAD);
+	
 	@RegistryName("aluminum_ingot")
 	Item ALUMINUM_INGOT = newItem(TagsZT.Items.INGOTS_ALUMINUM);
+	
+	@RegistryName("silver_ingot")
+	Item SILVER_INGOT = newItem(TagsZT.Items.INGOTS_SILVER);
 	
 	@RegistryName("zinc_ingot")
 	Item ZINC_INGOT = newItem(TagsZT.Items.INGOTS_ZINC);
@@ -75,6 +83,9 @@ public interface ItemsZT_World
 	
 	@RegistryName("aluminum_plate")
 	Item ALUMINUM_PLATE = newItem(TagsZT.Items.PLATES_ALUMINUM);
+	
+	@RegistryName("silver_plate")
+	Item SILVER_PLATE = newItem(TagsZT.Items.PLATES_SILVER);
 	
 	@RegistryName("zinc_plate")
 	Item ZINC_PLATE = newItem(TagsZT.Items.PLATES_ZINC);

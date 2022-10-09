@@ -39,6 +39,11 @@ public class WorldFeaturesZT
 			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_ALUMINUM_ORE.defaultBlockState())
 	);
 	
+	private static final List<OreConfiguration.TargetBlockState> ORE_SILVER_TARGET_LIST = List.of(
+			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.SILVER_ORE.defaultBlockState()),
+			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_SILVER_ORE.defaultBlockState())
+	);
+	
 	private static final List<OreConfiguration.TargetBlockState> ORE_ZINC_TARGET_LIST = List.of(
 			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.ZINC_ORE.defaultBlockState()),
 			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_ZINC_ORE.defaultBlockState())
@@ -67,6 +72,9 @@ public class WorldFeaturesZT
 	
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE = register("aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 9));
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE_SMALL = register("small_aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 4));
+	
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> SILVER_ORE = register("silver_ore", Feature.ORE, new OreConfiguration(ORE_SILVER_TARGET_LIST, 8));
+	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> SILVER_ORE_SMALL = register("small_silver_ore", Feature.ORE, new OreConfiguration(ORE_SILVER_TARGET_LIST, 3));
 	
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ZINC_ORE = register("zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 10));
 	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ZINC_ORE_SMALL = register("small_zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 6));

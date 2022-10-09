@@ -7,11 +7,11 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.*;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.utils.LegacyEventBus;
 
@@ -57,6 +57,16 @@ public class FluidFactory
 		for(var tag : fluidTags)
 			TagAdapter.bind(tag, this.source, this.flowing);
 		return this;
+	}
+	
+	public FluidStack stack(int amount)
+	{
+		return new FluidStack(this.source, amount);
+	}
+	
+	public FluidIngredient ingredient()
+	{
+		return FluidIngredient.ofFluids(List.of(new FluidStack(this.source, 1), new FluidStack(this.flowing, 1)));
 	}
 	
 	public static FluidFactory createWithBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Consumer<ForgeFlowingFluid.Properties> propertyModifier)

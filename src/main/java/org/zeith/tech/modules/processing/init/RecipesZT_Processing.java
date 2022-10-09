@@ -8,7 +8,6 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
@@ -297,7 +296,7 @@ public interface RecipesZT_Processing
 			f.get()
 					.input(new FluidIngredientStack(FluidIngredient.ofTags(List.of(TagsZT.Fluids.CRUDE_OIL)), 1000))
 					.energy(5000)
-					.result(new FluidStack(FluidsZT_Processing.REFINED_OIL.getSource(), 700))
+					.result(FluidsZT_Processing.REFINED_OIL.stack(700))
 					.extraOutput(new ExtraOutput.Ranged(new ItemStack(ItemsZT.OIL_SLUDGE), 1, 3, 0.75F))
 					.register();
 		}

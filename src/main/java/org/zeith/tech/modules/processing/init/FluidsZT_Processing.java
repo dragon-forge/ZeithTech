@@ -1,9 +1,7 @@
 package org.zeith.tech.modules.processing.init;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.fluid.FluidFactory;
@@ -14,7 +12,6 @@ import org.zeith.tech.utils.LegacyEventBus;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 public interface FluidsZT_Processing
 {
@@ -43,9 +40,7 @@ public interface FluidsZT_Processing
 			ZeithTechAPI.get()
 					.getModules()
 					.processing()
-					.setLiquidFuelBurnTime(
-							FluidIngredient.ofFluids(List.of(new FluidStack(DIESEL_FUEL.getSource(), 1))),
-							400);
+					.setLiquidFuelBurnTime(DIESEL_FUEL.ingredient(), 1000);
 		});
 	}
 }

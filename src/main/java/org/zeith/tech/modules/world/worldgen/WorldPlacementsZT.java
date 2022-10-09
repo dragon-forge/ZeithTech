@@ -31,6 +31,9 @@ public class WorldPlacementsZT
 	public static final Holder<PlacedFeature> ORE_ALUMINUM_MIDDLE = register("ore_aluminum_middle", WorldFeaturesZT.ALUMINUM_ORE, commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
 	public static final Holder<PlacedFeature> ORE_ALUMINUM_SMALL = register("ore_aluminum_small", WorldFeaturesZT.ALUMINUM_ORE_SMALL, commonOrePlacement(7, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));
 	
+	public static final Holder<PlacedFeature> ORE_SILVER_MIDDLE = register("ore_silver_middle", WorldFeaturesZT.SILVER_ORE, commonOrePlacement(5, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(32))));
+	public static final Holder<PlacedFeature> ORE_SILVER_SMALL = register("ore_silver_small", WorldFeaturesZT.SILVER_ORE_SMALL, commonOrePlacement(5, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(48))));
+	
 	public static final Holder<PlacedFeature> ORE_ZINC_MIDDLE = register("ore_zinc_middle", WorldFeaturesZT.ZINC_ORE, commonOrePlacement(5, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56))));
 	public static final Holder<PlacedFeature> ORE_ZINC_SMALL = register("ore_zinc_small", WorldFeaturesZT.ZINC_ORE_SMALL, commonOrePlacement(5, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72))));
 	

@@ -30,6 +30,7 @@ public class TagsZT
 		public static final TagKey<Item> INGOTS_TIN = tag("ingots/tin");
 		public static final TagKey<Item> INGOTS_LEAD = tag("ingots/lead");
 		public static final TagKey<Item> INGOTS_ALUMINUM = tag("ingots/aluminum");
+		public static final TagKey<Item> INGOTS_SILVER = tag("ingots/silver");
 		public static final TagKey<Item> INGOTS_ZINC = tag("ingots/zinc");
 		public static final TagKey<Item> INGOTS_TUNGSTEN = tag("ingots/tungsten");
 		
@@ -39,6 +40,7 @@ public class TagsZT
 		public static final TagKey<Item> PLATES_TIN = tag("plates/tin");
 		public static final TagKey<Item> PLATES_LEAD = tag("plates/lead");
 		public static final TagKey<Item> PLATES_ALUMINUM = tag("plates/aluminum");
+		public static final TagKey<Item> PLATES_SILVER = tag("plates/silver");
 		public static final TagKey<Item> PLATES_ZINC = tag("plates/zinc");
 		public static final TagKey<Item> PLATES_TUNGSTEN = tag("plates/tungsten");
 		
@@ -48,12 +50,14 @@ public class TagsZT
 		public static final TagKey<Item> RAW_MATERIALS_TIN = tag("raw_materials/tin");
 		public static final TagKey<Item> RAW_MATERIALS_LEAD = tag("raw_materials/lead");
 		public static final TagKey<Item> RAW_MATERIALS_ALUMINUM = tag("raw_materials/aluminum");
+		public static final TagKey<Item> RAW_MATERIALS_SILVER = tag("raw_materials/silver");
 		public static final TagKey<Item> RAW_MATERIALS_ZINC = tag("raw_materials/zinc");
 		public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN = tag("raw_materials/tungsten");
 		
 		public static final TagKey<Item> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Item> ORES_LEAD = tag("ores/lead");
 		public static final TagKey<Item> ORES_ALUMINUM = tag("ores/aluminum");
+		public static final TagKey<Item> ORES_SILVER = tag("ores/silver");
 		public static final TagKey<Item> ORES_ZINC = tag("ores/zinc");
 		public static final TagKey<Item> ORES_TUNGSTEN = tag("ores/tungsten");
 		public static final TagKey<Item> ORES_LITHIUM = tag("ores/lithium");
@@ -64,10 +68,12 @@ public class TagsZT
 		public static final TagKey<Item> STORAGE_BLOCKS_ALUMINUM = tag("storage_blocks/aluminum");
 		public static final TagKey<Item> STORAGE_BLOCKS_ZINC = tag("storage_blocks/zinc");
 		public static final TagKey<Item> STORAGE_BLOCKS_TUNGSTEN = tag("storage_blocks/tungsten");
+		public static final TagKey<Item> STORAGE_BLOCKS_SILVER = tag("storage_blocks/silver");
 		
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_TIN = tag("storage_blocks/raw_tin");
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_LEAD = tag("storage_blocks/raw_lead");
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_ALUMINUM = tag("storage_blocks/raw_aluminum");
+		public static final TagKey<Item> STORAGE_BLOCKS_RAW_SILVER = tag("storage_blocks/raw_silver");
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_ZINC = tag("storage_blocks/raw_zinc");
 		public static final TagKey<Item> STORAGE_BLOCKS_RAW_TUNGSTEN = tag("storage_blocks/raw_tungsten");
 		
@@ -100,6 +106,7 @@ public class TagsZT
 		public static final TagKey<Block> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Block> ORES_LEAD = tag("ores/lead");
 		public static final TagKey<Block> ORES_ALUMINUM = tag("ores/aluminum");
+		public static final TagKey<Block> ORES_SILVER = tag("ores/silver");
 		public static final TagKey<Block> ORES_ZINC = tag("ores/zinc");
 		public static final TagKey<Block> ORES_TUNGSTEN = tag("ores/tungsten");
 		public static final TagKey<Block> ORES_LITHIUM = tag("ores/lithium");
@@ -108,12 +115,14 @@ public class TagsZT
 		public static final TagKey<Block> STORAGE_BLOCKS_TIN = tag("storage_blocks/tin");
 		public static final TagKey<Block> STORAGE_BLOCKS_LEAD = tag("storage_blocks/lead");
 		public static final TagKey<Block> STORAGE_BLOCKS_ALUMINUM = tag("storage_blocks/aluminum");
+		public static final TagKey<Block> STORAGE_BLOCKS_SILVER = tag("storage_blocks/silver");
 		public static final TagKey<Block> STORAGE_BLOCKS_ZINC = tag("storage_blocks/zinc");
 		public static final TagKey<Block> STORAGE_BLOCKS_TUNGSTEN = tag("storage_blocks/tungsten");
 		
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_TIN = tag("storage_blocks/raw_tin");
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_LEAD = tag("storage_blocks/raw_lead");
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_ALUMINUM = tag("storage_blocks/raw_aluminum");
+		public static final TagKey<Block> STORAGE_BLOCKS_RAW_SILVER = tag("storage_blocks/raw_silver");
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_ZINC = tag("storage_blocks/raw_zinc");
 		public static final TagKey<Block> STORAGE_BLOCKS_RAW_TUNGSTEN = tag("storage_blocks/raw_tungsten");
 		
