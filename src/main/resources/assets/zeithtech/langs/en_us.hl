@@ -79,6 +79,8 @@ fluid_type.zeithtech.crude_oil=Crude Oil
 
 
 ### Shared Module ###
+block.zeithtech.auxiliary_io_port=Auxiliary IO Port
+
 item.zeithtech.copper_coil=Copper Coil
 item.zeithtech.gold_coil=Gold Coil
 item.zeithtech.bowl_of_resin=Bowl of Resin
@@ -102,6 +104,7 @@ block.zeithtech.processing.mining_quarry.basic=Basic Miner
 block.zeithtech.processing.fluid_centrifuge=Fluid Centrifuge
 block.zeithtech.processing.fluid_pump=Fluid Pump
 block.zeithtech.processing.lfuel_generator.basic=Basic Liquid Fuel Generator
+block.zeithtech.processing.waste_processor=Waste Processor
 
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter

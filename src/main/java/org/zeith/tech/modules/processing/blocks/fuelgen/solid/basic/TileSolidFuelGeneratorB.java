@@ -108,7 +108,7 @@ public class TileSolidFuelGeneratorB
 			}
 		}
 		
-		if(isOnClient() && isEnabled())
+		if(isOnClient() && isEnabled() && !isInterrupted())
 		{
 			ZeithTechAPI.get()
 					.getAudioSystem()

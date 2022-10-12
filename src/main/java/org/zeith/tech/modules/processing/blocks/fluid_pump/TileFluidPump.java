@@ -114,21 +114,16 @@ public class TileFluidPump
 			isDone = false;
 		}
 		
-		if(isOnClient())
+		if(isOnClient() && isEnabled() && !isInterrupted())
 		{
-			if(isEnabled() && !isInterrupted.getBoolean())
-			{
-				rotator.speedupTo(30F, 3F);
-				
-				// TODO: replace with pump sounds
-				ZeithTechAPI.get()
-						.getAudioSystem()
-						.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
-			}
+			rotator.speedupTo(30F, 3F);
 			
-			rotator.update();
+			ZeithTechAPI.get()
+					.getAudioSystem()
+					.playMachineSoundLoop(this, SoundsZT_Processing.FLUID_PUMP, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
 		}
 		
+		rotator.update();
 		tankSmooth.update(fluidTank.getFluid());
 		
 		if(isOnServer() && level instanceof ServerLevel srv)
@@ -344,9 +339,9 @@ public class TileFluidPump
 			for(Direction dir : DIRECTIONS)
 			{
 				var pos = cpos.relative(dir);
-				if(!level.isLoaded(pos)) continue;
+				if(!level.isLoaded(pos) || discoveredPositions.contains(pos)) continue;
 				var fluid = level.getFluidState(pos);
-				if(!fluid.isEmpty() && lock.test(fluid) && !discoveredPositions.contains(pos))
+				if(!fluid.isEmpty() && lock.test(fluid))
 				{
 					discoveredPositions.add(pos);
 					--limit;

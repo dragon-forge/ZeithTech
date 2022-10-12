@@ -14,6 +14,7 @@ import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.TileMiningQuarryB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
+import org.zeith.tech.modules.processing.blocks.waste_processor.TileWasteProcessor;
 import org.zeith.tech.modules.processing.client.renderer.tile.*;
 
 @SimplyRegister
@@ -43,11 +44,15 @@ public interface TilesZT_Processing
 	@RegistryName("processing/mining_quarry/basic")
 	BlockEntityType<TileMiningQuarryB> BASIC_QUARRY = BlockAPI.createBlockEntityType(TileMiningQuarryB::new, BlocksZT_Processing.BASIC_QUARRY);
 	
+	@RegistryName("processing/fluid_pump")
+	@TileRenderer(TileRendererFluidPump.class)
+	BlockEntityType<TileFluidPump> FLUID_PUMP = BlockAPI.createBlockEntityType(TileFluidPump::new, BlocksZT_Processing.FLUID_PUMP);
+	
 	@RegistryName("processing/fluid_centrifuge")
 	@TileRenderer(TileRendererFluidCentrifuge.class)
 	BlockEntityType<TileFluidCentrifuge> FLUID_CENTRIFUGE = BlockAPI.createBlockEntityType(TileFluidCentrifuge::new, BlocksZT_Processing.FLUID_CENTRIFUGE);
 	
-	@RegistryName("processing/fluid_pump")
-	@TileRenderer(TileRendererFluidPump.class)
-	BlockEntityType<TileFluidPump> FLUID_PUMP = BlockAPI.createBlockEntityType(TileFluidPump::new, BlocksZT_Processing.FLUID_PUMP);
+	@RegistryName("processing/waste_processor")
+	@TileRenderer(TileRendererWasteProcessor.class)
+	BlockEntityType<TileWasteProcessor> WASTE_PROCESSOR = BlockAPI.createBlockEntityType(TileWasteProcessor::new, BlocksZT_Processing.WASTE_PROCESSOR);
 }

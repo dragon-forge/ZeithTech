@@ -59,6 +59,14 @@ public class RecipeRegistriesZT_Processing
 					.onClientRecipeReceive(broadcast())
 					.build();
 	
+	public static final NamespacedRecipeRegistry<RecipeLiquidFuel> LIQUID_FUEL =
+			RecipeRegistryFactory.namespacedBuilder(RecipeLiquidFuel.class)
+					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "liquid_fuel"))
+					.recipeBuilderFactory(RecipeLiquidFuel.LiquidFuelRecipeBuilder::new)
+					.customRecipes(CustomLiquidFluidRecipeGenerator::new)
+					.onClientRecipeReceive(broadcast())
+					.build();
+	
 	public static void setup(FMLCommonSetupEvent e)
 	{
 		ZeithTech.LOG.info("Setup recipe registries.");

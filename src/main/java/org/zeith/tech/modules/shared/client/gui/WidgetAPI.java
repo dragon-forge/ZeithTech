@@ -23,6 +23,11 @@ import java.util.*;
 
 public class WidgetAPI
 {
+	public static void bind()
+	{
+		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+	}
+	
 	public static void drawGhostItem(PoseStack pose, int x, int y, ItemStack stack)
 	{
 		var minecraft = Minecraft.getInstance();
@@ -84,14 +89,14 @@ public class WidgetAPI
 	
 	public static void drawFluidBar(PoseStack pose, int x, int y, IFluidTank tank)
 	{
-		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+		bind();
 		RenderUtils.drawTexturedModalRect(pose, x, y, 0, 66, 18, 66); // draw the base
 		
 		var fluid = tank.getFluid();
 		float full = tank.getFluidAmount() / (float) tank.getCapacity();
 		FluidRendererHelper.renderFluidInGui(pose, fluid, FluidTextureType.STILL, full, x + 1, y + 1, 16, 64);
 		
-		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+		bind();
 		RenderUtils.drawTexturedModalRect(pose, x, y, 18, 66, 18, 66); // draw glass
 	}
 	
@@ -114,7 +119,7 @@ public class WidgetAPI
 	
 	public static void drawPowerBar(PoseStack pose, int x, int y, float full)
 	{
-		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+		bind();
 		
 		RenderUtils.drawTexturedModalRect(pose, x, y, 0, 0, 13, 66);
 		
@@ -129,7 +134,7 @@ public class WidgetAPI
 	
 	public static void drawFuelBar(PoseStack pose, int x, int y, float full)
 	{
-		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+		bind();
 		
 		RenderUtils.drawTexturedModalRect(pose, x, y, 39, 0, 13, 13);
 		

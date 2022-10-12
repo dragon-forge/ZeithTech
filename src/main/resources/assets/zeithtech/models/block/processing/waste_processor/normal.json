@@ -1,0 +1,9 @@
+{
+  "parent": "zeithtech:block/processing/waste_processor/base",
+  "textures": {
+    "0": "zeithtech:processing/block/waste_processor/1_off",
+    "1": "zeithtech:processing/block/waste_processor/2_off",
+    "2": "zeithtech:processing/block/waste_processor/glass",
+    "particle": "zeithtech:processing/block/waste_processor/1_off"
+  }
+}

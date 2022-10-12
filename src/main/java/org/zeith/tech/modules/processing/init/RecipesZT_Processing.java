@@ -301,4 +301,17 @@ public interface RecipesZT_Processing
 					.register();
 		}
 	}
+	
+	static void addLiquidFuelRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeLiquidFuel> evt)
+	{
+		if(evt.is(RecipeRegistriesZT_Processing.LIQUID_FUEL))
+		{
+			var f = evt.<RecipeLiquidFuel.LiquidFuelRecipeBuilder> builderFactory();
+			
+			f.get()
+					.input(FluidsZT_Processing.DIESEL_FUEL.ingredient())
+					.burnTime(1000)
+					.register();
+		}
+	}
 }

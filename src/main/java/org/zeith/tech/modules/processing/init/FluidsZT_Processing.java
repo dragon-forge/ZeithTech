@@ -1,8 +1,6 @@
 package org.zeith.tech.modules.processing.init;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.fluid.FluidFactory;
 import org.zeith.tech.modules.processing.fluids.FluidTypeDieselFuel;
@@ -34,13 +32,5 @@ public interface FluidsZT_Processing
 				}
 			}
 		}
-		
-		modBus.addListener(FMLLoadCompleteEvent.class, evt ->
-		{
-			ZeithTechAPI.get()
-					.getModules()
-					.processing()
-					.setLiquidFuelBurnTime(DIESEL_FUEL.ingredient(), 1000);
-		});
 	}
 }

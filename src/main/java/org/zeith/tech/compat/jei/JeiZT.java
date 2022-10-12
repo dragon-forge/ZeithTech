@@ -29,7 +29,6 @@ import org.zeith.tech.compat.jei.category.*;
 import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
-import org.zeith.tech.compat.jei.internal.RecipeLiquidFuelGenerator;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.ContainerElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
@@ -102,7 +101,7 @@ public class JeiZT
 		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, api.getRecipesUpToTier(api.grinding(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.SAWMILL, api.sawmill().getRecipes().stream().toList());
 		registration.addRecipes(RecipeTypesZT.FLUID_CENTRIFUGE, api.fluidCentrifuge().getRecipes().stream().toList());
-		registration.addRecipes(RecipeTypesZT.LIQUID_FUEL, gapi.getModules().processing().getLiquidFuelBurnTimes().stream().map(RecipeLiquidFuelGenerator::of).toList());
+		registration.addRecipes(RecipeTypesZT.LIQUID_FUEL, api.liquidFuel().getRecipes().stream().toList());
 		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		

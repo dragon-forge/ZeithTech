@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.processing.blocks.electric_furnace.basic;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -24,20 +25,26 @@ import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
+import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
+import org.zeith.tech.api.tile.slots.*;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.utils.SidedInventory;
 
-import java.util.EnumSet;
+import java.awt.*;
 import java.util.List;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 public class TileElectricFurnaceB
 		extends TileBaseMachine<TileElectricFurnaceB>
+		implements ITileSlotProvider
 {
 	@NBTSerializable("Sides")
 	public final TileSidedConfigImpl sidedConfig = new TileSidedConfigImpl(this::getFront, EnumSet.of(SidedConfigTyped.ENERGY, SidedConfigTyped.ITEM))
@@ -147,11 +154,9 @@ public class TileElectricFurnaceB
 		}
 		
 		if(isOnClient() && isEnabled() && !isInterrupted())
-		{
 			ZeithTechAPI.get()
 					.getAudioSystem()
 					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_ELECTRIC_FURNACE, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
-		}
 	}
 	
 	public boolean storeAll(ItemStack stack)
@@ -223,5 +228,34 @@ public class TileElectricFurnaceB
 	public List<Container> getAllInventories()
 	{
 		return List.of(inventory, energy.batteryInventory);
+	}
+	
+	public final List<ISlot<?>> slots = ((Supplier<List<ISlot<?>>>) () ->
+	{
+		ImmutableList.Builder<ISlot<?>> lst = new ImmutableList.Builder<>();
+		
+		lst.add(ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(energy, SlotRole.INPUT), SlotRole.INPUT, Color.RED));
+		
+		Direction.stream()
+				.flatMap(dir ->
+						IntStream.of(inventory.getSlotsForFace(dir))
+								.mapToObj(slot -> inventory.sidedItemAccess.canTakeItemThroughFace(slot, dir)
+										? new Tuple2<>(slot, inventory.sidedItemAccess.canPlaceItemThroughFace(slot, dir) ? SlotRole.BOTH : SlotRole.OUTPUT)
+										: inventory.sidedItemAccess.canPlaceItemThroughFace(slot, dir)
+										? new Tuple2<>(slot, SlotRole.INPUT)
+										: null)
+				)
+				.filter(Objects::nonNull)
+				.distinct()
+				.map(pair -> ISlot.simpleSlot(new ContainerItemSlotAccess(inventory, pair.first(), pair.second()), pair.second(), pair.toString(), getClass().getSimpleName()))
+				.forEach(lst::add);
+		
+		return lst.build();
+	}).get();
+	
+	@Override
+	public List<ISlot<?>> getSlots()
+	{
+		return slots;
 	}
 }

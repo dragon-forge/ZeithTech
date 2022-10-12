@@ -118,7 +118,7 @@ public abstract class TileBaseMachine<T extends TileBaseMachine<T>>
 	
 	public Direction getFront()
 	{
-		BlockState state = level.getBlockState(worldPosition);
+		BlockState state = getBlockState();
 		if(state.getBlock() == getBlockState().getBlock() && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
 			return state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 		return Direction.NORTH;

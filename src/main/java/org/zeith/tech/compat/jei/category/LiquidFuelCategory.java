@@ -15,8 +15,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import org.zeith.tech.api.recipes.processing.RecipeLiquidFuel;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
-import org.zeith.tech.compat.jei.internal.RecipeLiquidFuelGenerator;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
@@ -25,7 +25,7 @@ import java.awt.*;
 import java.util.List;
 
 public class LiquidFuelCategory
-		implements IRecipeCategory<RecipeLiquidFuelGenerator>
+		implements IRecipeCategory<RecipeLiquidFuel>
 {
 	public static final ResourceLocation FLUID_CENTRIFUGE_GUI = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/jei/liquid_fuel.png");
 	public static final ResourceLocation WIDGETS = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/widgets.png");
@@ -49,7 +49,7 @@ public class LiquidFuelCategory
 	}
 	
 	@Override
-	public RecipeType<RecipeLiquidFuelGenerator> getRecipeType()
+	public RecipeType<RecipeLiquidFuel> getRecipeType()
 	{
 		return RecipeTypesZT.LIQUID_FUEL;
 	}
@@ -75,7 +75,7 @@ public class LiquidFuelCategory
 	final Rectangle energyBarBounds = new Rectangle(55, 1, 11, 64);
 	
 	@Override
-	public java.util.List<Component> getTooltipStrings(RecipeLiquidFuelGenerator recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY)
+	public java.util.List<Component> getTooltipStrings(RecipeLiquidFuel recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY)
 	{
 		return energyBarBounds.contains(mouseX, mouseY)
 				? java.util.List.of(Component.literal(I18n.get("info.zeithtech.fe", recipe.burnTime() * 40)))
@@ -83,7 +83,7 @@ public class LiquidFuelCategory
 	}
 	
 	@Override
-	public void draw(RecipeLiquidFuelGenerator recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
+	public void draw(RecipeLiquidFuel recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
 	{
 		arrow.draw(stack, 25, 25);
 		
@@ -95,7 +95,7 @@ public class LiquidFuelCategory
 	}
 	
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder layout, RecipeLiquidFuelGenerator recipe, IFocusGroup focus)
+	public void setRecipe(IRecipeLayoutBuilder layout, RecipeLiquidFuel recipe, IFocusGroup focus)
 	{
 		FluidStack[] matching = recipe.ingredient().getValues(100);
 		

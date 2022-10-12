@@ -12,7 +12,7 @@ import static org.zeith.tech.modules.shared.BaseZT.newItem;
 
 @SimplyRegister
 public interface ItemsZT
-		extends ItemsZT_World, ItemsZT_Processing, ItemsZT_Transport
+		extends ItemsZT_World, ItemsZT_Transport, ItemsZT_Processing
 {
 	@RegistryName("copper_coil")
 	Item COPPER_COIL = newItem(TagsZT.Items.COILS_COPPER);

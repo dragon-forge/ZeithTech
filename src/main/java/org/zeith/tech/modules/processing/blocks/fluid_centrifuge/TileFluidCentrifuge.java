@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.processing.blocks.fluid_centrifuge;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -22,23 +23,28 @@ import org.zeith.hammerlib.util.physics.FrictionRotator;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
+import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.recipes.processing.RecipeFluidCentrifuge;
 import org.zeith.tech.api.tile.IFluidPipe;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
+import org.zeith.tech.api.tile.slots.*;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.utils.*;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
-import java.util.EnumSet;
+import java.awt.*;
 import java.util.List;
+import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 public class TileFluidCentrifuge
 		extends TileBaseMachine<TileFluidCentrifuge>
+		implements ITileSlotProvider
 {
 	@NBTSerializable("Sides")
 	public final TileSidedConfigImpl sidedConfig = new TileSidedConfigImpl(this::getFront, EnumSet.of(SidedConfigTyped.ENERGY, SidedConfigTyped.ITEM, SidedConfigTyped.FLUID))
@@ -83,20 +89,15 @@ public class TileFluidCentrifuge
 	public void update()
 	{
 		energy.update(level, worldPosition, sidedConfig);
+		rotator.update();
 		
-		if(isOnClient())
+		if(isOnClient() && isEnabled() && !isInterrupted())
 		{
-			if(isEnabled() && !isInterrupted.getBoolean())
-			{
-				rotator.speedupTo(45F, 3F);
-				
-				// TODO: replace with centrifuge sounds
-				ZeithTechAPI.get()
-						.getAudioSystem()
-						.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
-			}
+			rotator.speedupTo(45F, 3F);
 			
-			rotator.update();
+			ZeithTechAPI.get()
+					.getAudioSystem()
+					.playMachineSoundLoop(this, SoundsZT_Processing.FLUID_CENTRIFUGE, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
 		}
 		
 		int needInput = inputFluid.getCapacity() - inputFluid.getFluidAmount();
@@ -262,6 +263,38 @@ public class TileFluidCentrifuge
 		}
 		
 		return super.getCapability(cap, side);
+	}
+	
+	public final List<ISlot<?>> slots = ((Supplier<List<ISlot<?>>>) () ->
+	{
+		ImmutableList.Builder<ISlot<?>> lst = new ImmutableList.Builder<>();
+		
+		lst.add(ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(energy, SlotRole.INPUT), SlotRole.INPUT, Color.RED));
+		
+		lst.add(ISlot.simpleSlot(new FluidTankSlotAccess(inputFluid, SlotRole.INPUT), SlotRole.INPUT));
+		lst.add(ISlot.simpleSlot(new FluidTankSlotAccess(outputFluid, SlotRole.OUTPUT), SlotRole.OUTPUT));
+		
+		Direction.stream()
+				.flatMap(dir ->
+						IntStream.of(inventory.getSlotsForFace(dir))
+								.mapToObj(slot -> inventory.sidedItemAccess.canTakeItemThroughFace(slot, dir)
+										? new Tuple2<>(slot, inventory.sidedItemAccess.canPlaceItemThroughFace(slot, dir) ? SlotRole.BOTH : SlotRole.OUTPUT)
+										: inventory.sidedItemAccess.canPlaceItemThroughFace(slot, dir)
+										? new Tuple2<>(slot, SlotRole.INPUT)
+										: null)
+				)
+				.filter(Objects::nonNull)
+				.distinct()
+				.map(pair -> ISlot.simpleSlot(new ContainerItemSlotAccess(inventory, pair.first(), pair.second()), pair.second(), pair.toString(), getClass().getSimpleName()))
+				.forEach(lst::add);
+		
+		return lst.build();
+	}).get();
+	
+	@Override
+	public List<ISlot<?>> getSlots()
+	{
+		return slots;
 	}
 	
 	private class FluidInput

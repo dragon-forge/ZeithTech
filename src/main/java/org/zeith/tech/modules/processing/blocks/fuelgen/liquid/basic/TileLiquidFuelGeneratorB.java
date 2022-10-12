@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -22,11 +23,13 @@ import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
+import org.zeith.tech.api.recipes.processing.RecipeLiquidFuel;
 import org.zeith.tech.api.tile.IFluidPipe;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
+import org.zeith.tech.api.tile.slots.*;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
@@ -35,15 +38,18 @@ import org.zeith.tech.utils.SerializableFluidTank;
 import org.zeith.tech.utils.fluid.FluidHelperZT;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
-import java.util.EnumSet;
+import java.awt.*;
 import java.util.List;
+import java.util.*;
+import java.util.function.Supplier;
 
 public class TileLiquidFuelGeneratorB
 		extends TileBaseMachine<TileLiquidFuelGeneratorB>
+		implements ITileSlotProvider
 {
 	@NBTSerializable("TankContents")
 	public final SerializableFluidTank storage = new SerializableFluidTank(5 * FluidType.BUCKET_VOLUME, fluid ->
-			ZeithTechAPI.get().getModules().processing().getLiquidFuelBurnTime(fluid) > 0);
+			ZeithTechAPI.get().getRecipeRegistries().liquidFuel().getRecipes().stream().anyMatch(r -> r.test(fluid)));
 	
 	public final FluidSmoothing tankSmooth;
 	
@@ -155,13 +161,10 @@ public class TileLiquidFuelGeneratorB
 			}
 		}
 		
-		if(isOnClient() && isEnabled())
-		{
-			// TODO: replace with liquid fuel sound
+		if(isOnClient() && isEnabled() && !isInterrupted())
 			ZeithTechAPI.get()
 					.getAudioSystem()
-					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
-		}
+					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_LIQUID_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
 	}
 	
 	public void consumeFuel()
@@ -169,7 +172,14 @@ public class TileLiquidFuelGeneratorB
 		if(storage.isEmpty() || storage.getFluidAmount() < 100)
 			return;
 		
-		int duration = ZeithTechAPI.get().getModules().processing().getLiquidFuelBurnTime(storage.getFluid());
+		int duration = ZeithTechAPI.get().getRecipeRegistries()
+				.liquidFuel()
+				.getRecipes()
+				.stream()
+				.filter(r -> r.test(storage.getFluid()))
+				.mapToInt(RecipeLiquidFuel::burnTime)
+				.max()
+				.orElse(0);
 		
 		if(duration > 0 && storage.drain(100, IFluidHandler.FluidAction.SIMULATE).getAmount() == 100)
 		{
@@ -213,6 +223,22 @@ public class TileLiquidFuelGeneratorB
 		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
 			return energy.measurableCap.cast();
 		return super.getCapability(cap, side);
+	}
+	
+	public final List<ISlot<?>> slots = ((Supplier<List<ISlot<?>>>) () ->
+	{
+		ImmutableList.Builder<ISlot<?>> lst = new ImmutableList.Builder<>();
+		
+		lst.add(ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(energy, SlotRole.OUTPUT), SlotRole.OUTPUT, Color.RED));
+		lst.add(ISlot.simpleSlot(new FluidTankSlotAccess(storage, SlotRole.INPUT), SlotRole.INPUT));
+		
+		return lst.build();
+	}).get();
+	
+	@Override
+	public List<ISlot<?>> getSlots()
+	{
+		return slots;
 	}
 	
 	class FluidInput

@@ -3,8 +3,7 @@ package org.zeith.tech.modules.shared.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -78,6 +77,12 @@ public abstract class BaseEntityBlockZT
 	{
 		TagAdapter.bind(tag, this);
 		return this;
+	}
+	
+	@Override
+	public RenderShape getRenderShape(BlockState state)
+	{
+		return RenderShape.MODEL;
 	}
 	
 	private BlockItem itemBlock;

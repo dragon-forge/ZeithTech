@@ -13,7 +13,8 @@ import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 import java.awt.*;
 
 @IAdvancedGui.ApplyToJEI
-public class GuiLiquidFuelGeneratorB
+public class
+GuiLiquidFuelGeneratorB
 		extends GuiBaseMachine<ContainerLiquidFuelGeneratorB>
 		implements IAdvancedGui<GuiLiquidFuelGeneratorB>
 {

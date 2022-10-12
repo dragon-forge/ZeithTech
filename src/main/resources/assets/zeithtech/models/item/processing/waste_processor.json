@@ -1,0 +1,14 @@
+{
+  "parent": "zeithtech:item/builtin/ister",
+  "textures": {
+    "particle": "zeithtech:processing/block/waste_processor/1_off"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "alt": 0.5
+      },
+      "model": "zeithtech:block/processing/waste_processor/normal"
+    }
+  ]
+}

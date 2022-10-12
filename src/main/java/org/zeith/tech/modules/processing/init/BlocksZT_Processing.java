@@ -16,6 +16,7 @@ import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQuarryB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.BlockSawmillB;
+import org.zeith.tech.modules.processing.blocks.waste_processor.BlockWasteProcessor;
 
 @SimplyRegister
 public interface BlocksZT_Processing
@@ -44,9 +45,12 @@ public interface BlocksZT_Processing
 	@RegistryName("processing/mining_pipe")
 	BlockMiningPipe MINING_PIPE = new BlockMiningPipe(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
 	
+	@RegistryName("processing/fluid_pump")
+	BlockFluidPump FLUID_PUMP = new BlockFluidPump();
+	
 	@RegistryName("processing/fluid_centrifuge")
 	BlockFluidCentrifuge FLUID_CENTRIFUGE = new BlockFluidCentrifuge();
 	
-	@RegistryName("processing/fluid_pump")
-	BlockFluidPump FLUID_PUMP = new BlockFluidPump();
+	@RegistryName("processing/waste_processor")
+	BlockWasteProcessor WASTE_PROCESSOR = new BlockWasteProcessor();
 }

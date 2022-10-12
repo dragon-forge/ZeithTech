@@ -46,6 +46,12 @@ class RecipeRegistries
 	}
 	
 	@Override
+	public NamespacedRecipeRegistry<RecipeLiquidFuel> liquidFuel()
+	{
+		return RecipeRegistriesZT_Processing.LIQUID_FUEL;
+	}
+	
+	@Override
 	public <T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier)
 	{
 		return registry

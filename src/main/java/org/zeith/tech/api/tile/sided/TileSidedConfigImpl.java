@@ -2,7 +2,6 @@ package org.zeith.tech.api.tile.sided;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.*;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.util.java.DirectStorage;
@@ -124,13 +123,13 @@ public class TileSidedConfigImpl
 			}
 			
 			@Override
-			public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction face)
+			public boolean canPlaceItemThroughFace(int slot, @Nullable Direction face)
 			{
 				return Arrays.binarySearch(input, slot) >= 0;
 			}
 			
 			@Override
-			public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction face)
+			public boolean canTakeItemThroughFace(int slot, Direction face)
 			{
 				return Arrays.binarySearch(output, slot) >= 0;
 			}

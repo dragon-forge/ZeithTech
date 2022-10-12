@@ -25,14 +25,14 @@ public class SidedInventory
 	}
 	
 	@Override
-	public boolean canPlaceItemThroughFace(int p_19235_, ItemStack p_19236_, @Nullable Direction p_19237_)
+	public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction from)
 	{
-		return isItemValid(p_19235_, p_19236_) && sidedItemAccess.canPlaceItemThroughFace(p_19235_, p_19236_, p_19237_);
+		return isItemValid(slot, stack) && sidedItemAccess.canPlaceItemThroughFace(slot, from);
 	}
 	
 	@Override
-	public boolean canTakeItemThroughFace(int p_19239_, ItemStack p_19240_, Direction p_19241_)
+	public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction from)
 	{
-		return sidedItemAccess.canTakeItemThroughFace(p_19239_, p_19240_, p_19241_);
+		return sidedItemAccess.canTakeItemThroughFace(slot, from);
 	}
 }
