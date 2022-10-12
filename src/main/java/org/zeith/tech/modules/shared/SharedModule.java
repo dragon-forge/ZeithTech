@@ -4,6 +4,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.tech.api.modules.IModuleShared;
+import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 import org.zeith.tech.core.IInternalCode;
 import org.zeith.tech.modules.shared.init.RecipesZT;
 import org.zeith.tech.modules.shared.proxy.ClientSharedProxyZT;
@@ -27,6 +28,7 @@ public class SharedModule
 	{
 		wasEnabled = true;
 		HammerLib.EVENT_BUS.addListener(RecipesZT::provideRecipes);
+		HammerLib.EVENT_BUS.addGenericListener(RecipeMachineAssembler.class, RecipesZT::machineAssembler);
 	}
 	
 	@Override
