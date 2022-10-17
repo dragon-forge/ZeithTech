@@ -27,6 +27,7 @@ import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.compat.jei.category.*;
 import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
+import org.zeith.tech.compat.jei.category.hammering.AdvancedHammeringCategory;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.core.ZeithTech;
@@ -38,8 +39,10 @@ import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.ContainerMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
+import org.zeith.tech.modules.processing.blocks.metal_press.GuiMetalPress;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.GuiSawmillB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
+import org.zeith.tech.modules.processing.blocks.waste_processor.GuiWasteProcessor;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -82,11 +85,13 @@ public class JeiZT
 		
 		registerRecipeCategories(registration,
 				new ManualHammeringCategory(gui$),
+				new AdvancedHammeringCategory(gui$),
 				new MachineAssemblyCategoryB(gui$),
 				new GrinderCategoryB(gui$),
 				new SawmillCategoryB(gui$),
 				new FluidCentrifugeCategory(gui$),
-				new LiquidFuelCategory(gui$)
+				new LiquidFuelCategory(gui$),
+				new WasteProcessorCategory(gui$)
 		);
 	}
 	
@@ -97,11 +102,13 @@ public class JeiZT
 		var api = gapi.getRecipeRegistries();
 		
 		registration.addRecipes(RecipeTypesZT.MANUAL_HAMMERING, api.getRecipesUpToTier(api.hammering(), TechTier.BASIC));
+		registration.addRecipes(RecipeTypesZT.ADVANCED_HAMMERING, api.getRecipesUpToTier(api.hammering(), TechTier.ADVANCED));
 		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, api.getRecipesUpToTier(api.machineAssembly(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, api.getRecipesUpToTier(api.grinding(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.SAWMILL, api.sawmill().getRecipes().stream().toList());
 		registration.addRecipes(RecipeTypesZT.FLUID_CENTRIFUGE, api.fluidCentrifuge().getRecipes().stream().toList());
 		registration.addRecipes(RecipeTypesZT.LIQUID_FUEL, api.liquidFuel().getRecipes().stream().toList());
+		registration.addRecipes(RecipeTypesZT.WASTE_PROCESSING, api.wasteProcessing().getRecipes().stream().toList());
 		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
@@ -123,11 +130,13 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_FUEL_GENERATOR), RecipeTypes.FUELING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE), RecipeTypes.SMELTING);
 		registration.addRecipeCatalyst(new ItemStack(ItemsZT_Processing.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.METAL_PRESS), RecipeTypesZT.ADVANCED_HAMMERING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR), RecipeTypesZT.LIQUID_FUEL);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.WASTE_PROCESSOR), RecipeTypesZT.WASTE_PROCESSING);
 	}
 	
 	@Override
@@ -136,9 +145,11 @@ public class JeiZT
 		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeClickArea(GuiSolidFuelGeneratorB.class, 81, 29, 13, 14, RecipeTypes.FUELING);
 		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
-		registration.addRecipeClickArea(GuiGrinderB.class, 72, 35, 22, 15, RecipeTypesZT.GRINDER_BASIC);
+		registration.addRecipeClickArea(GuiGrinderB.class, 61, 35, 22, 15, RecipeTypesZT.GRINDER_BASIC);
 		registration.addRecipeClickArea(GuiSawmillB.class, 61, 35, 22, 15, RecipeTypesZT.SAWMILL);
 		registration.addRecipeClickArea(GuiLiquidFuelGeneratorB.class, 84, 36, 13, 14, RecipeTypesZT.LIQUID_FUEL);
+		registration.addRecipeClickArea(GuiWasteProcessor.class, 103, 38, 22, 15, RecipeTypesZT.WASTE_PROCESSING);
+		registration.addRecipeClickArea(GuiMetalPress.class, 72, 35, 22, 15, RecipeTypesZT.ADVANCED_HAMMERING);
 	}
 	
 	private static Stream<RepairData> getRepairData()

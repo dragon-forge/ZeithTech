@@ -23,6 +23,8 @@ public interface IRecipeRegistries
 	
 	NamespacedRecipeRegistry<RecipeLiquidFuel> liquidFuel();
 	
+	NamespacedRecipeRegistry<RecipeWasteProcessor> wasteProcessing();
+	
 	<T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier);
 	
 	@ApiStatus.Internal

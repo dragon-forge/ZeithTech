@@ -20,6 +20,7 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.PropertyFloat;
 import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.util.java.DirectStorage;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
@@ -38,9 +39,8 @@ import org.zeith.tech.utils.SerializableFluidTank;
 import org.zeith.tech.utils.fluid.FluidHelperZT;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
-import java.awt.*;
+import java.util.EnumSet;
 import java.util.List;
-import java.util.*;
 import java.util.function.Supplier;
 
 public class TileLiquidFuelGeneratorB
@@ -101,6 +101,7 @@ public class TileLiquidFuelGeneratorB
 		if(isOnServer())
 		{
 			var input = inventory.getItem(0);
+			
 			deposit_fuel_from_item:
 			if(!input.isEmpty() && input.getCount() == 1)
 			{
@@ -125,7 +126,7 @@ public class TileLiquidFuelGeneratorB
 						if(be instanceof IFluidPipe pipe)
 						{
 							if(atTickRate(100))
-								pipe.createVacuum(storage.getFluid(), 105);
+								pipe.createVacuum(FluidIngredient.ofFluids(List.of(storage.getFluid())), 105);
 							
 							var in = pipe.extractFluidFromPipe(needInput, IFluidHandler.FluidAction.SIMULATE);
 							if(storage.isFluidValid(in))
@@ -229,7 +230,7 @@ public class TileLiquidFuelGeneratorB
 	{
 		ImmutableList.Builder<ISlot<?>> lst = new ImmutableList.Builder<>();
 		
-		lst.add(ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(energy, SlotRole.OUTPUT), SlotRole.OUTPUT, Color.RED));
+		lst.add(energy.createSlot());
 		lst.add(ISlot.simpleSlot(new FluidTankSlotAccess(storage, SlotRole.INPUT), SlotRole.INPUT));
 		
 		return lst.build();

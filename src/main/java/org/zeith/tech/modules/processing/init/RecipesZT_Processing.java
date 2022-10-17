@@ -1,13 +1,16 @@
 package org.zeith.tech.modules.processing.init;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
@@ -18,11 +21,9 @@ import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
 import org.zeith.tech.api.events.recipe.GrindingRegistryEvent;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
-import org.zeith.tech.api.recipes.base.RecipeUnaryBase;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.ZeithTech;
-import org.zeith.tech.modules.shared.init.ItemsZT;
-import org.zeith.tech.modules.shared.init.TagsZT;
+import org.zeith.tech.modules.shared.init.*;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.utils.RecipeManagerHelper;
 
@@ -36,7 +37,7 @@ public interface RecipesZT_Processing
 		event.shaped().shape("iin", "is ", " s ").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).map('n', Tags.Items.NUGGETS_IRON).result(ItemsZT_Processing.IRON_HAMMER).register();
 		event.shaped().shape("i i", " i ", "s s").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT_Processing.WIRE_CUTTER).register();
 		
-		event.shaped().shape(" p ", "ptp", " p ").map('p', TagsZT.Items.PLATES_IRON).map('t', BlocksZT_Processing.MINING_PIPE).result(ItemsZT_Processing.MINING_HEAD).register();
+		event.shaped().shape("fpf", "ptp", "fpf").map('f', Items.FLINT).map('p', TagsZT.Items.PLATES_IRON).map('t', BlocksZT_Processing.MINING_PIPE).result(ItemsZT_Processing.MINING_HEAD).register();
 		
 		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.INGOTS_IRON).map('t', ItemsZT_Processing.MINING_HEAD).result(ItemsZT_Processing.IRON_MINING_HEAD).register();
 		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.GEMS_DIAMOND).map('t', ItemsZT_Processing.MINING_HEAD).result(ItemsZT_Processing.DIAMOND_MINING_HEAD).register();
@@ -148,6 +149,27 @@ public interface RecipesZT_Processing
 					.result(BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR)
 					.register();
 			
+			f.get().minTier(TechTier.BASIC)
+					.shape("  g  ", " aca ", "icsci", " aca ", "  b  ")
+					.map('g', Tags.Items.GLASS)
+					.map('i', Tags.Items.INGOTS_IRON)
+					.map('a', BlocksZT_Transport.BASIC_FLUID_TANK)
+					.map('c', ItemsZT.COPPER_COIL)
+					.map('s', TagsZT.Items.STORAGE_BLOCKS_SILVER)
+					.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
+					.result(BlocksZT_Processing.WASTE_PROCESSOR)
+					.register();
+			
+			f.get().minTier(TechTier.BASIC)
+					.shape("  c  ", " mbm ", "csasc", " mbm ", "  c  ")
+					.map('c', Items.CHAIN)
+					.map('m', ItemsZT.MOTOR)
+					.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
+					.map('s', TagsZT.Items.INGOTS_SILVER)
+					.map('a', Items.ANVIL)
+					.result(BlocksZT_Processing.METAL_PRESS)
+					.register();
+			
 		}
 	}
 	
@@ -163,10 +185,11 @@ public interface RecipesZT_Processing
 			Map<String, Integer> materialHitOverride = new HashMap<>();
 			Map<String, TechTier> minTierOverride = new HashMap<>();
 			
-			excludePlates.add("tungsten");
 			minTierOverride.put("steel", TechTier.ADVANCED);
+			minTierOverride.put("tungsten", TechTier.ADVANCED);
 			materialHitOverride.put("gold", 3);
 			materialHitOverride.put("aluminum", 2);
+			materialHitOverride.put("tungsten", 10);
 			
 			var hevt = new BasicHammeringRegistryEvent(excludePlates, materialHitOverride, minTierOverride);
 			MinecraftForge.EVENT_BUS.post(hevt);
@@ -200,13 +223,17 @@ public interface RecipesZT_Processing
 	{
 		if(evt.is(RecipeRegistriesZT_Processing.GRINDING))
 		{
-			var f = evt.<RecipeUnaryBase.Builder<RecipeGrinding>> builderFactory();
+			Supplier<RecipeGrinding.GrindingRecipeBuilder> f = () -> new RecipeGrinding.GrindingRecipeBuilder(evt);
 			
 			f.get().input(Items.STONE).result(Items.COBBLESTONE).register();
 			f.get().input(Items.DEEPSLATE).result(Items.COBBLED_DEEPSLATE).register();
 			f.get().input(Tags.Items.COBBLESTONE).result(Items.GRAVEL).register();
 			f.get().input(Tags.Items.GRAVEL).result(Items.SAND).craftTime(100).register();
 			f.get().input(Items.AMETHYST_BLOCK).result(new ItemStack(Items.AMETHYST_SHARD, 4)).craftTime(80).register();
+			f.get().input(Items.GLOWSTONE).result(new ItemStack(Items.GLOWSTONE_DUST, 4)).craftTime(40).register();
+			f.get().extraOutput(new ExtraOutput(new ItemStack(ItemsZT.BIOLUMINESCENT_DUST), 0.5F)).input(Items.GLOW_BERRIES).result(Items.STICK).craftTime(50).register();
+			
+			f.get().extraOutput(new ExtraOutput.Ranged(new ItemStack(Items.BONE_MEAL), 1, 3, 0.85F)).input(Items.BONE).result(new ItemStack(Items.BONE_MEAL, 3)).craftTime(50).register();
 			
 			Set<String> excludeDusts = new HashSet<>();
 			Map<String, Integer> materialHitOverride = new HashMap<>();
@@ -311,6 +338,53 @@ public interface RecipesZT_Processing
 			f.get()
 					.input(FluidsZT_Processing.DIESEL_FUEL.ingredient())
 					.burnTime(1000)
+					.register();
+		}
+	}
+	
+	static void addWasteProcessingRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeWasteProcessor> evt)
+	{
+		if(evt.is(RecipeRegistriesZT_Processing.WASTE_PROCESSING))
+		{
+			var f = evt.<RecipeWasteProcessor.WasteProcessorRecipeBuilder> builderFactory();
+			
+			f.get()
+					.input(
+							FluidsZT_Processing.REFINED_OIL.ingredient(800),
+							new FluidIngredientStack(FluidIngredient.ofTags(List.of(FluidTags.WATER)), 1000)
+					)
+					.time(20 * 20)
+					.result(
+							FluidsZT_Processing.DIESEL_FUEL.stack(300),
+							FluidsZT_Processing.GAS.stack(400)
+					)
+					.byproduct(new ExtraOutput(new ItemStack(BlocksZT.MASUT), 1F))
+					.register();
+			
+			
+			f.get()
+					.input(
+							FluidsZT_Processing.REFINED_OIL.ingredient(1000)
+					)
+					.time(40 * 20)
+					.result(
+							FluidsZT_Processing.GAS.stack(850)
+					)
+					.register();
+			
+			
+			f.get()
+					.input(Ingredient.of(ItemsZT.OIL_SLUDGE))
+					.time(30 * 20)
+					.result(
+							FluidsZT_Processing.REFINED_OIL.stack(35),
+							new FluidStack(Fluids.WATER, 50)
+					)
+					.byproduct(
+							new ExtraOutput(new ItemStack(Items.SAND), 1F),
+							new ExtraOutput(new ItemStack(Items.DIRT), 1F),
+							new ExtraOutput(new ItemStack(Items.GRAVEL), 1F)
+					)
 					.register();
 		}
 	}

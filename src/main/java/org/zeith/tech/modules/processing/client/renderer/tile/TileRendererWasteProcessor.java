@@ -11,15 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.tech.core.ZeithTech;
-import org.zeith.tech.core.client.renderer.Cuboid;
 import org.zeith.tech.modules.processing.blocks.waste_processor.TileWasteProcessor;
 
 public class TileRendererWasteProcessor
 		implements IBESR<TileWasteProcessor>
 {
 	final ModelPart animatedPart;
-	
-	final Cuboid cuboid = new Cuboid();
 	
 	public TileRendererWasteProcessor()
 	{

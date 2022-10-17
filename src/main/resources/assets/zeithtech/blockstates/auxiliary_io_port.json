@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "zeithtech:block/auxiliary_io_port"
+    }
+  }
+}

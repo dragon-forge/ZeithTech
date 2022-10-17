@@ -21,6 +21,8 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.PropertyBool;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.hammerlib.util.mcf.fluid.FluidHelper;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.tech.api.block.ZeithTechStateProperties;
 import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.IFluidPipe;
@@ -30,6 +32,7 @@ import org.zeith.tech.core.net.properties.PropertyIntArray;
 import org.zeith.tech.modules.transport.blocks.base.traversable.*;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
+import org.zeith.tech.utils.SerializableFluidIngredient;
 import org.zeith.tech.utils.SerializableFluidTank;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
@@ -58,6 +61,9 @@ public class TileFluidPipe
 	
 	@NBTSerializable("VaccumTime")
 	public int vacuumTicks;
+	
+	@NBTSerializable("VaccumFluid")
+	public final SerializableFluidIngredient vacuumFluid = new SerializableFluidIngredient();
 	
 	@NBTSerializable("SkipTicks")
 	public int skipTicks;
@@ -288,13 +294,21 @@ public class TileFluidPipe
 			
 			for(Direction dir : BlockFluidPipe.DIRECTIONS)
 			{
-				relativeFluidHandler(dir).ifPresent(remote ->
-						getCapability(ForgeCapabilities.FLUID_HANDLER, dir).ifPresent(pipe ->
-								FluidUtil.tryFluidTransfer(pipe, remote, maxTransfer, true)
-						)
-				);
+				relativeFluidHandler(dir)
+						.ifPresent(remote ->
+								getCapability(ForgeCapabilities.FLUID_HANDLER, dir).ifPresent(pipe ->
+										{
+											if(vacuumFluid.isEmpty())
+												FluidUtil.tryFluidTransfer(pipe, remote, maxTransfer, true);
+											else
+												for(var fs : vacuumFluid.ingredient.getValues())
+													if(!FluidUtil.tryFluidTransfer(pipe, remote, FluidHelper.withAmount(fs, maxTransfer), true).isEmpty())
+														break;
+										}
+								)
+						);
 			}
-		}
+		} else vacuumFluid.empty();
 	}
 	
 	public void setLightLevel(int light)
@@ -486,12 +500,16 @@ public class TileFluidPipe
 	}
 	
 	@Override
-	public void createVacuum(FluidStack fluid, int ticks)
+	public void createVacuum(FluidIngredient fluid, int ticks)
 	{
-		TraversableHelper.allTraversables(this, fluid, true)
+		TraversableHelper.allTraversables(this, FluidStack.EMPTY, true)
 				.stream()
 				.filter(TileFluidPipe.class::isInstance)
-				.forEach(t -> ((TileFluidPipe) t).vacuumTicks = Math.max(vacuumTicks, ticks));
+				.forEach(t ->
+				{
+					((TileFluidPipe) t).vacuumTicks = Math.max(vacuumTicks, ticks);
+					((TileFluidPipe) t).vacuumFluid.ingredient = fluid;
+				});
 	}
 	
 	@Override

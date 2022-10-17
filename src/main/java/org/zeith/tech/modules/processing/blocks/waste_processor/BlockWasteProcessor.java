@@ -3,7 +3,9 @@ package org.zeith.tech.modules.processing.blocks.waste_processor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
@@ -18,9 +20,21 @@ public class BlockWasteProcessor
 		extends BlockBaseMachine<TileWasteProcessor>
 		implements ICustomBlockItem
 {
+	public static final VoxelShape SHAPE = Shapes.join(
+			box(0, 0, 0, 16, 16, 16),
+			box(1, 3, 1, 15, 15.9, 15),
+			BooleanOp.ONLY_FIRST
+	);
+	
 	public BlockWasteProcessor()
 	{
 		super(TileWasteProcessor.class);
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
+	{
+		return SHAPE;
 	}
 	
 	@Override

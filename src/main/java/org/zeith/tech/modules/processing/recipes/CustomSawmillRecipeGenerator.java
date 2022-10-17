@@ -31,26 +31,7 @@ public class CustomSawmillRecipeGenerator
 		var output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(root, "result"));
 		var time = GsonHelper.getAsInt(root, "time", 200);
 		
-		ExtraOutput extra = null;
-		
-		genExtra:
-		if(root.has("extra"))
-		{
-			var ex = GsonHelper.getAsJsonObject(root, "extra");
-			
-			var extraItem = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(ex, "item"));
-			var chance = GsonHelper.getAsFloat(ex, "chance", 1F);
-			
-			if(root.has("max"))
-			{
-				var min = GsonHelper.getAsInt(ex, "min", 1);
-				var max = GsonHelper.getAsInt(ex, "max");
-				extra = new ExtraOutput.Ranged(extraItem, min, max, chance);
-				break genExtra;
-			}
-			
-			extra = new ExtraOutput(extraItem, chance);
-		}
+		ExtraOutput extra = ExtraOutput.parse(GsonHelper.getAsJsonObject(root, "extra", null));
 		
 		return new RecipeSawmill(recipeId, input, inputCount, output, time, tier, extra);
 	}

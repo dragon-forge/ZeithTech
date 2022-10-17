@@ -18,6 +18,10 @@ import org.zeith.hammerlib.util.charging.ItemChargeHelper;
 import org.zeith.hammerlib.util.charging.fe.FECharge;
 import org.zeith.tech.api.enums.SidedConfigTyped;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
+import org.zeith.tech.api.tile.slots.*;
+
+import java.awt.*;
+import java.util.UUID;
 
 public class EnergyManager
 		implements INBTSerializable<CompoundTag>, IEnergyStorage
@@ -136,6 +140,13 @@ public class EnergyManager
 				}
 			}
 		});
+	}
+	
+	public ISlot<FECharge> createSlot()
+	{
+		return kind == EnumEnergyManagerKind.GENERATOR
+				? ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(this, SlotRole.INPUT), SlotRole.INPUT, Color.RED)
+				: ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(this, SlotRole.OUTPUT), SlotRole.OUTPUT, Color.RED);
 	}
 	
 	@Override

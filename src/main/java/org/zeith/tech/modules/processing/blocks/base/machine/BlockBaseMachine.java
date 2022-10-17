@@ -55,7 +55,7 @@ public abstract class BlockBaseMachine<T extends TileBaseMachine<T>>
 	
 	@Nullable
 	@Override
-	public abstract T newBlockEntity(BlockPos pos, BlockState state);
+	public abstract BlockEntity newBlockEntity(BlockPos pos, BlockState state);
 	
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
@@ -122,5 +122,13 @@ public abstract class BlockBaseMachine<T extends TileBaseMachine<T>>
 	public CreativeModeTab getCreativeTab()
 	{
 		return ZeithTech.TAB;
+	}
+	
+	@Override
+	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int event, int data)
+	{
+		super.triggerEvent(state, level, pos, event, data);
+		BlockEntity blockentity = level.getBlockEntity(pos);
+		return blockentity != null && blockentity.triggerEvent(event, data);
 	}
 }

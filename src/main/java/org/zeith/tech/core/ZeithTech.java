@@ -27,6 +27,7 @@ import org.zeith.tech.core.audio.ClientAudioSystem;
 import org.zeith.tech.core.audio.CommonAudioSystem;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
+import org.zeith.tech.modules.shared.SharedModule;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.utils.LegacyEventBus;
 
@@ -144,6 +145,12 @@ public class ZeithTech
 	public CreativeModeTab getCreativeTab()
 	{
 		return TAB;
+	}
+	
+	@Override
+	public float getPartialTick()
+	{
+		return SharedModule.PROXY.getPartialTick();
 	}
 	
 	public static final List<BaseCompat> compats = new ArrayList<>();

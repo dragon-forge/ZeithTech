@@ -101,7 +101,7 @@ public class TagsZT
 		
 		public static final TagKey<Block> MINING_PIPE = modTag("mining_pipe");
 		public static final TagKey<Block> MINEABLE_WITH_WIRE_CUTTER = vanillaTag("mineable/wire_cutter");
-		public static final TagKey<Block> MINEABLE_WITH_MINING_HEAD = modTag("mineable/mining_head");
+		public static final TagKey<Block> MINEABLE_WITH_MINING_HEAD = vanillaTag("mineable/mining_head");
 		
 		public static final TagKey<Block> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Block> ORES_LEAD = tag("ores/lead");
@@ -149,9 +149,11 @@ public class TagsZT
 		}
 		
 		public static final TagKey<Fluid> HONEY = tag("honey");
+		public static final TagKey<Fluid> BIOMASS = tag("biomass");
 		public static final TagKey<Fluid> CRUDE_OIL = tag("crude_oil");
 		public static final TagKey<Fluid> OIL = tag("oil");
 		public static final TagKey<Fluid> DIESEL = tag("diesel");
+		public static final TagKey<Fluid> GAS = tag("gas");
 		
 		private static TagKey<Fluid> tag(String name)
 		{

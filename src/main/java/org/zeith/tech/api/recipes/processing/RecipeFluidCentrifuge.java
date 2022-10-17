@@ -9,7 +9,6 @@ import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.api.energy.EnergyUnit;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
 import org.zeith.tech.api.recipes.RegistrationAllocator;
@@ -71,7 +70,7 @@ public class RecipeFluidCentrifuge
 	{
 		protected final ReloadRecipeRegistryEvent.AddRecipes<RecipeFluidCentrifuge> event;
 		
-		protected FluidIngredientStack input = new FluidIngredientStack(FluidIngredient.EMPTY, 0);
+		protected FluidIngredientStack input = FluidIngredientStack.EMPTY;
 		protected int energy = 0;
 		protected FluidStack result = FluidStack.EMPTY;
 		protected ExtraOutput extra;
@@ -118,7 +117,7 @@ public class RecipeFluidCentrifuge
 		{
 			if(result.isEmpty())
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have a defined result!");
-			if(input.amount() <= 0 || input.fluid().isEmpty())
+			if(input.isEmpty())
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have a defined input!");
 			if(energy <= 0)
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have set energy!");

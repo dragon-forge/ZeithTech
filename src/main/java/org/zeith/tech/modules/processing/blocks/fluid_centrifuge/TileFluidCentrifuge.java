@@ -19,6 +19,7 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.hammerlib.util.physics.FrictionRotator;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
@@ -36,8 +37,6 @@ import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.utils.*;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
-import java.awt.*;
-import java.util.List;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -107,7 +106,7 @@ public class TileFluidCentrifuge
 			if(be instanceof IFluidPipe pipe)
 			{
 				if(atTickRate(100))
-					pipe.createVacuum(inputFluid.getFluid(), 105);
+					pipe.createVacuum(FluidIngredient.ofFluids(List.of(inputFluid.getFluid())), 105);
 				
 				var in = pipe.extractFluidFromPipe(needInput, IFluidHandler.FluidAction.SIMULATE);
 				if(inputFluid.isFluidValid(in))
@@ -269,7 +268,7 @@ public class TileFluidCentrifuge
 	{
 		ImmutableList.Builder<ISlot<?>> lst = new ImmutableList.Builder<>();
 		
-		lst.add(ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(energy, SlotRole.INPUT), SlotRole.INPUT, Color.RED));
+		lst.add(energy.createSlot());
 		
 		lst.add(ISlot.simpleSlot(new FluidTankSlotAccess(inputFluid, SlotRole.INPUT), SlotRole.INPUT));
 		lst.add(ISlot.simpleSlot(new FluidTankSlotAccess(outputFluid, SlotRole.OUTPUT), SlotRole.OUTPUT));

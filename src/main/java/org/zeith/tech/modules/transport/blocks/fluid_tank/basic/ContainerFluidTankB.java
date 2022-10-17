@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.zeith.tech.core.slot.FluidSlotBase;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.shared.ui.SlotInput;
 import org.zeith.tech.modules.shared.ui.SlotOutput;
@@ -31,6 +32,8 @@ public class ContainerFluidTankB
 		
 		this.addSlot(new SlotInput(tile.inventory, 0, 63, 16));
 		this.addSlot(new SlotOutput(tile.inventory, 1, 63, 54));
+		
+		this.addSlot(new FluidSlotBase.FluidTankSlot(tile.storage, 97, 11));
 	}
 	
 	@Override

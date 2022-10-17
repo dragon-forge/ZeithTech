@@ -36,8 +36,6 @@ import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.utils.SidedInventory;
 
-import java.awt.*;
-import java.util.List;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -67,20 +65,6 @@ public class TileElectricFurnaceB
 	@NBTSerializable("Items")
 	public final SidedInventory inventory = new SidedInventory(2, sidedConfig.createItemAccess(new int[] { 0 }, new int[] { 1 }));
 	
-	{
-		inventory.isStackValid = (slot, stack) ->
-		{
-			if(level != null && slot == 0)
-			{
-				var rm = level.getRecipeManager();
-				return rm.getAllRecipesFor(RecipeType.SMELTING)
-						.stream()
-						.anyMatch(sr -> sr.getIngredients().get(0).test(stack));
-			}
-			return false;
-		};
-	}
-	
 	@NBTSerializable("FE")
 	public final EnergyManager energy = new EnergyManager(20000, 64, 0);
 	
@@ -104,8 +88,21 @@ public class TileElectricFurnaceB
 	public TileElectricFurnaceB(BlockPos pos, BlockState state)
 	{
 		super(TilesZT_Processing.BASIC_ELECTRIC_FURNACE, pos, state);
+		
 		dispatcher.registerProperty("ar", activeRecipe);
 		dispatcher.registerProperty("display", inputItemDisplay);
+		
+		inventory.isStackValid = (slot, stack) ->
+		{
+			if(level != null && slot == 0)
+			{
+				var rm = level.getRecipeManager();
+				return rm.getAllRecipesFor(RecipeType.SMELTING)
+						.stream()
+						.anyMatch(sr -> sr.getIngredients().get(0).test(stack));
+			}
+			return false;
+		};
 	}
 	
 	@Override
@@ -234,7 +231,7 @@ public class TileElectricFurnaceB
 	{
 		ImmutableList.Builder<ISlot<?>> lst = new ImmutableList.Builder<>();
 		
-		lst.add(ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(energy, SlotRole.INPUT), SlotRole.INPUT, Color.RED));
+		lst.add(energy.createSlot());
 		
 		Direction.stream()
 				.flatMap(dir ->

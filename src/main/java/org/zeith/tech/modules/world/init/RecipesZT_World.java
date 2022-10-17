@@ -67,6 +67,7 @@ public interface RecipesZT_World
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_LEAD).result(ItemsZT_World.LEAD_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_ALUMINUM).result(ItemsZT_World.ALUMINUM_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_SILVER).result(ItemsZT_World.SILVER_INGOT).register();
+		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.RAW_MATERIALS_ZINC).result(ItemsZT_World.ZINC_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_TIN).result(ItemsZT_World.TIN_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_LEAD).result(ItemsZT_World.LEAD_INGOT).register();
 		smeltingAndBlasting(event).xp(0.5F).input(TagsZT.Items.ORES_ALUMINUM).result(ItemsZT_World.ALUMINUM_INGOT).register();

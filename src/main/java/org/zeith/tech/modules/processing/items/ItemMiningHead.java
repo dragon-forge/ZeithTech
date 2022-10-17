@@ -17,12 +17,10 @@ public class ItemMiningHead
 	
 	public void onPreMine(Level lvl, BlockPos pos, BlockState state, ItemStack headStack)
 	{
-	
 	}
 	
 	public void onPostMine(Level lvl, BlockPos pos, BlockState state, ItemStack headStack)
 	{
-	
 	}
 	
 	public boolean canMine(Level lvl, BlockPos pos, BlockState state, ItemStack headStack)

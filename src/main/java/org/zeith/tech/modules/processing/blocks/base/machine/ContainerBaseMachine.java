@@ -15,9 +15,9 @@ import org.zeith.hammerlib.client.screen.MenuWithProgressBars;
 import org.zeith.hammerlib.net.properties.IProperty;
 import org.zeith.tech.api.tile.slots.ISlot;
 import org.zeith.tech.api.tile.slots.ITileSlotProvider;
+import org.zeith.tech.core.slot.FluidSlotBase;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class ContainerBaseMachine<T extends TileBaseMachine<T>>
 		extends MenuWithProgressBars
@@ -26,6 +26,8 @@ public abstract class ContainerBaseMachine<T extends TileBaseMachine<T>>
 	public final T tile;
 	
 	protected Map<Slot, ISlot<?>> mappedSlots;
+	
+	protected List<FluidSlotBase> fluidSlotBases = new ArrayList<>();
 	
 	protected ContainerBaseMachine(T tile, Player player, int windowId, ComplexProgressHandler handler)
 	{
@@ -37,6 +39,16 @@ public abstract class ContainerBaseMachine<T extends TileBaseMachine<T>>
 	{
 		super(ContainerAPI.TILE_CONTAINER, windowId, ComplexProgressHandler.withProperties(props));
 		this.tile = tile;
+	}
+	
+	protected void addSlot(FluidSlotBase slot)
+	{
+		this.fluidSlotBases.add(slot);
+	}
+	
+	public List<FluidSlotBase> getFluidSlots()
+	{
+		return fluidSlotBases;
 	}
 	
 	public Map<Slot, ISlot<?>> getMappedSlots()

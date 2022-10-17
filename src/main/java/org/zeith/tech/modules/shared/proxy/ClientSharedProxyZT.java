@@ -1,13 +1,8 @@
 package org.zeith.tech.modules.shared.proxy;
 
-import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.*;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import org.zeith.tech.api.misc.AuxiliaryPortDefinition;
-import org.zeith.tech.api.tile.slots.SlotType;
-import org.zeith.tech.modules.shared.client.resources.model.ModelAuxiliaryIOPort;
 import org.zeith.tech.modules.shared.init.BlocksZT;
 
 public class ClientSharedProxyZT
@@ -17,27 +12,12 @@ public class ClientSharedProxyZT
 	public void subEvents(IEventBus modBus)
 	{
 		modBus.addListener(this::registerBlockColors);
-		modBus.addListener(this::modelBake);
-		modBus.addListener(this::textureStitch);
 	}
 	
-	private void modelBake(ModelEvent.BakingCompleted e)
+	@Override
+	public float getPartialTick()
 	{
-		for(BlockState state : BlocksZT.AUXILIARY_IO_PORT.getStateDefinition().getPossibleStates())
-			e.getModels().put(BlockModelShaper.stateToModelLocation(state),
-					new ModelAuxiliaryIOPort(e.getModelManager()));
-	}
-	
-	public void textureStitch(TextureStitchEvent.Pre e)
-	{
-		if(e.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS))
-		{
-			SlotType.types()
-					.map(SlotType::getTextures)
-					.flatMap(AuxiliaryPortDefinition::textures)
-					.distinct()
-					.forEach(e::addSprite);
-		}
+		return Minecraft.getInstance().getPartialTick();
 	}
 	
 	private void registerBlockColors(RegisterColorHandlersEvent.Block e)

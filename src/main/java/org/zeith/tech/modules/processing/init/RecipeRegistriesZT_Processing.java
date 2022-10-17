@@ -7,7 +7,6 @@ import org.zeith.hammerlib.api.crafting.RecipeRegistryFactory;
 import org.zeith.hammerlib.api.crafting.itf.IRecipeReceiver;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
-import org.zeith.tech.api.recipes.base.RecipeUnaryBase;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.recipes.*;
@@ -38,8 +37,8 @@ public class RecipeRegistriesZT_Processing
 	public static final NamespacedRecipeRegistry<RecipeGrinding> GRINDING =
 			RecipeRegistryFactory.namespacedBuilder(RecipeGrinding.class)
 					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "grinding"))
-					.recipeBuilderFactory(RecipeUnaryBase.makeBuilder(RecipeGrinding::new))
-					.customRecipes(CustomUnaryRecipeGenerator.make(RecipeGrinding::new))
+					.recipeBuilderFactory(RecipeGrinding.GrindingRecipeBuilder::new)
+					.customRecipes(CustomGrindingRecipeGenerator::new)
 					.onClientRecipeReceive(broadcast())
 					.build();
 	
@@ -64,6 +63,14 @@ public class RecipeRegistriesZT_Processing
 					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "liquid_fuel"))
 					.recipeBuilderFactory(RecipeLiquidFuel.LiquidFuelRecipeBuilder::new)
 					.customRecipes(CustomLiquidFluidRecipeGenerator::new)
+					.onClientRecipeReceive(broadcast())
+					.build();
+	
+	public static final NamespacedRecipeRegistry<RecipeWasteProcessor> WASTE_PROCESSING =
+			RecipeRegistryFactory.namespacedBuilder(RecipeWasteProcessor.class)
+					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "waste_processing"))
+					.recipeBuilderFactory(RecipeWasteProcessor.WasteProcessorRecipeBuilder::new)
+					.customRecipes(CustomWasteProcessorCentrifugeRecipeGenerator::new)
 					.onClientRecipeReceive(broadcast())
 					.build();
 	

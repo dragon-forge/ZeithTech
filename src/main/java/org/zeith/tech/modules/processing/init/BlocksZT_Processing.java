@@ -14,6 +14,7 @@ import org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic.BlockLiquid
 import org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic.BlockSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
+import org.zeith.tech.modules.processing.blocks.metal_press.BlockMetalPress;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQuarryB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.BlockSawmillB;
 import org.zeith.tech.modules.processing.blocks.waste_processor.BlockWasteProcessor;
@@ -53,4 +54,7 @@ public interface BlocksZT_Processing
 	
 	@RegistryName("processing/waste_processor")
 	BlockWasteProcessor WASTE_PROCESSOR = new BlockWasteProcessor();
+	
+	@RegistryName("processing/metal_press")
+	BlockMetalPress METAL_PRESS = new BlockMetalPress();
 }

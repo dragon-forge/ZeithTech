@@ -73,7 +73,7 @@ public class RecipeHammering
 	
 	public boolean canPerformHammering(BlockState state)
 	{
-		return getHammeringTags().stream().anyMatch(state::is);
+		return state == null || getHammeringTags().stream().anyMatch(state::is);
 	}
 	
 	public List<TagKey<Block>> getHammeringTags()

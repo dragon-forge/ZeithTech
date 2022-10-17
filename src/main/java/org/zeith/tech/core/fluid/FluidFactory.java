@@ -12,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
+import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.utils.LegacyEventBus;
 
@@ -31,7 +32,7 @@ public class FluidFactory
 	
 	public final LiquidBlock block;
 	
-	public FluidFactory(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Function<Supplier<FlowingFluid>, Item> bucket, Consumer<ForgeFlowingFluid.Properties> propertyModifier)
+	public FluidFactory(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Function<Supplier<FlowingFluid>, Item> bucket, Consumer<ForgeFlowingFluid.Properties> propertyModifier, boolean hasBlock)
 	{
 		this.fluidId = fluidId;
 		this.type = typeGenerator.get();
@@ -43,7 +44,8 @@ public class FluidFactory
 		this.flowing = new ForgeFlowingFluid.Flowing(this.fluidProps);
 		
 		this.bucket = bucket != null ? bucket.apply(this::getSource) : null;
-		this.block = new LiquidBlock(this::getFlowing, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noLootTable());
+		
+		this.block = hasBlock ? new LiquidBlock(this::getFlowing, BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noLootTable()) : null;
 	}
 	
 	public FluidFactory addFluidTag(TagKey<Fluid> tag)
@@ -66,27 +68,32 @@ public class FluidFactory
 	
 	public FluidIngredient ingredient()
 	{
-		return FluidIngredient.ofFluids(List.of(new FluidStack(this.source, 1), new FluidStack(this.flowing, 1)));
+		return FluidIngredient.ofFluids(List.of(new FluidStack(this.source, 1)));
+	}
+	
+	public FluidIngredientStack ingredient(int amount)
+	{
+		return new FluidIngredientStack(ingredient(), amount);
 	}
 	
 	public static FluidFactory createWithBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Consumer<ForgeFlowingFluid.Properties> propertyModifier)
 	{
-		return new FluidFactory(fluidId, typeGenerator, fluid -> new BucketItem(fluid, (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1).tab(ZeithTech.TAB)), propertyModifier);
+		return new FluidFactory(fluidId, typeGenerator, fluid -> new BucketItem(fluid, (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1).tab(ZeithTech.TAB)), propertyModifier, true);
 	}
 	
 	public static FluidFactory createWithBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator)
 	{
-		return new FluidFactory(fluidId, typeGenerator, fluid -> new BucketItem(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ZeithTech.TAB)), null);
+		return new FluidFactory(fluidId, typeGenerator, fluid -> new BucketItem(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ZeithTech.TAB)), null, true);
 	}
 	
-	public static FluidFactory createNoBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Consumer<ForgeFlowingFluid.Properties> propertyModifier)
+	public static FluidFactory createNoBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Consumer<ForgeFlowingFluid.Properties> propertyModifier, boolean hasBlock)
 	{
-		return new FluidFactory(fluidId, typeGenerator, null, propertyModifier);
+		return new FluidFactory(fluidId, typeGenerator, null, propertyModifier, hasBlock);
 	}
 	
-	public static FluidFactory createNoBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator)
+	public static FluidFactory createNoBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, boolean hasBlock)
 	{
-		return new FluidFactory(fluidId, typeGenerator, null, null);
+		return new FluidFactory(fluidId, typeGenerator, null, null, hasBlock);
 	}
 	
 	public FluidType getType()
@@ -129,10 +136,14 @@ public class FluidFactory
 		modBus.addListener(RegisterEvent.class, e ->
 		{
 			e.register(ForgeRegistries.Keys.FLUID_TYPES, fluidId, () -> type);
-			e.register(ForgeRegistries.Keys.FLUIDS, subId("still"), () -> source);
-			e.register(ForgeRegistries.Keys.FLUIDS, subId("flowing"), () -> flowing);
-			e.register(ForgeRegistries.Keys.ITEMS, subId("bucket"), () -> bucket);
-			e.register(ForgeRegistries.Keys.BLOCKS, fluidId, () -> block);
+			e.register(ForgeRegistries.Keys.FLUIDS, fluidId, () -> source);
+			e.register(ForgeRegistries.Keys.FLUIDS, subId("flow"), () -> flowing);
+			
+			if(bucket != null)
+				e.register(ForgeRegistries.Keys.ITEMS, subId("bucket"), () -> bucket);
+			
+			if(block != null)
+				e.register(ForgeRegistries.Keys.BLOCKS, fluidId, () -> block);
 		});
 	}
 	

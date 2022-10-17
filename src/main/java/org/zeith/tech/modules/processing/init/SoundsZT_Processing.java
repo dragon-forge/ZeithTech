@@ -11,6 +11,7 @@ public interface SoundsZT_Processing
 	SoundEvent BASIC_FUEL_GENERATOR = register("block.fuel_generator.basic");
 	SoundEvent BASIC_LIQUID_FUEL_GENERATOR = register("block.lfuel_generator.basic");
 	SoundEvent WASTE_PROCESSOR = register("block.waste_processor");
+	SoundEvent METAL_PRESS_ACT = register("block.metal_press.act");
 	SoundEvent BASIC_ELECTRIC_FURNACE = register("block.electric_furnace.basic");
 	SoundEvent BASIC_GRINDER = register("block.grinder.basic");
 	SoundEvent BASIC_SAWMILL = register("block.sawmill.basic");

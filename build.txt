@@ -2,15 +2,15 @@
 mod_id=zeithtech
 archive_name=ZeithTech
 mod_name=ZeithTech
-mod_version=19.1.0_b8
+mod_version=19.1.0_b10
 
 # Maven Info
 maven_group=org.zeith.tech
-hl_version=19.1.22
+hl_version=19.1.25
 
 # MC Info
 mc_version=1.19.2
-forge_version=43.1.32
+forge_version=43.1.43
 
 # MCP Info
 mcp_ch=official

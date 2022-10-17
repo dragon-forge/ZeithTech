@@ -52,12 +52,18 @@ class RecipeRegistries
 	}
 	
 	@Override
+	public NamespacedRecipeRegistry<RecipeWasteProcessor> wasteProcessing()
+	{
+		return RecipeRegistriesZT_Processing.WASTE_PROCESSING;
+	}
+	
+	@Override
 	public <T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier)
 	{
 		return registry
 				.getRecipes()
 				.stream()
-				.filter(t -> t.isTierGoodEnough(TechTier.BASIC))
+				.filter(t -> t.isTierGoodEnough(tier))
 				.toList();
 	}
 	

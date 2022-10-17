@@ -5,11 +5,15 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import org.zeith.hammerlib.client.screen.IAdvancedGui;
 import org.zeith.hammerlib.client.screen.ScreenWTFMojang;
+import org.zeith.tech.core.slot.FluidSlotBase;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 
+@IAdvancedGui.ApplyToJEI
 public class GuiBaseMachine<C extends ContainerBaseMachine<?>>
 		extends ScreenWTFMojang<C>
+		implements IAdvancedGui<GuiBaseMachine<C>>
 {
 	public GuiBaseMachine(C container, Inventory plyerInv, Component name)
 	{
@@ -24,6 +28,17 @@ public class GuiBaseMachine<C extends ContainerBaseMachine<?>>
 	}
 	
 	@Override
+	public Object getIngredientUnderMouse(double mouseX, double mouseY)
+	{
+		mouseX -= leftPos;
+		mouseY -= topPos;
+		for(FluidSlotBase slot : menu.fluidSlotBases)
+			if(slot.isHovered(mouseX, mouseY))
+				return slot.getFluid();
+		return null;
+	}
+	
+	@Override
 	protected boolean renderForeground(PoseStack pose, int mouseX, int mouseY)
 	{
 		return false;
@@ -32,6 +47,26 @@ public class GuiBaseMachine<C extends ContainerBaseMachine<?>>
 	@Override
 	protected void renderBackground(PoseStack pose, float partialTime, int mouseX, int mouseY)
 	{
+	}
+	
+	@Override
+	protected void renderLabels(PoseStack pose, int mouseX, int mouseY)
+	{
+		pose.pushPose();
+		pose.translate(-leftPos, -topPos, 0);
+		for(var slot : menu.fluidSlotBases)
+			if(slot.isHovered(mouseX - leftPos, mouseY - topPos))
+				WidgetAPI.drawFluidBarOverlay(this, pose, slot.x + leftPos, slot.y + topPos, slot.getFluid(), slot.getCapacity(), true, mouseX, mouseY);
+		pose.popPose();
+		super.renderLabels(pose, mouseX, mouseY);
+	}
+	
+	@Override
+	protected void renderBg(PoseStack pose, float partialTime, int mouseX, int mouseY)
+	{
+		super.renderBg(pose, partialTime, mouseX, mouseY);
+		for(var slot : menu.fluidSlotBases)
+			WidgetAPI.drawFluidBar(pose, leftPos + slot.x, topPos + slot.y, slot.getFluid(), slot.getCapacity());
 	}
 	
 	@Override

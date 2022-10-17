@@ -12,6 +12,7 @@ import org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic.TileLiquidF
 import org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic.TileSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
+import org.zeith.tech.modules.processing.blocks.metal_press.TileMetalPress;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.TileMiningQuarryB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
 import org.zeith.tech.modules.processing.blocks.waste_processor.TileWasteProcessor;
@@ -55,4 +56,8 @@ public interface TilesZT_Processing
 	@RegistryName("processing/waste_processor")
 	@TileRenderer(TileRendererWasteProcessor.class)
 	BlockEntityType<TileWasteProcessor> WASTE_PROCESSOR = BlockAPI.createBlockEntityType(TileWasteProcessor::new, BlocksZT_Processing.WASTE_PROCESSOR);
+	
+	@RegistryName("processing/metal_press")
+	@TileRenderer(TileRendererMetalPress.class)
+	BlockEntityType<TileMetalPress> METAL_PRESS = BlockAPI.createBlockEntityType(TileMetalPress::new, BlocksZT_Processing.METAL_PRESS);
 }

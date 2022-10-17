@@ -7,4 +7,9 @@ public class CommonSharedProxyZT
 	public void subEvents(IEventBus modBus)
 	{
 	}
+	
+	public float getPartialTick()
+	{
+		return 0;
+	}
 }

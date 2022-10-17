@@ -74,12 +74,14 @@ item.zeithtech.lead_plate=Lead Plate
 item.zeithtech.tin_plate=Tin Plate
 item.zeithtech.tungsten_plate=Tungsten Plate
 item.zeithtech.zinc_plate=Zinc Plate
+item.zeithtech.bioluminescent_dust=Bioluminescent Dust
 
 fluid_type.zeithtech.crude_oil=Crude Oil
 
 
 ### Shared Module ###
 block.zeithtech.auxiliary_io_port=Auxiliary IO Port
+block.zeithtech.masut=Masut
 
 item.zeithtech.copper_coil=Copper Coil
 item.zeithtech.gold_coil=Gold Coil
@@ -105,6 +107,7 @@ block.zeithtech.processing.fluid_centrifuge=Fluid Centrifuge
 block.zeithtech.processing.fluid_pump=Fluid Pump
 block.zeithtech.processing.lfuel_generator.basic=Basic Liquid Fuel Generator
 block.zeithtech.processing.waste_processor=Waste Processor
+block.zeithtech.processing.metal_press=Metal Press
 
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter
@@ -117,6 +120,7 @@ item.zeithtech.processing.diesel_fuel_bucket=Diesel Fuel Bucket
 
 fluid_type.zeithtech.processing.refined_oil=Refined Oil
 fluid_type.zeithtech.processing.diesel_fuel=Diesel Fuel
+fluid_type.zeithtech.processing.gas=Gas
 
 info.zeithtech_processing.hammer_hit_count=%s hits
 

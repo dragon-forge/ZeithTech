@@ -42,4 +42,9 @@ public abstract class ZeithTechAPI
 	public abstract IAudioSystem getAudioSystem();
 	
 	public abstract CreativeModeTab getCreativeTab();
+	
+	public float getPartialTick()
+	{
+		return 0F;
+	}
 }

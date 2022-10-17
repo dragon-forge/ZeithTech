@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -20,6 +21,12 @@ import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.ContainerUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.TileUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.init.*;
+import org.zeith.tech.modules.shared.ui.SlotInput;
+import org.zeith.tech.modules.shared.ui.SlotOutput;
+import org.zeith.tech.utils.InventoryHelper;
+import org.zeith.tech.utils.SidedInventory;
+
+import java.util.stream.IntStream;
 
 public class TileGrinderB
 		extends TileUnaryRecipeMachineB<TileGrinderB, RecipeGrinding>
@@ -67,6 +74,17 @@ public class TileGrinderB
 	}
 	
 	@Override
+	protected SidedInventory createSidedInventory()
+	{
+		var inv = new SidedInventory(3, sidedConfig.createItemAccess(new int[] { 0 }, new int[] {
+				1,
+				2
+		}));
+		inv.isStackValid = (slot, stack) -> level != null && slot == 0 && recipeProvider.findMatching(this, stack).isPresent();
+		return inv;
+	}
+	
+	@Override
 	public void update()
 	{
 		super.update();
@@ -88,6 +106,29 @@ public class TileGrinderB
 	}
 	
 	@Override
+	protected boolean storeRecipeResult(RecipeGrinding recipe, boolean simulate)
+	{
+		boolean main = store(recipe.assemble(this), simulate);
+		
+		var extra = recipe.getExtra().orElse(null);
+		if(extra != null)
+		{
+			if(simulate && !storeExtra(extra.getMinimalResult(), true))
+				return false;
+			
+			if(!simulate && level.getRandom().nextFloat() <= extra.chance())
+				storeExtra(extra.assemble(level.getRandom()), false);
+		}
+		
+		return main;
+	}
+	
+	public boolean storeExtra(ItemStack stacks, boolean simulate)
+	{
+		return InventoryHelper.storeStack(inventory, IntStream.range(2, 3), stacks, simulate);
+	}
+	
+	@Override
 	public ContainerUnaryRecipeMachineB<TileGrinderB> openContainer(Player player, int windowId)
 	{
 		return new ContainerGrinder(this, player, windowId);
@@ -99,6 +140,14 @@ public class TileGrinderB
 		public ContainerGrinder(TileGrinderB tile, Player player, int windowId)
 		{
 			super(tile, player, windowId);
+		}
+		
+		@Override
+		protected void addMachineSlots(TileGrinderB tile)
+		{
+			this.addSlot(new SlotInput(tile.inventory, 0, 37, 35));
+			this.addSlot(new SlotOutput(tile.inventory, 1, 97, 35));
+			this.addSlot(new SlotOutput(tile.inventory, 2, 123, 35));
 		}
 		
 		@Override

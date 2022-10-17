@@ -9,6 +9,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.*;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +34,7 @@ public class GrinderCategoryB
 	public GrinderCategoryB(IGuiHelper guiHelper)
 	{
 		this.icon = guiHelper.createDrawableItemStack(new ItemStack(BlocksZT_Processing.BASIC_GRINDER));
-		this.background = guiHelper.createDrawable(GRINDER_GUI, 0, 0, 82, 26);
+		this.background = guiHelper.createDrawable(GRINDER_GUI, 0, 0, 104, 27);
 		this.localizedName = BlocksZT_Processing.BASIC_GRINDER.getName();
 		
 		this.cachedArrows = CacheBuilder.newBuilder().maximumSize(25L).build(new CacheLoader<>()
@@ -82,7 +83,15 @@ public class GrinderCategoryB
 	@Override
 	public void draw(RecipeGrinding recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
 	{
-		getArrow(recipe).draw(stack, 25, 5);
+		getArrow(recipe).draw(stack, 25, 6);
+		
+		recipe.getExtra().ifPresent(extra ->
+		{
+			var font = Minecraft.getInstance().font;
+			float c = extra.chance();
+			if(c < 1F)
+				font.draw(stack, Component.literal("%.0f%%".formatted(c * 100F)), 86, 20, 0);
+		});
 	}
 	
 	@Override
@@ -96,11 +105,16 @@ public class GrinderCategoryB
 					return s;
 				}).toList();
 		
-		layout.addSlot(RecipeIngredientRole.INPUT, 1, 5)
+		layout.addSlot(RecipeIngredientRole.INPUT, 1, 6)
 				.addItemStacks(items);
 		
-		layout.addSlot(RecipeIngredientRole.OUTPUT, 61, 5)
+		layout.addSlot(RecipeIngredientRole.OUTPUT, 61, 6)
 				.addItemStack(recipe.getRecipeOutput());
+		
+		recipe.getExtra().ifPresent(extra ->
+				layout.addSlot(RecipeIngredientRole.OUTPUT, 87, 1)
+						.addItemStacks(extra.getJeiItems())
+		);
 	}
 	
 	@Override

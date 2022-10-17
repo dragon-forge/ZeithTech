@@ -75,6 +75,12 @@ public class FluidTankSlotAccess
 		return tank.getCapacity();
 	}
 	
+	@Override
+	public boolean belongsTo(Object owner)
+	{
+		return owner == tank;
+	}
+	
 	private final LazyOptional<IFluidHandler> fluidCapability = LazyOptional.of(() -> new IFluidHandler()
 	{
 		@Override

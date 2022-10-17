@@ -2,6 +2,7 @@ package org.zeith.tech.modules.shared.init;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.annotations.*;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.BaseZT;
@@ -43,6 +44,9 @@ public interface ItemsZT
 	
 	@RegistryName("oil_sludge")
 	Item OIL_SLUDGE = BaseZT.newItem();
+	
+	@RegistryName("bioluminescent_dust")
+	Item BIOLUMINESCENT_DUST = BaseZT.newItem(Tags.Items.DUSTS_GLOWSTONE);
 	
 	static @Setup void setup()
 	{

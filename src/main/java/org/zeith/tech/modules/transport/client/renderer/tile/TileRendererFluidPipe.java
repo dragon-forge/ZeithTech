@@ -48,7 +48,11 @@ public class TileRendererFluidPipe
 						opposites = prev.getAxis();
 					else
 						opposites = null;
-					
+				}
+			
+			for(var dir : DIRECTIONS)
+				if(entity.getBlockState().getValue(BlockFluidPipe.DIR2PROP.get(dir)))
+				{
 					float fillRel = 1F;
 					
 					var pipe = entity.getRelativeTraversable(dir, fluid).orElse(null);
@@ -59,15 +63,15 @@ public class TileRendererFluidPipe
 						fillRel = (fill + fillRem) / 2F;
 					}
 					
-					renderFluid(argb, dir, fillRel, matrix, fluidsSrc, lighting, overlay);
+					renderFluid(argb, dir, fillRel, matrix, fluidsSrc, lighting, overlay, opposites != null);
 				}
 			
 			if(opposites != Direction.Axis.Y)
-				renderFluid(argb, null, fill, matrix, fluidsSrc, lighting, overlay);
+				renderFluid(argb, null, fill, matrix, fluidsSrc, lighting, overlay, false);
 		}
 	}
 	
-	public void renderFluid(int argb, @Nullable Direction to, float fill, PoseStack matrix, VertexConsumer buf, int lighting, int overlay)
+	public void renderFluid(int argb, @Nullable Direction to, float fill, PoseStack matrix, VertexConsumer buf, int lighting, int overlay, boolean vertical)
 	{
 		float zero = 0F;
 		float one = 1F;
@@ -86,7 +90,7 @@ public class TileRendererFluidPipe
 			switch(to)
 			{
 				case DOWN -> cuboid.bounds(0.5F - thiccByTwo * fill, zero, 0.5F - thiccByTwo * fill, 0.5F + thiccByTwo * fill, min, 0.5F + thiccByTwo * fill);
-				case UP -> cuboid.bounds(0.5F - thiccByTwo * fill, min, 0.5F - thiccByTwo * fill, 0.5F + thiccByTwo * fill, one, 0.5F + thiccByTwo * fill);
+				case UP -> cuboid.bounds(0.5F - thiccByTwo * fill, min + (vertical ? 0 : thicc * fill), 0.5F - thiccByTwo * fill, 0.5F + thiccByTwo * fill, one, 0.5F + thiccByTwo * fill);
 				
 				case WEST -> cuboid.bounds(zero, min, min, min, min + thicc * fill, max);
 				case EAST -> cuboid.bounds(max, min, min, one, min + thicc * fill, max);

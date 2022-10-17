@@ -37,8 +37,6 @@ import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.utils.InventoryHelper;
 import org.zeith.tech.utils.SidedInventory;
 
-import java.awt.*;
-import java.util.List;
 import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -248,7 +246,7 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	{
 		ImmutableList.Builder<ISlot<?>> lst = new ImmutableList.Builder<>();
 		
-		lst.add(ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(energy, SlotRole.INPUT), SlotRole.INPUT, Color.RED));
+		lst.add(energy.createSlot());
 		
 		Direction.stream()
 				.flatMap(dir ->

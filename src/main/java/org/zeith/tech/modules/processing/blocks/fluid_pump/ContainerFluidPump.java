@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.zeith.tech.core.slot.FluidSlotBase;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.shared.ui.SlotInput;
 
@@ -30,6 +31,8 @@ public class ContainerFluidPump
 		
 		this.addSlot(new SlotInput(tile.inventory, 0, 62, 27));
 		this.addSlot(new SlotInput(tile.inventory, 1, 62, 45));
+		
+		this.addSlot(new FluidSlotBase.FluidTankSlot(tile.fluidTank, 98, 11));
 	}
 	
 	@Override
