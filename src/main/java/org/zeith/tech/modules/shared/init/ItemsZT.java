@@ -42,11 +42,11 @@ public interface ItemsZT
 	@RegistryName("sawdust")
 	Item SAWDUST = BaseZT.newItem();
 	
-	@RegistryName("oil_sludge")
-	Item OIL_SLUDGE = BaseZT.newItem();
-	
 	@RegistryName("bioluminescent_dust")
 	Item BIOLUMINESCENT_DUST = BaseZT.newItem(Tags.Items.DUSTS_GLOWSTONE);
+	
+	@RegistryName("oil_sludge")
+	Item OIL_SLUDGE = BaseZT.newItem();
 	
 	static @Setup void setup()
 	{

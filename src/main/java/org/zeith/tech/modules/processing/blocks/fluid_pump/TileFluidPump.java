@@ -329,10 +329,10 @@ public class TileFluidPump
 			}
 		}
 		
-		if(discoveredPositions.size() > 64 * 1024)
+		if(discoveredPositions.size() > 32 * 1024)
 			return;
 		
-		int limit = 128;
+		int limit = 1024;
 		for(int i = 0; i < discoveredPositions.size() && limit > 0; ++i)
 		{
 			var cpos = discoveredPositions.get(i);

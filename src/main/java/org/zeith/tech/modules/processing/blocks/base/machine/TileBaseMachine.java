@@ -9,7 +9,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.jetbrains.annotations.Nullable;
 import org.zeith.api.wrench.IWrenchable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.api.tiles.IContainerTile;
@@ -124,7 +123,6 @@ public abstract class TileBaseMachine<T extends TileBaseMachine<T>>
 		return Direction.NORTH;
 	}
 	
-	@Nullable
 	@Override
 	public Component getDisplayName()
 	{
