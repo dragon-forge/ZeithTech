@@ -24,7 +24,6 @@ import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.*;
-import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.utils.RecipeManagerHelper;
 
 import java.util.*;
@@ -37,11 +36,15 @@ public interface RecipesZT_Processing
 		event.shaped().shape("iin", "is ", " s ").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).map('n', Tags.Items.NUGGETS_IRON).result(ItemsZT_Processing.IRON_HAMMER).register();
 		event.shaped().shape("i i", " i ", "s s").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT_Processing.WIRE_CUTTER).register();
 		
-		event.shaped().shape("fpf", "ptp", "fpf").map('f', Items.FLINT).map('p', TagsZT.Items.PLATES_IRON).map('t', BlocksZT_Processing.MINING_PIPE).result(ItemsZT_Processing.MINING_HEAD).register();
+		event.shaped().shape("fpf", "ptp", "fpf").map('f', Items.FLINT).map('p', TagsZT.Items.PLATES_IRON).map('t', BlocksZT.MINING_PIPE).result(ItemsZT_Processing.MINING_HEAD).register();
 		
-		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.INGOTS_IRON).map('t', ItemsZT_Processing.MINING_HEAD).result(ItemsZT_Processing.IRON_MINING_HEAD).register();
-		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.GEMS_DIAMOND).map('t', ItemsZT_Processing.MINING_HEAD).result(ItemsZT_Processing.DIAMOND_MINING_HEAD).register();
-		event.register(ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD), new UpgradeRecipe(ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD), Ingredient.of(ItemsZT_Processing.DIAMOND_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
+		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.INGOTS_IRON).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.IRON_MINING_HEAD).register();
+		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.GEMS_DIAMOND).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.DIAMOND_MINING_HEAD).register();
+		
+		event.shaped().shape("prp", "pcp", " p ").map('p', ItemsZT.PLASTIC).map('r', Tags.Items.DUSTS_REDSTONE).map('c', Items.COMPARATOR).result(ItemsZT_Processing.REDSTONE_CONTROL_TOOL).register();
+		
+		var netheriteMiningHeadId = ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD);
+		event.register(netheriteMiningHeadId, new UpgradeRecipe(netheriteMiningHeadId, Ingredient.of(ItemsZT.DIAMOND_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
 		
 		event.shaped().shape("p p", "i i", "p p").map('p', TagsZT.Items.PLATES_IRON).map('i', Tags.Items.INGOTS_IRON).result(new ItemStack(BlocksZT_Processing.MINING_PIPE, 6)).register();
 		
@@ -57,120 +60,98 @@ public interface RecipesZT_Processing
 	
 	static void addMachineAssemblyRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeMachineAssembler> evt)
 	{
-		if(evt.is(RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY))
-		{
-			var f = evt.<RecipeMachineAssembler.Builder> builderFactory();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  g  ", " ici ", "gibig", " scs ", "  g  ")
-					.map('i', Tags.Items.INGOTS_IRON)
-					.map('c', ItemsZT.COPPER_COIL)
-					.map('b', Blocks.BLAST_FURNACE)
-					.map('s', Tags.Items.STONE)
-					.map('g', Tags.Items.INGOTS_COPPER)
-					.result(BlocksZT_Processing.BASIC_FUEL_GENERATOR)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  c  ", " sps ", "bgfgb", " sps ", "  c  ")
-					.map('c', Tags.Items.INGOTS_COPPER)
-					.map('s', Tags.Items.STONE)
-					.map('p', ItemsZT.COPPER_COIL)
-					.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
-					.map('g', Tags.Items.GLASS)
-					.map('f', Items.FURNACE)
-					.result(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  c  ", " ppp ", "cmdmc", " php ", "  c  ")
-					.map('c', Tags.Items.INGOTS_COPPER)
-					.map('p', TagsZT.Items.PLATES_IRON)
-					.map('m', ItemsZT.MOTOR)
-					.map('h', Tags.Items.CHESTS)
-					.map('d', ItemsZT_Processing.IRON_MINING_HEAD)
-					.result(BlocksZT_Processing.BASIC_GRINDER)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  c  ", " pdp ", "cpmpc", " php ", "  c  ")
-					.map('c', Tags.Items.INGOTS_COPPER)
-					.map('p', TagsZT.Items.PLATES_IRON)
-					.map('m', ItemsZT.MOTOR)
-					.map('h', Tags.Items.CHESTS)
-					.map('d', ItemsZT.CIRCULAR_SAW)
-					.result(BlocksZT_Processing.BASIC_SAWMILL)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  h  ", " ccc ", "iCwCi", " mpm ", "  p  ")
-					.map('h', Items.HOPPER)
-					.map('c', TagsZT.Items.PLATES_COPPER)
-					.map('i', Tags.Items.INGOTS_IRON)
-					.map('C', ItemsZT.COPPER_COIL)
-					.map('w', Tags.Items.CHESTS)
-					.map('m', ItemsZT.MOTOR)
-					.map('p', BlocksZT_Processing.MINING_PIPE)
-					.result(BlocksZT_Processing.BASIC_QUARRY)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  i  ", " igi ", "iCgCi", " pmp ", "  r  ")
-					.map('i', TagsZT.Items.PLATES_IRON)
-					.map('r', Tags.Items.INGOTS_IRON)
-					.map('g', Tags.Items.GLASS)
-					.map('C', ItemsZT.COPPER_COIL)
-					.map('p', BlocksZT_Transport.IRON_FLUID_PIPE)
-					.map('m', ItemsZT.MOTOR)
-					.result(BlocksZT_Processing.FLUID_CENTRIFUGE)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  p  ", " ama ", "actca", " lMl ", "  M  ")
-					.map('p', BlocksZT_Transport.IRON_FLUID_PIPE)
-					.map('a', TagsZT.Items.INGOTS_ALUMINUM)
-					.map('m', ItemsZT.MOTOR)
-					.map('c', ItemsZT.COPPER_COIL)
-					.map('t', BlocksZT_Transport.BASIC_FLUID_TANK)
-					.map('l', ItemsZT.LATEX)
-					.map('M', BlocksZT_Processing.MINING_PIPE)
-					.result(BlocksZT_Processing.FLUID_PUMP)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  o  ", " lll ", "cpgtc", " iii ", "  o  ")
-					.map('o', Tags.Items.INGOTS_COPPER)
-					.map('l', TagsZT.Items.INGOTS_LEAD)
-					.map('c', ItemsZT.COPPER_COIL)
-					.map('p', TagsZT.Items.PLATES_ALUMINUM)
-					.map('g', BlocksZT_Processing.BASIC_FUEL_GENERATOR)
-					.map('t', BlocksZT_Transport.BASIC_FLUID_TANK)
-					.map('i', Tags.Items.INGOTS_IRON)
-					.result(BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  g  ", " aca ", "icsci", " aca ", "  b  ")
-					.map('g', Tags.Items.GLASS)
-					.map('i', Tags.Items.INGOTS_IRON)
-					.map('a', BlocksZT_Transport.BASIC_FLUID_TANK)
-					.map('c', ItemsZT.COPPER_COIL)
-					.map('s', TagsZT.Items.STORAGE_BLOCKS_SILVER)
-					.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
-					.result(BlocksZT_Processing.WASTE_PROCESSOR)
-					.register();
-			
-			f.get().minTier(TechTier.BASIC)
-					.shape("  c  ", " mbm ", "csasc", " mbm ", "  c  ")
-					.map('c', Items.CHAIN)
-					.map('m', ItemsZT.MOTOR)
-					.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
-					.map('s', TagsZT.Items.INGOTS_SILVER)
-					.map('a', Items.ANVIL)
-					.result(BlocksZT_Processing.METAL_PRESS)
-					.register();
-			
-		}
+		if(!evt.is(RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY)) return;
+		
+		var f = evt.<RecipeMachineAssembler.Builder> builderFactory();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  c  ", " sps ", "bgfgb", " sps ", "  c  ")
+				.map('c', Tags.Items.INGOTS_COPPER)
+				.map('s', Tags.Items.STONE)
+				.map('p', ItemsZT.COPPER_COIL)
+				.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
+				.map('g', Tags.Items.GLASS)
+				.map('f', Items.FURNACE)
+				.result(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  c  ", " ppp ", "cmdmc", " php ", "  c  ")
+				.map('c', Tags.Items.INGOTS_COPPER)
+				.map('p', TagsZT.Items.PLATES_IRON)
+				.map('m', ItemsZT.MOTOR)
+				.map('h', Tags.Items.CHESTS)
+				.map('d', ItemsZT_Processing.IRON_MINING_HEAD)
+				.result(BlocksZT_Processing.BASIC_GRINDER)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  c  ", " pdp ", "cpmpc", " php ", "  c  ")
+				.map('c', Tags.Items.INGOTS_COPPER)
+				.map('p', TagsZT.Items.PLATES_IRON)
+				.map('m', ItemsZT.MOTOR)
+				.map('h', Tags.Items.CHESTS)
+				.map('d', ItemsZT.CIRCULAR_SAW)
+				.result(BlocksZT_Processing.BASIC_SAWMILL)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  h  ", " ccc ", "iCwCi", " mpm ", "  p  ")
+				.map('h', Items.HOPPER)
+				.map('c', TagsZT.Items.PLATES_COPPER)
+				.map('i', Tags.Items.INGOTS_IRON)
+				.map('C', ItemsZT.COPPER_COIL)
+				.map('w', Tags.Items.CHESTS)
+				.map('m', ItemsZT.MOTOR)
+				.map('p', BlocksZT.MINING_PIPE)
+				.result(BlocksZT_Processing.BASIC_QUARRY)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  i  ", " igi ", "iCgCi", " pmp ", "  r  ")
+				.map('i', TagsZT.Items.PLATES_IRON)
+				.map('r', Tags.Items.INGOTS_IRON)
+				.map('g', Tags.Items.GLASS)
+				.map('C', ItemsZT.COPPER_COIL)
+				.map('p', BlocksZT.IRON_FLUID_PIPE)
+				.map('m', ItemsZT.MOTOR)
+				.result(BlocksZT_Processing.FLUID_CENTRIFUGE)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  p  ", " ama ", "actca", " lMl ", "  M  ")
+				.map('p', BlocksZT.IRON_FLUID_PIPE)
+				.map('a', TagsZT.Items.INGOTS_ALUMINUM)
+				.map('m', ItemsZT.MOTOR)
+				.map('c', ItemsZT.COPPER_COIL)
+				.map('t', BlocksZT.BASIC_FLUID_TANK)
+				.map('l', ItemsZT.LATEX)
+				.map('M', BlocksZT.MINING_PIPE)
+				.result(BlocksZT_Processing.FLUID_PUMP)
+				.register();
+		
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  g  ", " aca ", "icsci", " aca ", "  b  ")
+				.map('g', Tags.Items.GLASS)
+				.map('i', Tags.Items.INGOTS_IRON)
+				.map('a', BlocksZT.BASIC_FLUID_TANK)
+				.map('c', ItemsZT.COPPER_COIL)
+				.map('s', TagsZT.Items.STORAGE_BLOCKS_SILVER)
+				.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
+				.result(BlocksZT_Processing.WASTE_PROCESSOR)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  c  ", " mbm ", "csasc", " mbm ", "  c  ")
+				.map('c', Items.CHAIN)
+				.map('m', ItemsZT.MOTOR)
+				.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
+				.map('s', TagsZT.Items.INGOTS_SILVER)
+				.map('a', Items.ANVIL)
+				.result(BlocksZT_Processing.METAL_PRESS)
+				.register();
+		
 	}
 	
 	static void addHammeringRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeHammering> evt)
@@ -325,19 +306,6 @@ public interface RecipesZT_Processing
 					.energy(5000)
 					.result(FluidsZT_Processing.REFINED_OIL.stack(700))
 					.extraOutput(new ExtraOutput.Ranged(new ItemStack(ItemsZT.OIL_SLUDGE), 1, 3, 0.75F))
-					.register();
-		}
-	}
-	
-	static void addLiquidFuelRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeLiquidFuel> evt)
-	{
-		if(evt.is(RecipeRegistriesZT_Processing.LIQUID_FUEL))
-		{
-			var f = evt.<RecipeLiquidFuel.LiquidFuelRecipeBuilder> builderFactory();
-			
-			f.get()
-					.input(FluidsZT_Processing.DIESEL_FUEL.ingredient())
-					.burnTime(1000)
 					.register();
 		}
 	}

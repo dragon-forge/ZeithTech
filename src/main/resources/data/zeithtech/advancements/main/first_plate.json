@@ -1,0 +1,28 @@
+{
+  "parent": "zeithtech:main/root",
+  "criteria": {
+    "trigger": {
+      "trigger": "zeithtech:make_plate"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.first_plate.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:copper_plate"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.first_plate"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

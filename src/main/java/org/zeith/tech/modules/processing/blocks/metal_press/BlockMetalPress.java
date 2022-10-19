@@ -112,8 +112,9 @@ public class BlockMetalPress
 			var partial = ZeithTechAPI.get().getPartialTick();
 			float progress = Mth.lerp(partial, entity.prevProgress, entity.currentProgress);
 			int mp = Math.max(entity._maxProgress, 1);
+			
 			float y = 19.0F;
-			y *= Math.min(1F - (entity.fallTimer + partial) / 5F, progress / (mp - 5));
+			y *= Math.min(entity.fallTimer > 0 ? (1F - (entity.fallTimer + partial) / 5F) : 1F, progress / (mp - 7));
 			
 			var box = box(1, 4 + y, 1, 15, 6 + y, 15);
 			if(offset) box = box.move(0, -1, 0);

@@ -2,6 +2,7 @@ package org.zeith.tech.core;
 
 import org.zeith.tech.api.modules.*;
 import org.zeith.tech.core.cfg.ZeithTechModuleConfigs;
+import org.zeith.tech.modules.generators.GeneratorsModule;
 import org.zeith.tech.modules.processing.ProcessingModule;
 import org.zeith.tech.modules.shared.SharedModule;
 import org.zeith.tech.modules.transport.TransportModule;
@@ -17,8 +18,9 @@ class ModulesImpl
 	final WorldModule worldModule = new WorldModule();
 	final TransportModule transportModule = new TransportModule();
 	final ProcessingModule processingModule = new ProcessingModule();
+	final GeneratorsModule generatorsModule = new GeneratorsModule();
 	
-	final List<IInternalCode> subs = List.of(sharedModule, worldModule, transportModule, processingModule);
+	final List<IInternalCode> subs = List.of(sharedModule, worldModule, transportModule, processingModule, generatorsModule);
 	
 	@Override
 	public void construct(LegacyEventBus bus)
@@ -45,6 +47,9 @@ class ModulesImpl
 		
 		if(cfg.processingModule)
 			processingModule.enable();
+		
+		if(cfg.generatorsModule)
+			generatorsModule.enable();
 	}
 	
 	@Override
@@ -69,5 +74,11 @@ class ModulesImpl
 	public IModuleProcessing processing()
 	{
 		return processingModule;
+	}
+	
+	@Override
+	public IModuleGenerators generators()
+	{
+		return generatorsModule;
 	}
 }

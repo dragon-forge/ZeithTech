@@ -3,7 +3,9 @@ package org.zeith.tech.modules.shared.blocks.aux_io_port;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
@@ -26,7 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TileAuxiliaryIOPort
 		extends TileSyncable
-		implements ITileSlotProvider, IWrenchable
+		implements ITileSlotProvider, IWrenchable, Nameable
 {
 	public static final ModelProperty<Map<Direction, IOSlotPurpose>> IO_PORT_DATA = new ModelProperty<>();
 	
@@ -196,6 +198,13 @@ public class TileAuxiliaryIOPort
 		}
 		
 		return true;
+	}
+	
+	@Override
+	public Component getName()
+	{
+		var be = level.getBlockEntity(worldPosition.above());
+		return be instanceof Nameable n ? n.getName() : (be != null ? be.getBlockState().getBlock().getName() : level.getBlockState(worldPosition.above()).getBlock().getName());
 	}
 	
 	public record IOSlotPurpose(SlotType<?> type, SlotRole role, Color color)

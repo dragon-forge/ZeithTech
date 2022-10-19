@@ -32,6 +32,7 @@ import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.mcf.BlockPosList;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
+import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
@@ -84,6 +85,9 @@ public class TileMiningQuarryB
 			7,
 			8
 	}));
+	
+	@NBTSerializable("Redstone")
+	public final RedstoneControl redstone = new RedstoneControl();
 	
 	{
 		inventory.isStackValid = (slot, stack) ->
@@ -200,7 +204,7 @@ public class TileMiningQuarryB
 				if(!isEnabled())
 					setEnabledState(true);
 			}
-		} else if(cooldown == 0 && !isDone)
+		} else if(cooldown == 0 && !isDone && redstone.shouldWork(this))
 		{
 			halted = false;
 			
@@ -439,18 +443,16 @@ public class TileMiningQuarryB
 	private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);
 	private final LazyOptional<? extends IItemHandler>[] itemHandlers = SidedInvWrapper.create(inventory, Direction.values());
 	private final LazyOptional<ITileSidedConfig> sidedConfigCap = LazyOptional.of(() -> sidedConfig);
+	private final LazyOptional<RedstoneControl> redstoneCap = LazyOptional.of(() -> redstone);
 	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side)))
-			return energyCap.cast();
-		if(cap == ZeithTechCapabilities.SIDED_CONFIG)
-			return sidedConfigCap.cast();
-		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
-			return energy.measurableCap.cast();
-		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side)))
-			return itemHandlers[side == null ? 0 : side.ordinal()].cast();
+		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side))) return energyCap.cast();
+		if(cap == ZeithTechCapabilities.REDSTONE_CONTROL) return redstoneCap.cast();
+		if(cap == ZeithTechCapabilities.SIDED_CONFIG) return sidedConfigCap.cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE) return energy.measurableCap.cast();
+		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side))) return itemHandlers[side == null ? 0 : side.ordinal()].cast();
 		return super.getCapability(cap, side);
 	}
 	

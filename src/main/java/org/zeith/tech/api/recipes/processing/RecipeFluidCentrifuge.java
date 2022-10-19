@@ -28,7 +28,7 @@ public class RecipeFluidCentrifuge
 	
 	public RecipeFluidCentrifuge(ResourceLocation id, FluidIngredientStack input, int energy, FluidStack output, ExtraOutput byproduct)
 	{
-		super(id, new FluidStackResult(output), NonNullList.of(new EnergyIngredient(energy, EnergyUnit.FE)));
+		super(id, new FluidStackResult(output), NonNullList.of(new FluidStackIngredient(input.fluid()), new EnergyIngredient(energy, EnergyUnit.FE)));
 		this.input = input;
 		this.energy = energy;
 		this.output = output;

@@ -1,0 +1,37 @@
+{
+  "parent": "zeithtech:main/machine_assembler",
+  "criteria": {
+    "trigger": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:generators/fuel_generator/basic"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.basic_fuel_generator.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:generators/fuel_generator/basic"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.basic_fuel_generator"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

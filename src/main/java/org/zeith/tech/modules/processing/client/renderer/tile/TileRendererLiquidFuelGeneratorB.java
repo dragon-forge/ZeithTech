@@ -7,7 +7,7 @@ import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.hammerlib.client.utils.FluidTextureType;
 import org.zeith.tech.core.client.renderer.*;
-import org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic.TileLiquidFuelGeneratorB;
+import org.zeith.tech.modules.generators.blocks.fuel_generator.liquid.basic.TileLiquidFuelGeneratorB;
 
 public class TileRendererLiquidFuelGeneratorB
 		implements IBESR<TileLiquidFuelGeneratorB>

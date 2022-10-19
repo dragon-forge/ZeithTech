@@ -1,5 +1,6 @@
 package org.zeith.tech.api;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import org.zeith.tech.api.audio.IAudioSystem;
 import org.zeith.tech.api.modules.IZeithTechModules;
@@ -33,6 +34,11 @@ public abstract class ZeithTechAPI
 	{
 		if(ZeithTechAPI.INSTANCE == null)
 			ZeithTechAPI.INSTANCE = INSTANCE;
+	}
+	
+	public static ResourceLocation id(String path)
+	{
+		return new ResourceLocation(MOD_ID, path);
 	}
 	
 	public abstract IZeithTechModules getModules();

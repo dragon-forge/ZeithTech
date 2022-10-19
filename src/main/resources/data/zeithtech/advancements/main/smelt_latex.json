@@ -1,0 +1,37 @@
+{
+  "parent": "zeithtech:main/collect_resin",
+  "criteria": {
+    "trigger": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:latex"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.smelt_latex.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:latex"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.smelt_latex"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

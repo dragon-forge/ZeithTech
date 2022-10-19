@@ -94,10 +94,13 @@ item.zeithtech.sawdust=Sawdust
 item.zeithtech.circular_saw=Circular Saw
 item.zeithtech.oil_sludge=Oil Sludge
 
+### Generators Module ###
+block.zeithtech.generators.fuel_generator.basic=Basic Solid Fuel Generator
+block.zeithtech.generators.lfuel_generator.basic=Basic Liquid Fuel Generator
+
 ### Processing Module ###
 block.zeithtech.processing.mining_pipe=Mining Pipe
 
-block.zeithtech.processing.fuel_generator.basic=Basic Solid Fuel Generator
 block.zeithtech.processing.machine_assembler.basic=Basic Machine Assembler
 block.zeithtech.processing.electric_furnace.basic=Basic Electric Furnace
 block.zeithtech.processing.grinder.basic=Basic Grinder
@@ -105,10 +108,10 @@ block.zeithtech.processing.sawmill.basic=Basic Sawmill
 block.zeithtech.processing.mining_quarry.basic=Basic Miner
 block.zeithtech.processing.fluid_centrifuge=Fluid Centrifuge
 block.zeithtech.processing.fluid_pump=Fluid Pump
-block.zeithtech.processing.lfuel_generator.basic=Basic Liquid Fuel Generator
 block.zeithtech.processing.waste_processor=Waste Processor
 block.zeithtech.processing.metal_press=Metal Press
 
+item.zeithtech.processing.redstone_control_tool=Redstone Control Tool
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter
 item.zeithtech.processing.mining_head=Drilling Head
@@ -146,6 +149,35 @@ info.zeithtech_transport.wire_max_io=Max transfer: %s FE/tick
 info.zeithtech_transport.wire_loss=Energy loss: %s FE/block
 info.zeithtech_transport.fluid_pipe_transfer=Max transfer: %s mB/tick
 
+### Advancements ###
+
+advancement.zeithtech.root=ZeithTech
+advancement.zeithtech.desc=Construct an Iron Hammer
+
+advancement.zeithtech.first_plate=First Plate
+advancement.zeithtech.first_plate.desc=Hit an ingot, placed on the anvil with Iron Hammer
+
+advancement.zeithtech.find_hevea=Find Hevea
+advancement.zeithtech.find_hevea.desc=Locate and observe Hevea wood
+
+advancement.zeithtech.machine_assembler=Machine Assembly
+advancement.zeithtech.machine_assembler.desc=Craft machine assembler, to make machines!
+
+advancement.zeithtech.collect_resin=Resin Collector
+advancement.zeithtech.collect_resin.desc=Strip Hevea logs of it's barks, attach 5 sticks, Tree Tap and a Bowl, and wait till it fills up with resin
+
+advancement.zeithtech.basic_fuel_generator=Fuel to Energy
+advancement.zeithtech.basic_fuel_generator.desc=Assemble Basic Solid Fuel Generator to convert fossil fuel into your first energy
+
+advancement.zeithtech.smelt_latex=Latex Production
+advancement.zeithtech.smelt_latex.desc=Smelt Bowl of Resin into Latex
+
+advancement.zeithtech.craft_wire=Wiring things up
+advancement.zeithtech.craft_wire.desc=Craft any wire with wire cutter and metal plate
+
+advancement.zeithtech.insulate_wire=Safety first
+advancement.zeithtech.insulate_wire.desc=Insulate three wires with two pieces of latex to make a safer wiring that also looses less energy!
+
 ### Misc ###
 
 info.zeithtech.fe=%,d FE
@@ -157,6 +189,11 @@ info.zeithtech.liquid_fuel=Liquid Fuel
 info.zeithtech.fluid_tank.fill=Filling item from tank
 info.zeithtech.fluid_tank.drain=Filling tank from item
 info.zeithtech.fluid_tank.toggle_mode=Click to toggle
+
+info.zeithtech.redstone_control.never=This machine will never work, regardless of redstone signal.
+info.zeithtech.redstone_control.normal=This machine will work if it receives redstone signal at or above %s.
+info.zeithtech.redstone_control.inversed=This machine will work if it receives redstone signal lower than %s.
+info.zeithtech.redstone_control.ignore=This machine will work if possible, regardless of redstone signal.
 
 death.attack.zeithtech.electrocution=%s got electrocuted.
 

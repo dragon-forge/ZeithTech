@@ -6,28 +6,32 @@ import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.tech.modules.processing.items.*;
+import org.zeith.tech.modules.processing.items.redstone_control_tool.ItemRedstoneControlTool;
 import org.zeith.tech.modules.shared.BaseZT;
 
 import java.util.Optional;
 
-@SimplyRegister
+@SimplyRegister(prefix = "processing/")
 public interface ItemsZT_Processing
 {
-	@RegistryName("processing/iron_hammer")
+	@RegistryName("iron_hammer")
 	ItemHammer IRON_HAMMER = new ItemHammer(BaseZT.itemProps(), Optional.of(Tags.Items.INGOTS_IRON));
 	
-	@RegistryName("processing/wire_cutter")
+	@RegistryName("wire_cutter")
 	ItemWireCutter WIRE_CUTTER = new ItemWireCutter(BaseZT.itemProps(), Tiers.IRON);
 	
-	@RegistryName("processing/mining_heads/iron")
+	@RegistryName("mining_heads/iron")
 	ItemMiningHead IRON_MINING_HEAD = new ItemMiningHead(Tiers.IRON, BaseZT.itemProps());
 	
-	@RegistryName("processing/mining_heads/diamond")
+	@RegistryName("mining_heads/diamond")
 	ItemMiningHead DIAMOND_MINING_HEAD = new ItemMiningHead(Tiers.DIAMOND, BaseZT.itemProps());
 	
-	@RegistryName("processing/mining_heads/netherite")
+	@RegistryName("mining_heads/netherite")
 	ItemMiningHead NETHERITE_MINING_HEAD = new ItemMiningHead(Tiers.NETHERITE, BaseZT.itemProps());
 	
-	@RegistryName("processing/mining_head")
+	@RegistryName("mining_head")
 	Item MINING_HEAD = BaseZT.newItem();
+	
+	@RegistryName("redstone_control_tool")
+	ItemRedstoneControlTool REDSTONE_CONTROL_TOOL = new ItemRedstoneControlTool(BaseZT.itemProps().stacksTo(1));
 }

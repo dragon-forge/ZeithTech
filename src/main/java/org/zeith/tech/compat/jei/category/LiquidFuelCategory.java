@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.zeith.tech.api.recipes.processing.RecipeLiquidFuel;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
 import org.zeith.tech.core.ZeithTech;
-import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
+import org.zeith.tech.modules.generators.init.BlocksZT_Generators;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 
 import java.awt.*;
@@ -36,7 +36,7 @@ public class LiquidFuelCategory
 	
 	public LiquidFuelCategory(IGuiHelper guiHelper)
 	{
-		this.icon = guiHelper.createDrawableItemStack(new ItemStack(BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR));
+		this.icon = guiHelper.createDrawableItemStack(new ItemStack(BlocksZT_Generators.BASIC_LIQUID_FUEL_GENERATOR));
 		this.background = guiHelper.createDrawable(FLUID_CENTRIFUGE_GUI, 0, 0, 67, 66);
 		this.localizedName = Component.translatable("info.zeithtech.liquid_fuel");
 		

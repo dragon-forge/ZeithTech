@@ -8,7 +8,7 @@ import org.zeith.tech.api.recipes.IRecipeRegistries;
 import org.zeith.tech.api.recipes.base.ITieredRecipe;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.api.recipes.processing.*;
-import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
+import org.zeith.tech.modules.shared.init.RecipeRegistriesZT;
 
 import java.util.List;
 
@@ -18,43 +18,43 @@ class RecipeRegistries
 	@Override
 	public NamespacedRecipeRegistry<RecipeHammering> hammering()
 	{
-		return RecipeRegistriesZT_Processing.HAMMERING;
+		return RecipeRegistriesZT.HAMMERING;
 	}
 	
 	@Override
 	public NamespacedRecipeRegistry<RecipeMachineAssembler> machineAssembly()
 	{
-		return RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY;
+		return RecipeRegistriesZT.MACHINE_ASSEBMLY;
 	}
 	
 	@Override
 	public NamespacedRecipeRegistry<RecipeGrinding> grinding()
 	{
-		return RecipeRegistriesZT_Processing.GRINDING;
+		return RecipeRegistriesZT.GRINDING;
 	}
 	
 	@Override
 	public NamespacedRecipeRegistry<RecipeSawmill> sawmill()
 	{
-		return RecipeRegistriesZT_Processing.SAWMILL;
+		return RecipeRegistriesZT.SAWMILL;
 	}
 	
 	@Override
 	public NamespacedRecipeRegistry<RecipeFluidCentrifuge> fluidCentrifuge()
 	{
-		return RecipeRegistriesZT_Processing.FLUID_CENTRIFUGE;
+		return RecipeRegistriesZT.FLUID_CENTRIFUGE;
 	}
 	
 	@Override
 	public NamespacedRecipeRegistry<RecipeLiquidFuel> liquidFuel()
 	{
-		return RecipeRegistriesZT_Processing.LIQUID_FUEL;
+		return RecipeRegistriesZT.LIQUID_FUEL;
 	}
 	
 	@Override
 	public NamespacedRecipeRegistry<RecipeWasteProcessor> wasteProcessing()
 	{
-		return RecipeRegistriesZT_Processing.WASTE_PROCESSING;
+		return RecipeRegistriesZT.WASTE_PROCESSING;
 	}
 	
 	@Override

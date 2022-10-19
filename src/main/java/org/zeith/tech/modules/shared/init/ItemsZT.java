@@ -4,6 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.annotations.*;
+import org.zeith.tech.modules.generators.init.ItemsZT_Generators;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.BaseZT;
 import org.zeith.tech.modules.transport.init.ItemsZT_Transport;
@@ -13,7 +14,7 @@ import static org.zeith.tech.modules.shared.BaseZT.newItem;
 
 @SimplyRegister
 public interface ItemsZT
-		extends ItemsZT_World, ItemsZT_Transport, ItemsZT_Processing
+		extends ItemsZT_World, ItemsZT_Generators, ItemsZT_Transport, ItemsZT_Processing
 {
 	@RegistryName("copper_coil")
 	Item COPPER_COIL = newItem(TagsZT.Items.COILS_COPPER);

@@ -33,6 +33,7 @@ import org.zeith.hammerlib.util.physics.FrictionRotator;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
+import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
@@ -78,6 +79,9 @@ public class TileFluidPump
 	
 	@NBTSerializable("Items")
 	public final SimpleInventory inventory = new SimpleInventory(2);
+	
+	@NBTSerializable("Redstone")
+	public final RedstoneControl redstone = new RedstoneControl();
 	
 	public int cooldownTime = 40;
 	
@@ -180,14 +184,16 @@ public class TileFluidPump
 					setEnabledState(false);
 			} else if(lock.isLocked() && fluidTank.getFluidAmount() < fluidTank.getCapacity())
 			{
-				if(!isEnabled())
-					setEnabledState(true);
+				var work = redstone.shouldWork(this);
+				
+				if(isEnabled() != work)
+					setEnabledState(work);
 				
 				// Discover fluids
-				if(atTickRate(100))
+				if(atTickRate(100) && work)
 					discoverMoreFluid();
 				
-				if(cooldown <= 0)
+				if(cooldown <= 0 && work)
 				{
 					var update = discoveredPositions.removeIf(position ->
 					{
@@ -382,16 +388,15 @@ public class TileFluidPump
 	private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);
 	private final LazyOptional<IFluidHandler> outputFluidHandler = LazyOptional.of(FluidOutput::new);
 	private final LazyOptional<ITileSidedConfig> sidedConfigCap = LazyOptional.of(() -> sidedConfig);
+	private final LazyOptional<RedstoneControl> redstoneCap = LazyOptional.of(() -> redstone);
 	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side)))
-			return energyCap.cast();
-		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
-			return energy.measurableCap.cast();
-		if(cap == ZeithTechCapabilities.SIDED_CONFIG)
-			return sidedConfigCap.cast();
+		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side))) return energyCap.cast();
+		if(cap == ZeithTechCapabilities.REDSTONE_CONTROL) return redstoneCap.cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE) return energy.measurableCap.cast();
+		if(cap == ZeithTechCapabilities.SIDED_CONFIG) return sidedConfigCap.cast();
 		if(cap == ForgeCapabilities.FLUID_HANDLER)
 		{
 			var cfg = sidedConfig.getFor(SidedConfigTyped.FLUID, side);

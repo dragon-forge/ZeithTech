@@ -27,6 +27,7 @@ import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.recipes.processing.RecipeFluidCentrifuge;
 import org.zeith.tech.api.tile.IFluidPipe;
+import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
@@ -58,6 +59,9 @@ public class TileFluidCentrifuge
 	
 	@NBTSerializable("Items")
 	public final SidedInventory inventory = new SidedInventory(1, sidedConfig.createItemAccess(new int[0], new int[] { 0 }));
+	
+	@NBTSerializable("Redstone")
+	public final RedstoneControl redstone = new RedstoneControl();
 	
 	@NBTSerializable("FE")
 	public final EnergyManager energy = new EnergyManager(20000, 64, 0);
@@ -100,13 +104,13 @@ public class TileFluidCentrifuge
 		}
 		
 		int needInput = inputFluid.getCapacity() - inputFluid.getFluidAmount();
-		if(needInput > 0 && atTickRate(2) && isOnServer())
+		if(isOnServer() && needInput > 0 && atTickRate(2) && redstone.shouldWork(this))
 		{
 			var be = level.getBlockEntity(worldPosition.relative(getFront()));
 			if(be instanceof IFluidPipe pipe)
 			{
 				if(atTickRate(100))
-					pipe.createVacuum(FluidIngredient.ofFluids(List.of(inputFluid.getFluid())), 105);
+					pipe.createVacuum(inputFluid.isEmpty() ? FluidIngredient.EMPTY : FluidIngredient.ofFluids(List.of(inputFluid.getFluid())), 105);
 				
 				var in = pipe.extractFluidFromPipe(needInput, IFluidHandler.FluidAction.SIMULATE);
 				if(inputFluid.isFluidValid(in))
@@ -126,7 +130,7 @@ public class TileFluidCentrifuge
 			int need = recipe.getEnergy() - accumulated;
 			
 			int toConsume = Math.min(need, 20);
-			if(energy.consumeEnergy(toConsume))
+			if(redstone.shouldWork(this) && energy.consumeEnergy(toConsume))
 			{
 				accumulated += toConsume;
 				isInterrupted.setBool(false);
@@ -242,18 +246,16 @@ public class TileFluidCentrifuge
 	private final LazyOptional<IFluidHandler> inputFluidHandler = LazyOptional.of(FluidInput::new);
 	private final LazyOptional<IFluidHandler> outputFluidHandler = LazyOptional.of(FluidOutput::new);
 	private final LazyOptional<ITileSidedConfig> sidedConfigCap = LazyOptional.of(() -> sidedConfig);
+	private final LazyOptional<RedstoneControl> redstoneCap = LazyOptional.of(() -> redstone);
 	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side)))
-			return energyCap.cast();
-		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
-			return energy.measurableCap.cast();
-		if(cap == ZeithTechCapabilities.SIDED_CONFIG)
-			return sidedConfigCap.cast();
-		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side)))
-			return itemHandlers[side == null ? 0 : side.ordinal()].cast();
+		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side))) return energyCap.cast();
+		if(cap == ZeithTechCapabilities.REDSTONE_CONTROL) return redstoneCap.cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE) return energy.measurableCap.cast();
+		if(cap == ZeithTechCapabilities.SIDED_CONFIG) return sidedConfigCap.cast();
+		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side))) return itemHandlers[side == null ? 0 : side.ordinal()].cast();
 		if(cap == ForgeCapabilities.FLUID_HANDLER)
 		{
 			var cfg = sidedConfig.getFor(SidedConfigTyped.FLUID, side);

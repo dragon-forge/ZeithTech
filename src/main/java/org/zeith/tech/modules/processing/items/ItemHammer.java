@@ -24,6 +24,7 @@ import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.HammerHitEvent;
 import org.zeith.tech.api.tile.IHammerable;
 import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.modules.generators.init.AdvancementTriggersZT;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.shared.init.SoundsZT;
 
@@ -206,6 +207,8 @@ public class ItemHammer
 									
 									data.remove(key);
 									data.remove(keyTotal);
+									
+									AdvancementTriggersZT.MAKE_PLATE.trigger(player);
 									
 									done = true;
 								} else

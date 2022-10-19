@@ -5,8 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.api.crafting.building.GeneralRecipeBuilder;
-import org.zeith.hammerlib.api.crafting.impl.BaseNameableRecipe;
-import org.zeith.hammerlib.api.crafting.impl.ForgeEnergyResult;
+import org.zeith.hammerlib.api.crafting.impl.*;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.hammerlib.util.charging.fe.FECharge;
 import org.zeith.hammerlib.util.java.Cast;
@@ -14,7 +13,6 @@ import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.hammerlib.util.mcf.itf.IRecipeRegistrationEvent;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.RegistrationAllocator;
-import org.zeith.tech.api.recipes.base.FluidStackIngredientMulti;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 
 import java.util.Objects;
@@ -28,7 +26,7 @@ public final class RecipeLiquidFuel
 	
 	public RecipeLiquidFuel(ResourceLocation id, FluidIngredient ingredient, int burnTime)
 	{
-		super(id, new ForgeEnergyResult(new FECharge(burnTime * 40)), NonNullList.of(new FluidStackIngredientMulti(ingredient)));
+		super(id, new ForgeEnergyResult(new FECharge(burnTime * 40)), NonNullList.of(new FluidStackIngredient(ingredient)));
 		this.ingredient = ingredient;
 		this.burnTime = burnTime;
 	}

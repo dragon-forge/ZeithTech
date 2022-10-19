@@ -1,0 +1,63 @@
+{
+  "parent": "zeithtech:main/craft_wire",
+  "criteria": {
+    "transport/wires/aluminum/insulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/aluminum/insulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transport/wires/copper/insulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/copper/insulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transport/wires/gold/insulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/gold/insulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.insulate_wire.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:transport/wires/copper/insulated"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.insulate_wire"
+    }
+  },
+  "requirements": [
+    [
+      "transport/wires/copper/insulated",
+      "transport/wires/aluminum/insulated",
+      "transport/wires/gold/insulated"
+    ]
+  ]
+}

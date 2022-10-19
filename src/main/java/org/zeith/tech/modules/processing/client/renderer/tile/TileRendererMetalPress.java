@@ -39,7 +39,7 @@ public class TileRendererMetalPress
 		int mp = Math.max(entity._maxProgress, 1);
 		
 		float y = 1.1875F;
-		y *= Math.min(1F - (entity.fallTimer + partial) / 5F, progress / (mp - 5));
+		y *= Math.min(entity.fallTimer > 0 ? (1F - (entity.fallTimer + partial) / 5F) : 1F, progress / (mp - 7));
 		
 		matrix.pushPose();
 		matrix.translate(1, 0.3125F + y, 1);

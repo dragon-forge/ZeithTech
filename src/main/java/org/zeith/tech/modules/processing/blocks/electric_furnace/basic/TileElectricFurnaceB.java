@@ -26,6 +26,7 @@ import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.misc.Tuple2;
+import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
@@ -64,6 +65,9 @@ public class TileElectricFurnaceB
 	
 	@NBTSerializable("Items")
 	public final SidedInventory inventory = new SidedInventory(2, sidedConfig.createItemAccess(new int[] { 0 }, new int[] { 1 }));
+	
+	@NBTSerializable("Redstone")
+	public final RedstoneControl redstone = new RedstoneControl();
 	
 	@NBTSerializable("FE")
 	public final EnergyManager energy = new EnergyManager(20000, 64, 0);
@@ -124,9 +128,9 @@ public class TileElectricFurnaceB
 			{
 				maxProgress.setInt(recipe.getCookingTime());
 				
-				if(_progress < _maxProgress && isOnServer())
+				if(_progress < _maxProgress)
 				{
-					if(energy.consumeEnergy(20))
+					if(redstone.shouldWork(this) && energy.consumeEnergy(20))
 					{
 						_progress += 1;
 						isInterrupted.setBool(false);
@@ -138,7 +142,7 @@ public class TileElectricFurnaceB
 				if(isEnabled() != enable)
 					setEnabledState(enable);
 				
-				if(isOnServer() && _progress >= _maxProgress && storeAll(recipe.assemble(inventory)))
+				if(_progress >= _maxProgress && storeAll(recipe.assemble(inventory)))
 				{
 					inventory.getItem(0).shrink(1);
 					_progress = 0;
@@ -200,18 +204,16 @@ public class TileElectricFurnaceB
 	private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);
 	private final LazyOptional<? extends IItemHandler>[] itemHandlers = SidedInvWrapper.create(inventory, Direction.values());
 	private final LazyOptional<ITileSidedConfig> sidedConfigCap = LazyOptional.of(() -> sidedConfig);
+	private final LazyOptional<RedstoneControl> redstoneCap = LazyOptional.of(() -> redstone);
 	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side)))
-			return energyCap.cast();
-		if(cap == ZeithTechCapabilities.SIDED_CONFIG)
-			return sidedConfigCap.cast();
-		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
-			return energy.measurableCap.cast();
-		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side)))
-			return itemHandlers[side == null ? 0 : side.ordinal()].cast();
+		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side))) return energyCap.cast();
+		if(cap == ZeithTechCapabilities.REDSTONE_CONTROL) return redstoneCap.cast();
+		if(cap == ZeithTechCapabilities.SIDED_CONFIG) return sidedConfigCap.cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE) return energy.measurableCap.cast();
+		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side))) return itemHandlers[side == null ? 0 : side.ordinal()].cast();
 		return super.getCapability(cap, side);
 	}
 	

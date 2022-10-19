@@ -149,10 +149,20 @@ public class EnergyManager
 				: ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(this, SlotRole.OUTPUT), SlotRole.OUTPUT, Color.RED);
 	}
 	
+	protected int getMaxSendOp()
+	{
+		return Math.max(0, maxSend - lastOut);
+	}
+	
+	protected int getMaxRcvOp()
+	{
+		return Math.max(0, maxAccept - lastIn);
+	}
+	
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate)
 	{
-		var in = maxAccept > 0 ? this.fe.receiveEnergy(Math.min(maxAccept, maxReceive), simulate) : 0;
+		var in = maxAccept > 0 ? this.fe.receiveEnergy(Math.min(getMaxRcvOp(), maxReceive), simulate) : 0;
 		if(!simulate)
 		{
 			measurables.onEnergyTransfer(in);
@@ -164,7 +174,7 @@ public class EnergyManager
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate)
 	{
-		var out = maxSend > 0 ? this.fe.extractEnergy(Math.min(maxSend, maxExtract), simulate) : 0;
+		var out = maxSend > 0 ? this.fe.extractEnergy(Math.min(getMaxSendOp(), maxExtract), simulate) : 0;
 		if(!simulate)
 		{
 			measurables.onEnergyTransfer(out);

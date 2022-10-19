@@ -30,5 +30,9 @@ public class ZeithTechModuleConfigs
 		@Config.ConfigEntry(entry = "Processing", comment = "Enable 'Processing' module (machines)?")
 		@Config.BooleanEntry(true)
 		public boolean processingModule = true;
+		
+		@Config.ConfigEntry(entry = "Generators", comment = "Enable 'Generator' module (FE-producing machines)?")
+		@Config.BooleanEntry(true)
+		public boolean generatorsModule = true;
 	}
 }

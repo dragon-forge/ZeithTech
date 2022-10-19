@@ -9,4 +9,6 @@ public interface IZeithTechModules
 	IModuleTransport transport();
 	
 	IModuleProcessing processing();
+	
+	IModuleGenerators generators();
 }

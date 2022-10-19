@@ -31,10 +31,10 @@ import org.zeith.tech.compat.jei.category.hammering.AdvancedHammeringCategory;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.modules.generators.blocks.fuel_generator.liquid.basic.GuiLiquidFuelGeneratorB;
+import org.zeith.tech.modules.generators.blocks.fuel_generator.solid.basic.GuiSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.ContainerElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
-import org.zeith.tech.modules.processing.blocks.fuelgen.liquid.basic.GuiLiquidFuelGeneratorB;
-import org.zeith.tech.modules.processing.blocks.fuelgen.solid.basic.GuiSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.ContainerMachineAssemblerB;
@@ -43,8 +43,7 @@ import org.zeith.tech.modules.processing.blocks.metal_press.GuiMetalPress;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.GuiSawmillB;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
 import org.zeith.tech.modules.processing.blocks.waste_processor.GuiWasteProcessor;
-import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
-import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
+import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 
 import java.util.List;
@@ -127,16 +126,16 @@ public class JeiZT
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
 	{
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_FUEL_GENERATOR), RecipeTypes.FUELING);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_ELECTRIC_FURNACE), RecipeTypes.SMELTING);
-		registration.addRecipeCatalyst(new ItemStack(ItemsZT_Processing.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.METAL_PRESS), RecipeTypesZT.ADVANCED_HAMMERING);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.BASIC_LIQUID_FUEL_GENERATOR), RecipeTypesZT.LIQUID_FUEL);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT_Processing.WASTE_PROCESSOR), RecipeTypesZT.WASTE_PROCESSING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_FUEL_GENERATOR), RecipeTypes.FUELING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_ELECTRIC_FURNACE), RecipeTypes.SMELTING);
+		registration.addRecipeCatalyst(new ItemStack(ItemsZT.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.METAL_PRESS), RecipeTypesZT.ADVANCED_HAMMERING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_LIQUID_FUEL_GENERATOR), RecipeTypesZT.LIQUID_FUEL);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.WASTE_PROCESSOR), RecipeTypesZT.WASTE_PROCESSING);
 	}
 	
 	@Override
@@ -156,15 +155,15 @@ public class JeiZT
 	{
 		return Stream.of(
 				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_IRON),
-						new ItemStack(ItemsZT_Processing.IRON_HAMMER),
-						new ItemStack(ItemsZT_Processing.WIRE_CUTTER),
-						new ItemStack(ItemsZT_Processing.IRON_MINING_HEAD)),
+						new ItemStack(ItemsZT.IRON_HAMMER),
+						new ItemStack(ItemsZT.WIRE_CUTTER),
+						new ItemStack(ItemsZT.IRON_MINING_HEAD)),
 				
 				new RepairData(RecipeHelper.fromTag(Tags.Items.GEMS_DIAMOND),
-						new ItemStack(ItemsZT_Processing.DIAMOND_MINING_HEAD)),
+						new ItemStack(ItemsZT.DIAMOND_MINING_HEAD)),
 				
 				new RepairData(RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE),
-						new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD))
+						new ItemStack(ItemsZT.NETHERITE_MINING_HEAD))
 		);
 	}
 	

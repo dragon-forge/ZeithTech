@@ -1,0 +1,63 @@
+{
+  "parent": "zeithtech:main/first_plate",
+  "criteria": {
+    "transport/wires/aluminum/uninsulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/aluminum/uninsulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transport/wires/copper/uninsulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/copper/uninsulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "transport/wires/gold/uninsulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/gold/uninsulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.craft_wire.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:transport/wires/copper/uninsulated"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.craft_wire"
+    }
+  },
+  "requirements": [
+    [
+      "transport/wires/copper/uninsulated",
+      "transport/wires/aluminum/uninsulated",
+      "transport/wires/gold/uninsulated"
+    ]
+  ]
+}

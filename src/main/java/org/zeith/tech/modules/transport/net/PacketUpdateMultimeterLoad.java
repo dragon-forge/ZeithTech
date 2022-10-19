@@ -4,7 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import org.zeith.hammerlib.net.IPacket;
 import org.zeith.hammerlib.net.PacketContext;
-import org.zeith.tech.modules.transport.items.ItemMultimeter;
+import org.zeith.tech.modules.transport.items.multimeter.ItemMultimeter;
 
 import java.util.UUID;
 

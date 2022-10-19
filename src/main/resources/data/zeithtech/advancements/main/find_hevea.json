@@ -1,0 +1,28 @@
+{
+  "parent": "zeithtech:main/root",
+  "criteria": {
+    "trigger": {
+      "trigger": "zeithtech:find_hevea"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.find_hevea.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:hevea_sapling"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.find_hevea"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

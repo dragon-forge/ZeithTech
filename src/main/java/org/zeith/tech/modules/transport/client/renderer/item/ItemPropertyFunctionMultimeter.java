@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.zeith.tech.modules.transport.items.ItemMultimeter;
+import org.zeith.tech.modules.transport.items.multimeter.ItemMultimeter;
 
 import java.util.*;
 import java.util.function.Function;

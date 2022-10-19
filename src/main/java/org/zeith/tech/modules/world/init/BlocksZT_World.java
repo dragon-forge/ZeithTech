@@ -31,16 +31,16 @@ public interface BlocksZT_World
 	SimpleBlockZT HEVEA_PLANKS = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD)).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)).addItemTags(List.of(ItemTags.PLANKS, TagsZT.Items.HEVEA_PLANKS)).dropsSelf();
 	
 	@RegistryName("stripped_hevea_log")
-	BlockHeveaLog STRIPPED_HEVEA_LOG = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, true).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).dropsSelf();
+	BlockHeveaLog STRIPPED_HEVEA_LOG = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, true).addBlockTags(List.of(TagsZT.Blocks.HEVEA_LOGS, BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).dropsSelf();
 	
 	@RegistryName("stripped_hevea_wood")
-	BlockHeveaLog STRIPPED_HEVEA_WOOD = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, true).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).dropsSelf();
+	BlockHeveaLog STRIPPED_HEVEA_WOOD = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, true).addBlockTags(List.of(TagsZT.Blocks.HEVEA_LOGS, BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).dropsSelf();
 	
 	@RegistryName("hevea_log")
-	BlockHeveaLog HEVEA_LOG = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, false).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.OVERWORLD_NATURAL_LOGS, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.OVERWORLD_NATURAL_LOGS, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).toolModify(BlockHeveaLog.HEVEA_LOG_STRIPPING.get()).dropsSelf();
+	BlockHeveaLog HEVEA_LOG = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, false).addBlockTags(List.of(TagsZT.Blocks.HEVEA_LOGS, BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.OVERWORLD_NATURAL_LOGS, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.OVERWORLD_NATURAL_LOGS, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).toolModify(BlockHeveaLog.HEVEA_LOG_STRIPPING.get()).dropsSelf();
 	
 	@RegistryName("hevea_wood")
-	BlockHeveaLog HEVEA_WOOD = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, false).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.OVERWORLD_NATURAL_LOGS, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.OVERWORLD_NATURAL_LOGS, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).toolModify(BlockHeveaLog.HEVEA_WOOD_STRIPPING.get()).dropsSelf();
+	BlockHeveaLog HEVEA_WOOD = BaseZT.heveaLog(MaterialColor.WOOD, MaterialColor.PODZOL, false).addBlockTags(List.of(TagsZT.Blocks.HEVEA_LOGS, BlockTags.MINEABLE_WITH_AXE, BlockTags.LOGS_THAT_BURN, BlockTags.OVERWORLD_NATURAL_LOGS, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.LOGS)).addItemTags(List.of(ItemTags.LOGS_THAT_BURN, ItemTags.OVERWORLD_NATURAL_LOGS, ItemTags.LOGS, TagsZT.Items.HEVEA_LOGS)).toolModify(BlockHeveaLog.HEVEA_WOOD_STRIPPING.get()).dropsSelf();
 	
 	@RegistryName("hevea_leaves")
 	BlockHeveaLeaves HEVEA_LEAVES = BaseZT.leaves(SoundType.GRASS).addBlockTags(List.of(BlockTags.LEAVES, BlockTags.COMPLETES_FIND_TREE_TUTORIAL, BlockTags.LAVA_POOL_STONE_CANNOT_REPLACE, BlockTags.PARROTS_SPAWNABLE_ON, BlockTags.MINEABLE_WITH_HOE)).addItemTags(List.of(ItemTags.LEAVES, ItemTags.COMPLETES_FIND_TREE_TUTORIAL));

@@ -29,6 +29,7 @@ import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.processing.RecipeWasteProcessor;
+import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
@@ -72,6 +73,9 @@ public class TileWasteProcessor
 			2,
 			3
 	}));
+	
+	@NBTSerializable("Redstone")
+	public final RedstoneControl redstone = new RedstoneControl();
 	
 	@NBTSerializable("OutputA")
 	public final SerializableFluidTank output_a = new SerializableFluidTank(5000);
@@ -182,10 +186,12 @@ public class TileWasteProcessor
 			{
 				maxProgress.setInt(recipe.getTime());
 				
+				var works = redstone.shouldWork(this);
+				
 				if(_progress < _maxProgress && isOnServer()
 						&& (_progress > 0 || storeRecipeResult(recipe, true)))
 				{
-					if(energy.consumeEnergy(getConsumptionPerTick()))
+					if(works && energy.consumeEnergy(getConsumptionPerTick()))
 					{
 						_progress += 1;
 						isInterrupted.setBool(false);
@@ -195,7 +201,7 @@ public class TileWasteProcessor
 					}
 				}
 				
-				var enable = _progress > 0;
+				var enable = works && _progress > 0;
 				if(isEnabled() != enable)
 					setEnabledState(enable);
 				
@@ -377,19 +383,17 @@ public class TileWasteProcessor
 			}
 	));
 	
+	private final LazyOptional<RedstoneControl> redstoneCap = LazyOptional.of(() -> redstone);
+	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(cap == ForgeCapabilities.FLUID_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.FLUID, side)))
-			return outputFluidHandler.cast();
-		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side)))
-			return energyCap.cast();
-		if(cap == ZeithTechCapabilities.SIDED_CONFIG)
-			return sidedConfigCap.cast();
-		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
-			return energy.measurableCap.cast();
-		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side)))
-			return itemHandlers[side == null ? 0 : side.ordinal()].cast();
+		if(cap == ForgeCapabilities.FLUID_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.FLUID, side))) return outputFluidHandler.cast();
+		if(cap == ZeithTechCapabilities.REDSTONE_CONTROL) return redstoneCap.cast();
+		if(cap == ForgeCapabilities.ENERGY && (side == null || sidedConfig.canAccess(SidedConfigTyped.ENERGY, side))) return energyCap.cast();
+		if(cap == ZeithTechCapabilities.SIDED_CONFIG) return sidedConfigCap.cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE) return energy.measurableCap.cast();
+		if(cap == ForgeCapabilities.ITEM_HANDLER && (side == null || sidedConfig.canAccess(SidedConfigTyped.ITEM, side))) return itemHandlers[side == null ? 0 : side.ordinal()].cast();
 		return super.getCapability(cap, side);
 	}
 }

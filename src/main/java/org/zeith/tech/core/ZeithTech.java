@@ -25,9 +25,9 @@ import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.compat.Compats;
 import org.zeith.tech.core.audio.ClientAudioSystem;
 import org.zeith.tech.core.audio.CommonAudioSystem;
-import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
-import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
+import org.zeith.tech.modules.generators.init.AdvancementTriggersZT;
 import org.zeith.tech.modules.shared.SharedModule;
+import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.utils.LegacyEventBus;
 
@@ -52,7 +52,7 @@ public class ZeithTech
 		@Override
 		public @NotNull ItemStack makeIcon()
 		{
-			return new ItemStack(BlocksZT_Processing.BASIC_FUEL_GENERATOR);
+			return new ItemStack(ItemsZT.IRON_HAMMER);
 		}
 	};
 	
@@ -120,7 +120,7 @@ public class ZeithTech
 	private void setup(FMLCommonSetupEvent e)
 	{
 		this.modules.enable();
-		RecipeRegistriesZT_Processing.setup(e);
+		AdvancementTriggersZT.setup();
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.tech.api.item.IBurnableItem;
+import org.zeith.tech.modules.generators.init.BlocksZT_Generators;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.shared.blocks.BlockMasut;
 import org.zeith.tech.modules.shared.blocks.aux_io_port.BlockAuxiliaryIOPort;
@@ -16,7 +17,7 @@ import org.zeith.tech.modules.world.init.BlocksZT_World;
 
 @SimplyRegister
 public interface BlocksZT
-		extends BlocksZT_World, BlocksZT_Transport, BlocksZT_Processing
+		extends BlocksZT_World, BlocksZT_Generators, BlocksZT_Transport, BlocksZT_Processing
 {
 	@RegistryName("auxiliary_io_port")
 	BlockAuxiliaryIOPort AUXILIARY_IO_PORT = new BlockAuxiliaryIOPort();
