@@ -38,7 +38,7 @@ public interface RecipeRegistriesZT_Processing
 			RecipeRegistryFactory.namespacedBuilder(RecipeGrinding.class)
 					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "grinding"))
 					.recipeBuilderFactory(RecipeGrinding.GrindingRecipeBuilder::new)
-					.customRecipes(CustomGrindingRecipeGenerator::new)
+					.customRecipes(CustomUnaryWithExtraRecipeGenerator.make(RecipeGrinding::new))
 					.onClientRecipeReceive(broadcast())
 					.build();
 	
@@ -46,7 +46,7 @@ public interface RecipeRegistriesZT_Processing
 			RecipeRegistryFactory.namespacedBuilder(RecipeSawmill.class)
 					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "sawmill"))
 					.recipeBuilderFactory(RecipeSawmill.SawmillRecipeBuilder::new)
-					.customRecipes(CustomSawmillRecipeGenerator::new)
+					.customRecipes(CustomUnaryWithExtraRecipeGenerator.make(RecipeSawmill::new))
 					.onClientRecipeReceive(broadcast())
 					.build();
 	

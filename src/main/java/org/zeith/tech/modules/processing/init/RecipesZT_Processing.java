@@ -156,45 +156,44 @@ public interface RecipesZT_Processing
 	
 	static void addHammeringRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeHammering> evt)
 	{
-		if(evt.is(RecipeRegistriesZT_Processing.HAMMERING))
+		if(!evt.is(RecipeRegistriesZT_Processing.HAMMERING)) return;
+		
+		var f = evt.<RecipeHammering.Builder> builderFactory();
+		
+		var itemTags = evt.getContext().getAllTags(ForgeRegistries.Keys.ITEMS);
+		
+		Set<String> excludePlates = new HashSet<>();
+		Map<String, Integer> materialHitOverride = new HashMap<>();
+		Map<String, TechTier> minTierOverride = new HashMap<>();
+		
+		minTierOverride.put("steel", TechTier.ADVANCED);
+		minTierOverride.put("tungsten", TechTier.ADVANCED);
+		materialHitOverride.put("gold", 3);
+		materialHitOverride.put("aluminum", 2);
+		materialHitOverride.put("tungsten", 10);
+		
+		var hevt = new BasicHammeringRegistryEvent(excludePlates, materialHitOverride, minTierOverride);
+		MinecraftForge.EVENT_BUS.post(hevt);
+		
+		for(var tag : itemTags.keySet())
 		{
-			var f = evt.<RecipeHammering.Builder> builderFactory();
-			
-			var itemTags = evt.getContext().getAllTags(ForgeRegistries.Keys.ITEMS);
-			
-			Set<String> excludePlates = new HashSet<>();
-			Map<String, Integer> materialHitOverride = new HashMap<>();
-			Map<String, TechTier> minTierOverride = new HashMap<>();
-			
-			minTierOverride.put("steel", TechTier.ADVANCED);
-			minTierOverride.put("tungsten", TechTier.ADVANCED);
-			materialHitOverride.put("gold", 3);
-			materialHitOverride.put("aluminum", 2);
-			materialHitOverride.put("tungsten", 10);
-			
-			var hevt = new BasicHammeringRegistryEvent(excludePlates, materialHitOverride, minTierOverride);
-			MinecraftForge.EVENT_BUS.post(hevt);
-			
-			for(var tag : itemTags.keySet())
+			if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("ingots/"))
 			{
-				if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("ingots/"))
+				var metalType = tag.getPath().substring(7);
+				var plateTag = new ResourceLocation("forge", "plates/" + metalType);
+				
+				if(itemTags.containsKey(plateTag) && !excludePlates.contains(metalType))
 				{
-					var metalType = tag.getPath().substring(7);
-					var plateTag = new ResourceLocation("forge", "plates/" + metalType);
-					
-					if(itemTags.containsKey(plateTag) && !excludePlates.contains(metalType))
-					{
-						var plateItem = itemTags.get(plateTag).stream().findFirst().orElse(null);
-						if(plateItem != null)
-							f.get()
-									.input(ItemTags.create(tag))
-									.result(plateItem.get())
-									.hitCount(hevt.getHitsForMetal(metalType))
-									.withTier(hevt.getMaterialTier(metalType))
-									.register();
-						else
-							ZeithTech.LOG.warn("Unable to find plate for metal " + metalType + ", but the plate tag (" + plateTag + ") is present...");
-					}
+					var plateItem = itemTags.get(plateTag).stream().findFirst().orElse(null);
+					if(plateItem != null)
+						f.get()
+								.input(ItemTags.create(tag))
+								.result(plateItem.get())
+								.hitCount(hevt.getHitsForMetal(metalType))
+								.withTier(hevt.getMaterialTier(metalType))
+								.register();
+					else
+						ZeithTech.LOG.warn("Unable to find plate for metal " + metalType + ", but the plate tag (" + plateTag + ") is present...");
 				}
 			}
 		}
@@ -202,56 +201,56 @@ public interface RecipesZT_Processing
 	
 	static void addGrindingRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeGrinding> evt)
 	{
-		if(evt.is(RecipeRegistriesZT_Processing.GRINDING))
+		if(!evt.is(RecipeRegistriesZT_Processing.GRINDING)) return;
+		
+		Supplier<RecipeGrinding.GrindingRecipeBuilder> f = () -> new RecipeGrinding.GrindingRecipeBuilder(evt);
+		
+		f.get().input(Items.STONE).result(Items.COBBLESTONE).register();
+		f.get().input(Items.DEEPSLATE).result(Items.COBBLED_DEEPSLATE).register();
+		f.get().input(Tags.Items.COBBLESTONE).result(Items.GRAVEL).register();
+		f.get().input(Tags.Items.GRAVEL).result(Items.SAND).craftTime(100).register();
+		f.get().input(Items.AMETHYST_BLOCK).result(new ItemStack(Items.AMETHYST_SHARD, 4)).craftTime(80).register();
+		f.get().input(Items.GLOWSTONE).result(new ItemStack(Items.GLOWSTONE_DUST, 4)).craftTime(40).register();
+		f.get().extraOutput(new ExtraOutput(new ItemStack(ItemsZT.BIOLUMINESCENT_DUST), 0.5F)).input(Items.GLOW_BERRIES).result(Items.STICK).craftTime(50).register();
+		f.get().input(Items.COAL).result(ItemsZT.COAL_DUST).craftTime(20).register();
+		
+		f.get().extraOutput(new ExtraOutput.Ranged(new ItemStack(Items.BONE_MEAL), 1, 3, 0.85F)).input(Items.BONE).result(new ItemStack(Items.BONE_MEAL, 3)).craftTime(50).register();
+		
+		Set<String> excludeDusts = new HashSet<>();
+		Map<String, Integer> materialHitOverride = new HashMap<>();
+		Map<String, TechTier> minTierOverride = new HashMap<>();
+		
+		var hevt = new GrindingRegistryEvent(excludeDusts, materialHitOverride, minTierOverride);
+		MinecraftForge.EVENT_BUS.post(hevt);
+		
+		var itemTags = evt.getContext().getAllTags(ForgeRegistries.Keys.ITEMS);
+		
+		for(var tag : itemTags.keySet())
 		{
-			Supplier<RecipeGrinding.GrindingRecipeBuilder> f = () -> new RecipeGrinding.GrindingRecipeBuilder(evt);
+			String grindType = null;
 			
-			f.get().input(Items.STONE).result(Items.COBBLESTONE).register();
-			f.get().input(Items.DEEPSLATE).result(Items.COBBLED_DEEPSLATE).register();
-			f.get().input(Tags.Items.COBBLESTONE).result(Items.GRAVEL).register();
-			f.get().input(Tags.Items.GRAVEL).result(Items.SAND).craftTime(100).register();
-			f.get().input(Items.AMETHYST_BLOCK).result(new ItemStack(Items.AMETHYST_SHARD, 4)).craftTime(80).register();
-			f.get().input(Items.GLOWSTONE).result(new ItemStack(Items.GLOWSTONE_DUST, 4)).craftTime(40).register();
-			f.get().extraOutput(new ExtraOutput(new ItemStack(ItemsZT.BIOLUMINESCENT_DUST), 0.5F)).input(Items.GLOW_BERRIES).result(Items.STICK).craftTime(50).register();
+			if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("ingots/"))
+				grindType = tag.getPath().substring(7);
 			
-			f.get().extraOutput(new ExtraOutput.Ranged(new ItemStack(Items.BONE_MEAL), 1, 3, 0.85F)).input(Items.BONE).result(new ItemStack(Items.BONE_MEAL, 3)).craftTime(50).register();
+			if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("gems/"))
+				grindType = tag.getPath().substring(5);
 			
-			Set<String> excludeDusts = new HashSet<>();
-			Map<String, Integer> materialHitOverride = new HashMap<>();
-			Map<String, TechTier> minTierOverride = new HashMap<>();
-			
-			var hevt = new GrindingRegistryEvent(excludeDusts, materialHitOverride, minTierOverride);
-			MinecraftForge.EVENT_BUS.post(hevt);
-			
-			var itemTags = evt.getContext().getAllTags(ForgeRegistries.Keys.ITEMS);
-			
-			for(var tag : itemTags.keySet())
+			if(grindType != null)
 			{
-				String grindType = null;
+				var dustTag = new ResourceLocation("forge", "dusts/" + grindType);
 				
-				if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("ingots/"))
-					grindType = tag.getPath().substring(7);
-				
-				if(tag.getNamespace().equals("forge") && tag.getPath().startsWith("gems/"))
-					grindType = tag.getPath().substring(5);
-				
-				if(grindType != null)
+				if(itemTags.containsKey(dustTag) && !excludeDusts.contains(grindType))
 				{
-					var dustTag = new ResourceLocation("forge", "dusts/" + grindType);
-					
-					if(itemTags.containsKey(dustTag) && !excludeDusts.contains(grindType))
-					{
-						var dustItem = itemTags.get(dustTag).stream().findFirst().orElse(null);
-						if(dustItem != null)
-							f.get()
-									.input(ItemTags.create(tag))
-									.result(dustItem.get())
-									.craftTime(hevt.getTimeForMaterial(grindType))
-									.tier(hevt.getMaterialTier(grindType))
-									.register();
-						else
-							ZeithTech.LOG.warn("Unable to find dust for material " + grindType + ", but the dust tag (" + dustTag + ") is present...");
-					}
+					var dustItem = itemTags.get(dustTag).stream().findFirst().orElse(null);
+					if(dustItem != null)
+						f.get()
+								.input(ItemTags.create(tag))
+								.result(dustItem.get())
+								.craftTime(hevt.getTimeForMaterial(grindType))
+								.tier(hevt.getMaterialTier(grindType))
+								.register();
+					else
+						ZeithTech.LOG.warn("Unable to find dust for material " + grindType + ", but the dust tag (" + dustTag + ") is present...");
 				}
 			}
 		}

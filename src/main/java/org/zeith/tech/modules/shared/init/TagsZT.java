@@ -44,6 +44,17 @@ public class TagsZT
 		public static final TagKey<Item> PLATES_ZINC = tag("plates/zinc");
 		public static final TagKey<Item> PLATES_TUNGSTEN = tag("plates/tungsten");
 		
+		public static final TagKey<Item> GEARS_WOODEN = tag("gears/wooden");
+		public static final TagKey<Item> GEARS_STONE = tag("gears/stone");
+		public static final TagKey<Item> GEARS_COPPER = tag("gears/copper");
+		public static final TagKey<Item> GEARS_IRON = tag("gears/iron");
+		public static final TagKey<Item> GEARS_TIN = tag("gears/tin");
+		public static final TagKey<Item> GEARS_SILVER = tag("gears/silver");
+		public static final TagKey<Item> GEARS_GOLD = tag("gears/gold");
+		public static final TagKey<Item> GEARS_DIAMOND = tag("gears/diamond");
+		public static final TagKey<Item> GEARS_TUNGSTEN = tag("gears/tungsten");
+		public static final TagKey<Item> GEARS_NETHERITE = tag("gears/netherite");
+		
 		public static final TagKey<Item> COILS_COPPER = tag("coils/copper");
 		public static final TagKey<Item> COILS_GOLD = tag("coils/gold");
 		
@@ -53,6 +64,8 @@ public class TagsZT
 		public static final TagKey<Item> RAW_MATERIALS_SILVER = tag("raw_materials/silver");
 		public static final TagKey<Item> RAW_MATERIALS_ZINC = tag("raw_materials/zinc");
 		public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN = tag("raw_materials/tungsten");
+		
+		public static final TagKey<Item> DUSTS_COAL = tag("dusts/coal");
 		
 		public static final TagKey<Item> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Item> ORES_LEAD = tag("ores/lead");

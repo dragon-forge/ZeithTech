@@ -74,7 +74,18 @@ item.zeithtech.lead_plate=Lead Plate
 item.zeithtech.tin_plate=Tin Plate
 item.zeithtech.tungsten_plate=Tungsten Plate
 item.zeithtech.zinc_plate=Zinc Plate
-item.zeithtech.bioluminescent_dust=Bioluminescent Dust
+item.zeithtech.dusts.bioluminescent=Bioluminescent Dust
+item.zeithtech.dusts.coal=Coal Dust
+item.zeithtech.gears.wooden=Wooden Gear
+item.zeithtech.gears.stone=Stone Gear
+item.zeithtech.gears.copper=Copper Gear
+item.zeithtech.gears.tin=Tin Gear
+item.zeithtech.gears.iron=Iron Gear
+item.zeithtech.gears.silver=Silver Gear
+item.zeithtech.gears.gold=Gold Gear
+item.zeithtech.gears.diamond=Diamond Gear
+item.zeithtech.gears.tungsten=Tungsten Gear
+item.zeithtech.gears.netherite=Netherite Gear
 
 fluid_type.zeithtech.crude_oil=Crude Oil
 

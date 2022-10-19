@@ -34,6 +34,6 @@ side = "BOTH"
 [[dependencies.zeithtech]]
 modId = "hammerlib"
 mandatory = true
-versionRange = "[19.1.26,)"
+versionRange = "[19.1.27,)"
 ordering = "NONE"
 side = "BOTH"

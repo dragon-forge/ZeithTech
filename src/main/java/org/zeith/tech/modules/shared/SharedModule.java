@@ -7,6 +7,7 @@ import org.zeith.tech.api.modules.IModuleShared;
 import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 import org.zeith.tech.core.IInternalCode;
 import org.zeith.tech.modules.shared.init.RecipesZT;
+import org.zeith.tech.modules.shared.items.GearsZT;
 import org.zeith.tech.modules.shared.proxy.ClientSharedProxyZT;
 import org.zeith.tech.modules.shared.proxy.CommonSharedProxyZT;
 
@@ -28,6 +29,7 @@ public class SharedModule
 	{
 		wasEnabled = true;
 		HammerLib.EVENT_BUS.addListener(RecipesZT::provideRecipes);
+		HammerLib.EVENT_BUS.addListener(GearsZT::recipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeMachineAssembler.class, RecipesZT::machineAssembler);
 	}
 	

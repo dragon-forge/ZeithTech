@@ -2,10 +2,8 @@ package org.zeith.tech.core;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.world.item.*;
+import net.minecraftforge.common.*;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -17,6 +15,7 @@ import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
+import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.audio.IAudioSystem;
 import org.zeith.tech.api.modules.IZeithTechModules;
@@ -25,6 +24,7 @@ import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.compat.Compats;
 import org.zeith.tech.core.audio.ClientAudioSystem;
 import org.zeith.tech.core.audio.CommonAudioSystem;
+import org.zeith.tech.core.mixins.TiersAccessor;
 import org.zeith.tech.modules.generators.init.AdvancementTriggersZT;
 import org.zeith.tech.modules.shared.SharedModule;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -121,6 +121,17 @@ public class ZeithTech
 	{
 		this.modules.enable();
 		AdvancementTriggersZT.setup();
+		
+		TiersAccessor netherite = Cast.cast(Tiers.NETHERITE);
+		netherite.setUses(netherite.getUses() + 512);
+		netherite.setEnchantmentValue(netherite.getEnchantmentValue() + 5);
+		netherite.setDamage(netherite.getDamage() + 2F);
+		netherite.setSpeed(netherite.getSpeed() + 3F);
+		netherite.setLevel(5);
+		
+		TierSortingRegistry.registerTier(TUNGSTEN_TIER, ZeithTechAPI.id("tungsten"), List.of(Tiers.DIAMOND), List.of(Tiers.NETHERITE));
+		
+		LOG.info("Setup complete.");
 	}
 	
 	@Override
