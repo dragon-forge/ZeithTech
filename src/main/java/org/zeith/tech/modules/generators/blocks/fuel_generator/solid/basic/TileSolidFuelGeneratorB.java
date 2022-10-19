@@ -21,6 +21,7 @@ import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
@@ -58,13 +59,13 @@ public class TileSolidFuelGeneratorB
 			.setFor(SidedConfigTyped.ENERGY, RelativeDirection.UP, SideConfig.DISABLE);
 	
 	@NBTSerializable("FE")
-	public final EnergyManager energy = new EnergyManager(20000, 0, 64)
-			.setKind(EnumEnergyManagerKind.GENERATOR);
+	public final EnergyManager energy = new EnergyManager(EnergyTier.EXTRA_LOW_VOLTAGE, EnumEnergyManagerKind.GENERATOR);
 	
 	public final PropertyInt fuelTicksTotal = new PropertyInt(DirectStorage.create(i -> _fuelTicksTotal = i, () -> _fuelTicksTotal));
 	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
 	public final PropertyFloat fuelTicksLeft = new PropertyFloat(DirectStorage.create(i -> _fuelTicksLeft = i, () -> _fuelTicksLeft));
 	
+	@NBTSerializable("Generation")
 	public int currentGenPerTick = 20;
 	
 	public TileSolidFuelGeneratorB(BlockPos pos, BlockState state)

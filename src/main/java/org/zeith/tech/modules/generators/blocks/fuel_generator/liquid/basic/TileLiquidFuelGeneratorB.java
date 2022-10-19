@@ -23,6 +23,7 @@ import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.recipes.processing.RecipeLiquidFuel;
 import org.zeith.tech.api.tile.IFluidPipe;
@@ -51,7 +52,8 @@ public class TileLiquidFuelGeneratorB
 {
 	@NBTSerializable("TankContents")
 	public final SerializableFluidTank storage = new SerializableFluidTank(5 * FluidType.BUCKET_VOLUME, fluid ->
-			ZeithTechAPI.get().getRecipeRegistries().liquidFuel().getRecipes().stream().anyMatch(r -> r.test(fluid)));
+			ZeithTechAPI.get().getRecipeRegistries().liquidFuel().getRecipes().stream().anyMatch(r -> r.test(fluid)))
+			.withColor(0xFFF3BA);
 	
 	public final FluidSmoothing tankSmooth;
 	
@@ -77,13 +79,13 @@ public class TileLiquidFuelGeneratorB
 			.setFor(SidedConfigTyped.ENERGY, RelativeDirection.BACK, SideConfig.PUSH);
 	
 	@NBTSerializable("FE")
-	public final EnergyManager energy = new EnergyManager(100000, 0, 128)
-			.setKind(EnumEnergyManagerKind.GENERATOR);
+	public final EnergyManager energy = new EnergyManager(EnergyTier.LOW_VOLTAGE, EnumEnergyManagerKind.GENERATOR);
 	
 	public final PropertyInt fuelTicksTotal = new PropertyInt(DirectStorage.create(i -> _fuelTicksTotal = i, () -> _fuelTicksTotal));
 	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
 	public final PropertyFloat fuelTicksLeft = new PropertyFloat(DirectStorage.create(i -> _fuelTicksLeft = i, () -> _fuelTicksLeft));
 	
+	@NBTSerializable("Generation")
 	public int currentGenPerTick = 40;
 	
 	public TileLiquidFuelGeneratorB(BlockPos pos, BlockState state)

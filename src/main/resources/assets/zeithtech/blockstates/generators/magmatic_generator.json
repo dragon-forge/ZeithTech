@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "zeithtech:block/generators/magmatic_generator"
+    },
+    "facing=south": {
+      "model": "zeithtech:block/generators/magmatic_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "zeithtech:block/generators/magmatic_generator",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "zeithtech:block/generators/magmatic_generator",
+      "y": 90
+    }
+  }
+}

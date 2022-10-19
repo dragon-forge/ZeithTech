@@ -16,6 +16,7 @@ import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.util.charging.IChargeHandler;
 import org.zeith.hammerlib.util.charging.ItemChargeHelper;
 import org.zeith.hammerlib.util.charging.fe.FECharge;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.SidedConfigTyped;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.slots.*;
@@ -41,6 +42,11 @@ public class EnergyManager
 	
 	protected EnumEnergyManagerKind kind = EnumEnergyManagerKind.CONSUMER;
 	
+	public EnergyManager(EnergyTier tier, EnumEnergyManagerKind kind)
+	{
+		this(tier.capacity(), kind == EnumEnergyManagerKind.GENERATOR ? 0 : tier.maxTransfer(), kind == EnumEnergyManagerKind.CONSUMER ? 0 : tier.maxTransfer());
+		setKind(kind);
+	}
 	
 	public EnergyManager(int capacity, int maxAccept, int maxSend)
 	{

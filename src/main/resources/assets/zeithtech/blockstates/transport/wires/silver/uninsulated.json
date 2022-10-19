@@ -1,0 +1,64 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "zeithtech:block/transport/wires/silver/uninsulated/core",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/wires/silver/uninsulated/down",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/wires/silver/uninsulated/east",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/wires/silver/uninsulated/north",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/wires/silver/uninsulated/south",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/wires/silver/uninsulated/up",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "zeithtech:block/transport/wires/silver/uninsulated/west",
+        "uvlock": true
+      }
+    }
+  ]
+}

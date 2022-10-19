@@ -24,12 +24,14 @@ import org.zeith.hammerlib.net.properties.PropertyItemStack;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.recipes.base.IUnaryRecipe;
 import org.zeith.tech.api.tile.ITieredTile;
 import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
+import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.api.tile.slots.*;
@@ -109,7 +111,7 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	
 	protected EnergyManager createEnergyManager()
 	{
-		return new EnergyManager(20000, 64, 0);
+		return new EnergyManager(EnergyTier.EXTRA_LOW_VOLTAGE, EnumEnergyManagerKind.CONSUMER);
 	}
 	
 	protected SoundEvent getWorkingSound()

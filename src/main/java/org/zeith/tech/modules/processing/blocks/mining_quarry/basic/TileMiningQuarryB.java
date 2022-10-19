@@ -31,9 +31,11 @@ import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.mcf.BlockPosList;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
+import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
@@ -99,7 +101,7 @@ public class TileMiningQuarryB
 	}
 	
 	@NBTSerializable("FE")
-	public final EnergyManager energy = new EnergyManager(20000, 64, 0);
+	public final EnergyManager energy = new EnergyManager(EnergyTier.EXTRA_LOW_VOLTAGE, EnumEnergyManagerKind.CONSUMER);
 	
 	@NBTSerializable
 	public final BlockPosList yQueue = new BlockPosList();

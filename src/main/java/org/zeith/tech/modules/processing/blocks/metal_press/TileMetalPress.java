@@ -26,19 +26,19 @@ import org.zeith.hammerlib.net.properties.PropertyItemStack;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.recipes.processing.RecipeHammering;
 import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
+import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.api.tile.slots.*;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
-import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
-import org.zeith.tech.modules.processing.init.TilesZT_Processing;
-import org.zeith.tech.modules.shared.init.SoundsZT;
+import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.utils.InventoryHelper;
 import org.zeith.tech.utils.SidedInventory;
 
@@ -62,7 +62,7 @@ public class TileMetalPress
 	public final RedstoneControl redstone = new RedstoneControl();
 	
 	@NBTSerializable("FE")
-	public final EnergyManager energy = new EnergyManager(40000, 128, 0);
+	public final EnergyManager energy = new EnergyManager(EnergyTier.LOW_VOLTAGE, EnumEnergyManagerKind.CONSUMER);
 	
 	@NBTSerializable("Progress")
 	public int _progress;
@@ -264,13 +264,14 @@ public class TileMetalPress
 			if(data == 195)
 			{
 				fallTimer = 1;
+				currentProgress = _maxProgress - 5;
 				return true;
 			}
 			
 			if(data == 200)
 			{
 				if(isOnClient())
-					ZeithTechAPI.get().getAudioSystem().playTileSound(this, SoundsZT.ANVIL_USE_DONE, 0.5F, 0.8F);
+					ZeithTechAPI.get().getAudioSystem().playTileSound(this, SoundsZT_Processing.METAL_PRESS_ACT, 0.5F, 0.8F);
 				return true;
 			}
 		}

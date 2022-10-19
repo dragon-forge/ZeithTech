@@ -24,10 +24,12 @@ import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
+import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.api.tile.slots.*;
@@ -70,7 +72,7 @@ public class TileElectricFurnaceB
 	public final RedstoneControl redstone = new RedstoneControl();
 	
 	@NBTSerializable("FE")
-	public final EnergyManager energy = new EnergyManager(20000, 64, 0);
+	public final EnergyManager energy = new EnergyManager(EnergyTier.EXTRA_LOW_VOLTAGE, EnumEnergyManagerKind.CONSUMER);
 	
 	@NBTSerializable("Progress")
 	public int _progress;

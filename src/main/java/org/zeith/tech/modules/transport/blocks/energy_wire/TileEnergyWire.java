@@ -90,7 +90,7 @@ public class TileEnergyWire
 			{
 				var props = getWireProps();
 				
-				float maxFE = props.tier().maxFE();
+				float maxFE = props.tier().maxTransfer();
 				float loadFactor = energyPassed / maxFE;
 				
 				this.lastLoad = loadFactor;

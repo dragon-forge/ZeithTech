@@ -17,6 +17,7 @@ public interface SoundsZT_Processing
 	SoundEvent BASIC_SAWMILL = register("block.sawmill.basic");
 	SoundEvent FLUID_PUMP = register("block.fluid_pump.basic");
 	SoundEvent FLUID_CENTRIFUGE = register("block.fluid_centrifuge.basic");
+	SoundEvent MAGMATIC_GENERATOR = register("block.magmatic_generator");
 	
 	static SoundEvent register(String s)
 	{

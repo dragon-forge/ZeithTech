@@ -97,6 +97,7 @@ item.zeithtech.oil_sludge=Oil Sludge
 ### Generators Module ###
 block.zeithtech.generators.fuel_generator.basic=Basic Solid Fuel Generator
 block.zeithtech.generators.lfuel_generator.basic=Basic Liquid Fuel Generator
+block.zeithtech.generators.magmatic_generator=Magmatic Generator
 
 ### Processing Module ###
 block.zeithtech.processing.mining_pipe=Mining Pipe
@@ -143,6 +144,8 @@ block.zeithtech.transport.wires.aluminum.uninsulated=Aluminum Wire
 block.zeithtech.transport.wires.aluminum.insulated=Insulated Aluminum Wire
 block.zeithtech.transport.wires.gold.uninsulated=Gold Wire
 block.zeithtech.transport.wires.gold.insulated=Insulated Gold Wire
+block.zeithtech.transport.wires.silver.uninsulated=Silver Wire
+block.zeithtech.transport.wires.silver.insulated=Insulated Silver Wire
 
 
 info.zeithtech_transport.wire_max_io=Max transfer: %s FE/tick

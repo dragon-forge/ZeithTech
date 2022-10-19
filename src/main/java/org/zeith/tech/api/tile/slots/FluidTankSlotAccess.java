@@ -19,6 +19,7 @@ public class FluidTankSlotAccess
 {
 	protected final FluidTank tank;
 	protected final SlotRole role;
+	protected Color overrideColor;
 	
 	public FluidTankSlotAccess(FluidTank tank, SlotRole role)
 	{
@@ -26,11 +27,24 @@ public class FluidTankSlotAccess
 		this.role = role;
 	}
 	
+	public FluidTankSlotAccess setOverrideColor(Color overrideColor)
+	{
+		this.overrideColor = overrideColor;
+		return this;
+	}
+	
+	public FluidTankSlotAccess setOverrideColor(int overrideColor)
+	{
+		this.overrideColor = new Color(overrideColor, false);
+		return this;
+	}
+	
 	@Override
 	public Optional<Color> getColorOverride()
 	{
-		return Cast.optionally(tank, IColorProvider.class)
-				.map(IColorProvider::getColor);
+		return Optional.ofNullable(overrideColor)
+				.or(() -> Cast.optionally(tank, IColorProvider.class)
+						.map(IColorProvider::getColor));
 	}
 	
 	@Override

@@ -62,7 +62,15 @@ public class TileFluidTankB
 	
 	protected SerializableFluidTank createTank()
 	{
-		return new SerializableFluidTank(64 * FluidType.BUCKET_VOLUME);
+		return new SerializableFluidTank(64 * FluidType.BUCKET_VOLUME)
+		{
+			@Override
+			protected void onContentsChanged()
+			{
+				super.onContentsChanged();
+				setChanged();
+			}
+		};
 	}
 	
 	private int lastServerFluidAmount;

@@ -36,7 +36,7 @@ public class GuiLiquidFuelGeneratorB
 	{
 		menu.tile.storage.setFluid(menu.tile.tankSmooth.getClientAverage(minecraft.getPartialTick()));
 		
-		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/processing/gui/liquid_fuel_generator.png");
+		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/generators/gui/liquid_fuel_generator.png");
 		RenderUtils.drawTexturedModalRect(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		
 		var tile = menu.tile;

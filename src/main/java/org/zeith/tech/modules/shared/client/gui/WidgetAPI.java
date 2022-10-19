@@ -13,7 +13,6 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.utils.*;
@@ -54,11 +53,6 @@ public class WidgetAPI
 		}
 	}
 	
-	public static void drawFluidBarOverlay(Screen screen, PoseStack pose, int x, int y, IFluidTank tank, boolean showCapacity, int mouseX, int mouseY)
-	{
-		drawFluidBarOverlay(screen, pose, x, y, tank.getFluid(), tank.getCapacity(), showCapacity, mouseX, mouseY);
-	}
-	
 	public static void drawFluidBarOverlay(Screen screen, PoseStack pose, int x, int y, FluidStack fluid, int capacity, boolean showCapacity, int mouseX, int mouseY)
 	{
 		renderSlotHighlight(pose, x + 1, y + 1, 16, 64, 0);
@@ -88,16 +82,8 @@ public class WidgetAPI
 				Optional.empty(), mouseX, mouseY);
 	}
 	
-	public static void drawFluidBar(PoseStack pose, int x, int y, IFluidTank tank)
-	{
-		drawFluidBar(pose, x, y, tank.getFluid(), tank.getCapacity());
-	}
-	
 	public static void drawFluidBar(PoseStack pose, int x, int y, FluidStack fluid, int capacity)
 	{
-		bind();
-		RenderUtils.drawTexturedModalRect(pose, x, y, 0, 66, 18, 66); // draw the base
-		
 		float full = fluid.getAmount() / (float) capacity;
 		FluidRendererHelper.renderFluidInGui(pose, fluid, FluidTextureType.STILL, full, x + 1, y + 1, 16, 64);
 		

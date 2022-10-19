@@ -56,6 +56,20 @@ public class BlockFluidTankB
 		registerDefaultState(defaultBlockState().setValue(BlockStateProperties.UP, false).setValue(BlockStateProperties.DOWN, false));
 	}
 	
+	@Override
+	public boolean hasAnalogOutputSignal(BlockState state)
+	{
+		return true;
+	}
+	
+	@Override
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
+	{
+		if(level.getBlockEntity(pos) instanceof TileFluidTankB tankB)
+			return Math.round(tankB.storage.getFluidAmount() * 15F / tankB.storage.getCapacity());
+		return 0;
+	}
+	
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx)

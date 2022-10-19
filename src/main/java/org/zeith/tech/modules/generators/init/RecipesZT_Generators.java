@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.generators.init;
 
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
@@ -44,6 +45,18 @@ public interface RecipesZT_Generators
 				.map('t', BlocksZT.BASIC_FLUID_TANK)
 				.map('i', Tags.Items.INGOTS_IRON)
 				.result(BlocksZT_Generators.BASIC_LIQUID_FUEL_GENERATOR)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  w  ", " ptp ", "iptpi", " cgc ", "  b  ")
+				.map('w', BlocksZT.UNINSULATED_COPPER_WIRE)
+				.map('p', TagsZT.Items.PLATES_SILVER)
+				.map('t', BlocksZT.BASIC_FLUID_TANK)
+				.map('c', ItemsZT.COPPER_COIL)
+				.map('g', BlocksZT.BASIC_FUEL_GENERATOR)
+				.map('b', Items.IRON_BARS)
+				.map('i', BlocksZT.IRON_FLUID_PIPE)
+				.result(BlocksZT_Generators.MAGMATIC_GENERATOR)
 				.register();
 	}
 	

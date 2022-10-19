@@ -22,13 +22,22 @@
       "zeithtech:processing/block/basic_interrupt"
     ]
   },
-  "processing.block.fuel_generator.basic": {
+  "generators.block.fuel_generator.basic": {
     "sounds": [
-      "zeithtech:processing/block/fuel_generator/basic/1",
-      "zeithtech:processing/block/fuel_generator/basic/2",
-      "zeithtech:processing/block/fuel_generator/basic/3",
-      "zeithtech:processing/block/fuel_generator/basic/4",
-      "zeithtech:processing/block/fuel_generator/basic/5"
+      "zeithtech:generators/block/fuel_generator/basic/1",
+      "zeithtech:generators/block/fuel_generator/basic/2",
+      "zeithtech:generators/block/fuel_generator/basic/3",
+      "zeithtech:generators/block/fuel_generator/basic/4",
+      "zeithtech:generators/block/fuel_generator/basic/5"
+    ]
+  },
+  "generators.block.lfuel_generator.basic": {
+    "sounds": [
+      "zeithtech:generators/block/fuel_generator/basic/1",
+      "zeithtech:generators/block/fuel_generator/basic/2",
+      "zeithtech:generators/block/fuel_generator/basic/3",
+      "zeithtech:generators/block/fuel_generator/basic/4",
+      "zeithtech:generators/block/fuel_generator/basic/5"
     ]
   },
   "processing.block.electric_furnace.basic": {
@@ -56,5 +65,11 @@
       "zeithtech:processing/block/sawmill/basic/4",
       "zeithtech:processing/block/sawmill/basic/5"
     ]
+  },
+  "processing.block.metal_press.act": {
+    "sounds": [
+      "zeithtech:random/anvil_use_done"
+    ],
+    "subtitle": "subtitles.block.anvil.use"
   }
 }

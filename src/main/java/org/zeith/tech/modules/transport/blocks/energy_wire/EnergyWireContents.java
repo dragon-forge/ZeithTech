@@ -20,7 +20,7 @@ public class EnergyWireContents
 	
 	public int emit(TileEnergyWire wire)
 	{
-		max = wire.getWireProps().tier().maxFE();
+		max = wire.getWireProps().tier().maxTransfer();
 		
 		int emit = 0;
 		

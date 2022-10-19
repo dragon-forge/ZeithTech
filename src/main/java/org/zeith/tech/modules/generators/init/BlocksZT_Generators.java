@@ -4,6 +4,7 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.tech.modules.generators.blocks.fuel_generator.liquid.basic.BlockLiquidFuelGeneratorB;
 import org.zeith.tech.modules.generators.blocks.fuel_generator.solid.basic.BlockSolidFuelGeneratorB;
+import org.zeith.tech.modules.generators.blocks.magmatic.BlockMagmaticGenerator;
 
 @SimplyRegister(prefix = "generators/")
 public interface BlocksZT_Generators
@@ -13,4 +14,7 @@ public interface BlocksZT_Generators
 	
 	@RegistryName("lfuel_generator/basic")
 	BlockLiquidFuelGeneratorB BASIC_LIQUID_FUEL_GENERATOR = new BlockLiquidFuelGeneratorB();
+	
+	@RegistryName("magmatic_generator")
+	BlockMagmaticGenerator MAGMATIC_GENERATOR = new BlockMagmaticGenerator();
 }

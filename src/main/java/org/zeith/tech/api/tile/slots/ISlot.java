@@ -23,7 +23,8 @@ public interface ISlot<T>
 	{
 		final var seeded = SampleColorGenerator.generateRandom(SampleColorGenerator.getCaller(), seedInfo);
 		int rgb = MathHelper.hsvToRgb(seeded.nextFloat(), 1F, 1F);
-		return simpleSlot(new UUID(seeded.nextLong(), seeded.nextLong()), access, role, new Color(rgb, false));
+		
+		return simpleSlot(new UUID(seeded.nextLong(), seeded.nextLong()), access, role, access.getColorOverride().orElseGet(() -> new Color(rgb, false)));
 	}
 	
 	static <T> ISlot<T> simpleSlot(UUID uuid, ISlotAccess<T> access, SlotRole role, Color color)

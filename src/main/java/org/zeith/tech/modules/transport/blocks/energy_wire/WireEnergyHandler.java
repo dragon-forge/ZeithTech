@@ -20,7 +20,7 @@ public record WireEnergyHandler(Direction from, TileEnergyWire wire)
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate)
 	{
-		maxReceive = Math.min(maxReceive, wire.getWireProps().tier().maxFE() - (int) wire.energyPassed);
+		maxReceive = Math.min(maxReceive, wire.getWireProps().tier().maxTransfer() - (int) wire.energyPassed);
 		if(maxReceive <= 0)
 			return 0;
 		

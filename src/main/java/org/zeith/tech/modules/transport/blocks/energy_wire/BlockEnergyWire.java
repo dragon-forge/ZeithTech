@@ -74,7 +74,7 @@ public class BlockEnergyWire
 			@Override
 			public void appendHoverText(ItemStack stack, @Nullable Level lvl, List<Component> tooltip, TooltipFlag flags)
 			{
-				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_max_io", Component.literal(Integer.toString(properties.tier().maxFE()))).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_max_io", Component.literal(Integer.toString(properties.tier().maxTransfer()))).withStyle(ChatFormatting.GRAY));
 				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_loss", Component.literal(Float.toString(properties.energyLoss()))).withStyle(ChatFormatting.GRAY));
 			}
 		};

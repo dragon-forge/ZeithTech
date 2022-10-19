@@ -75,6 +75,12 @@ public class TileFluidPipe
 	
 	public EnumSet<Direction> flowDirections = ALL_FLOW_DIRECTIONS;
 	
+	@NBTSerializable("VacuumRootTicks")
+	public int vacuumRootTicks;
+	
+	@NBTSerializable("VacuumPriority")
+	public int vacuumPriority;
+	
 	public TileFluidPipe(BlockPos pos, BlockState state)
 	{
 		this(TilesZT_Transport.FLUID_PIPE, pos, state);
@@ -138,6 +144,7 @@ public class TileFluidPipe
 							.filter(p -> (p.size() > 1 ? getTo(p.get(1)) : null) != null)
 							.map(p -> p.get(1))
 							.distinct()
+							.sorted(Comparator.comparingInt(i -> i instanceof TileFluidPipe p ? -p.vacuumPriority : 0))
 							.forEach(preferred::add);
 					
 					this.flowDirections = EnumSet.copyOf(lst);
@@ -309,6 +316,17 @@ public class TileFluidPipe
 						);
 			}
 		} else vacuumFluid.empty();
+		
+		if(vacuumRootTicks > 0)
+			--vacuumRootTicks;
+		else
+		{
+			for(Direction dir : BlockFluidPipe.DIRECTIONS)
+				if(level.getBlockEntity(worldPosition.relative(dir)) instanceof TileFluidPipe pipe)
+					this.vacuumPriority = Math.max(pipe.vacuumPriority, vacuumPriority);
+			if(vacuumPriority > 0)
+				--vacuumPriority;
+		}
 	}
 	
 	public void setLightLevel(int light)
@@ -502,8 +520,12 @@ public class TileFluidPipe
 	@Override
 	public void createVacuum(FluidIngredient fluid, int ticks)
 	{
-		TraversableHelper.allTraversables(this, FluidStack.EMPTY, true)
-				.stream()
+		vacuumRootTicks = ticks;
+		
+		var ts = TraversableHelper.allTraversables(this, FluidStack.EMPTY, true);
+		vacuumPriority = ts.size(); // this pipe is the endpoint
+		
+		ts.stream()
 				.filter(TileFluidPipe.class::isInstance)
 				.forEach(t ->
 				{
