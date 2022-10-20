@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -23,6 +24,7 @@ import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.IHasPriority;
 import org.zeith.tech.api.tile.energy.EnergyMeasurableWrapper;
 import org.zeith.tech.api.tile.energy.IEnergyMeasurable;
+import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.modules.transport.blocks.base.traversable.EndpointData;
 import org.zeith.tech.modules.transport.blocks.base.traversable.ITraversable;
@@ -44,6 +46,9 @@ public class TileEnergyWire
 	
 	@NBTSerializable("Sides")
 	public final SideConfig6 sideConfigs = new SideConfig6(SideConfig.NONE);
+	
+	@NBTSerializable("Facades")
+	public final FacadeData facades = new FacadeData(() -> getWireBlock().getShapeWithNoFacades(getBlockState()).toAabbs(), this::facadesUpdated);
 	
 	public final EnergyMeasurableWrapper measurables = new EnergyMeasurableWrapper(this::getPosition, this::getLoad);
 	
@@ -76,6 +81,17 @@ public class TileEnergyWire
 	}
 	
 	private float lastLoad;
+	
+	public void facadesUpdated()
+	{
+		if(isOnServer())
+			sync();
+		if(isOnClient())
+		{
+			requestModelDataUpdate();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+		}
+	}
 	
 	@Override
 	public void update()
@@ -134,15 +150,22 @@ public class TileEnergyWire
 					.toArray(LazyOptional[]::new);
 	
 	private final LazyOptional<IEnergyMeasurable> energyMeasurable = LazyOptional.of(() -> measurables);
+	private final LazyOptional<FacadeData> facadesCap = LazyOptional.of(() -> facades);
 	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(side != null && cap == ForgeCapabilities.ENERGY && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE)
-			return sidedEnergyHandlers[side.ordinal()].cast();
-		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE)
-			return energyMeasurable.cast();
+		if(side != null && cap == ForgeCapabilities.ENERGY && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE) return sidedEnergyHandlers[side.ordinal()].cast();
+		if(cap == ZeithTechCapabilities.ENERGY_MEASURABLE) return energyMeasurable.cast();
+		if(cap == ZeithTechCapabilities.FACADES) return facadesCap.cast();
 		return super.getCapability(cap, side);
+	}
+	
+	@Override
+	public @NotNull ModelData getModelData()
+	{
+		return facades.attach(ModelData.builder(), this)
+				.build();
 	}
 	
 	public int getPriority(Direction dir)

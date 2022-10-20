@@ -89,6 +89,11 @@
         "model": "zeithtech:block/transport/item_pipes/copper/west",
         "uvlock": true
       }
+    },
+    {
+      "apply": {
+        "model": "zeithtech:block/builtin/facades"
+      }
     }
   ]
 }

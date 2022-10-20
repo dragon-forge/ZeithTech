@@ -1,8 +1,12 @@
 package org.zeith.tech.compat;
 
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import org.zeith.tech.api.recipes.IRecipeLifecycleListener;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.utils.LegacyEventBus;
+
+import java.util.Optional;
 
 public class BaseCompat
 		implements IRecipeLifecycleListener
@@ -21,5 +25,10 @@ public class BaseCompat
 	public <T extends IZeithTechRecipe> void onRecipeRegistered(T recipe)
 	{
 		IRecipeLifecycleListener.super.onRecipeRegistered(recipe);
+	}
+	
+	public Optional<BlockState> getFacadeFromItem(ItemStack stack)
+	{
+		return Optional.empty();
 	}
 }

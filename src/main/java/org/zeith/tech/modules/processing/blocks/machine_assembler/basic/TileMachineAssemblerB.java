@@ -83,7 +83,7 @@ public class TileMachineAssemblerB
 			
 			if(r == null && atTickRate(5))
 			{
-				var recipe = RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY
+				var recipe = RecipeRegistriesZT_Processing.MACHINE_ASSEMBLY
 						.getRecipes()
 						.stream()
 						.filter(this::isValidRecipe)
@@ -145,7 +145,7 @@ public class TileMachineAssemblerB
 	
 	public RecipeMachineAssembler getActiveRecipe()
 	{
-		var rec = RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY.getRecipe(_activeRecipeId);
+		var rec = RecipeRegistriesZT_Processing.MACHINE_ASSEMBLY.getRecipe(_activeRecipeId);
 		if(rec != null && !isValidRecipe(rec))
 		{
 			_activeRecipeId = null;

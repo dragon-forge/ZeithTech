@@ -59,6 +59,11 @@
         "model": "zeithtech:block/transport/wires/silver/uninsulated/west",
         "uvlock": true
       }
+    },
+    {
+      "apply": {
+        "model": "zeithtech:block/builtin/facades"
+      }
     }
   ]
 }

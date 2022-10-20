@@ -2,7 +2,9 @@ package org.zeith.tech.compat.ae2;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -15,10 +17,30 @@ import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 import org.zeith.tech.utils.LegacyEventBus;
 
+import java.util.Optional;
+
 public class AE2Compat
 		extends BaseCompat
 {
 	private final Class<?> P2PTunnelAttunement = ReflectionUtil.fetchClass("appeng.api.features.P2PTunnelAttunement");
+	private final Class<?> IFacadeItem = ReflectionUtil.fetchClass("appeng.facade.IFacadeItem");
+	
+	@Override
+	public Optional<BlockState> getFacadeFromItem(ItemStack stack)
+	{
+		if(!stack.isEmpty() && IFacadeItem.isInstance(stack.getItem()))
+		{
+			try
+			{
+				return Optional.ofNullable(BlockState.class.cast(IFacadeItem.getDeclaredMethod("getTextureBlockState", ItemStack.class).invoke(stack.getItem(), stack)));
+			} catch(Throwable e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		return super.getFacadeFromItem(stack);
+	}
 	
 	@Override
 	public void setup(LegacyEventBus bus)

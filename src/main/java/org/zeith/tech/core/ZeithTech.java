@@ -3,6 +3,7 @@ package org.zeith.tech.core;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.*;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -31,8 +32,7 @@ import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.utils.LegacyEventBus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Mod(ZeithTech.MOD_ID)
@@ -169,5 +169,14 @@ public class ZeithTech
 	public static void forCompats(Consumer<BaseCompat> handler)
 	{
 		compats.forEach(handler);
+	}
+	
+	@Override
+	public Optional<BlockState> getFacadeFromItem(ItemStack stack)
+	{
+		return compats
+				.stream()
+				.flatMap(c -> c.getFacadeFromItem(stack).stream())
+				.findFirst();
 	}
 }

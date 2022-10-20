@@ -3,6 +3,7 @@ package org.zeith.tech.api;
 import net.minecraftforge.common.capabilities.*;
 import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.IEnergyMeasurable;
+import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.slots.ITileSlotProvider;
 
@@ -21,6 +22,10 @@ public class ZeithTechCapabilities
 	});
 	
 	public static final Capability<RedstoneControl> REDSTONE_CONTROL = CapabilityManager.get(new CapabilityToken<>()
+	{
+	});
+	
+	public static final Capability<FacadeData> FACADES = CapabilityManager.get(new CapabilityToken<>()
 	{
 	});
 }

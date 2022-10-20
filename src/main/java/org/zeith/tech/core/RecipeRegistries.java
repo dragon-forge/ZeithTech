@@ -24,7 +24,7 @@ class RecipeRegistries
 	@Override
 	public NamespacedRecipeRegistry<RecipeMachineAssembler> machineAssembly()
 	{
-		return RecipeRegistriesZT.MACHINE_ASSEBMLY;
+		return RecipeRegistriesZT.MACHINE_ASSEMBLY;
 	}
 	
 	@Override

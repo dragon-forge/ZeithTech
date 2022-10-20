@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -14,8 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.IHasPriority;
+import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.modules.transport.blocks.base.traversable.*;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
@@ -35,6 +38,9 @@ public class TileItemPipe
 	
 	@NBTSerializable("Sides")
 	public final SideConfig6 sideConfigs = new SideConfig6(SideConfig.NONE);
+	
+	@NBTSerializable("Facades")
+	public final FacadeData facades = new FacadeData(() -> getPipeBlock().getShapeWithNoFacades(getBlockState()).toAabbs(), this::facadesUpdated);
 	
 	@NBTSerializable("Speed")
 	public float speed;
@@ -138,6 +144,17 @@ public class TileItemPipe
 		return storeAnything(to, item, false);
 	}
 	
+	public void facadesUpdated()
+	{
+		if(isOnServer())
+			sync();
+		if(isOnClient())
+		{
+			requestModelDataUpdate();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+		}
+	}
+	
 	@Override
 	public void update()
 	{
@@ -149,13 +166,21 @@ public class TileItemPipe
 					.map(dir -> LazyOptional.of(() -> new PipeItemHandler(this, dir)))
 					.toArray(LazyOptional[]::new);
 	
+	private final LazyOptional<FacadeData> facadesCap = LazyOptional.of(() -> facades);
+	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(side != null && cap == ForgeCapabilities.ITEM_HANDLER && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE)
-			return sidedItemHandlers[side.ordinal()].cast();
-		
+		if(side != null && cap == ForgeCapabilities.ITEM_HANDLER && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE) return sidedItemHandlers[side.ordinal()].cast();
+		if(cap == ZeithTechCapabilities.FACADES) return facadesCap.cast();
 		return super.getCapability(cap, side);
+	}
+	
+	@Override
+	public @NotNull ModelData getModelData()
+	{
+		return facades.attach(ModelData.builder(), this)
+				.build();
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public interface RecipeRegistriesZT_Processing
 					.onClientRecipeReceive(broadcast())
 					.build();
 	
-	NamespacedRecipeRegistry<RecipeMachineAssembler> MACHINE_ASSEBMLY =
+	NamespacedRecipeRegistry<RecipeMachineAssembler> MACHINE_ASSEMBLY =
 			RecipeRegistryFactory.namespacedBuilder(RecipeMachineAssembler.class)
 					.registryId(new ResourceLocation(ZeithTech.MOD_ID, "machine_assembly"))
 					.recipeBuilderFactory(RecipeMachineAssembler.Builder::new)

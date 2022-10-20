@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -23,10 +24,12 @@ import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.mcf.fluid.FluidHelper;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
+import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.block.ZeithTechStateProperties;
 import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.IFluidPipe;
 import org.zeith.tech.api.tile.IHasPriority;
+import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.tile.sided.SideConfig6;
 import org.zeith.tech.core.net.properties.PropertyIntArray;
 import org.zeith.tech.modules.transport.blocks.base.traversable.*;
@@ -48,6 +51,9 @@ public class TileFluidPipe
 	
 	@NBTSerializable("Sides")
 	public final SideConfig6 sideConfigs = new SideConfig6(SideConfig.NONE);
+	
+	@NBTSerializable("Facades")
+	public final FacadeData facades = new FacadeData(() -> getPipeBlock().getShapeWithNoFacades(getBlockState()).toAabbs(), this::facadesUpdated);
 	
 	@NBTSerializable("Contents")
 	public final SerializableFluidTank tank;
@@ -111,6 +117,17 @@ public class TileFluidPipe
 	}
 	
 	final List<ITraversable<FluidStack>> preferred = new ArrayList<>();
+	
+	public void facadesUpdated()
+	{
+		if(isOnServer())
+			sync();
+		if(isOnClient())
+		{
+			requestModelDataUpdate();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+		}
+	}
 	
 	@Override
 	public void update()
@@ -508,13 +525,21 @@ public class TileFluidPipe
 					.map(dir -> LazyOptional.of(() -> new PipeFluidHandler(this, dir)))
 					.toArray(LazyOptional[]::new);
 	
+	private final LazyOptional<FacadeData> facadesCap = LazyOptional.of(() -> facades);
+	
 	@Override
 	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
 	{
-		if(side != null && cap == ForgeCapabilities.FLUID_HANDLER && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE)
-			return sidedFluidHandlers[side.ordinal()].cast();
-		
+		if(side != null && cap == ForgeCapabilities.FLUID_HANDLER && sideConfigs.get(side.ordinal()) != SideConfig.DISABLE) return sidedFluidHandlers[side.ordinal()].cast();
+		if(cap == ZeithTechCapabilities.FACADES) return facadesCap.cast();
 		return super.getCapability(cap, side);
+	}
+	
+	@Override
+	public @NotNull ModelData getModelData()
+	{
+		return facades.attach(ModelData.builder(), this)
+				.build();
 	}
 	
 	@Override

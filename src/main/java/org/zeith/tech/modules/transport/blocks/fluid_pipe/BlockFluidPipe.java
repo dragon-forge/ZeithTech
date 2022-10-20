@@ -1,9 +1,10 @@
 package org.zeith.tech.modules.transport.blocks.fluid_pipe;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.*;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
@@ -24,6 +26,7 @@ import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.block.IMultiFluidLoggableBlock;
 import org.zeith.tech.api.block.ZeithTechStateProperties;
+import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.blocks.BaseEntityBlockZT;
@@ -105,10 +108,25 @@ public class BlockFluidPipe
 	
 	private final VoxelShapeCache shapeCache;
 	
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)
+	public VoxelShape getShapeWithNoFacades(BlockState state)
 	{
 		return shapeCache.get(state);
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext p_60558_)
+	{
+		if(level.getBlockEntity(pos) instanceof TileFluidPipe pipe)
+			return pipe.facades.orShapes(getShapeWithNoFacades(state));
+		return getShapeWithNoFacades(state);
+	}
+	
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+	{
+		if(level.getBlockEntity(pos) instanceof TileFluidPipe pipe)
+			return pipe.facades.pickFacade(pos, target.getLocation()).orElseGet(() -> super.getCloneItemStack(state, target, level, pos, player));
+		return super.getCloneItemStack(state, target, level, pos, player);
 	}
 	
 	@Override
@@ -202,5 +220,24 @@ public class BlockFluidPipe
 	public CreativeModeTab getCreativeTab()
 	{
 		return ZeithTech.TAB;
+	}
+	
+	@Override
+	public void onRemove(BlockState prevState, Level world, BlockPos pos, BlockState newState, boolean flag64)
+	{
+		if(!prevState.is(newState.getBlock()))
+		{
+			BlockEntity b = world.getBlockEntity(pos);
+			if(b instanceof TileFluidPipe pipe)
+			{
+				NonNullList<ItemStack> drops = NonNullList.create();
+				for(FacadeData.FacadeFace facadeFace : pipe.facades.getFaces().values())
+					drops.add(facadeFace.facadeItem());
+				Containers.dropContents(world, pos, drops);
+				world.updateNeighbourForOutputSignal(pos, this);
+			}
+			
+			super.onRemove(prevState, world, pos, newState, flag64);
+		}
 	}
 }

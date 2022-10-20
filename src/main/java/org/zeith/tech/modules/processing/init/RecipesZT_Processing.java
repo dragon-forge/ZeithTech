@@ -60,7 +60,7 @@ public interface RecipesZT_Processing
 	
 	static void addMachineAssemblyRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeMachineAssembler> evt)
 	{
-		if(!evt.is(RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY)) return;
+		if(!evt.is(RecipeRegistriesZT_Processing.MACHINE_ASSEMBLY)) return;
 		
 		var f = evt.<RecipeMachineAssembler.Builder> builderFactory();
 		
@@ -76,10 +76,11 @@ public interface RecipesZT_Processing
 				.register();
 		
 		f.get().minTier(TechTier.BASIC)
-				.shape("  c  ", " ppp ", "cmdmc", " php ", "  c  ")
+				.shape("  c  ", " gpg ", "cmdmc", " php ", "  c  ")
 				.map('c', Tags.Items.INGOTS_COPPER)
 				.map('p', TagsZT.Items.PLATES_IRON)
 				.map('m', ItemsZT.MOTOR)
+				.map('g', TagsZT.Items.GEARS_STONE)
 				.map('h', Tags.Items.CHESTS)
 				.map('d', ItemsZT_Processing.IRON_MINING_HEAD)
 				.result(BlocksZT_Processing.BASIC_GRINDER)
@@ -96,31 +97,34 @@ public interface RecipesZT_Processing
 				.register();
 		
 		f.get().minTier(TechTier.BASIC)
-				.shape("  h  ", " ccc ", "iCwCi", " mpm ", "  p  ")
+				.shape("  h  ", " ccc ", "iCwCi", " mgm ", "  p  ")
 				.map('h', Items.HOPPER)
 				.map('c', TagsZT.Items.PLATES_COPPER)
 				.map('i', Tags.Items.INGOTS_IRON)
 				.map('C', ItemsZT.COPPER_COIL)
 				.map('w', Tags.Items.CHESTS)
 				.map('m', ItemsZT.MOTOR)
+				.map('g', TagsZT.Items.GEARS_DIAMOND)
 				.map('p', BlocksZT.MINING_PIPE)
 				.result(BlocksZT_Processing.BASIC_QUARRY)
 				.register();
 		
 		f.get().minTier(TechTier.BASIC)
-				.shape("  i  ", " igi ", "iCgCi", " pmp ", "  r  ")
+				.shape("  i  ", " igi ", "iCGCi", " pmp ", "  r  ")
 				.map('i', TagsZT.Items.PLATES_IRON)
 				.map('r', Tags.Items.INGOTS_IRON)
 				.map('g', Tags.Items.GLASS)
 				.map('C', ItemsZT.COPPER_COIL)
+				.map('G', TagsZT.Items.GEARS_GOLD)
 				.map('p', BlocksZT.IRON_FLUID_PIPE)
 				.map('m', ItemsZT.MOTOR)
 				.result(BlocksZT_Processing.FLUID_CENTRIFUGE)
 				.register();
 		
 		f.get().minTier(TechTier.BASIC)
-				.shape("  p  ", " ama ", "actca", " lMl ", "  M  ")
+				.shape("  p  ", " gmg ", "actca", " lMl ", "  M  ")
 				.map('p', BlocksZT.IRON_FLUID_PIPE)
+				.map('g', TagsZT.Items.GEARS_IRON)
 				.map('a', TagsZT.Items.INGOTS_ALUMINUM)
 				.map('m', ItemsZT.MOTOR)
 				.map('c', ItemsZT.COPPER_COIL)
@@ -134,7 +138,7 @@ public interface RecipesZT_Processing
 		f.get().minTier(TechTier.BASIC)
 				.shape("  g  ", " aca ", "icsci", " aca ", "  b  ")
 				.map('g', Tags.Items.GLASS)
-				.map('i', Tags.Items.INGOTS_IRON)
+				.map('i', TagsZT.Items.GEARS_SILVER)
 				.map('a', BlocksZT.BASIC_FLUID_TANK)
 				.map('c', ItemsZT.COPPER_COIL)
 				.map('s', TagsZT.Items.STORAGE_BLOCKS_SILVER)
@@ -143,11 +147,12 @@ public interface RecipesZT_Processing
 				.register();
 		
 		f.get().minTier(TechTier.BASIC)
-				.shape("  c  ", " mbm ", "csasc", " mbm ", "  c  ")
+				.shape("  c  ", " mbm ", "gsasg", " mbm ", "  c  ")
 				.map('c', Items.CHAIN)
 				.map('m', ItemsZT.MOTOR)
 				.map('b', Tags.Items.STORAGE_BLOCKS_IRON)
 				.map('s', TagsZT.Items.INGOTS_SILVER)
+				.map('g', TagsZT.Items.GEARS_IRON)
 				.map('a', Items.ANVIL)
 				.result(BlocksZT_Processing.METAL_PRESS)
 				.register();

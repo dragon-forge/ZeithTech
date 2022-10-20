@@ -59,6 +59,11 @@
         "model": "zeithtech:block/transport/fluid_pipes/wooden/west",
         "uvlock": true
       }
+    },
+    {
+      "apply": {
+        "model": "zeithtech:block/builtin/facades"
+      }
     }
   ]
 }

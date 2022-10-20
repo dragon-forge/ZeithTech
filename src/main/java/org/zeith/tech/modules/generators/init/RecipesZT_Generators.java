@@ -21,7 +21,7 @@ public interface RecipesZT_Generators
 	
 	static void addMachineAssemblyRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeMachineAssembler> evt)
 	{
-		if(!evt.is(RecipeRegistriesZT_Processing.MACHINE_ASSEBMLY)) return;
+		if(!evt.is(RecipeRegistriesZT_Processing.MACHINE_ASSEMBLY)) return;
 		
 		var f = evt.<RecipeMachineAssembler.Builder> builderFactory();
 		
