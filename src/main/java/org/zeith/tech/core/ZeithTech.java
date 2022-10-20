@@ -11,7 +11,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
@@ -26,10 +25,12 @@ import org.zeith.tech.compat.Compats;
 import org.zeith.tech.core.audio.ClientAudioSystem;
 import org.zeith.tech.core.audio.CommonAudioSystem;
 import org.zeith.tech.core.mixins.TiersAccessor;
+import org.zeith.tech.core.tabs.CreativeModeTabZT;
+import org.zeith.tech.core.tabs.CreativeModeTabZTF;
 import org.zeith.tech.modules.generators.init.AdvancementTriggersZT;
 import org.zeith.tech.modules.shared.SharedModule;
-import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
+import org.zeith.tech.modules.transport.items.ItemFacade;
 import org.zeith.tech.utils.LegacyEventBus;
 
 import java.util.*;
@@ -47,14 +48,8 @@ public class ZeithTech
 	
 	public static final Logger LOG = LogManager.getLogger("ZeithTech");
 	
-	public static final CreativeModeTab TAB = new CreativeModeTab(MOD_ID)
-	{
-		@Override
-		public @NotNull ItemStack makeIcon()
-		{
-			return new ItemStack(ItemsZT.IRON_HAMMER);
-		}
-	};
+	public static final CreativeModeTab TAB = new CreativeModeTabZT();
+	public static final CreativeModeTab FACADES_TAB = new CreativeModeTabZTF();
 	
 	public final LegacyEventBus busses;
 	
@@ -174,6 +169,12 @@ public class ZeithTech
 	@Override
 	public Optional<BlockState> getFacadeFromItem(ItemStack stack)
 	{
+		Optional<BlockState> state = Optional.empty();
+		if(!stack.isEmpty() && stack.getItem() instanceof ItemFacade facade)
+			state = Optional.ofNullable(facade.getFacadeBlockState(stack));
+		
+		if(state.isPresent()) return state;
+		
 		return compats
 				.stream()
 				.flatMap(c -> c.getFacadeFromItem(stack).stream())

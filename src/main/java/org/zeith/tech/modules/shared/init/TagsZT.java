@@ -113,6 +113,7 @@ public class TagsZT
 		}
 		
 		public static final TagKey<Block> MINING_PIPE = modTag("mining_pipe");
+		public static final TagKey<Block> FACADE_WHITELIST = modTag("facade_whitelist");
 		public static final TagKey<Block> MINEABLE_WITH_WIRE_CUTTER = vanillaTag("mineable/wire_cutter");
 		public static final TagKey<Block> MINEABLE_WITH_MINING_HEAD = vanillaTag("mineable/mining_head");
 		public static final TagKey<Block> HEVEA_LOGS = modTag("hevea_logs");

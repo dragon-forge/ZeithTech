@@ -3,12 +3,14 @@ package org.zeith.tech.compat.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -31,6 +33,7 @@ import org.zeith.tech.compat.jei.category.hammering.AdvancedHammeringCategory;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
 import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.core.cfg.ZeithTechTransportConfigs;
 import org.zeith.tech.modules.generators.blocks.fuel_generator.liquid.basic.GuiLiquidFuelGeneratorB;
 import org.zeith.tech.modules.generators.blocks.fuel_generator.solid.basic.GuiSolidFuelGeneratorB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.ContainerElectricFurnaceB;
@@ -75,6 +78,13 @@ public class JeiZT
 	{
 		if(this.jeiRuntime == null) ZeithTech.compats.add(this);
 		this.jeiRuntime = jeiRuntime;
+		
+		if(ZeithTechTransportConfigs.INSTANCE.getCurrent().main.facadesInJEI)
+		{
+			NonNullList<ItemStack> items = NonNullList.create();
+			ZeithTech.FACADES_TAB.fillItemList(items);
+			jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, items);
+		}
 	}
 	
 	@Override

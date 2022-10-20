@@ -64,10 +64,12 @@ public class TileWasteProcessor
 			.setForAll(RelativeDirection.UP, SideConfig.DISABLE);
 	
 	@NBTSerializable("InputA")
-	public final SerializableFluidTank input_a = new SerializableFluidTank(5000, this::canFitFluidA);
+	public final SerializableFluidTank input_a = new SerializableFluidTank(5000, this::canFitFluidA)
+			.withColor(0x595959);
 	
 	@NBTSerializable("InputB")
-	public final SerializableFluidTank input_b = new SerializableFluidTank(5000, this::canFitFluidB);
+	public final SerializableFluidTank input_b = new SerializableFluidTank(5000, this::canFitFluidB)
+			.withColor(0xBAFFFF);
 	
 	@NBTSerializable("Items")
 	public final SidedInventory inventory = new SidedInventory(4, sidedConfig.createItemAccess(new int[] { 0 }, new int[] {
@@ -80,10 +82,12 @@ public class TileWasteProcessor
 	public final RedstoneControl redstone = new RedstoneControl();
 	
 	@NBTSerializable("OutputA")
-	public final SerializableFluidTank output_a = new SerializableFluidTank(5000);
+	public final SerializableFluidTank output_a = new SerializableFluidTank(5000)
+			.withColor(0xFFD5BA);
 	
 	@NBTSerializable("OutputB")
-	public final SerializableFluidTank output_b = new SerializableFluidTank(5000);
+	public final SerializableFluidTank output_b = new SerializableFluidTank(5000)
+			.withColor(0xFFFFFF);
 	
 	public final FluidSmoothing tank1, tank2, tank3, tank4;
 	

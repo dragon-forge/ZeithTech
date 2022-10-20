@@ -3,11 +3,13 @@ package org.zeith.tech.modules.generators.blocks.magmatic;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -210,9 +212,35 @@ public class TileMagmaticGenerator
 		}
 		
 		if(isOnClient() && isEnabled() && !isInterrupted())
+		{
 			ZeithTechAPI.get()
 					.getAudioSystem()
 					.playMachineSoundLoop(this, SoundsZT_Processing.MAGMATIC_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
+			
+			var rng = level.getRandom();
+			
+			if(rng.nextInt(3) == 0)
+			{
+				double xCenter = (double) worldPosition.getX() + 0.5;
+				double yMin = (double) worldPosition.getY() + 0.1875;
+				double zCenter = (double) worldPosition.getZ() + 0.5;
+				
+				Direction front = getFront();
+				
+				Direction.Axis axis = front.getAxis();
+				double d3 = 0.52D;
+				
+				double y = rng.nextDouble() * 5.0D / 16.0D;
+				
+				double faceSpread = rng.nextDouble() * 0.5D - 0.25D;
+				double x = axis == Direction.Axis.X ? (double) front.getStepX() * d3 : faceSpread;
+				double z = axis == Direction.Axis.Z ? (double) front.getStepZ() * d3 : faceSpread;
+				
+				Vec3 dir = Vec3.atLowerCornerOf(front.getNormal()).scale(0.025F);
+				
+				level.addParticle(ParticleTypes.SMOKE, xCenter + x, yMin + y, zCenter + z, dir.x, dir.y, dir.z);
+			}
+		}
 	}
 	
 	public void consumeFuel()

@@ -1,6 +1,7 @@
 # English translations
 
 itemGroup.zeithtech=ZeithTech
+itemGroup.zeithtech.facades=ZeithTech: Facades
 
 ### World Module ###
 block.zeithtech.hevea_sapling=Hevea Sapling
@@ -141,6 +142,7 @@ info.zeithtech_processing.hammer_hit_count=%s hits
 
 ### Transport Module ###
 item.zeithtech.transport.multimeter=Multimeter
+item.zeithtech.transport.facade=Facade - %s
 
 block.zeithtech.transport.fluid_tank.basic=Basic Fluid Tank
 
