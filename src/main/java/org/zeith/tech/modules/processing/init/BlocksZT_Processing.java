@@ -8,6 +8,7 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.tech.modules.processing.blocks.BlockMiningPipe;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.BlockElectricFurnaceB;
+import org.zeith.tech.modules.processing.blocks.facade_slicer.BlockFacadeSlicer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.BlockFluidCentrifuge;
 import org.zeith.tech.modules.processing.blocks.fluid_pump.BlockFluidPump;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
@@ -49,4 +50,7 @@ public interface BlocksZT_Processing
 	
 	@RegistryName("metal_press")
 	BlockMetalPress METAL_PRESS = new BlockMetalPress();
+	
+	@RegistryName("facade_slicer")
+	BlockFacadeSlicer FACADE_SLICER = new BlockFacadeSlicer();
 }

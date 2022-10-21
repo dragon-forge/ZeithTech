@@ -2,6 +2,7 @@ package org.zeith.tech.api.recipes.processing;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -146,6 +147,12 @@ public class RecipeWasteProcessor
 		@Override
 		protected ResourceLocation generateId()
 		{
+			if(resultA.isEmpty() && resultB.isEmpty())
+			{
+				ItemStack stack = byproduct.stream().map(ExtraOutput::getMinimalResult).findFirst().orElse(ItemStack.EMPTY);
+				if(!stack.isEmpty())
+					return RegistrationAllocator.findFreeLocation(event, ForgeRegistries.ITEMS.getKey(stack.getItem()));
+			}
 			ResourceLocation rl = ForgeRegistries.FLUIDS.getKey((resultA.isEmpty() ? resultB : resultA).getFluid());
 			return RegistrationAllocator.findFreeLocation(event, rl);
 		}
@@ -153,7 +160,7 @@ public class RecipeWasteProcessor
 		@Override
 		protected void validate() throws IllegalStateException
 		{
-			if(resultA.isEmpty() && resultB.isEmpty())
+			if(resultA.isEmpty() && resultB.isEmpty() && byproduct.isEmpty())
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have a defined result!");
 			if(inputA.isEmpty() && inputB.isEmpty() && inputItem.isEmpty())
 				throw new IllegalStateException(getClass().getSimpleName() + " does not have a defined input! (must have any fluid input, or item input)");

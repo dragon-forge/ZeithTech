@@ -121,7 +121,7 @@ public class TileWasteProcessor
 	{
 		return RecipeRegistriesZT_Processing.WASTE_PROCESSING.getRecipes()
 				.stream()
-				.anyMatch(recipe -> recipe.getInputA().fluid().test(stack));
+				.anyMatch(recipe -> recipe.getInputA().fluidMatches(stack));
 	}
 	
 	public boolean canFitFluidB(FluidStack stack)
@@ -129,7 +129,7 @@ public class TileWasteProcessor
 		return !input_a.isEmpty() &&
 				RecipeRegistriesZT_Processing.WASTE_PROCESSING.getRecipes()
 						.stream()
-						.anyMatch(recipe -> recipe.getInputA().fluid().test(input_a.getFluid()) && recipe.getInputB().fluid().test(stack));
+						.anyMatch(recipe -> recipe.getInputA().fluidMatches(input_a.getFluid()) && recipe.getInputB().fluidMatches(stack));
 	}
 	
 	public boolean canInputItem(ItemStack stack)
@@ -139,17 +139,14 @@ public class TileWasteProcessor
 			return RecipeRegistriesZT_Processing.WASTE_PROCESSING.getRecipes()
 					.stream()
 					.anyMatch(recipe ->
-							recipe.getInputA().isEmpty()
-									&& recipe.getInputB().isEmpty()
-									&& recipe.getInputItem().test(stack)
+							recipe.getInputItem().test(stack)
 					);
 		} else if(input_b.isEmpty())
 		{
 			return RecipeRegistriesZT_Processing.WASTE_PROCESSING.getRecipes()
 					.stream()
 					.anyMatch(recipe ->
-							recipe.getInputA().test(input_a.getFluid())
-									&& recipe.getInputB().isEmpty()
+							recipe.getInputA().fluidMatches(input_a.getFluid())
 									&& recipe.getInputItem().test(stack)
 					);
 		} else
@@ -157,8 +154,8 @@ public class TileWasteProcessor
 			return RecipeRegistriesZT_Processing.WASTE_PROCESSING.getRecipes()
 					.stream()
 					.anyMatch(recipe ->
-							recipe.getInputA().test(input_a.getFluid())
-									&& recipe.getInputB().test(input_b.getFluid())
+							recipe.getInputA().fluidMatches(input_a.getFluid())
+									&& recipe.getInputB().fluidMatches(input_b.getFluid())
 									&& recipe.getInputItem().test(stack)
 					);
 		}

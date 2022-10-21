@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "zeithtech:processing/item/sulfuric_acid_bucket"
+  }
+}

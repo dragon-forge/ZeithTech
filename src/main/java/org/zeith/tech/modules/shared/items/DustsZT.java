@@ -13,6 +13,9 @@ public interface DustsZT
 	@RegistryName("coal")
 	Item COAL_DUST = BaseZT.newItem(TagsZT.Items.DUSTS_COAL);
 	
+	@RegistryName("iron")
+	Item IRON_DUST = BaseZT.newItem(TagsZT.Items.DUSTS_IRON);
+	
 	@RegistryName("bioluminescent")
 	Item BIOLUMINESCENT_DUST = BaseZT.newItem(Tags.Items.DUSTS_GLOWSTONE);
 }

@@ -1,0 +1,82 @@
+{
+  "loader": "zeithtech:item/multi_tool",
+  "particle": "zeithtech:item/multi_tool/basic",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        -83,
+        91,
+        83
+      ],
+      "translation": [
+        0.25,
+        2,
+        -7
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        0,
+        2,
+        -7
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        22,
+        97,
+        -9
+      ],
+      "translation": [
+        4,
+        6.5,
+        2
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        -88,
+        -15
+      ],
+      "translation": [
+        4.75,
+        6.25,
+        2.5
+      ]
+    },
+    "ground": {
+      "translation": [
+        4.5,
+        2.25,
+        0
+      ]
+    },
+    "gui": {
+      "translation": [
+        1.25,
+        3.75,
+        0
+      ]
+    },
+    "head": {
+      "translation": [
+        0,
+        12.5,
+        0
+      ]
+    },
+    "fixed": {
+      "translation": [
+        1.25,
+        4.25,
+        0
+      ]
+    }
+  }
+}

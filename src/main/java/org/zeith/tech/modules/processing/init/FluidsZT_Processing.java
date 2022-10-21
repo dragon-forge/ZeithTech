@@ -18,6 +18,8 @@ public interface FluidsZT_Processing
 	
 	FluidFactory GAS = FluidFactory.createNoBucket(new ResourceLocation(ZeithTech.MOD_ID, "processing/gas"), FluidTypeGas::create, p -> p.tickRate(10), false).addFluidTag(TagsZT.Fluids.GAS);
 	
+	FluidFactory SULFURIC_ACID = FluidFactory.createWithBucket(new ResourceLocation(ZeithTech.MOD_ID, "processing/sulfuric_acid"), FluidTypeSulfuricAcid::create, p -> p.tickRate(7)).addFluidTag(TagsZT.Fluids.SULFURIC_ACID);
+	
 	static void register(LegacyEventBus modBus)
 	{
 		for(Field field : FluidsZT_Processing.class.getDeclaredFields())

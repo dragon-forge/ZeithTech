@@ -4,8 +4,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.init.*;
+import org.zeith.tech.modules.transport.recipes.RecipeTurnFacadesBackIntoBlock;
 
 public interface RecipesZT_Transport
 {
@@ -27,6 +29,8 @@ public interface RecipesZT_Transport
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_GOLD).result(new ItemStack(BlocksZT_Transport.UNINSULATED_GOLD_WIRE, 3)).register();
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_SILVER).result(new ItemStack(BlocksZT_Transport.UNINSULATED_SILVER_WIRE, 3)).register();
 		
-		event.shaped().shape("pip", "gGg", "pip").map('p', TagsZT.Items.PLATES_ALUMINUM).map('i', TagsZT.Items.INGOTS_ALUMINUM).map('g', Tags.Items.GLASS_PANES).map('G', Tags.Items.GLASS).result(BlocksZT_Transport.BASIC_FLUID_TANK).register();
+		event.shaped().shape("pip", "gGg", "pip").map('p', TagsZT.Items.PLATES_LEAD).map('i', TagsZT.Items.INGOTS_LEAD).map('g', Tags.Items.GLASS_PANES).map('G', Tags.Items.GLASS).result(BlocksZT_Transport.BASIC_FLUID_TANK).register();
+		
+		event.add(new RecipeTurnFacadesBackIntoBlock(ZeithTechAPI.id("facade_to_block"), ""));
 	}
 }

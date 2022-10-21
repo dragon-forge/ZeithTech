@@ -5,6 +5,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.modules.processing.items.*;
 import org.zeith.tech.modules.processing.items.redstone_control_tool.ItemRedstoneControlTool;
 import org.zeith.tech.modules.shared.BaseZT;
@@ -21,13 +22,16 @@ public interface ItemsZT_Processing
 	ItemWireCutter WIRE_CUTTER = new ItemWireCutter(BaseZT.itemProps(), Tiers.IRON);
 	
 	@RegistryName("mining_heads/iron")
-	ItemMiningHead IRON_MINING_HEAD = new ItemMiningHead(Tiers.IRON, BaseZT.itemProps());
+	ItemMiningHead IRON_MINING_HEAD = new ItemMiningHead(Tiers.IRON, ZeithTechAPI.id("multi_tool/mining_heads/iron"), BaseZT.itemProps());
 	
 	@RegistryName("mining_heads/diamond")
-	ItemMiningHead DIAMOND_MINING_HEAD = new ItemMiningHead(Tiers.DIAMOND, BaseZT.itemProps());
+	ItemMiningHead DIAMOND_MINING_HEAD = new ItemMiningHead(Tiers.DIAMOND, ZeithTechAPI.id("multi_tool/mining_heads/diamond"), BaseZT.itemProps());
+	
+	@RegistryName("mining_heads/tungsten")
+	ItemMiningHead TUNGSTEN_MINING_HEAD = new ItemMiningHead(ZeithTechAPI.TUNGSTEN_TIER, ZeithTechAPI.id("multi_tool/mining_heads/tungsten"), BaseZT.itemProps());
 	
 	@RegistryName("mining_heads/netherite")
-	ItemMiningHead NETHERITE_MINING_HEAD = new ItemMiningHead(Tiers.NETHERITE, BaseZT.itemProps());
+	ItemMiningHead NETHERITE_MINING_HEAD = new ItemMiningHead(Tiers.NETHERITE, ZeithTechAPI.id("multi_tool/mining_heads/netherite"), BaseZT.itemProps());
 	
 	@RegistryName("mining_head")
 	Item MINING_HEAD = BaseZT.newItem();

@@ -98,27 +98,26 @@ public class ModelAuxiliaryIOPort
 		@Override
 		public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @Nullable RenderType renderType)
 		{
+			if(side == null) return List.of();
+			
 			List<BakedQuad> all = new ArrayList<>();
 			
-			if(side != null)
+			all.add(FACE_BAKERY.bakeQuad(ZERO, ONE, new BlockElementFace(side, 0xFFFFFFFF, "base", FULL_UV),
+					side == Direction.UP ? up : base, side, BlockModelRotation.X0_Y0, null, false, modelLocation));
+			
+			var io = data.get(TileAuxiliaryIOPort.IO_PORT_DATA);
+			if(io != null && io.containsKey(side) && side != Direction.UP)
 			{
-				all.add(FACE_BAKERY.bakeQuad(ZERO, ONE, new BlockElementFace(side, 0xFFFFFFFF, "base", FULL_UV),
-						side == Direction.UP ? up : base, side, BlockModelRotation.X0_Y0, null, false, modelLocation));
+				var purpose = io.get(side);
 				
-				var io = data.get(TileAuxiliaryIOPort.IO_PORT_DATA);
-				if(io != null && io.containsKey(side) && side != Direction.UP)
-				{
-					var purpose = io.get(side);
-					
-					var sprite = aux.getOrDefault(purpose.getTexture(), base);
-					var overlay = aux.getOrDefault(purpose.type().getTextures().auxPortOverlayTexture(), base);
-					
-					all.add(FACE_BAKERY.bakeQuad(ZERO2, ONE2, new BlockElementFace(side, 0xFFFFFFFF, "type", FULL_UV),
-							sprite, side, BlockModelRotation.X0_Y0, null, false, modelLocation));
-					
-					all.add(FACE_BAKERY.bakeQuad(ZERO2, ONE2, new BlockElementFace(side, purpose.color().getRGB(), "overlay", FULL_UV),
-							overlay, side, BlockModelRotation.X0_Y0, null, false, modelLocation));
-				}
+				var sprite = aux.getOrDefault(purpose.getTexture(), base);
+				var overlay = aux.getOrDefault(purpose.type().getTextures().auxPortOverlayTexture(), base);
+				
+				all.add(FACE_BAKERY.bakeQuad(ZERO2, ONE2, new BlockElementFace(side, 0xFFFFFFFF, "type", FULL_UV),
+						sprite, side, BlockModelRotation.X0_Y0, null, false, modelLocation));
+				
+				all.add(FACE_BAKERY.bakeQuad(ZERO2, ONE2, new BlockElementFace(side, purpose.color().getRGB(), "overlay", FULL_UV),
+						overlay, side, BlockModelRotation.X0_Y0, null, false, modelLocation));
 			}
 			
 			return all;
@@ -143,7 +142,6 @@ public class ModelAuxiliaryIOPort
 		{
 			return false;
 		}
-		
 		
 		@Override
 		public boolean isGui3d()

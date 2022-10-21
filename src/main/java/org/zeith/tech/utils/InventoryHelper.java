@@ -39,7 +39,7 @@ public class InventoryHelper
 			}
 			
 			int mss;
-			if(os.sameItem(stack) && os.getCount() < (mss = Math.min(os.getMaxStackSize(), stack.getMaxStackSize())))
+			if(ItemStackHelper.matchesIgnoreCount(os, stack) && os.getCount() < (mss = Math.min(os.getMaxStackSize(), stack.getMaxStackSize())))
 			{
 				int canAccept = Math.min(mss - os.getCount(), stack.getCount());
 				stack.split(canAccept);

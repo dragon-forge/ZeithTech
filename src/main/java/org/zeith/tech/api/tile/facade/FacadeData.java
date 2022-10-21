@@ -6,11 +6,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -73,6 +75,24 @@ public class FacadeData
 		return Shapes.or(blockShape, faces.keySet().stream().map(Direction::ordinal).map(id -> THIN_FACADE_SHAPES[id]).toArray(VoxelShape[]::new));
 	}
 	
+	public AABB pickFacadeAABB(BlockPos pos, Vec3 coord)
+	{
+		for(Direction dir : Direction.values())
+			if(THIN_FACADE_BOXES[dir.ordinal()].move(pos).inflate(0.00001F).contains(coord))
+				if(faces.containsKey(dir))
+					return THIN_FACADE_BOXES[dir.ordinal()];
+		return null;
+	}
+	
+	public VoxelShape pickFacadeShape(BlockPos pos, Vec3 coord)
+	{
+		for(Direction dir : Direction.values())
+			if(THIN_FACADE_BOXES[dir.ordinal()].move(pos).inflate(0.00001F).contains(coord))
+				if(faces.containsKey(dir))
+					return THIN_FACADE_SHAPES[dir.ordinal()];
+		return null;
+	}
+	
 	public Optional<ItemStack> pickFacade(BlockPos pos, Vec3 coord)
 	{
 		for(Direction dir : Direction.values())
@@ -113,6 +133,10 @@ public class FacadeData
 					context.getLevel().addFreshEntity(ent);
 				}
 				
+				var level = context.getLevel();
+				SoundType soundtype = data.facadeState().getSoundType(level, context.getClickedPos(), context.getPlayer());
+				level.playSound(context.getPlayer(), context.getClickedPos(), soundtype.getHitSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+				
 				onFacadesChanged.run();
 				return InteractionResult.SUCCESS;
 			}
@@ -130,6 +154,10 @@ public class FacadeData
 			if(context.getPlayer().getAbilities().instabuild)
 				item = item.copy();
 			faces.put(face, new FacadeFace(face, item.split(1), state, !state.isSolidRender(context.getLevel(), context.getClickedPos())));
+			
+			var level = context.getLevel();
+			SoundType soundtype = state.getSoundType(level, context.getClickedPos(), context.getPlayer());
+			level.playSound(context.getPlayer(), context.getClickedPos(), soundtype.getPlaceSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 			
 			onFacadesChanged.run();
 			return InteractionResult.SUCCESS;

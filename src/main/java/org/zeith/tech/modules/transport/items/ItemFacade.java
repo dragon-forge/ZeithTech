@@ -11,9 +11,13 @@ import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.compress.utils.Lists;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.event.recipe.BuildTagsEvent;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TagsZT;
+
+import java.util.stream.Collectors;
 
 public class ItemFacade
 		extends Item
@@ -28,12 +32,26 @@ public class ItemFacade
 	private void applyTags(BuildTagsEvent e)
 	{
 		if(e.reg.getRegistryKey() == ForgeRegistries.Keys.BLOCKS)
+		{
+			var ae2Facades = new ResourceLocation("ae2", "whitelisted/facades");
+			
 			e.addAllToTag(TagsZT.Blocks.FACADE_WHITELIST,
 					ForgeRegistries.BLOCKS.getValues()
 							.stream()
 							.filter(this::allowBlockAsFacade)
 							.toList()
 			);
+			
+			var forced = e.tags.computeIfAbsent(TagsZT.Blocks.FACADE_WHITELIST.location(), l -> Lists.newArrayList());
+			forced.addAll(e.tags.get(ae2Facades));
+			
+			ZeithTech.LOG.info("Added " + e.tags.get(ae2Facades).size() + " AE2 facade whitelisted blocks to our own facade whitelist.");
+			ZeithTech.LOG.info("Currently, we have " + forced.size() + " force-white-listed blocks to be facade-able: " +
+					forced.stream()
+							.map(e0 -> e0.entry().toString())
+							.collect(Collectors.joining(", ", "[", "]"))
+			);
+		}
 	}
 	
 	private boolean allowBlockAsFacade(Block block)
@@ -67,6 +85,11 @@ public class ItemFacade
 	
 	public ItemStack forItem(ItemStack itemStack, boolean returnItem)
 	{
+		return forItem(itemStack, 1, returnItem);
+	}
+	
+	public ItemStack forItem(ItemStack itemStack, int size, boolean returnItem)
+	{
 		Block block;
 		if(itemStack.isEmpty() || itemStack.hasTag() || (block = Block.byItem(itemStack.getItem())) == Blocks.AIR)
 			return ItemStack.EMPTY;
@@ -81,15 +104,15 @@ public class ItemFacade
 		if(isModel && (!isBlockEntity || forcedByTag) && (isFullCube || forcedByTag))
 		{
 			if(returnItem) return itemStack;
-			return forItemRaw(itemStack);
+			return forItemRaw(itemStack, size);
 		}
 		
 		return ItemStack.EMPTY;
 	}
 	
-	public ItemStack forItemRaw(ItemStack itemStack)
+	public ItemStack forItemRaw(ItemStack itemStack, int size)
 	{
-		var is = new ItemStack(this);
+		var is = new ItemStack(this, size);
 		is.addTagElement("FacadeItem", StringTag.valueOf(ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString()));
 		return is;
 	}

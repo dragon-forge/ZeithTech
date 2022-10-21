@@ -6,6 +6,7 @@ import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.TileElectricFurnaceB;
+import org.zeith.tech.modules.processing.blocks.facade_slicer.TileFacadeSlicer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
 import org.zeith.tech.modules.processing.blocks.fluid_pump.TileFluidPump;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
@@ -51,4 +52,7 @@ public interface TilesZT_Processing
 	@RegistryName("metal_press")
 	@TileRenderer(TileRendererMetalPress.class)
 	BlockEntityType<TileMetalPress> METAL_PRESS = BlockAPI.createBlockEntityType(TileMetalPress::new, BlocksZT_Processing.METAL_PRESS);
+	
+	@RegistryName("facade_slicer")
+	BlockEntityType<TileFacadeSlicer> FACADE_SLICER = BlockAPI.createBlockEntityType(TileFacadeSlicer::new, BlocksZT_Processing.FACADE_SLICER);
 }

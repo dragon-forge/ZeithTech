@@ -1,0 +1,7 @@
+{
+  "render_type": "translucent",
+  "textures": {
+    "particle": "zeithtech:processing/block/sulfuric_acid",
+    "flow": "zeithtech:processing/block/sulfuric_acid_flow"
+  }
+}

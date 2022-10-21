@@ -3,6 +3,7 @@ package org.zeith.tech.modules.transport.blocks.item_pipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
@@ -146,13 +147,18 @@ public class TileItemPipe
 	
 	public void facadesUpdated()
 	{
+		if(hasLevel())
+		{
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+			level.blockUpdated(worldPosition, getBlockState().getBlock());
+			Block.updateFromNeighbourShapes(getBlockState(), level, worldPosition);
+		}
+		
 		if(isOnServer())
 			sync();
+		
 		if(isOnClient())
-		{
 			requestModelDataUpdate();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-		}
 	}
 	
 	@Override

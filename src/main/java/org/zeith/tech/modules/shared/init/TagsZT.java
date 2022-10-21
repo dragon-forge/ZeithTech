@@ -66,6 +66,7 @@ public class TagsZT
 		public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN = tag("raw_materials/tungsten");
 		
 		public static final TagKey<Item> DUSTS_COAL = tag("dusts/coal");
+		public static final TagKey<Item> DUSTS_IRON = tag("dusts/iron");
 		
 		public static final TagKey<Item> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Item> ORES_LEAD = tag("ores/lead");
@@ -169,6 +170,7 @@ public class TagsZT
 		public static final TagKey<Fluid> OIL = tag("oil");
 		public static final TagKey<Fluid> DIESEL = tag("diesel");
 		public static final TagKey<Fluid> GAS = tag("gas");
+		public static final TagKey<Fluid> SULFURIC_ACID = tag("sulfuric_acid");
 		
 		private static TagKey<Fluid> tag(String name)
 		{

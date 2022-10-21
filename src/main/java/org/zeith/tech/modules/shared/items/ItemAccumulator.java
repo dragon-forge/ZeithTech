@@ -1,0 +1,108 @@
+package org.zeith.tech.modules.shared.items;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.item.IAccumulatorItem;
+import org.zeith.tech.api.item.ItemHandlerForgeEnergy;
+import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+
+public class ItemAccumulator
+		extends Item
+		implements IAccumulatorItem
+{
+	public final int capacity;
+	
+	public ItemAccumulator(int capacity, Properties props)
+	{
+		super(props.stacksTo(1).defaultDurability(27));
+		this.capacity = capacity;
+	}
+	
+	@Override
+	public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken)
+	{
+		return 0;
+	}
+	
+	@Override
+	public void setDamage(ItemStack stack, int damage)
+	{
+	}
+	
+	@Override
+	public int getDamage(ItemStack stack)
+	{
+		return 27 - getEnergy(stack) * 27 / getMaxEnergy(stack);
+	}
+	
+	@Override
+	public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
+	{
+		return new ItemHandlerForgeEnergy(stack, this);
+	}
+	
+	@Override
+	public int getBarColor(ItemStack stack)
+	{
+		float stackMaxDamage = this.getMaxDamage(stack);
+		float f = Math.max(0.0F, (stackMaxDamage - (float) stack.getDamageValue()) / stackMaxDamage);
+		return Mth.hsvToRgb(173 / 360F, 1.0F, 0.333F + f * 0.666F);
+	}
+	
+	private CompoundTag getEnergyTag(ItemStack stack)
+	{
+		return stack.getOrCreateTagElement("Energy");
+	}
+	
+	@Override
+	public int getEnergy(ItemStack stack)
+	{
+		var energyTag = getEnergyTag(stack);
+		return energyTag.getInt("Stored");
+	}
+	
+	@Override
+	public int getMaxEnergy(ItemStack stack)
+	{
+		return capacity;
+	}
+	
+	@Override
+	public void setEnergy(ItemStack stack, int energy)
+	{
+		var energyTag = getEnergyTag(stack);
+		energyTag.putInt("Stored", Mth.clamp(energy, 0, getMaxEnergy(stack)));
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn)
+	{
+		tooltip.add(Component.literal(I18n.get("info.zeithtech.fe.stored", getEnergy(stack))).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.literal(I18n.get("info.zeithtech.fe.capacity", getMaxEnergy(stack))).withStyle(ChatFormatting.GRAY));
+	}
+	
+	@Override
+	public boolean isEnchantable(ItemStack p_41456_)
+	{
+		return false;
+	}
+	
+	@Override
+	public Optional<TooltipComponent> getTooltipImage(ItemStack stack)
+	{
+		return Optional.of(new TooltipEnergyBar(getEnergy(stack), getMaxEnergy(stack)));
+	}
+}

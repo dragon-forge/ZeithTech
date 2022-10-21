@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -84,13 +85,18 @@ public class TileEnergyWire
 	
 	public void facadesUpdated()
 	{
+		if(hasLevel())
+		{
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+			level.blockUpdated(worldPosition, getBlockState().getBlock());
+			Block.updateFromNeighbourShapes(getBlockState(), level, worldPosition);
+		}
+		
 		if(isOnServer())
 			sync();
+		
 		if(isOnClient())
-		{
 			requestModelDataUpdate();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-		}
 	}
 	
 	@Override

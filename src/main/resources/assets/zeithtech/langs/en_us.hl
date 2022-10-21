@@ -75,8 +75,6 @@ item.zeithtech.lead_plate=Lead Plate
 item.zeithtech.tin_plate=Tin Plate
 item.zeithtech.tungsten_plate=Tungsten Plate
 item.zeithtech.zinc_plate=Zinc Plate
-item.zeithtech.dusts.bioluminescent=Bioluminescent Dust
-item.zeithtech.dusts.coal=Coal Dust
 item.zeithtech.gears.wooden=Wooden Gear
 item.zeithtech.gears.stone=Stone Gear
 item.zeithtech.gears.copper=Copper Gear
@@ -105,6 +103,15 @@ item.zeithtech.plastic=Plastic
 item.zeithtech.sawdust=Sawdust
 item.zeithtech.circular_saw=Circular Saw
 item.zeithtech.oil_sludge=Oil Sludge
+item.zeithtech.dusts.bioluminescent=Bioluminescent Dust
+item.zeithtech.dusts.coal=Coal Dust
+item.zeithtech.dusts.iron=Iron Dust
+item.zeithtech.accumulator=Accumulator
+item.zeithtech.basic_multi_tool=Basic Multi-tool
+item.zeithtech.multi_tool_iron_motor=Iron Multi-tool Motor
+item.zeithtech.multi_tool_diamond_motor=Diamond Multi-tool Motor
+item.zeithtech.multi_tool_tungsten_motor=Tungsten Multi-tool Motor
+item.zeithtech.multi_tool_netherite_motor=Netherite Multi-tool Motor
 
 ### Generators Module ###
 block.zeithtech.generators.fuel_generator.basic=Basic Solid Fuel Generator
@@ -123,6 +130,7 @@ block.zeithtech.processing.fluid_centrifuge=Fluid Centrifuge
 block.zeithtech.processing.fluid_pump=Fluid Pump
 block.zeithtech.processing.waste_processor=Waste Processor
 block.zeithtech.processing.metal_press=Metal Press
+block.zeithtech.processing.facade_slicer=Facade Slicer
 
 item.zeithtech.processing.redstone_control_tool=Redstone Control Tool
 item.zeithtech.processing.iron_hammer=Iron Hammer
@@ -130,13 +138,16 @@ item.zeithtech.processing.wire_cutter=Wire Cutter
 item.zeithtech.processing.mining_head=Drilling Head
 item.zeithtech.processing.mining_heads.iron=Iron Drilling Head
 item.zeithtech.processing.mining_heads.diamond=Diamond Drilling Head
+item.zeithtech.processing.mining_heads.tungsten=Tungsten Drilling Head
 item.zeithtech.processing.mining_heads.netherite=Netherite Drilling Head
 item.zeithtech.processing.refined_oil_bucket=Refined Oil Bucket
 item.zeithtech.processing.diesel_fuel_bucket=Diesel Fuel Bucket
+item.zeithtech.processing.sulfuric_acid_bucket=Sulfuric Acid Bucket
 
 fluid_type.zeithtech.processing.refined_oil=Refined Oil
 fluid_type.zeithtech.processing.diesel_fuel=Diesel Fuel
 fluid_type.zeithtech.processing.gas=Gas
+fluid_type.zeithtech.processing.sulfuric_acid=Sulfuric Acid
 
 info.zeithtech_processing.hammer_hit_count=%s hits
 
@@ -197,6 +208,8 @@ advancement.zeithtech.insulate_wire.desc=Insulate three wires with two pieces of
 ### Misc ###
 
 info.zeithtech.fe=%,d FE
+info.zeithtech.fe.stored=Stored: %,d FE
+info.zeithtech.fe.capacity=Capacity: %,d FE
 info.zeithtech.fluid_uncapped=%,d mB
 info.zeithtech.fluid_capped=%,d / %,d mB
 info.zeithtech.empty=Empty
@@ -212,6 +225,7 @@ info.zeithtech.redstone_control.inversed=This machine will work if it receives r
 info.zeithtech.redstone_control.ignore=This machine will work if possible, regardless of redstone signal.
 
 death.attack.zeithtech.electrocution=%s got electrocuted.
+death.attack.zeithtech.sulfuric_acid=%s dissolved.
 
 jei.zeithtech.manual_hammering=Hammering on Block
 jei.zeithtech.manual_hammering.info=To perform hammering, you need to drop an item onto the block and hit it with the hammer %s times.

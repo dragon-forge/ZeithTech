@@ -20,6 +20,7 @@ import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
 import org.zeith.tech.api.events.recipe.GrindingRegistryEvent;
+import org.zeith.tech.api.item.ItemComparators;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.ZeithTech;
@@ -157,6 +158,17 @@ public interface RecipesZT_Processing
 				.result(BlocksZT_Processing.METAL_PRESS)
 				.register();
 		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  p  ", " lcl ", "pmgmp", " lsl ", "  p  ")
+				.map('p', TagsZT.Items.PLATES_GOLD)
+				.map('l', ItemTags.LOGS)
+				.map('g', TagsZT.Items.GEARS_GOLD)
+				.map('m', ItemsZT.MOTOR)
+				.map('c', ItemsZT.CIRCULAR_SAW)
+				.map('s', TagsZT.Items.STORAGE_BLOCKS_SILVER)
+				.result(BlocksZT_Processing.FACADE_SLICER)
+				.register();
+		
 	}
 	
 	static void addHammeringRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeHammering> evt)
@@ -189,7 +201,10 @@ public interface RecipesZT_Processing
 				
 				if(itemTags.containsKey(plateTag) && !excludePlates.contains(metalType))
 				{
-					var plateItem = itemTags.get(plateTag).stream().findFirst().orElse(null);
+					var plateItem = itemTags.get(plateTag)
+							.stream()
+							.max(ItemComparators.PREFER_ZEITHTECH_ITEM_HOLDERS)
+							.orElse(null);
 					if(plateItem != null)
 						f.get()
 								.input(ItemTags.create(tag))
@@ -246,11 +261,14 @@ public interface RecipesZT_Processing
 				
 				if(itemTags.containsKey(dustTag) && !excludeDusts.contains(grindType))
 				{
-					var dustItem = itemTags.get(dustTag).stream().findFirst().orElse(null);
+					var dustItem = itemTags.get(dustTag)
+							.stream()
+							.max(ItemComparators.PREFER_ZEITHTECH_ITEM_HOLDERS)
+							.orElse(null);
 					if(dustItem != null)
 						f.get()
 								.input(ItemTags.create(tag))
-								.result(dustItem.get())
+								.result(dustItem.value())
 								.craftTime(hevt.getTimeForMaterial(grindType))
 								.tier(hevt.getMaterialTier(grindType))
 								.register();
@@ -263,101 +281,119 @@ public interface RecipesZT_Processing
 	
 	static void addSawmillRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeSawmill> evt)
 	{
-		if(evt.is(RecipeRegistriesZT_Processing.SAWMILL))
-		{
-			Supplier<RecipeSawmill.SawmillRecipeBuilder> f = () -> new RecipeSawmill.SawmillRecipeBuilder(evt);
-			
-			var logs = evt.getContext().getTag(ItemTags.LOGS);
-			var planks = evt.getContext().getTag(ItemTags.PLANKS);
-			
-			final ExtraOutput sawdust = new ExtraOutput.Ranged(new ItemStack(ItemsZT.SAWDUST), 1, 2, 0.75F);
-			
-			RecipeManagerHelper.getRecipeManager(evt)
-					.stream()
-					.flatMap(r -> r.getAllRecipesFor(RecipeType.CRAFTING).stream())
-					.filter(recipe -> !recipe.isSpecial() && recipe.getResultItem().is(planks::contains))
-					.forEach(recipe ->
+		if(!evt.is(RecipeRegistriesZT_Processing.SAWMILL)) return;
+		
+		Supplier<RecipeSawmill.SawmillRecipeBuilder> f = () -> new RecipeSawmill.SawmillRecipeBuilder(evt);
+		
+		var logs = evt.getContext().getTag(ItemTags.LOGS);
+		var planks = evt.getContext().getTag(ItemTags.PLANKS);
+		
+		final ExtraOutput sawdust = new ExtraOutput.Ranged(new ItemStack(ItemsZT.SAWDUST), 1, 2, 0.75F);
+		
+		RecipeManagerHelper.getRecipeManager(evt)
+				.stream()
+				.flatMap(r -> r.getAllRecipesFor(RecipeType.CRAFTING).stream())
+				.filter(recipe -> !recipe.isSpecial() && recipe.getResultItem().is(planks::contains))
+				.forEach(recipe ->
+				{
+					var input = recipe.getIngredients();
+					if(input.size() == 1)
 					{
-						var input = recipe.getIngredients();
-						if(input.size() == 1)
+						var main = input.get(0);
+						if(Arrays.stream(main.getItems()).anyMatch(out -> out.is(logs::contains)))
 						{
-							var main = input.get(0);
-							if(Arrays.stream(main.getItems()).anyMatch(out -> out.is(logs::contains)))
-							{
-								var plankStack = recipe.getResultItem().copy();
-								plankStack.setCount(plankStack.getCount() * 3 / 2);
-								
-								f.get().extraOutput(sawdust)
-										.tier(TechTier.BASIC)
-										.input(main)
-										.result(plankStack)
-										.craftTime(100)
-										.register();
-							}
+							var plankStack = recipe.getResultItem().copy();
+							plankStack.setCount(plankStack.getCount() * 3 / 2);
+							
+							f.get().extraOutput(sawdust)
+									.tier(TechTier.BASIC)
+									.input(main)
+									.result(plankStack)
+									.craftTime(100)
+									.register();
 						}
-					});
-		}
+					}
+				});
 	}
 	
 	static void addFluidCentrifugeRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeFluidCentrifuge> evt)
 	{
-		if(evt.is(RecipeRegistriesZT_Processing.FLUID_CENTRIFUGE))
-		{
-			var f = evt.<RecipeFluidCentrifuge.FluidCentrifugeRecipeBuilder> builderFactory();
-			
-			f.get()
-					.input(new FluidIngredientStack(FluidIngredient.ofTags(List.of(TagsZT.Fluids.CRUDE_OIL)), 1000))
-					.energy(5000)
-					.result(FluidsZT_Processing.REFINED_OIL.stack(700))
-					.extraOutput(new ExtraOutput.Ranged(new ItemStack(ItemsZT.OIL_SLUDGE), 1, 3, 0.75F))
-					.register();
-		}
+		if(!evt.is(RecipeRegistriesZT_Processing.FLUID_CENTRIFUGE)) return;
+		
+		var f = evt.<RecipeFluidCentrifuge.FluidCentrifugeRecipeBuilder> builderFactory();
+		
+		f.get()
+				.input(new FluidIngredientStack(FluidIngredient.ofTags(List.of(TagsZT.Fluids.CRUDE_OIL)), 1000))
+				.energy(5000)
+				.result(FluidsZT_Processing.REFINED_OIL.stack(700))
+				.extraOutput(new ExtraOutput.Ranged(new ItemStack(ItemsZT.OIL_SLUDGE), 1, 3, 0.75F))
+				.register();
 	}
 	
 	static void addWasteProcessingRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeWasteProcessor> evt)
 	{
-		if(evt.is(RecipeRegistriesZT_Processing.WASTE_PROCESSING))
-		{
-			var f = evt.<RecipeWasteProcessor.WasteProcessorRecipeBuilder> builderFactory();
-			
-			f.get()
-					.input(
-							FluidsZT_Processing.REFINED_OIL.ingredient(800),
-							new FluidIngredientStack(FluidIngredient.ofTags(List.of(FluidTags.WATER)), 1000)
-					)
-					.time(20 * 20)
-					.result(
-							FluidsZT_Processing.DIESEL_FUEL.stack(300),
-							FluidsZT_Processing.GAS.stack(400)
-					)
-					.byproduct(new ExtraOutput(new ItemStack(BlocksZT.MASUT), 1F))
-					.register();
-			
-			
-			f.get()
-					.input(
-							FluidsZT_Processing.REFINED_OIL.ingredient(1000)
-					)
-					.time(40 * 20)
-					.result(
-							FluidsZT_Processing.GAS.stack(850)
-					)
-					.register();
-			
-			
-			f.get()
-					.input(Ingredient.of(ItemsZT.OIL_SLUDGE))
-					.time(30 * 20)
-					.result(
-							FluidsZT_Processing.REFINED_OIL.stack(35),
-							new FluidStack(Fluids.WATER, 50)
-					)
-					.byproduct(
-							new ExtraOutput(new ItemStack(Items.SAND), 1F),
-							new ExtraOutput(new ItemStack(Items.DIRT), 1F),
-							new ExtraOutput(new ItemStack(Items.GRAVEL), 1F)
-					)
-					.register();
-		}
+		if(!evt.is(RecipeRegistriesZT_Processing.WASTE_PROCESSING)) return;
+		
+		var f = evt.<RecipeWasteProcessor.WasteProcessorRecipeBuilder> builderFactory();
+		
+		var water = FluidIngredient.ofTags(List.of(FluidTags.WATER));
+		
+		f.get()
+				.input(
+						FluidsZT_Processing.REFINED_OIL.ingredient(800),
+						new FluidIngredientStack(water, 1000)
+				)
+				.time(20 * 20)
+				.result(
+						FluidsZT_Processing.DIESEL_FUEL.stack(300),
+						FluidsZT_Processing.GAS.stack(400)
+				)
+				.byproduct(new ExtraOutput(new ItemStack(BlocksZT.MASUT), 1F))
+				.register();
+		
+		f.get()
+				.input(
+						FluidsZT_Processing.REFINED_OIL.ingredient(1000)
+				)
+				.time(40 * 20)
+				.result(
+						FluidsZT_Processing.GAS.stack(850)
+				)
+				.register();
+		
+		f.get()
+				.input(Ingredient.of(ItemsZT.OIL_SLUDGE))
+				.time(30 * 20)
+				.result(
+						FluidsZT_Processing.REFINED_OIL.stack(35),
+						new FluidStack(Fluids.WATER, 50)
+				)
+				.byproduct(
+						new ExtraOutput(new ItemStack(Items.SAND), 1F),
+						new ExtraOutput(new ItemStack(Items.DIRT), 1F),
+						new ExtraOutput(new ItemStack(Items.GRAVEL), 1F)
+				)
+				.register();
+		
+		f.get()
+				.input(FluidsZT_Processing.GAS.ingredient(1000))
+				.input(RecipeHelper.fromTag(TagsZT.Items.DUSTS_COAL))
+				.time(6 * 20)
+				.byproduct(
+						new ExtraOutput.Ranged(new ItemStack(ItemsZT.PLASTIC), 2, 4, 1F)
+				)
+				.register();
+		
+		f.get()
+				.input(
+						FluidsZT_Processing.GAS.ingredient(3000),
+						new FluidIngredientStack(water, 3000)
+				)
+				.input(RecipeHelper.fromTag(TagsZT.Items.DUSTS_IRON))
+				.time(30 * 20)
+				.result(
+						FluidsZT_Processing.SULFURIC_ACID.stack(1000)
+				)
+				.register();
 	}
 }

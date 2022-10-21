@@ -24,7 +24,7 @@ public class CreativeModeTabZTF
 	@Override
 	public @NotNull ItemStack makeIcon()
 	{
-		return ItemsZT.FACADE.forItemRaw(new ItemStack(BlocksZT.HEVEA_PLANKS));
+		return ItemsZT.FACADE.forItemRaw(new ItemStack(BlocksZT.HEVEA_PLANKS), 1);
 	}
 	
 	@Override

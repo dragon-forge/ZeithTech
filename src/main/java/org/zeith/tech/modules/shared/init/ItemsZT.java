@@ -1,13 +1,17 @@
 package org.zeith.tech.modules.shared.init;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.ComposterBlock;
 import org.zeith.hammerlib.annotations.*;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.modules.generators.init.ItemsZT_Generators;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.shared.BaseZT;
-import org.zeith.tech.modules.shared.items.DustsZT;
-import org.zeith.tech.modules.shared.items.GearsZT;
+import org.zeith.tech.modules.shared.items.*;
+import org.zeith.tech.modules.shared.items.multitool.ItemMultiTool;
+import org.zeith.tech.modules.shared.items.multitool.ItemMultiToolMotor;
 import org.zeith.tech.modules.transport.init.ItemsZT_Transport;
 import org.zeith.tech.modules.world.init.ItemsZT_World;
 
@@ -46,6 +50,24 @@ public interface ItemsZT
 	
 	@RegistryName("oil_sludge")
 	Item OIL_SLUDGE = BaseZT.newItem();
+	
+	@RegistryName("accumulator")
+	ItemAccumulator ACCUMULATOR = new ItemAccumulator(EnergyTier.EXTRA_LOW_VOLTAGE.capacity() * 10, BaseZT.itemProps());
+	
+	@RegistryName("basic_multi_tool")
+	ItemMultiTool BASIC_MULTI_TOOL = new ItemMultiTool(BaseZT.itemProps(), ZeithTechAPI.id("multi_tool/basic"));
+	
+	@RegistryName("multi_tool_iron_motor")
+	ItemMultiToolMotor MULTI_TOOL_IRON_MOTOR = new ItemMultiToolMotor(Tiers.IRON, BaseZT.itemProps(), ZeithTechAPI.id("multi_tool/motors/iron"));
+	
+	@RegistryName("multi_tool_diamond_motor")
+	ItemMultiToolMotor MULTI_TOOL_DIAMOND_MOTOR = new ItemMultiToolMotor(Tiers.DIAMOND, BaseZT.itemProps(), ZeithTechAPI.id("multi_tool/motors/diamond"));
+	
+	@RegistryName("multi_tool_tungsten_motor")
+	ItemMultiToolMotor MULTI_TOOL_TUNGSTEN_MOTOR = new ItemMultiToolMotor(ZeithTechAPI.TUNGSTEN_TIER, BaseZT.itemProps(), ZeithTechAPI.id("multi_tool/motors/tungsten"));
+	
+	@RegistryName("multi_tool_netherite_motor")
+	ItemMultiToolMotor MULTI_TOOL_NETHERITE_MOTOR = new ItemMultiToolMotor(Tiers.NETHERITE, BaseZT.itemProps(), ZeithTechAPI.id("multi_tool/motors/netherite"));
 	
 	static @Setup void setup()
 	{
