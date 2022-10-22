@@ -1,9 +1,14 @@
 package org.zeith.tech.modules.shared.items.multitool;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,6 +29,12 @@ public class ItemElectricSaw
 	{
 		super(0, -2, tier, TagsZT.Blocks.MINEABLE_WITH_ELECTRIC_SAW, props);
 		this.multiToolModel = model;
+	}
+	
+	@Override
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot)
+	{
+		return ImmutableMultimap.of();
 	}
 	
 	@Override

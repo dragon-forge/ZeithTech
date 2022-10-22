@@ -1,8 +1,8 @@
 package org.zeith.tech.utils;
 
 import net.minecraft.network.chat.*;
-import org.apache.commons.compress.utils.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
@@ -16,7 +16,7 @@ public class ChatUtil
 	
 	public static void prepend(Consumer<List<Component>> adder, List<Component> origin, Component prefix)
 	{
-		List<Component> tmp = Lists.newArrayList();
+		List<Component> tmp = new ArrayList<>();
 		adder.accept(tmp);
 		for(Component com : tmp)
 			origin.add(prefix.copy()

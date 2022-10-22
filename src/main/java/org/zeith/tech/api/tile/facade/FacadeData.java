@@ -23,7 +23,6 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 import net.minecraftforge.common.util.INBTSerializable;
-import org.apache.commons.compress.utils.Lists;
 import org.zeith.hammerlib.core.init.TagsHL;
 import org.zeith.tech.api.ZeithTechAPI;
 
@@ -108,7 +107,7 @@ public class FacadeData
 		
 		if(context.getItemInHand().is(TagsHL.Items.TOOLS_WRENCH) && context.getPlayer().isShiftKeyDown())
 		{
-			List<Direction> matched = Lists.newArrayList();
+			List<Direction> matched = new ArrayList<>();
 			for(Direction dir : Direction.values())
 				if(THIN_FACADE_BOXES[dir.ordinal()].move(context.getClickedPos()).inflate(0.00001F).contains(context.getClickLocation()) && faces.containsKey(dir))
 					matched.add(dir);

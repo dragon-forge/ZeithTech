@@ -11,12 +11,12 @@ import net.minecraft.world.level.EmptyBlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.compress.utils.Lists;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.event.recipe.BuildTagsEvent;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TagsZT;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class ItemFacade
@@ -42,7 +42,7 @@ public class ItemFacade
 							.toList()
 			);
 			
-			var forced = e.tags.computeIfAbsent(TagsZT.Blocks.FACADE_WHITELIST.location(), l -> Lists.newArrayList());
+			var forced = e.tags.computeIfAbsent(TagsZT.Blocks.FACADE_WHITELIST.location(), l -> new ArrayList<>());
 			forced.addAll(e.tags.get(ae2Facades));
 			
 			ZeithTech.LOG.info("Added " + e.tags.get(ae2Facades).size() + " AE2 facade whitelisted blocks to our own facade whitelist.");

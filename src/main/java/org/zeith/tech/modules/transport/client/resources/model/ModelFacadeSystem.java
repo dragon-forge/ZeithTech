@@ -25,7 +25,6 @@ import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.client.model.IBakedModel;
@@ -82,7 +81,7 @@ public class ModelFacadeSystem
 		{
 			var facades = FacadeData.get(data);
 			if(facades == null || side != null) return List.of();
-			List<BakedQuad> quads = Lists.newArrayList();
+			List<BakedQuad> quads = new ArrayList<>();
 			getFacadeMesh(facades, rand, data, renderType)
 					.forEach(q -> quads.add(q.toBlockBakedQuad()));
 			return quads;

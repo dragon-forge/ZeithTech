@@ -22,7 +22,7 @@ public class RecipeTurnFacadesBackIntoBlock
 		extends ShapelessRecipe
 {
 	@RegistryName("facade_to_block")
-	RecipeSerializer<RecipeTurnFacadesBackIntoBlock> SHAPELESS_RECIPE = new Serializer();
+	public static final RecipeSerializer<RecipeTurnFacadesBackIntoBlock> SHAPELESS_RECIPE = new Serializer();
 	
 	public RecipeTurnFacadesBackIntoBlock(ResourceLocation id, String group)
 	{
