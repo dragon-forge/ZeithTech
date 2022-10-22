@@ -346,7 +346,10 @@ public class TileFluidPipe
 		{
 			for(Direction dir : BlockFluidPipe.DIRECTIONS)
 				if(level.getBlockEntity(worldPosition.relative(dir)) instanceof TileFluidPipe pipe)
-					this.vacuumPriority = Math.max(pipe.vacuumPriority, vacuumPriority);
+				{
+					if(tank.isEmpty() || vacuumFluid.isEmpty() || vacuumFluid.ingredient.test(tank.getFluid()))
+						this.vacuumPriority = Math.max(pipe.vacuumPriority, vacuumPriority);
+				}
 			if(vacuumPriority > 0)
 				--vacuumPriority;
 		}
@@ -560,8 +563,12 @@ public class TileFluidPipe
 				.filter(TileFluidPipe.class::isInstance)
 				.forEach(t ->
 				{
-					((TileFluidPipe) t).vacuumTicks = Math.max(vacuumTicks, ticks);
-					((TileFluidPipe) t).vacuumFluid.ingredient = fluid;
+					var pipe = (TileFluidPipe) t;
+					if(pipe.tank.isEmpty() || fluid.isEmpty() || fluid.test(pipe.tank.getFluid()))
+					{
+						pipe.vacuumTicks = Math.max(vacuumTicks, ticks);
+						pipe.vacuumFluid.ingredient = fluid;
+					}
 				});
 	}
 	

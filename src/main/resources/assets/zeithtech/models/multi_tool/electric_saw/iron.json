@@ -1,0 +1,7 @@
+{
+  "parent": "zeithtech:multi_tool/electric_saw/base",
+  "textures": {
+    "texture": "zeithtech:item/multi_tool/electric_saw/base",
+    "saw": "zeithtech:item/multi_tool/electric_saw/iron"
+  }
+}

@@ -15,19 +15,28 @@ public class ClientTooltipMulti
 	
 	public ClientTooltipMulti(TooltipMulti multi)
 	{
-		children = multi.children.stream().map(ClientTooltipComponent::create).toList();
+		children = multi.children()
+				.stream()
+				.map(ClientTooltipComponent::create)
+				.toList();
 	}
 	
 	@Override
 	public int getHeight()
 	{
-		return children.stream().mapToInt(ClientTooltipComponent::getHeight).sum();
+		return Math.max(0, children.stream()
+				.mapToInt(ClientTooltipComponent::getHeight)
+				.map(i -> i + 2)
+				.sum() - 2);
 	}
 	
 	@Override
 	public int getWidth(Font font)
 	{
-		return children.stream().mapToInt(c -> c.getWidth(font)).max().orElse(0);
+		return children.stream()
+				.mapToInt(c -> c.getWidth(font))
+				.max()
+				.orElse(0);
 	}
 	
 	@Override
@@ -36,7 +45,7 @@ public class ClientTooltipMulti
 		for(ClientTooltipComponent child : children)
 		{
 			child.renderImage(font, x, y, pose, renderer, z);
-			y += child.getHeight();
+			y += child.getHeight() + 2;
 		}
 	}
 }

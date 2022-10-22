@@ -6,19 +6,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class TooltipMulti
+public record TooltipMulti(List<TooltipComponent> children)
 		implements TooltipComponent
 {
-	public final List<TooltipComponent> children;
-	
 	public TooltipMulti(TooltipComponent... children)
 	{
-		this.children = List.of(children);
+		this(Stream.of(children).flatMap(TooltipMulti::unwrap).toList());
 	}
 	
 	public static Optional<TooltipComponent> create(Stream<TooltipComponent> stream)
 	{
-		var comp = stream.toArray(TooltipComponent[]::new);
-		return comp.length == 0 ? Optional.empty() : Optional.of(comp.length == 1 ? comp[0] : new TooltipMulti(comp));
+		var comp = stream.flatMap(TooltipMulti::unwrap).toList();
+		return comp.isEmpty() ? Optional.empty() : Optional.of(comp.size() == 1 ? comp.get(0) : new TooltipMulti(comp));
+	}
+	
+	public static Stream<TooltipComponent> unwrap(TooltipComponent comp)
+	{
+		return comp instanceof TooltipMulti multi ? multi.children.stream() : Stream.of(comp);
 	}
 }

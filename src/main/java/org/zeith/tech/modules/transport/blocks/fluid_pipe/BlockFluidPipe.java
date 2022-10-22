@@ -83,16 +83,9 @@ public class BlockFluidPipe
 	}
 	
 	@Override
-	protected BlockItem newBlockItem(Item.Properties props)
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flags)
 	{
-		return new BlockItem(this, props)
-		{
-			@Override
-			public void appendHoverText(ItemStack stack, @Nullable Level lvl, List<Component> tooltip, TooltipFlag flags)
-			{
-				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.fluid_pipe_transfer", Component.literal(Integer.toString(properties.transferVolume()))).withStyle(ChatFormatting.GRAY));
-			}
-		};
+		tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.fluid_pipe_transfer", Component.literal(Integer.toString(properties.transferVolume()))).withStyle(ChatFormatting.GRAY));
 	}
 	
 	public static final VoxelShape CORE_SHAPE = box(5, 5, 5, 11, 11, 11);

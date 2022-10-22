@@ -8,20 +8,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
-import org.zeith.tech.modules.processing.blocks.base.machine.BlockBaseMachine;
+import org.zeith.tech.modules.generators.blocks.BlockGeneratorBase;
 
 public class BlockMagmaticGenerator
-		extends BlockBaseMachine<TileMagmaticGenerator>
+		extends BlockGeneratorBase<TileMagmaticGenerator>
 {
-	public static final VoxelShape SHAPE = Shapes.or(
-			box(0, 0, 0, 16, 11, 16),
-			box(1, 4, 1, 15, 16, 8),
-			box(8, 4, 1, 15, 16, 15)
-	);
-	
 	public BlockMagmaticGenerator()
 	{
 		super(TileMagmaticGenerator.class);
+		withDefaultGeneration(40);
 	}
 	
 	private final VoxelShapeCache cache = new VoxelShapeCache(this, (state, $) ->
@@ -46,6 +41,6 @@ public class BlockMagmaticGenerator
 	@Override
 	public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new TileMagmaticGenerator(pos, state);
+		return new TileMagmaticGenerator(pos, state).setCurrentGenPerTick(defaultGeneration);
 	}
 }

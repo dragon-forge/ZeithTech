@@ -34,6 +34,7 @@ public class TileRendererMachineAssemblerB
 			for(int y = 0; y < 5; ++y)
 			{
 				var stack = entity.craftingInventory.getItem(x + y * 5);
+				if(stack.isEmpty()) continue;
 				
 				int xr = x - 2, yr = y - 2;
 				

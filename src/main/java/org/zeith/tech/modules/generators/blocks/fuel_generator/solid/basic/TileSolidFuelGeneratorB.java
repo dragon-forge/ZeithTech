@@ -76,6 +76,12 @@ public class TileSolidFuelGeneratorB
 				!stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent() && ForgeHooks.getBurnTime(stack, null) > 0;
 	}
 	
+	public TileSolidFuelGeneratorB setCurrentGenPerTick(int currentGenPerTick)
+	{
+		this.currentGenPerTick = currentGenPerTick;
+		return this;
+	}
+	
 	@Override
 	public ContainerBaseMachine<TileSolidFuelGeneratorB> openContainer(Player player, int windowId)
 	{

@@ -31,7 +31,7 @@ public class TileMachineAssemblerB
 		extends TileBaseMachine<TileMachineAssemblerB>
 		implements ICraftingExecutor, IHammerable
 {
-	@NBTSerializable
+	@NBTSerializable("Items")
 	public final SimpleInventory craftingInventory = new SimpleInventory(25);
 	
 	@NBTSerializable("ResultInv")
@@ -115,11 +115,13 @@ public class TileMachineAssemblerB
 					
 					if(stored.isEmpty())
 					{
+						level.blockEvent(worldPosition, getBlockState().getBlock(), 1, 1);
 						resultInventory.setItem(0, _craftResult);
 						craftResult.set(ItemStack.EMPTY);
 						craftingProgress.setInt(0);
 					} else if(ItemStackHelper.matchesIgnoreCount(stored, _craftResult) && stored.getCount() + _craftResult.getCount() <= stored.getMaxStackSize())
 					{
+						level.blockEvent(worldPosition, getBlockState().getBlock(), 1, 1);
 						stored.grow(_craftResult.getCount());
 						craftResult.set(ItemStack.EMPTY);
 						craftingProgress.setInt(0);
@@ -130,6 +132,21 @@ public class TileMachineAssemblerB
 			if(r == null && _progress > 0)
 				craftingProgress.setInt(0);
 		}
+	}
+	
+	@Override
+	public boolean triggerEvent(int event, int data)
+	{
+		if(event == 1 && data == 1)
+		{
+			if(isOnClient())
+				for(ItemStack stack : craftingInventory)
+					if(!stack.isEmpty())
+						stack.shrink(1);
+			return true;
+		}
+		
+		return super.triggerEvent(event, data);
 	}
 	
 	public float getProgress(float partial)

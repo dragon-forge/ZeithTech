@@ -7,14 +7,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
-import org.zeith.tech.modules.processing.blocks.base.machine.BlockBaseMachine;
+import org.zeith.tech.modules.generators.blocks.BlockGeneratorBase;
 
 public class BlockLiquidFuelGeneratorB
-		extends BlockBaseMachine<TileLiquidFuelGeneratorB>
+		extends BlockGeneratorBase<TileLiquidFuelGeneratorB>
 {
 	public BlockLiquidFuelGeneratorB()
 	{
 		super(TileLiquidFuelGeneratorB.class);
+		withDefaultGeneration(40);
 	}
 	
 	public final VoxelShapeCache shapeCache = new VoxelShapeCache(this, (state, $) ->
@@ -39,6 +40,7 @@ public class BlockLiquidFuelGeneratorB
 	@Override
 	public @Nullable TileLiquidFuelGeneratorB newBlockEntity(BlockPos pos, BlockState state)
 	{
-		return new TileLiquidFuelGeneratorB(pos, state);
+		return new TileLiquidFuelGeneratorB(pos, state)
+				.setCurrentGenPerTick(defaultGeneration);
 	}
 }

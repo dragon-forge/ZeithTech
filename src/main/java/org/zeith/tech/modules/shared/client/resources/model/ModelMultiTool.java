@@ -120,7 +120,7 @@ public class ModelMultiTool
 				)
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		
-		return new BakedMultiToolModel(itemTransforms, bakedMap, particle, spriteGetter);
+		return new BakedMultiToolModel(itemTransforms, bakedMap, particle, spriteGetter, overrides);
 	}
 	
 	@Override
@@ -141,13 +141,21 @@ public class ModelMultiTool
 		protected final Map<ResourceLocation, BakedModel> modelLocations;
 		protected final Material particle;
 		protected final Function<Material, TextureAtlasSprite> spriteGetter;
+		protected final ItemOverrides overrides;
 		
-		public BakedMultiToolModel(ItemTransforms transforms, Map<ResourceLocation, BakedModel> modelLocations, Material particle, Function<Material, TextureAtlasSprite> spriteGetter)
+		public BakedMultiToolModel(ItemTransforms transforms, Map<ResourceLocation, BakedModel> modelLocations, Material particle, Function<Material, TextureAtlasSprite> spriteGetter, ItemOverrides overrides)
 		{
 			this.transforms = transforms;
 			this.modelLocations = modelLocations;
 			this.particle = particle;
 			this.spriteGetter = spriteGetter;
+			this.overrides = overrides;
+		}
+		
+		@Override
+		public ItemOverrides getOverrides()
+		{
+			return overrides;
 		}
 		
 		@Override
@@ -155,7 +163,7 @@ public class ModelMultiTool
 		{
 			if(!(itemStack.getItem() instanceof IMultiToolItem mt))
 				return List.of();
-			return mt.getParts(itemStack, true)
+			return mt.getParts(itemStack, true, true)
 					.map(pair -> pair.getA().getMultiToolPartModel(pair.getB(), itemStack))
 					.map(modelLocations::get)
 					.filter(Objects::nonNull)

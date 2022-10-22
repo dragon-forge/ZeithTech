@@ -241,7 +241,7 @@ public class ModelFacadeSystem
 			for(int cullFaceIdx = 0; cullFaceIdx <= ModelHelper.NULL_FACE_ID; cullFaceIdx++)
 			{
 				Direction cullFace = ModelHelper.faceFromIndex(cullFaceIdx);
-				List<BakedQuad> quads = model.getRenderTypes(blockState, random, ModelData.EMPTY).contains(renderType) ?
+				List<BakedQuad> quads = renderType == null || model.getRenderTypes(blockState, random, ModelData.EMPTY).contains(renderType) ?
 						model.getQuads(blockState, cullFace, random, ModelData.EMPTY, renderType) : List.of();
 				
 				for(BakedQuad quad : quads)

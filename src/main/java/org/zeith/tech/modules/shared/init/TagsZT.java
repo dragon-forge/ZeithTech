@@ -55,6 +55,7 @@ public class TagsZT
 		public static final TagKey<Item> GEARS_TUNGSTEN = tag("gears/tungsten");
 		public static final TagKey<Item> GEARS_NETHERITE = tag("gears/netherite");
 		
+		public static final TagKey<Item> SILICON = tag("silicon");
 		public static final TagKey<Item> COILS_COPPER = tag("coils/copper");
 		public static final TagKey<Item> COILS_GOLD = tag("coils/gold");
 		
@@ -116,7 +117,8 @@ public class TagsZT
 		public static final TagKey<Block> MINING_PIPE = modTag("mining_pipe");
 		public static final TagKey<Block> FACADE_WHITELIST = modTag("facade_whitelist");
 		public static final TagKey<Block> MINEABLE_WITH_WIRE_CUTTER = vanillaTag("mineable/wire_cutter");
-		public static final TagKey<Block> MINEABLE_WITH_MINING_HEAD = vanillaTag("mineable/mining_head");
+		public static final TagKey<Block> MINEABLE_WITH_MINING_HEAD = modTag("mineable/mining_head");
+		public static final TagKey<Block> MINEABLE_WITH_ELECTRIC_SAW = modTag("mineable/electric_saw");
 		public static final TagKey<Block> HEVEA_LOGS = modTag("hevea_logs");
 		
 		public static final TagKey<Block> ORES_TIN = tag("ores/tin");

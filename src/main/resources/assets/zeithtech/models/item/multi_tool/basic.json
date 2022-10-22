@@ -1,6 +1,14 @@
 {
   "loader": "zeithtech:item/multi_tool",
-  "particle": "zeithtech:item/multi_tool/basic",
+  "particle": "zeithtech:item/multi_tool/basic_empty",
+  "overrides": [
+    {
+      "predicate": {
+        "empty": 0.5
+      },
+      "model": "zeithtech:item/multi_tool/basic_empty"
+    }
+  ],
   "display": {
     "thirdperson_righthand": {
       "rotation": [
@@ -9,21 +17,21 @@
         83
       ],
       "translation": [
-        0.25,
+        0,
         2,
-        -7
+        -6.25
       ]
     },
     "thirdperson_lefthand": {
       "rotation": [
-        0,
-        -90,
+        -180,
+        90,
         0
       ],
       "translation": [
         0,
-        2,
-        -7
+        -6,
+        -6.25
       ]
     },
     "firstperson_righthand": {
@@ -58,9 +66,14 @@
       ]
     },
     "gui": {
+      "rotation": [
+        -90,
+        0,
+        0
+      ],
       "translation": [
         1.25,
-        3.75,
+        0,
         0
       ]
     },

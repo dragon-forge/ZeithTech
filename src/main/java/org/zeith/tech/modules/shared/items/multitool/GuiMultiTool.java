@@ -21,5 +21,15 @@ public class GuiMultiTool
 	{
 		FXUtils.bindTexture(ZeithTech.MOD_ID, "textures/gui/multi_tool.png");
 		RenderUtils.drawTexturedModalRect(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		
+		for(int i = 36; i < menu.slots.size(); ++i)
+		{
+			var item = menu.getSlot(i);
+			if(!item.hasItem())
+			{
+				var j = i - 36;
+				RenderUtils.drawTexturedModalRect(pose, leftPos + item.x, topPos + item.y, 176, 16 * j, 16, 16);
+			}
+		}
 	}
 }

@@ -1,13 +1,17 @@
 package org.zeith.tech.modules.processing.items;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.TierSortingRegistry;
+import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.item.multitool.IMultiToolHead;
+import org.zeith.tech.api.item.multitool.TooltipFlagMultiTool;
 import org.zeith.tech.modules.shared.init.TagsZT;
 
 import java.util.List;
@@ -35,6 +39,14 @@ public class ItemMiningHead
 	public boolean canMine(Level lvl, BlockPos pos, BlockState state, ItemStack headStack)
 	{
 		return TierSortingRegistry.isCorrectTierForDrops(getTier(), state);
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag)
+	{
+		var inMultiTool = flag instanceof TooltipFlagMultiTool;
+		if(!inMultiTool) components.add(Component.translatable("info.zeithtech.multi_tool.head").withStyle(ChatFormatting.DARK_GRAY));
+		super.appendHoverText(stack, level, components, flag);
 	}
 	
 	@Override

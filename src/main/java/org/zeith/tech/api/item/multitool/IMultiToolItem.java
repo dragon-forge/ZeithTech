@@ -25,7 +25,12 @@ public interface IMultiToolItem
 	
 	Optional<Tuple<IAccumulatorItem, ItemStack>> getAccumulator(ItemStack multiToolStack);
 	
-	default Stream<Tuple<? extends IMultiToolPart, ItemStack>> getParts(ItemStack multiToolStack, boolean includeSelf)
+	default boolean shouldRender2D(ItemStack multiToolStack)
+	{
+		return getMotor(multiToolStack).isEmpty() && getHead(multiToolStack).isEmpty();
+	}
+	
+	default Stream<Tuple<? extends IMultiToolPart, ItemStack>> getParts(ItemStack multiToolStack, boolean includeSelf, boolean forVisuals)
 	{
 		return Stream.concat(
 				(includeSelf ? Optional.of(new Tuple<>(this, multiToolStack)) : Optional.<Tuple<IMultiToolPart, ItemStack>> empty()).stream(),

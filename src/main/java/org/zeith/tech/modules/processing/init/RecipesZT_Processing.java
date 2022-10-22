@@ -41,11 +41,12 @@ public interface RecipesZT_Processing
 		
 		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.INGOTS_IRON).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.IRON_MINING_HEAD).register();
 		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.GEMS_DIAMOND).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.DIAMOND_MINING_HEAD).register();
+		event.shaped().shape(" p ", "ptp", " p ").map('p', TagsZT.Items.INGOTS_TUNGSTEN).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.TUNGSTEN_MINING_HEAD).register();
 		
 		event.shaped().shape("prp", "pcp", " p ").map('p', ItemsZT.PLASTIC).map('r', Tags.Items.DUSTS_REDSTONE).map('c', Items.COMPARATOR).result(ItemsZT_Processing.REDSTONE_CONTROL_TOOL).register();
 		
 		var netheriteMiningHeadId = ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD);
-		event.register(netheriteMiningHeadId, new UpgradeRecipe(netheriteMiningHeadId, Ingredient.of(ItemsZT.DIAMOND_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
+		event.register(netheriteMiningHeadId, new UpgradeRecipe(netheriteMiningHeadId, Ingredient.of(ItemsZT.TUNGSTEN_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
 		
 		event.shaped().shape("p p", "i i", "p p").map('p', TagsZT.Items.PLATES_IRON).map('i', Tags.Items.INGOTS_IRON).result(new ItemStack(BlocksZT_Processing.MINING_PIPE, 6)).register();
 		

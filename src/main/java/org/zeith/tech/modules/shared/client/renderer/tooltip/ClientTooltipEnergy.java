@@ -37,8 +37,7 @@ public class ClientTooltipEnergy
 		pose.pushPose();
 		pose.translate(x + 66, y - 2, 0);
 		pose.mulPose(Vector3f.ZP.rotationDegrees(90));
-		pose.translate(-x, -y, 0);
-		WidgetAPI.drawPowerBar(pose, x, y, bar.energy);
+		WidgetAPI.drawPowerBar(pose, 0, 0, bar.energy());
 		pose.popPose();
 	}
 }

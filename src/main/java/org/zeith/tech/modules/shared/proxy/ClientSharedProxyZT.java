@@ -3,11 +3,18 @@ package org.zeith.tech.modules.shared.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.tech.api.item.multitool.IMultiToolItem;
 import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
 import org.zeith.tech.api.item.tooltip.TooltipMulti;
 import org.zeith.tech.modules.shared.client.renderer.tooltip.ClientTooltipEnergy;
@@ -30,12 +37,12 @@ public class ClientSharedProxyZT
 		
 		if(arm == HumanoidArm.RIGHT)
 		{
-			model.rightArm.yRot -= Mth.DEG_TO_RAD * 15;
-			model.leftArm.yRot += Mth.DEG_TO_RAD * 35;
+			model.rightArm.yRot -= Mth.DEG_TO_RAD * 20;
+			model.leftArm.yRot += Mth.DEG_TO_RAD * 25;
 		} else
 		{
-			model.rightArm.yRot -= Mth.DEG_TO_RAD * 35;
-			model.leftArm.yRot += Mth.DEG_TO_RAD * 15;
+			model.rightArm.yRot -= Mth.DEG_TO_RAD * 25;
+			model.leftArm.yRot += Mth.DEG_TO_RAD * 20;
 		}
 	});
 	
@@ -51,6 +58,18 @@ public class ClientSharedProxyZT
 	private void clientSetup(FMLClientSetupEvent e)
 	{
 		MenuScreens.register(ContainerMultiTool.MULTI_TOOL, GuiMultiTool::new);
+		
+		ForgeRegistries.ITEMS.getValues()
+				.stream()
+				.filter(IMultiToolItem.class::isInstance)
+				.forEach(item -> registerMultiToolProperty(Cast.cast(item)));
+	}
+	
+	private <T extends Item & IMultiToolItem> void registerMultiToolProperty(T item)
+	{
+		ItemProperties.register(item,
+				new ResourceLocation("empty"), (ClampedItemPropertyFunction) (stack, level, entity, layer) -> item.shouldRender2D(stack) ? 1 : 0
+		);
 	}
 	
 	@Override

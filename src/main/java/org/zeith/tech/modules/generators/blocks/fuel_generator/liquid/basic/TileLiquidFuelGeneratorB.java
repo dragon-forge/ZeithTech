@@ -99,6 +99,12 @@ public class TileLiquidFuelGeneratorB
 		this.inventory.isStackValid = (idx, stack) -> idx == 0 && FluidHelperZT.anyFluidMatches(stack, storage::isFluidValid);
 	}
 	
+	public TileLiquidFuelGeneratorB setCurrentGenPerTick(int currentGenPerTick)
+	{
+		this.currentGenPerTick = currentGenPerTick;
+		return this;
+	}
+	
 	@Override
 	public void update()
 	{

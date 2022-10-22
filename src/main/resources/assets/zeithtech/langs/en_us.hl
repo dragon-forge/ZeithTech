@@ -91,6 +91,7 @@ fluid_type.zeithtech.crude_oil=Crude Oil
 
 ### Shared Module ###
 block.zeithtech.auxiliary_io_port=Auxiliary IO Port
+block.zeithtech.pure_sand=Pure Sand
 block.zeithtech.masut=Masut
 
 item.zeithtech.copper_coil=Copper Coil
@@ -106,17 +107,36 @@ item.zeithtech.oil_sludge=Oil Sludge
 item.zeithtech.dusts.bioluminescent=Bioluminescent Dust
 item.zeithtech.dusts.coal=Coal Dust
 item.zeithtech.dusts.iron=Iron Dust
-item.zeithtech.accumulator=Accumulator
-item.zeithtech.basic_multi_tool=Basic Multi-tool
-item.zeithtech.multi_tool_iron_motor=Iron Multi-tool Motor
-item.zeithtech.multi_tool_diamond_motor=Diamond Multi-tool Motor
-item.zeithtech.multi_tool_tungsten_motor=Tungsten Multi-tool Motor
-item.zeithtech.multi_tool_netherite_motor=Netherite Multi-tool Motor
+item.zeithtech.silicon=Silicon
+item.zeithtech.circuits.basic=Basic Circuit
+item.zeithtech.accumulators.basic=Basic Accumulator
+item.zeithtech.accumulators.normal=Accumulator
+item.zeithtech.accumulators.advanced=Advanced Accumulator
+item.zeithtech.accumulators.quantum=Quantum Accumulator
+
+item.zeithtech.multi_tool.basic=Basic Multi-tool
+item.zeithtech.multi_tool.motors.iron=Iron Multi-tool Motor
+info.zeithtech.multi_tool.motors.iron=Supports Multi-tool heads up to Iron tier
+item.zeithtech.multi_tool.motors.diamond=Diamond Multi-tool Motor
+info.zeithtech.multi_tool.motors.diamond=Supports Multi-tool heads up to Diamond tier
+item.zeithtech.multi_tool.motors.tungsten=Tungsten Multi-tool Motor
+info.zeithtech.multi_tool.motors.tungsten=Supports Multi-tool heads up to Tungsten tier
+item.zeithtech.multi_tool.motors.netherite=Netherite Multi-tool Motor
+info.zeithtech.multi_tool.motors.netherite=Supports Multi-tool heads up to Netherite tier
+item.zeithtech.multi_tool.electric_saw.iron=Iron Electric Saw
+item.zeithtech.multi_tool.electric_saw.diamond=Diamond Electric Saw
+item.zeithtech.multi_tool.electric_saw.tungsten=Tungsten Electric Saw
+item.zeithtech.multi_tool.electric_saw.netherite=Netherite Electric Saw
 
 ### Generators Module ###
 block.zeithtech.generators.fuel_generator.basic=Basic Solid Fuel Generator
+block.zeithtech.generators.fuel_generator.basic.desc=Generates energy by burning solid fuels.
+
 block.zeithtech.generators.lfuel_generator.basic=Basic Liquid Fuel Generator
+block.zeithtech.generators.lfuel_generator.basic.desc=Generates energy by burning diesel fuel.
+
 block.zeithtech.generators.magmatic_generator=Magmatic Generator
+block.zeithtech.generators.magmatic_generator.desc=Generates energy by consuming lava, and water as coolant.
 
 ### Processing Module ###
 block.zeithtech.processing.mining_pipe=Mining Pipe
@@ -207,7 +227,10 @@ advancement.zeithtech.insulate_wire.desc=Insulate three wires with two pieces of
 
 ### Misc ###
 
+info.zeithtech.energy_mult=Energy: %s
+info.zeithtech.speed_mult=Speed: %s
 info.zeithtech.fe=%,d FE
+info.zeithtech.fe.generation=Generation: %s FE/tick
 info.zeithtech.fe.stored=Stored: %,d FE
 info.zeithtech.fe.capacity=Capacity: %,d FE
 info.zeithtech.fluid_uncapped=%,d mB
@@ -223,6 +246,10 @@ info.zeithtech.redstone_control.never=This machine will never work, regardless o
 info.zeithtech.redstone_control.normal=This machine will work if it receives redstone signal at or above %s.
 info.zeithtech.redstone_control.inversed=This machine will work if it receives redstone signal lower than %s.
 info.zeithtech.redstone_control.ignore=This machine will work if possible, regardless of redstone signal.
+
+info.zeithtech.multi_tool.head=Insertable into multi-tool's head slot.
+info.zeithtech.multi_tool.battery=Insertable into multi-tool's battery slot.
+info.zeithtech.multi_tool.motor=Insertable into multi-tool's motor slot.
 
 death.attack.zeithtech.electrocution=%s got electrocuted.
 death.attack.zeithtech.sulfuric_acid=%s dissolved.

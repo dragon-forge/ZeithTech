@@ -111,6 +111,12 @@ public class TileMagmaticGenerator
 		this.inventory.isStackValid = (idx, stack) -> idx == 0 && (FluidHelperZT.anyFluidMatches(stack, storage::isFluidValid) || FluidHelperZT.anyFluidMatches(stack, coolant::isFluidValid));
 	}
 	
+	public TileMagmaticGenerator setCurrentGenPerTick(int currentGenPerTick)
+	{
+		this.currentGenPerTick = currentGenPerTick;
+		return this;
+	}
+	
 	@Override
 	public void update()
 	{
@@ -147,7 +153,7 @@ public class TileMagmaticGenerator
 						var be = level.getBlockEntity(worldPosition.relative(value));
 						if(be instanceof IFluidPipe pipe)
 						{
-							if(atTickRate(100))
+							if(atTickRate(100) && works)
 							{
 								List<FluidStack> fi = new ArrayList<>(2);
 								int full = 0;
@@ -245,14 +251,14 @@ public class TileMagmaticGenerator
 	
 	public void consumeFuel()
 	{
-		if(storage.isEmpty() || storage.getFluidAmount() < 100)
+		if(storage.isEmpty() || storage.getFluidAmount() < 10)
 			return;
 		
-		if(storage.drain(100, IFluidHandler.FluidAction.SIMULATE).getAmount() == 100 && coolant.drain(1000, IFluidHandler.FluidAction.SIMULATE).getAmount() == 1000)
+		if(storage.drain(10, IFluidHandler.FluidAction.SIMULATE).getAmount() == 10 && coolant.drain(100, IFluidHandler.FluidAction.SIMULATE).getAmount() == 100)
 		{
-			storage.drain(100, IFluidHandler.FluidAction.EXECUTE);
-			coolant.drain(1000, IFluidHandler.FluidAction.EXECUTE);
-			_fuelTicksLeft = _fuelTicksTotal = 500;
+			storage.drain(10, IFluidHandler.FluidAction.EXECUTE);
+			coolant.drain(100, IFluidHandler.FluidAction.EXECUTE);
+			_fuelTicksLeft = _fuelTicksTotal = 50;
 			setEnabledState(true);
 		}
 	}

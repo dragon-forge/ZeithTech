@@ -5,6 +5,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.tech.api.modules.IModuleShared;
 import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
+import org.zeith.tech.api.recipes.processing.RecipeWasteProcessor;
 import org.zeith.tech.core.IInternalCode;
 import org.zeith.tech.modules.shared.init.RecipesZT;
 import org.zeith.tech.modules.shared.items.GearsZT;
@@ -31,6 +32,7 @@ public class SharedModule
 		HammerLib.EVENT_BUS.addListener(RecipesZT::provideRecipes);
 		HammerLib.EVENT_BUS.addListener(GearsZT::recipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeMachineAssembler.class, RecipesZT::machineAssembler);
+		HammerLib.EVENT_BUS.addGenericListener(RecipeWasteProcessor.class, RecipesZT::wasteProcessing);
 	}
 	
 	@Override

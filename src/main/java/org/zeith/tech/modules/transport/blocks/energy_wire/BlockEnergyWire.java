@@ -70,17 +70,10 @@ public class BlockEnergyWire
 	}
 	
 	@Override
-	protected BlockItem newBlockItem(Item.Properties props)
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flags)
 	{
-		return new BlockItem(this, props)
-		{
-			@Override
-			public void appendHoverText(ItemStack stack, @Nullable Level lvl, List<Component> tooltip, TooltipFlag flags)
-			{
-				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_max_io", Component.literal(Integer.toString(properties.tier().maxTransfer()))).withStyle(ChatFormatting.GRAY));
-				tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_loss", Component.literal(Float.toString(properties.energyLoss()))).withStyle(ChatFormatting.GRAY));
-			}
-		};
+		tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_max_io", Component.literal(Integer.toString(properties.tier().maxTransfer()))).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable("info." + ZeithTech.MOD_ID + "_transport.wire_loss", Component.literal(Float.toString(properties.energyLoss()))).withStyle(ChatFormatting.GRAY));
 	}
 	
 	public static final VoxelShape CORE_SHAPE_UNINSULATED = box(7, 7, 7, 9, 9, 9);

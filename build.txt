@@ -2,11 +2,11 @@
 mod_id=zeithtech
 archive_name=ZeithTech
 mod_name=ZeithTech
-mod_version=19.1.0_b16
+mod_version=19.1.0_b21
 
 # Maven Info
 maven_group=org.zeith.tech
-hl_version=19.1.27
+hl_version=19.1.28
 
 # MC Info
 mc_version=1.19.2

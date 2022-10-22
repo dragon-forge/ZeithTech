@@ -63,7 +63,7 @@ public class TileRendererFluidPump
 			var fluidsSrc = buf.getBuffer(Sheets.translucentCullBlockSheet());
 			float fill = fluid.getAmount() / (float) entity.fluidTank.getCapacity();
 			
-			cuboid.bounds(0.0625F, 0.188125F, 0.0625F, 0.9375F, 0.188125F + 0.56125F * fill, 0.9375F);
+			cuboid.bounds(0.063125F, 0.188125F, 0.063125F, 0.936875F, 0.188125F + 0.56125F * fill, 0.936875F);
 			
 			CuboidRenderer.renderCube(cuboid, matrix, fluidsSrc, argb, lighting, overlay, CuboidRenderer.FaceDisplay.FRONT, true);
 		}
