@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "zeithtech:transport/block/energy_cell/basic/down",
+    "north": "zeithtech:transport/block/energy_cell/basic/front",
+    "east": "zeithtech:transport/block/energy_cell/basic/side",
+    "south": "zeithtech:transport/block/energy_cell/basic/side",
+    "west": "zeithtech:transport/block/energy_cell/basic/side",
+    "up": "zeithtech:transport/block/energy_cell/basic/up",
+    "particle": "zeithtech:transport/block/energy_cell/basic/front"
+  }
+}

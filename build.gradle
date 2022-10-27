@@ -103,6 +103,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
 
     implementation "org.zeith.hammerlib:HammerLib-${config.mc_version}:${config.hl_version}:deobf"
+    implementation fg.deobf("org.zeith.improvableskills:ImprovableSkills-${config.mc_version}:${config.is3_version}")
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 

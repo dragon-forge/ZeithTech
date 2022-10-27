@@ -30,6 +30,8 @@ public interface RecipesZT_Transport
 		event.shapeless().add(ItemsZT_Processing.WIRE_CUTTER).add(TagsZT.Items.PLATES_SILVER).result(new ItemStack(BlocksZT_Transport.UNINSULATED_SILVER_WIRE, 3)).register();
 		
 		event.shaped().shape("pip", "gGg", "pip").map('p', TagsZT.Items.PLATES_LEAD).map('i', TagsZT.Items.INGOTS_LEAD).map('g', Tags.Items.GLASS_PANES).map('G', Tags.Items.GLASS).result(BlocksZT_Transport.BASIC_FLUID_TANK).register();
+		event.shaped()
+				.shape("ata", "aca", "owo").map('a', ItemsZT.ACCUMULATOR_BASIC).map('t', TagsZT.Items.INGOTS_TIN).map('c', ItemsZT.BASIC_CIRCUIT).map('o', Tags.Items.COBBLESTONE).map('w', ItemTags.PLANKS).result(BlocksZT_Transport.BASIC_ENERGY_CELL).register();
 		
 		event.add(new RecipeTurnFacadesBackIntoBlock(ZeithTechAPI.id("facade_to_block"), ""));
 	}

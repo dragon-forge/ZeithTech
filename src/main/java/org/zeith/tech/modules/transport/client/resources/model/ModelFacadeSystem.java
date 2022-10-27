@@ -106,17 +106,10 @@ public class ModelFacadeSystem
 			return modelData;
 		}
 		
-		private static final net.minecraftforge.client.ChunkRenderTypeSet ALL_BASE_TYPES = net.minecraftforge.client.ChunkRenderTypeSet.of(
-				RenderType.solid(),
-				RenderType.cutout(),
-				RenderType.cutoutMipped(),
-				RenderType.translucent()
-		);
-		
 		@Override
 		public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data)
 		{
-			return ALL_BASE_TYPES;
+			return ChunkRenderTypeSet.all();
 		}
 		
 		@Override

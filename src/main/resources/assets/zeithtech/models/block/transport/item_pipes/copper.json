@@ -1,0 +1,21 @@
+{
+  "loader": "zeithtech:transport/block/connectable",
+  "render_type": "cutout",
+  "parts": {
+    "core_central": "zeithtech:block/transport/item_pipes/copper/core_central",
+    "core_x": "zeithtech:block/transport/item_pipes/copper/core_x",
+    "core_y": "zeithtech:block/transport/item_pipes/copper/core_y",
+    "core_z": "zeithtech:block/transport/item_pipes/copper/core_z",
+    "down": "zeithtech:block/transport/item_pipes/copper/down",
+    "east": "zeithtech:block/transport/item_pipes/copper/east",
+    "north": "zeithtech:block/transport/item_pipes/copper/north",
+    "south": "zeithtech:block/transport/item_pipes/copper/south",
+    "up": "zeithtech:block/transport/item_pipes/copper/up",
+    "west": "zeithtech:block/transport/item_pipes/copper/west"
+  },
+  "inventory": [
+    "core_central",
+    "up",
+    "down"
+  ]
+}

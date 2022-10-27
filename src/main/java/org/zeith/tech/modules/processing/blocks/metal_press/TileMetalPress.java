@@ -24,11 +24,11 @@ import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.net.properties.PropertyItemStack;
 import org.zeith.hammerlib.util.java.DirectStorage;
+import org.zeith.hammerlib.util.java.tuples.Tuples;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.energy.EnergyTier;
 import org.zeith.tech.api.enums.*;
-import org.zeith.tech.api.misc.Tuple2;
 import org.zeith.tech.api.recipes.processing.RecipeHammering;
 import org.zeith.tech.api.tile.RedstoneControl;
 import org.zeith.tech.api.tile.energy.EnergyManager;
@@ -237,14 +237,14 @@ public class TileMetalPress
 				.flatMap(dir ->
 						IntStream.of(inventory.getSlotsForFace(dir))
 								.mapToObj(slot -> inventory.sidedItemAccess.canTakeItemThroughFace(slot, dir)
-										? new Tuple2<>(slot, inventory.sidedItemAccess.canPlaceItemThroughFace(slot, dir) ? SlotRole.BOTH : SlotRole.OUTPUT)
+										? Tuples.immutable(slot, inventory.sidedItemAccess.canPlaceItemThroughFace(slot, dir) ? SlotRole.BOTH : SlotRole.OUTPUT)
 										: inventory.sidedItemAccess.canPlaceItemThroughFace(slot, dir)
-										? new Tuple2<>(slot, SlotRole.INPUT)
+										? Tuples.immutable(slot, SlotRole.INPUT)
 										: null)
 				)
 				.filter(Objects::nonNull)
 				.distinct()
-				.map(pair -> ISlot.simpleSlot(new ContainerItemSlotAccess(inventory, pair.first(), pair.second()), pair.second(), pair.toString(), getClass().getSimpleName()))
+				.map(pair -> ISlot.simpleSlot(new ContainerItemSlotAccess(inventory, pair.a(), pair.b()), pair.b(), pair.toString(), getClass().getSimpleName()))
 				.forEach(lst::add);
 		
 		return lst.build();

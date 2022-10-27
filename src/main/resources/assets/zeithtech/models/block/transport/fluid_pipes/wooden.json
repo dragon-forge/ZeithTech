@@ -1,0 +1,18 @@
+{
+  "loader": "zeithtech:transport/block/connectable",
+  "render_type": "cutout",
+  "parts": {
+    "": "zeithtech:block/transport/fluid_pipes/wooden/core",
+    "down": "zeithtech:block/transport/fluid_pipes/wooden/down",
+    "east": "zeithtech:block/transport/fluid_pipes/wooden/east",
+    "north": "zeithtech:block/transport/fluid_pipes/wooden/north",
+    "south": "zeithtech:block/transport/fluid_pipes/wooden/south",
+    "up": "zeithtech:block/transport/fluid_pipes/wooden/up",
+    "west": "zeithtech:block/transport/fluid_pipes/wooden/west"
+  },
+  "inventory": [
+    "",
+    "up",
+    "down"
+  ]
+}

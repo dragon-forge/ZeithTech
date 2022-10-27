@@ -44,7 +44,7 @@ public class EnergyManager
 	
 	public EnergyManager(EnergyTier tier, EnumEnergyManagerKind kind)
 	{
-		this(tier.capacity(), kind == EnumEnergyManagerKind.GENERATOR ? 0 : tier.maxTransfer(), kind == EnumEnergyManagerKind.CONSUMER ? 0 : tier.maxTransfer());
+		this(tier.capacity(), kind.consumesEnergy() ? tier.maxTransfer() : 0, kind.generatesEnergy() ? tier.maxTransfer() : 0);
 		setKind(kind);
 	}
 	
@@ -108,7 +108,7 @@ public class EnergyManager
 		if(level.isClientSide || (maxSend <= 0 && maxAccept <= 0))
 			return;
 		
-		if(kind == EnumEnergyManagerKind.CONSUMER)
+		if(kind.generatesEnergy())
 			chargeMachineFromItem(batteryInventory.getItem(0));
 		else
 			chargeItem(batteryInventory.getItem(0));
@@ -129,7 +129,7 @@ public class EnergyManager
 								.ifPresent(ies ->
 								{
 									var max = Math.min(maxAccept, fe.getEnergyTillFull());
-									measurables.onEnergyTransfer(fe.receiveEnergy(ies.extractEnergy(max, false), false));
+									measurables.onEnergyTransfer(receiveEnergy(ies.extractEnergy(max, false), false));
 								});
 				}
 				case PUSH ->
@@ -141,7 +141,7 @@ public class EnergyManager
 								.ifPresent(ies ->
 								{
 									var max = Math.min(maxSend, fe.getEnergyStored());
-									measurables.onEnergyTransfer(fe.extractEnergy(ies.receiveEnergy(max, false), false));
+									measurables.onEnergyTransfer(extractEnergy(ies.receiveEnergy(max, false), false));
 								});
 				}
 			}
@@ -150,7 +150,7 @@ public class EnergyManager
 	
 	public ISlot<FECharge> createSlot()
 	{
-		return kind == EnumEnergyManagerKind.GENERATOR
+		return kind.consumesEnergy()
 				? ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(this, SlotRole.INPUT), SlotRole.INPUT, Color.RED)
 				: ISlot.simpleSlot(new UUID(2048L, 2048L), new EnergySlotAccess(this, SlotRole.OUTPUT), SlotRole.OUTPUT, Color.RED);
 	}

@@ -11,7 +11,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.zeith.hammerlib.HammerLib;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
@@ -65,7 +64,7 @@ public class ZeithTech
 		
 		this.busses = new LegacyEventBus(bus, MinecraftForge.EVENT_BUS);
 		
-		var illegalSourceNotice = ModSourceAdapter.getModSource(HammerLib.class)
+		var illegalSourceNotice = ModSourceAdapter.getModSource(ZeithTech.class)
 				.filter(ModSourceAdapter.ModSource::wasDownloadedIllegally)
 				.orElse(null);
 		

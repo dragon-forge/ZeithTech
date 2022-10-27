@@ -1,0 +1,18 @@
+{
+  "loader": "zeithtech:transport/block/connectable",
+  "render_type": "cutout",
+  "parts": {
+    "": "zeithtech:block/transport/fluid_pipes/iron/core",
+    "down": "zeithtech:block/transport/fluid_pipes/iron/down",
+    "east": "zeithtech:block/transport/fluid_pipes/iron/east",
+    "north": "zeithtech:block/transport/fluid_pipes/iron/north",
+    "south": "zeithtech:block/transport/fluid_pipes/iron/south",
+    "up": "zeithtech:block/transport/fluid_pipes/iron/up",
+    "west": "zeithtech:block/transport/fluid_pipes/iron/west"
+  },
+  "inventory": [
+    "",
+    "up",
+    "down"
+  ]
+}

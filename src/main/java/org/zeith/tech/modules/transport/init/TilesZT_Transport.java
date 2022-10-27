@@ -5,6 +5,7 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.hammerlib.api.forge.BlockAPI;
+import org.zeith.tech.modules.transport.blocks.energy_cell.basic.TileEnergyCellB;
 import org.zeith.tech.modules.transport.blocks.energy_wire.TileEnergyWire;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.TileFluidPipe;
 import org.zeith.tech.modules.transport.blocks.fluid_tank.basic.TileFluidTankB;
@@ -19,6 +20,9 @@ public interface TilesZT_Transport
 	@RegistryName("fluid_tank/basic")
 	@TileRenderer(TileRendererFluidTankB.class)
 	BlockEntityType<TileFluidTankB> BASIC_FLUID_TANK = BlockAPI.createBlockEntityType(TileFluidTankB::new, BlocksZT_Transport.BASIC_FLUID_TANK);
+	
+	@RegistryName("energy_cell/basic")
+	BlockEntityType<TileEnergyCellB> BASIC_ENERGY_CELL = BlockAPI.createBlockEntityType(TileEnergyCellB::new, BlocksZT_Transport.BASIC_ENERGY_CELL);
 	
 	@RegistryName("item_pipe")
 	@TileRenderer(TileRendererItemPipe.class)

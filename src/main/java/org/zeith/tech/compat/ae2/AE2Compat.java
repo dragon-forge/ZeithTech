@@ -17,18 +17,28 @@ import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.transport.init.TilesZT_Transport;
 import org.zeith.tech.utils.LegacyEventBus;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class AE2Compat
 		extends BaseCompat
 {
 	private final Class<?> P2PTunnelAttunement = ReflectionUtil.fetchClass("appeng.api.features.P2PTunnelAttunement");
-	private final Class<?> IFacadeItem = ReflectionUtil.fetchClass("appeng.facade.IFacadeItem");
+	
+	// AE2 changed the facade class path in 12.8.3 beta.
+	private final Class<?> IFacadeItem =
+			Stream.of(
+							ReflectionUtil.fetchClass("appeng.facade.IFacadeItem"),
+							ReflectionUtil.fetchClass("appeng.api.implementations.items.IFacadeItem")
+					).filter(Objects::nonNull)
+					.findFirst()
+					.orElse(null);
 	
 	@Override
 	public Optional<BlockState> getFacadeFromItem(ItemStack stack)
 	{
-		if(!stack.isEmpty() && IFacadeItem.isInstance(stack.getItem()))
+		if(!stack.isEmpty() && IFacadeItem != null && IFacadeItem.isInstance(stack.getItem()))
 		{
 			try
 			{

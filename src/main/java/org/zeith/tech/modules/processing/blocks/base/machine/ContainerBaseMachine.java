@@ -2,9 +2,11 @@ package org.zeith.tech.modules.processing.blocks.base.machine;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
@@ -70,4 +72,40 @@ public abstract class ContainerBaseMachine<T extends TileBaseMachine<T>>
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public abstract Screen openScreen(Inventory inv, Component label);
+	
+	public boolean isTileInventory(Container container, Player player)
+	{
+		return container != player.getInventory();
+	}
+	
+	@Override
+	public ItemStack quickMoveStack(Player player, int slotIdx)
+	{
+		ItemStack duped = ItemStack.EMPTY;
+		
+		var slot = slots.get(slotIdx);
+		if(slot.hasItem())
+		{
+			ItemStack origin = slot.getItem();
+			duped = origin.copy();
+			
+			if(isTileInventory(slot.container, player))
+			{
+				if(!this.moveItemStackTo(origin, 0, 36, true))
+					return ItemStack.EMPTY;
+			}
+			
+			if(slot.container == player.getInventory())
+			{
+				if(!this.moveItemStackTo(origin, 36, slots.size(), true))
+					return ItemStack.EMPTY;
+			}
+			
+			if(origin.getCount() == duped.getCount())
+				return ItemStack.EMPTY;
+			slot.onTake(player, origin);
+		}
+		
+		return duped;
+	}
 }

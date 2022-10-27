@@ -8,6 +8,7 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.tech.api.energy.EnergyTier;
+import org.zeith.tech.modules.transport.blocks.energy_cell.basic.BlockEnergyCellB;
 import org.zeith.tech.modules.transport.blocks.energy_wire.BlockEnergyWire;
 import org.zeith.tech.modules.transport.blocks.energy_wire.EnergyWireProperties;
 import org.zeith.tech.modules.transport.blocks.fluid_pipe.BlockFluidPipe;
@@ -21,6 +22,9 @@ public interface BlocksZT_Transport
 {
 	@RegistryName("fluid_tank/basic")
 	BlockFluidTankB BASIC_FLUID_TANK = new BlockFluidTankB(BlockBehaviour.Properties.of(Material.METAL).sound(SoundType.METAL).strength(2.5F).requiresCorrectToolForDrops(), BlockHarvestAdapter.MineableType.PICKAXE, Tiers.STONE);
+	
+	@RegistryName("energy_cell/basic")
+	BlockEnergyCellB BASIC_ENERGY_CELL = new BlockEnergyCellB();
 	
 	@RegistryName("item_pipes/copper")
 	BlockItemPipe COPPER_ITEM_PIPE = new BlockItemPipe(ItemPipeProperties.builder().build());

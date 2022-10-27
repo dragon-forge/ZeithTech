@@ -176,6 +176,7 @@ item.zeithtech.transport.multimeter=Multimeter
 item.zeithtech.transport.facade=Facade - %s
 
 block.zeithtech.transport.fluid_tank.basic=Basic Fluid Tank
+block.zeithtech.transport.energy_cell.basic=Basic Energy Cell
 
 block.zeithtech.transport.item_pipes.copper=Copper Item Pipe
 

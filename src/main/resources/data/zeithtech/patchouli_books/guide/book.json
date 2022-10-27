@@ -1,0 +1,10 @@
+{
+  "name": "Tech Guide",
+  "landing_text": "This book will guide you through ZeithTech.",
+  "book_texture": "patchouli:textures/gui/book_blue.png",
+  "version": 1,
+  "creative_tab": "zeithtech",
+  "i18n": true,
+  "show_progress": false,
+  "model": "patchouli:book_blue"
+}
