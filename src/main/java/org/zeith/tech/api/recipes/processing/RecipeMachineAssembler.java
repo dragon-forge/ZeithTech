@@ -51,6 +51,14 @@ public class RecipeMachineAssembler
 		this.recipeItems = recipeItems;
 	}
 	
+	public boolean isValidIngredient(int slot, ItemStack stack)
+	{
+		int x = slot % 5, y = slot / 5;
+		Ingredient ingredient = Ingredient.EMPTY;
+		if(x < width && y < height) ingredient = recipeItems.get(x + y * width);
+		return ingredient.test(stack);
+	}
+	
 	@Override
 	public void onDeregistered()
 	{

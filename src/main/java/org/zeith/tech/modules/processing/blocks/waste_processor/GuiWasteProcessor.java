@@ -45,7 +45,7 @@ public class GuiWasteProcessor
 	{
 		pose.pushPose();
 		pose.translate(-leftPos, -topPos, 0);
-		WidgetAPI.drawPowerBarOverlay(this, pose, 9 + leftPos, 13 + topPos, menu.tile.energyStored.getInt(), mouseX, mouseY);
+		WidgetAPI.drawPowerBarOverlay(this, pose, 9 + leftPos, 13 + topPos, menu.tile.energy, mouseX, mouseY);
 		pose.popPose();
 		
 		return false;

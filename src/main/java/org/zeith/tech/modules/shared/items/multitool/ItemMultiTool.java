@@ -27,10 +27,10 @@ import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.items.IDynamicallyTaggedItem;
+import org.zeith.hammerlib.api.items.tooltip.TooltipMulti;
 import org.zeith.tech.api.item.IAccumulatorItem;
 import org.zeith.tech.api.item.multitool.*;
 import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
-import org.zeith.tech.api.item.tooltip.TooltipMulti;
 import org.zeith.tech.modules.shared.proxy.ClientSharedProxyZT;
 import org.zeith.tech.utils.ChatUtil;
 

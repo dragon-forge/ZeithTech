@@ -19,7 +19,8 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
-import org.zeith.hammerlib.net.properties.*;
+import org.zeith.hammerlib.net.properties.PropertyItemStack;
+import org.zeith.hammerlib.net.properties.PropertyResourceLocation;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.java.tuples.Tuples;
@@ -82,11 +83,7 @@ public class TileElectricFurnaceB
 	
 	@NBTSerializable("Recipe")
 	public ResourceLocation _activeRecipe;
-	
-	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
-	
-	public final PropertyInt progress = new PropertyInt(DirectStorage.create(i -> _progress = i, () -> _progress));
-	public final PropertyInt maxProgress = new PropertyInt(DirectStorage.create(i -> _maxProgress = i, () -> _maxProgress));
+	;
 	public final PropertyResourceLocation activeRecipe = new PropertyResourceLocation(DirectStorage.create(i -> _activeRecipe = i, () -> _activeRecipe));
 	
 	public final PropertyItemStack inputItemDisplay = new PropertyItemStack(DirectStorage.allocate(ItemStack.EMPTY));
@@ -128,7 +125,7 @@ public class TileElectricFurnaceB
 			var recipe = getActiveRecipe();
 			if(recipe != null)
 			{
-				maxProgress.setInt(recipe.getCookingTime());
+				_maxProgress = recipe.getCookingTime();
 				
 				if(_progress < _maxProgress)
 				{

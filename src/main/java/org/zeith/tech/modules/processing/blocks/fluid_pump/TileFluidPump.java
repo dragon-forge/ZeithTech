@@ -26,8 +26,6 @@ import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.net.Network;
 import org.zeith.hammerlib.net.packets.SyncTileEntityPacket;
-import org.zeith.hammerlib.net.properties.PropertyInt;
-import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.mcf.BlockPosList;
 import org.zeith.hammerlib.util.physics.FrictionRotator;
 import org.zeith.tech.api.ZeithTechAPI;
@@ -70,8 +68,6 @@ public class TileFluidPump
 	
 	@NBTSerializable("OutputFluid")
 	public final SerializableFluidTank fluidTank = new SerializableFluidTank(5000);
-	
-	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
 	
 	@NBTSerializable("Positions")
 	public final BlockPosList discoveredPositions = new BlockPosList();

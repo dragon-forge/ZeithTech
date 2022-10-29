@@ -20,8 +20,6 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
-import org.zeith.hammerlib.net.properties.PropertyInt;
-import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.java.tuples.Tuples;
 import org.zeith.hammerlib.util.physics.FrictionRotator;
 import org.zeith.tech.api.ZeithTechAPI;
@@ -99,10 +97,6 @@ public class TileWasteProcessor
 	
 	@NBTSerializable("MaxProgress")
 	public int _maxProgress = 200;
-	
-	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
-	public final PropertyInt progress = new PropertyInt(DirectStorage.create(i -> _progress = i, () -> _progress));
-	public final PropertyInt maxProgress = new PropertyInt(DirectStorage.create(i -> _maxProgress = i, () -> _maxProgress));
 	
 	public TileWasteProcessor(BlockPos pos, BlockState state)
 	{
@@ -187,7 +181,7 @@ public class TileWasteProcessor
 		{
 			getActiveRecipe().ifPresentOrElse(recipe ->
 			{
-				maxProgress.setInt(recipe.getTime());
+				_maxProgress = recipe.getTime();
 				
 				var works = redstone.shouldWork(this);
 				

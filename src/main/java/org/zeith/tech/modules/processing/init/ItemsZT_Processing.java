@@ -38,4 +38,7 @@ public interface ItemsZT_Processing
 	
 	@RegistryName("redstone_control_tool")
 	ItemRedstoneControlTool REDSTONE_CONTROL_TOOL = new ItemRedstoneControlTool(BaseZT.itemProps().stacksTo(1));
+	
+	@RegistryName("recipe_pattern")
+	ItemRecipePattern RECIPE_PATTERN = new ItemRecipePattern(BaseZT.itemProps().stacksTo(1));
 }

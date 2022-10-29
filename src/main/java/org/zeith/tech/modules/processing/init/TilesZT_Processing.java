@@ -10,6 +10,7 @@ import org.zeith.tech.modules.processing.blocks.facade_slicer.TileFacadeSlicer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
 import org.zeith.tech.modules.processing.blocks.fluid_pump.TileFluidPump;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
+import org.zeith.tech.modules.processing.blocks.machine_assembler.advanced.TileMachineAssemblerA;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.TileMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.metal_press.TileMetalPress;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.TileMiningQuarryB;
@@ -23,6 +24,10 @@ public interface TilesZT_Processing
 	@RegistryName("machine_assembler/basic")
 	@TileRenderer(TileRendererMachineAssemblerB.class)
 	BlockEntityType<TileMachineAssemblerB> BASIC_MACHINE_ASSEMBLER = BlockAPI.createBlockEntityType(TileMachineAssemblerB::new, BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER);
+	
+	@RegistryName("machine_assembler/advanced")
+	@TileRenderer(TileRendererMachineAssemblerA.class)
+	BlockEntityType<TileMachineAssemblerA> ADVANCED_MACHINE_ASSEMBLER = BlockAPI.createBlockEntityType(TileMachineAssemblerA::new, BlocksZT_Processing.ADVANVED_MACHINE_ASSEMBLER);
 	
 	@RegistryName("electric_furnace/basic")
 	@TileRenderer(TileRendererElectricFurnaceB.class)

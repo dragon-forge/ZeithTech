@@ -12,6 +12,7 @@ import org.zeith.tech.modules.processing.blocks.facade_slicer.BlockFacadeSlicer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.BlockFluidCentrifuge;
 import org.zeith.tech.modules.processing.blocks.fluid_pump.BlockFluidPump;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.BlockGrinderB;
+import org.zeith.tech.modules.processing.blocks.machine_assembler.advanced.BlockMachineAssemblerA;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.metal_press.BlockMetalPress;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQuarryB;
@@ -23,6 +24,9 @@ public interface BlocksZT_Processing
 {
 	@RegistryName("machine_assembler/basic")
 	BlockMachineAssemblerB BASIC_MACHINE_ASSEMBLER = new BlockMachineAssemblerB();
+	
+	@RegistryName("machine_assembler/advanced")
+	BlockMachineAssemblerA ADVANVED_MACHINE_ASSEMBLER = new BlockMachineAssemblerA();
 	
 	@RegistryName("electric_furnace/basic")
 	BlockElectricFurnaceB BASIC_ELECTRIC_FURNACE = new BlockElectricFurnaceB();

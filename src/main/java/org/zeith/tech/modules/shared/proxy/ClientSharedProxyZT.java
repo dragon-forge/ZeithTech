@@ -16,9 +16,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.item.multitool.IMultiToolItem;
 import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
-import org.zeith.tech.api.item.tooltip.TooltipMulti;
+import org.zeith.tech.api.item.tooltip.TooltipStack;
 import org.zeith.tech.modules.shared.client.renderer.tooltip.ClientTooltipEnergy;
-import org.zeith.tech.modules.shared.client.renderer.tooltip.ClientTooltipMulti;
+import org.zeith.tech.modules.shared.client.renderer.tooltip.ClientTooltipStack;
 import org.zeith.tech.modules.shared.client.resources.model.ModelMultiTool;
 import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.items.multitool.ContainerMultiTool;
@@ -92,7 +92,7 @@ public class ClientSharedProxyZT
 	
 	private void registerClientTooltips(RegisterClientTooltipComponentFactoriesEvent e)
 	{
-		e.register(TooltipMulti.class, ClientTooltipMulti::new);
+		e.register(TooltipStack.class, ClientTooltipStack::new);
 		e.register(TooltipEnergyBar.class, ClientTooltipEnergy::new);
 	}
 }

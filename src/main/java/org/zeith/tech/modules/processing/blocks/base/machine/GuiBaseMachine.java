@@ -88,4 +88,11 @@ public class GuiBaseMachine<C extends ContainerBaseMachine<?>>
 		
 		super.renderSlot(pose, slot);
 	}
+	
+	@Override
+	protected boolean hasClickedOutside(double mouseX, double mouseY, int guiLeft, int guiTop, int button)
+	{
+		return super.hasClickedOutside(mouseX, mouseY, guiLeft, guiTop, button)
+				&& getExtraAreas().stream().noneMatch(rect2i -> rect2i.contains((int) mouseX, (int) mouseY));
+	}
 }

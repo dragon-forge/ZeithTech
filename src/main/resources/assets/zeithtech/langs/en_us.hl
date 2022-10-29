@@ -142,6 +142,7 @@ block.zeithtech.generators.magmatic_generator.desc=Generates energy by consuming
 block.zeithtech.processing.mining_pipe=Mining Pipe
 
 block.zeithtech.processing.machine_assembler.basic=Basic Machine Assembler
+block.zeithtech.processing.machine_assembler.advanced=Advanced Machine Assembler
 block.zeithtech.processing.electric_furnace.basic=Basic Electric Furnace
 block.zeithtech.processing.grinder.basic=Basic Grinder
 block.zeithtech.processing.sawmill.basic=Basic Sawmill
@@ -152,6 +153,7 @@ block.zeithtech.processing.waste_processor=Waste Processor
 block.zeithtech.processing.metal_press=Metal Press
 block.zeithtech.processing.facade_slicer=Facade Slicer
 
+item.zeithtech.processing.recipe_pattern=Recipe Pattern
 item.zeithtech.processing.redstone_control_tool=Redstone Control Tool
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter
@@ -231,6 +233,7 @@ advancement.zeithtech.insulate_wire.desc=Insulate three wires with two pieces of
 info.zeithtech.energy_mult=Energy: %s
 info.zeithtech.speed_mult=Speed: %s
 info.zeithtech.fe=%,d FE
+info.zeithtech.fe.capped=%,d / %,d FE
 info.zeithtech.fe.generation=Generation: %s FE/tick
 info.zeithtech.fe.stored=Stored: %,d FE
 info.zeithtech.fe.capacity=Capacity: %,d FE

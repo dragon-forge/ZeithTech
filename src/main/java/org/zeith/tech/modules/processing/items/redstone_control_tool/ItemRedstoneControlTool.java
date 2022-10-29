@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkHooks;
-import org.zeith.hammerlib.api.tiles.IContainerTile;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.tile.RedstoneControl;
 
@@ -28,26 +27,28 @@ public class ItemRedstoneControlTool
 		var lvl = context.getLevel();
 		var pos = context.getClickedPos();
 		var be = lvl.getBlockEntity(pos);
-		
-		if(be != null)
-			return be.getCapability(ZeithTechCapabilities.REDSTONE_CONTROL)
-					.resolve()
-					.map(control ->
-					{
-						openRedstoneControl(context.getPlayer(), pos, control, be instanceof Nameable n ? n.getDisplayName() : be.getBlockState().getBlock().getName());
-						return InteractionResult.SUCCESS;
-					}).orElse(InteractionResult.PASS);
-		
+		if(openRedstoneControl(context.getPlayer(), be)) return InteractionResult.SUCCESS;
 		return InteractionResult.PASS;
 	}
 	
-	public <T extends BlockEntity & IContainerTile> void openRedstoneControl(Player player, BlockPos pos, RedstoneControl tile, Component tileName)
+	public static boolean openRedstoneControl(Player player, BlockEntity be)
 	{
-		if(player instanceof ServerPlayer && tile != null && pos != null)
-			NetworkHooks.openScreen((ServerPlayer) player, forMeasurable(pos, tile, tileName), buf -> buf.writeBlockPos(pos));
+		return be != null && be.getCapability(ZeithTechCapabilities.REDSTONE_CONTROL)
+				.resolve()
+				.map(control ->
+				{
+					openRedstoneControl(player, be.getBlockPos(), control, be instanceof Nameable n ? n.getDisplayName() : be.getBlockState().getBlock().getName());
+					return true;
+				}).orElse(false);
 	}
 	
-	public MenuProvider forMeasurable(BlockPos pos, RedstoneControl tile, Component tileName)
+	public static void openRedstoneControl(Player player, BlockPos pos, RedstoneControl tile, Component tileName)
+	{
+		if(player instanceof ServerPlayer && tile != null && pos != null)
+			NetworkHooks.openScreen((ServerPlayer) player, forControllable(pos, tile, tileName), buf -> buf.writeBlockPos(pos));
+	}
+	
+	public static MenuProvider forControllable(BlockPos pos, RedstoneControl tile, Component tileName)
 	{
 		return new SimpleMenuProvider((windowId, playerInv, player) -> new ContainerRedstoneControl(windowId, playerInv, new ContainerRedstoneControl.RedstoneModeData(tile, pos)), tileName);
 	}

@@ -36,19 +36,24 @@ public class GuiRedstoneControl
 		sliderRect = new Rectangle(leftPos + 25, topPos + 53, 126, 10);
 		draggingSlider = false;
 		
-		changeMode = addRenderableWidget(new Button(leftPos + 25, topPos + 25, 20, 20, Component.literal(""), btn ->
+		changeMode = addRenderableWidget(createButtonWithRedstoneState(menu.source, leftPos + 25, topPos + 25, 20, 20, Component.literal(""), btn ->
 		{
 			// OnPress
 			clickMenuButton(hasShiftDown() ? -1 : 0);
-		})
+		}));
+	}
+	
+	public static Button createButtonWithRedstoneState(ContainerRedstoneControl.RedstoneModeData data, int x, int y, int width, int height, Component text, Button.OnPress onClick)
+	{
+		return new Button(x, y, width, height, text, onClick)
 		{
 			@Override
 			protected void renderBg(PoseStack pose, Minecraft mc, int x, int y)
 			{
 				FXUtils.bindTexture(ZeithTechAPI.MOD_ID, "textures/gui/redstone_control_tool.png");
-				RenderUtils.drawTexturedModalRect(pose, this.x, this.y, 176, menu.source.getMode().ordinal() * 20, 20, 20);
+				RenderUtils.drawTexturedModalRect(pose, this.x, this.y, 176, data.getMode().ordinal() * 20, width, height);
 			}
-		});
+		};
 	}
 	
 	@Override

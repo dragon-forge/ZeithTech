@@ -45,6 +45,8 @@ public interface RecipesZT_Processing
 		
 		event.shaped().shape("prp", "pcp", " p ").map('p', ItemsZT.PLASTIC).map('r', Tags.Items.DUSTS_REDSTONE).map('c', Items.COMPARATOR).result(ItemsZT_Processing.REDSTONE_CONTROL_TOOL).register();
 		
+		event.shapeless().add(Items.PAPER).add(Tags.Items.GEMS_LAPIS).add(Tags.Items.DUSTS_REDSTONE).add(ItemsZT.BASIC_CIRCUIT).result(ItemsZT_Processing.RECIPE_PATTERN).register();
+		
 		var netheriteMiningHeadId = ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD);
 		event.register(netheriteMiningHeadId, new UpgradeRecipe(netheriteMiningHeadId, Ingredient.of(ItemsZT.TUNGSTEN_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
 		
@@ -168,6 +170,18 @@ public interface RecipesZT_Processing
 				.map('c', ItemsZT.CIRCULAR_SAW)
 				.map('s', TagsZT.Items.STORAGE_BLOCKS_SILVER)
 				.result(BlocksZT_Processing.FACADE_SLICER)
+				.register();
+		
+		f.get().minTier(TechTier.BASIC)
+				.shape("  a  ", " srs ", "lcpcl", " ppp ", "  i  ")
+				.map('a', BlocksZT.BASIC_MACHINE_ASSEMBLER)
+				.map('s', TagsZT.Items.PLATES_SILVER)
+				.map('r', Tags.Items.DUSTS_REDSTONE)
+				.map('l', ItemsZT.LATEX)
+				.map('c', TagsZT.Items.COILS_COPPER)
+				.map('p', ItemsZT.PLASTIC)
+				.map('i', Tags.Items.STORAGE_BLOCKS_IRON)
+				.result(BlocksZT_Processing.ADVANVED_MACHINE_ASSEMBLER)
 				.register();
 		
 	}

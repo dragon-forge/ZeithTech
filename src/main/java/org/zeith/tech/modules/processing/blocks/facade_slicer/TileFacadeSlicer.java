@@ -16,8 +16,6 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
-import org.zeith.hammerlib.net.properties.PropertyInt;
-import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.java.tuples.Tuples;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.ZeithTechCapabilities;
@@ -69,9 +67,6 @@ public class TileFacadeSlicer
 	
 	@NBTSerializable("Consumption")
 	public int usePerTick = 20;
-	
-	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
-	public final PropertyInt progress = new PropertyInt(DirectStorage.create(i -> _progress = i, () -> _progress));
 	
 	public TileFacadeSlicer(BlockPos pos, BlockState state)
 	{

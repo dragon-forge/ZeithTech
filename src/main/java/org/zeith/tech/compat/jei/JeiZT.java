@@ -31,6 +31,7 @@ import org.zeith.tech.compat.jei.category.*;
 import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
 import org.zeith.tech.compat.jei.category.hammering.AdvancedHammeringCategory;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
+import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryA;
 import org.zeith.tech.compat.jei.category.machine_assembly.MachineAssemblyCategoryB;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.cfg.ZeithTechTransportConfigs;
@@ -40,6 +41,8 @@ import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.Container
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.TileGrinderB;
+import org.zeith.tech.modules.processing.blocks.machine_assembler.advanced.ContainerMachineAssemblerA;
+import org.zeith.tech.modules.processing.blocks.machine_assembler.advanced.GuiMachineAssemblerA;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.ContainerMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.GuiMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.metal_press.GuiMetalPress;
@@ -50,6 +53,7 @@ import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,6 +92,14 @@ public class JeiZT
 	}
 	
 	@Override
+	public void registerItemSubtypes(ISubtypeRegistration registration)
+	{
+		registration.registerSubtypeInterpreter(ItemsZT.RECIPE_PATTERN, (itemStack, context) ->
+				Optional.ofNullable(itemStack.getTagElement("Pattern")).map(Object::toString).orElse("null")
+		);
+	}
+	
+	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration)
 	{
 		var gui$ = registration.getJeiHelpers().getGuiHelper();
@@ -96,6 +108,7 @@ public class JeiZT
 				new ManualHammeringCategory(gui$),
 				new AdvancedHammeringCategory(gui$),
 				new MachineAssemblyCategoryB(gui$),
+				new MachineAssemblyCategoryA(gui$),
 				new GrinderCategoryB(gui$),
 				new SawmillCategoryB(gui$),
 				new FluidCentrifugeCategory(gui$),
@@ -113,6 +126,7 @@ public class JeiZT
 		registration.addRecipes(RecipeTypesZT.MANUAL_HAMMERING, api.getRecipesUpToTier(api.hammering(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.ADVANCED_HAMMERING, api.getRecipesUpToTier(api.hammering(), TechTier.ADVANCED));
 		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, api.getRecipesUpToTier(api.machineAssembly(), TechTier.BASIC));
+		registration.addRecipes(RecipeTypesZT.MACHINE_ASSEMBLY_ADVANCED, api.getRecipesUpToTier(api.machineAssembly(), TechTier.ADVANCED));
 		registration.addRecipes(RecipeTypesZT.GRINDER_BASIC, api.getRecipesUpToTier(api.grinding(), TechTier.BASIC));
 		registration.addRecipes(RecipeTypesZT.SAWMILL, api.sawmill().getRecipes().stream().toList());
 		registration.addRecipes(RecipeTypesZT.FLUID_CENTRIFUGE, api.fluidCentrifuge().getRecipes().stream().toList());
@@ -128,7 +142,21 @@ public class JeiZT
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration)
 	{
 		registration.addRecipeTransferHandler(ContainerElectricFurnaceB.class, ContainerAPI.TILE_CONTAINER, RecipeTypes.SMELTING, 36, 1, 0, 36);
+		
 		registration.addRecipeTransferHandler(ContainerMachineAssemblerB.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC, 36, 13, 0, 36);
+		
+		registration.addRecipeTransferHandler(new JeiTransferHandlerWithNonTransferableSlots(
+				registration.getJeiHelpers().getStackHelper(),
+				registration.getTransferHelper(),
+				JeiTransferHandlerWithNonTransferableSlots.newTransferInfo(
+						ContainerMachineAssemblerA.class,
+						Cast.cast(ContainerAPI.TILE_CONTAINER),
+						RecipeTypesZT.MACHINE_ASSEMBLY_ADVANCED,
+						36, 21,
+						0, 36
+				)
+		), RecipeTypesZT.MACHINE_ASSEMBLY_ADVANCED);
+		
 		registration.addRecipeTransferHandler(TileGrinderB.ContainerGrinder.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.GRINDER_BASIC, 36, 1, 0, 36);
 		registration.addRecipeTransferHandler(TileSawmillB.ContainerSawmill.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.SAWMILL, 36, 1, 0, 36);
 	}
@@ -139,8 +167,9 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_FUEL_GENERATOR), RecipeTypes.FUELING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_ELECTRIC_FURNACE), RecipeTypes.SMELTING);
 		registration.addRecipeCatalyst(new ItemStack(ItemsZT.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT.METAL_PRESS), RecipeTypesZT.ADVANCED_HAMMERING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.METAL_PRESS), RecipeTypesZT.ADVANCED_HAMMERING, RecipeTypesZT.MANUAL_HAMMERING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.ADVANVED_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_ADVANCED, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);
@@ -152,6 +181,7 @@ public class JeiZT
 	public void registerGuiHandlers(IGuiHandlerRegistration registration)
 	{
 		registration.addRecipeClickArea(GuiMachineAssemblerB.class, 107, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+		registration.addRecipeClickArea(GuiMachineAssemblerA.class, 109, 45, 22, 15, RecipeTypesZT.MACHINE_ASSEMBLY_ADVANCED);
 		registration.addRecipeClickArea(GuiSolidFuelGeneratorB.class, 81, 29, 13, 14, RecipeTypes.FUELING);
 		registration.addRecipeClickArea(GuiElectricFurnaceB.class, 72, 35, 22, 15, RecipeTypes.SMELTING);
 		registration.addRecipeClickArea(GuiGrinderB.class, 61, 35, 22, 15, RecipeTypesZT.GRINDER_BASIC);

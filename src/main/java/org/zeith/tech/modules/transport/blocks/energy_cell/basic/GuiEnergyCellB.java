@@ -24,7 +24,7 @@ public class GuiEnergyCellB
 	{
 		pose.pushPose();
 		pose.translate(-leftPos, -topPos, 0);
-		WidgetAPI.drawPowerBarOverlay(this, pose, leftPos + 98, topPos + 10, menu.tile.energy.getEnergyStored(), mouseX, mouseY);
+		WidgetAPI.drawPowerBarOverlay(this, pose, leftPos + 98, topPos + 10, menu.tile.energy, mouseX, mouseY);
 		pose.popPose();
 		
 		return false;

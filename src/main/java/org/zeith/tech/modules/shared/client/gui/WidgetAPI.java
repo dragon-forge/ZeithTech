@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.client.render.FluidRendererHelper;
@@ -39,6 +40,11 @@ public class WidgetAPI
 		itemrenderer.renderGuiItemDecorations(minecraft.font, stack, x, y);
 	}
 	
+	public static void drawPowerBarOverlay(Screen screen, PoseStack pose, int x, int y, IEnergyStorage displayFE, int mouseX, int mouseY)
+	{
+		drawPowerBarOverlay(screen, pose, x, y, displayFE.getEnergyStored(), displayFE.getMaxEnergyStored(), mouseX, mouseY);
+	}
+	
 	public static void drawPowerBarOverlay(Screen screen, PoseStack pose, int x, int y, int displayFE, int mouseX, int mouseY)
 	{
 		if(mouseX >= x && mouseY >= y && mouseX < x + 13 && mouseY < y + 66)
@@ -50,6 +56,20 @@ public class WidgetAPI
 				return;
 			
 			screen.renderTooltip(pose, Component.literal(I18n.get("info.zeithtech.fe", displayFE)), mouseX, mouseY);
+		}
+	}
+	
+	public static void drawPowerBarOverlay(Screen screen, PoseStack pose, int x, int y, int displayFE, int capacity, int mouseX, int mouseY)
+	{
+		if(mouseX >= x && mouseY >= y && mouseX < x + 13 && mouseY < y + 66)
+		{
+			renderSlotHighlight(pose, x + 1, y + 1, 11, 64, 0);
+			
+			var player = Minecraft.getInstance().player;
+			if(player != null && player.containerMenu != null && !player.containerMenu.getCarried().isEmpty())
+				return;
+			
+			screen.renderTooltip(pose, Component.literal(I18n.get("info.zeithtech.fe.capped", displayFE, capacity)), mouseX, mouseY);
 		}
 	}
 	

@@ -7,6 +7,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.zeith.hammerlib.net.properties.PropertyInt;
+import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.shared.ui.SlotInput;
 import org.zeith.tech.modules.shared.ui.SlotOutput;
@@ -18,7 +20,11 @@ public class ContainerMetalPress
 {
 	public ContainerMetalPress(TileMetalPress tile, Player player, int windowId)
 	{
-		super(tile, player, windowId, List.of(tile.maxProgress, tile.progress, tile.energyStored));
+		super(tile, player, windowId, List.of(
+				tile.maxProgress,
+				tile.progress,
+				new PropertyInt(DirectStorage.create(tile.energy.fe::setEnergyStored, tile.energy.fe::getEnergyStored))
+		));
 		
 		int x;
 		for(x = 0; x < 3; ++x)

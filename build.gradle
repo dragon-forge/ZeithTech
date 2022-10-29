@@ -94,6 +94,10 @@ repositories {
         name = "Zeitheron Maven"
         url = "https://maven.zeith.org/"
     }
+    maven {
+        name = "jei"
+        url = "https://dvs1.progwml6.com/files/maven"
+    }
     flatDir { dirs 'libraries/all' }
     flatDir { dirs 'libraries/classpathOnly' }
     flatDir { dirs 'libraries/runtimeOnly' }
@@ -104,6 +108,7 @@ dependencies {
 
     implementation "org.zeith.hammerlib:HammerLib-${config.mc_version}:${config.hl_version}:deobf"
     implementation fg.deobf("org.zeith.improvableskills:ImprovableSkills-${config.mc_version}:${config.is3_version}")
+    implementation "mezz.jei:jei-1.19.2-forge-api:11.4.0.274"
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 

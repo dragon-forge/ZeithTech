@@ -27,8 +27,6 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.io.NBTSerializable;
-import org.zeith.hammerlib.net.properties.PropertyInt;
-import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.mcf.BlockPosList;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.energy.EnergyTier;
@@ -105,8 +103,6 @@ public class TileMiningQuarryB
 	
 	@NBTSerializable
 	public final BlockPosList yQueue = new BlockPosList();
-	
-	public final PropertyInt energyStored = new PropertyInt(DirectStorage.create(energy.fe::setEnergyStored, energy.fe::getEnergyStored));
 	
 	@NBTSerializable("CurY")
 	public int currentY;

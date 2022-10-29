@@ -66,9 +66,9 @@ public class BlockItemWithAltISTER
 			pose.pushPose();
 			Minecraft.getInstance().getBlockEntityRenderDispatcher().renderItem(entity, pose, bufferSource, uv2, overlay);
 			pose.popPose();
-			
-			// Apply base item model
-			renderAllOverrides(stack, transformType, pose, bufferSource, uv2, overlay);
 		}
+		
+		// Apply base item model
+		renderAllOverrides(stack, transformType, pose, bufferSource, uv2, overlay);
 	}
 }

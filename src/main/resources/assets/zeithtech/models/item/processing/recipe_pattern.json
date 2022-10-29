@@ -1,0 +1,14 @@
+{
+  "parent": "zeithtech:item/builtin/ister_item",
+  "textures": {
+    "particle": "zeithtech:processing/item/recipe_pattern"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "alt": 0.5
+      },
+      "model": "zeithtech:item/processing/recipe_pattern_inventory"
+    }
+  ]
+}

@@ -26,7 +26,7 @@ public class GuiMiningQuarryB
 	{
 		pose.pushPose();
 		pose.translate(-leftPos, -topPos, 0);
-		WidgetAPI.drawPowerBarOverlay(this, pose, 7 + leftPos, 8 + topPos, menu.tile.energyStored.getInt(), mouseX, mouseY);
+		WidgetAPI.drawPowerBarOverlay(this, pose, 7 + leftPos, 8 + topPos, menu.tile.energy, mouseX, mouseY);
 		pose.popPose();
 		
 		return false;

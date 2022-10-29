@@ -8,6 +8,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.zeith.hammerlib.net.properties.PropertyInt;
+import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.core.slot.FluidSlotBase;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.shared.ui.SlotInput;
@@ -20,7 +22,11 @@ public class ContainerWasteProcessor
 {
 	protected ContainerWasteProcessor(TileWasteProcessor tile, Player player, int windowId)
 	{
-		super(tile, player, windowId, List.of(tile.energyStored, tile.progress, tile.maxProgress));
+		super(tile, player, windowId, List.of(
+				new PropertyInt(DirectStorage.create(i -> tile._maxProgress = i, () -> tile._maxProgress)),
+				new PropertyInt(DirectStorage.create(i -> tile._progress = i, () -> tile._progress)),
+				new PropertyInt(DirectStorage.create(tile.energy.fe::setEnergyStored, tile.energy.fe::getEnergyStored))
+		));
 		
 		int x;
 		for(x = 0; x < 3; ++x)
