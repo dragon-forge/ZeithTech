@@ -16,6 +16,7 @@ import org.zeith.tech.modules.processing.blocks.machine_assembler.advanced.Block
 import org.zeith.tech.modules.processing.blocks.machine_assembler.basic.BlockMachineAssemblerB;
 import org.zeith.tech.modules.processing.blocks.metal_press.BlockMetalPress;
 import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQuarryB;
+import org.zeith.tech.modules.processing.blocks.pattern_storage.BlockPatternStorage;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.BlockSawmillB;
 import org.zeith.tech.modules.processing.blocks.waste_processor.BlockWasteProcessor;
 
@@ -26,7 +27,7 @@ public interface BlocksZT_Processing
 	BlockMachineAssemblerB BASIC_MACHINE_ASSEMBLER = new BlockMachineAssemblerB();
 	
 	@RegistryName("machine_assembler/advanced")
-	BlockMachineAssemblerA ADVANVED_MACHINE_ASSEMBLER = new BlockMachineAssemblerA();
+	BlockMachineAssemblerA ADVANCED_MACHINE_ASSEMBLER = new BlockMachineAssemblerA();
 	
 	@RegistryName("electric_furnace/basic")
 	BlockElectricFurnaceB BASIC_ELECTRIC_FURNACE = new BlockElectricFurnaceB();
@@ -57,4 +58,7 @@ public interface BlocksZT_Processing
 	
 	@RegistryName("facade_slicer")
 	BlockFacadeSlicer FACADE_SLICER = new BlockFacadeSlicer();
+	
+	@RegistryName("pattern_storage")
+	BlockPatternStorage PATTERN_STORAGE = new BlockPatternStorage();
 }

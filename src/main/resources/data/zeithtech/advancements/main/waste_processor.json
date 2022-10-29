@@ -1,0 +1,37 @@
+{
+  "parent": "zeithtech:main/fluid_centrifuge",
+  "criteria": {
+    "trigger": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:processing/waste_processor"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.waste_processor.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:processing/waste_processor"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.waste_processor"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

@@ -164,6 +164,83 @@ public class AdvancementGeneratorZT
 				.addCriterion("trigger", InventoryChangeTrigger.TriggerInstance.hasItems(BlocksZT.BASIC_FUEL_GENERATOR))
 				.save(consumer, ZeithTechAPI.MOD_ID + ":main/basic_fuel_generator");
 		
+		var oilProcessing = Advancement.Builder.advancement()
+				.display(
+						BlocksZT.FLUID_CENTRIFUGE,
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".oil_processing"),
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".oil_processing.desc"),
+						null /* background */,
+						FrameType.TASK,
+						true /* showToast */,
+						true /* announceChat */,
+						false /* hidden */
+				)
+				.parent(basicSolidFuelGenerator)
+				.addCriterion("trigger", InventoryChangeTrigger.TriggerInstance.hasItems(BlocksZT.FLUID_CENTRIFUGE))
+				.save(consumer, ZeithTechAPI.MOD_ID + ":main/fluid_centrifuge");
+		
+		var wasteProcessing = Advancement.Builder.advancement()
+				.display(
+						BlocksZT.WASTE_PROCESSOR,
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".waste_processor"),
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".waste_processor.desc"),
+						null /* background */,
+						FrameType.TASK,
+						true /* showToast */,
+						true /* announceChat */,
+						false /* hidden */
+				)
+				.parent(oilProcessing)
+				.addCriterion("trigger", InventoryChangeTrigger.TriggerInstance.hasItems(BlocksZT.WASTE_PROCESSOR))
+				.save(consumer, ZeithTechAPI.MOD_ID + ":main/waste_processor");
+		
+		var basicLFuelGenerator = Advancement.Builder.advancement()
+				.display(
+						BlocksZT.BASIC_LIQUID_FUEL_GENERATOR,
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".basic_fluid_generator"),
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".basic_fluid_generator.desc"),
+						null /* background */,
+						FrameType.TASK,
+						true /* showToast */,
+						true /* announceChat */,
+						false /* hidden */
+				)
+				.parent(wasteProcessing)
+				.addCriterion("trigger", InventoryChangeTrigger.TriggerInstance.hasItems(BlocksZT.BASIC_LIQUID_FUEL_GENERATOR))
+				.save(consumer, ZeithTechAPI.MOD_ID + ":main/basic_fluid_generator");
+		
+		var plastic = Advancement.Builder.advancement()
+				.display(
+						ItemsZT.PLASTIC,
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".plastic"),
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".plastic.desc"),
+						null /* background */,
+						FrameType.TASK,
+						true /* showToast */,
+						true /* announceChat */,
+						false /* hidden */
+				)
+				.parent(wasteProcessing)
+				.addCriterion("trigger", InventoryChangeTrigger.TriggerInstance.hasItems(ItemsZT.PLASTIC))
+				.save(consumer, ZeithTechAPI.MOD_ID + ":main/plastic");
+		
+		
+		var machineAssemblerMK2 = Advancement.Builder.advancement()
+				.display(
+						BlocksZT.ADVANCED_MACHINE_ASSEMBLER,
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".machine_assembler_advanced"),
+						Component.translatable("advancement." + ZeithTechAPI.MOD_ID + ".machine_assembler_advanced.desc"),
+						null /* background */,
+						FrameType.TASK,
+						true /* showToast */,
+						true /* announceChat */,
+						false /* hidden */
+				)
+				.parent(plastic)
+				.addCriterion("trigger", InventoryChangeTrigger.TriggerInstance.hasItems(BlocksZT.ADVANCED_MACHINE_ASSEMBLER))
+				.save(consumer, ZeithTechAPI.MOD_ID + ":main/machine_assembler_advanced");
+		
+		
 		var makeWires = visit(Advancement.Builder.advancement()
 						.display(
 								BlocksZT.UNINSULATED_COPPER_WIRE,

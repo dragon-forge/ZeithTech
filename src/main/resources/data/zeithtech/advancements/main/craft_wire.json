@@ -36,6 +36,18 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "transport/wires/silver/uninsulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/silver/uninsulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -55,9 +67,10 @@
   },
   "requirements": [
     [
-      "transport/wires/copper/uninsulated",
       "transport/wires/aluminum/uninsulated",
-      "transport/wires/gold/uninsulated"
+      "transport/wires/copper/uninsulated",
+      "transport/wires/gold/uninsulated",
+      "transport/wires/silver/uninsulated"
     ]
   ]
 }

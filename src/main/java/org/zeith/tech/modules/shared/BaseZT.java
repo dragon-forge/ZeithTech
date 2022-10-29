@@ -17,6 +17,7 @@ import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.world.blocks.BlockHeveaLeaves;
 import org.zeith.tech.modules.world.blocks.BlockHeveaLog;
 
+import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class BaseZT
@@ -40,6 +41,14 @@ public class BaseZT
 	{
 		var item = newItem();
 		TagAdapter.bind(tag, item);
+		return item;
+	}
+	
+	public static Item newItem(List<TagKey<Item>> tags)
+	{
+		var item = newItem();
+		for(TagKey<Item> tag : tags)
+			TagAdapter.bind(tag, item);
 		return item;
 	}
 	

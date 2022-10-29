@@ -1,0 +1,37 @@
+{
+  "parent": "zeithtech:main/waste_processor",
+  "criteria": {
+    "trigger": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:plastic"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.plastic.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:plastic"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.plastic"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

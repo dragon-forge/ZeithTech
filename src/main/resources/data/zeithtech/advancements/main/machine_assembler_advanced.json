@@ -1,0 +1,37 @@
+{
+  "parent": "zeithtech:main/plastic",
+  "criteria": {
+    "trigger": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:processing/machine_assembler/advanced"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.machine_assembler_advanced.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:processing/machine_assembler/advanced"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.machine_assembler_advanced"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

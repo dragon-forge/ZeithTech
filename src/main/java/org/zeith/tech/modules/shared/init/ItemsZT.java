@@ -14,6 +14,8 @@ import org.zeith.tech.modules.shared.items.multitool.*;
 import org.zeith.tech.modules.transport.init.ItemsZT_Transport;
 import org.zeith.tech.modules.world.init.ItemsZT_World;
 
+import java.util.List;
+
 import static org.zeith.tech.modules.shared.BaseZT.newItem;
 
 @SimplyRegister
@@ -30,13 +32,13 @@ public interface ItemsZT
 	Item BOWL_OF_RESIN = BaseZT.newItem(p -> p.stacksTo(4));
 	
 	@RegistryName("latex")
-	Item LATEX = BaseZT.newItem();
+	Item LATEX = BaseZT.newItem(List.of(TagsZT.Items.RUBBER, TagsZT.Items.LATEX));
 	
 	@RegistryName("tree_tap")
 	Item TREE_TAP = BaseZT.newItem();
 	
 	@RegistryName("plastic")
-	Item PLASTIC = BaseZT.newItem();
+	Item PLASTIC = BaseZT.newItem(TagsZT.Items.PLASTIC);
 	
 	@RegistryName("motor")
 	Item MOTOR = BaseZT.newItem();

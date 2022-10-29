@@ -13,13 +13,13 @@ public interface RecipesZT_Transport
 {
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
-		event.shapeless().add(BlocksZT.UNINSULATED_COPPER_WIRE).add(BlocksZT.UNINSULATED_COPPER_WIRE).add(BlocksZT.UNINSULATED_COPPER_WIRE).add(ItemsZT.LATEX).add(ItemsZT.LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_COPPER_WIRE, 3)).register();
-		event.shapeless().add(BlocksZT.UNINSULATED_ALUMINUM_WIRE).add(BlocksZT.UNINSULATED_ALUMINUM_WIRE).add(BlocksZT.UNINSULATED_ALUMINUM_WIRE).add(ItemsZT.LATEX).add(ItemsZT.LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_ALUMINUM_WIRE, 3)).register();
-		event.shapeless().add(BlocksZT.UNINSULATED_GOLD_WIRE).add(BlocksZT.UNINSULATED_GOLD_WIRE).add(BlocksZT.UNINSULATED_GOLD_WIRE).add(ItemsZT.LATEX).add(ItemsZT.LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_GOLD_WIRE, 3)).register();
-		event.shapeless().add(BlocksZT.UNINSULATED_SILVER_WIRE).add(BlocksZT.UNINSULATED_SILVER_WIRE).add(BlocksZT.UNINSULATED_SILVER_WIRE).add(ItemsZT.LATEX).add(ItemsZT.LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_SILVER_WIRE, 3)).register();
+		event.shapeless().add(BlocksZT.UNINSULATED_COPPER_WIRE).add(BlocksZT.UNINSULATED_COPPER_WIRE).add(BlocksZT.UNINSULATED_COPPER_WIRE).add(TagsZT.Items.RUBBER_OR_LATEX).add(TagsZT.Items.RUBBER_OR_LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_COPPER_WIRE, 3)).register();
+		event.shapeless().add(BlocksZT.UNINSULATED_ALUMINUM_WIRE).add(BlocksZT.UNINSULATED_ALUMINUM_WIRE).add(BlocksZT.UNINSULATED_ALUMINUM_WIRE).add(TagsZT.Items.RUBBER_OR_LATEX).add(TagsZT.Items.RUBBER_OR_LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_ALUMINUM_WIRE, 3)).register();
+		event.shapeless().add(BlocksZT.UNINSULATED_GOLD_WIRE).add(BlocksZT.UNINSULATED_GOLD_WIRE).add(BlocksZT.UNINSULATED_GOLD_WIRE).add(TagsZT.Items.RUBBER_OR_LATEX).add(TagsZT.Items.RUBBER_OR_LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_GOLD_WIRE, 3)).register();
+		event.shapeless().add(BlocksZT.UNINSULATED_SILVER_WIRE).add(BlocksZT.UNINSULATED_SILVER_WIRE).add(BlocksZT.UNINSULATED_SILVER_WIRE).add(TagsZT.Items.RUBBER_OR_LATEX).add(TagsZT.Items.RUBBER_OR_LATEX).result(new ItemStack(BlocksZT_Transport.INSULATED_SILVER_WIRE, 3)).register();
 		
 		event.shaped().shape("pgp").map('p', TagsZT.Items.PLATES_COPPER).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT_Transport.COPPER_ITEM_PIPE, 3)).register();
-		event.shaped().shape("rpb", "pwp", " p ").map('r', Tags.Items.DYES_RED).map('p', ItemsZT.PLASTIC).map('b', Tags.Items.DYES_BLACK).map('w', BlocksZT.INSULATED_COPPER_WIRE).result(ItemsZT_Transport.MULTIMETER).register();
+		event.shaped().shape("rpb", "pwp", " p ").map('r', Tags.Items.DYES_RED).map('p', TagsZT.Items.PLASTIC).map('b', Tags.Items.DYES_BLACK).map('w', BlocksZT.INSULATED_COPPER_WIRE).result(ItemsZT_Transport.MULTIMETER).register();
 		
 		event.shaped().shape("mmm", "ggg", "mmm").map('m', ItemTags.PLANKS).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT_Transport.WOODEN_FLUID_PIPE, 6)).register();
 		event.shaped().shape("mmm", "ggg", "mmm").map('m', TagsZT.Items.PLATES_IRON).map('g', Tags.Items.GLASS).result(new ItemStack(BlocksZT_Transport.IRON_FLUID_PIPE, 6)).register();

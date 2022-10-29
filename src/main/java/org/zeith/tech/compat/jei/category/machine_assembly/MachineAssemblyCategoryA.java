@@ -36,9 +36,9 @@ public class MachineAssemblyCategoryA
 	
 	public MachineAssemblyCategoryA(IGuiHelper guiHelper)
 	{
-		this.icon = guiHelper.createDrawableItemStack(new ItemStack(BlocksZT_Processing.ADVANVED_MACHINE_ASSEMBLER));
+		this.icon = guiHelper.createDrawableItemStack(new ItemStack(BlocksZT_Processing.ADVANCED_MACHINE_ASSEMBLER));
 		this.background = guiHelper.createDrawable(MACHINE_ASSEMBLER, 0, 0, 169, 90);
-		this.localizedName = BlocksZT_Processing.ADVANVED_MACHINE_ASSEMBLER.getName();
+		this.localizedName = BlocksZT_Processing.ADVANCED_MACHINE_ASSEMBLER.getName();
 		
 		this.arrow = guiHelper.drawableBuilder(Constants.RECIPE_GUI_VANILLA, 82, 128, 24, 17)
 				.buildAnimated(100, IDrawableAnimated.StartDirection.LEFT, false);
@@ -92,6 +92,8 @@ public class MachineAssemblyCategoryA
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder layout, RecipeMachineAssembler recipe, IFocusGroup focus)
 	{
+		layout.moveRecipeTransferButton(119, 68);
+		
 		layout.addSlot(RecipeIngredientRole.OUTPUT, 148, 37).addItemStack(recipe.getRecipeOutput());
 		
 		layout.addSlot(RecipeIngredientRole.INPUT, 148, 66)

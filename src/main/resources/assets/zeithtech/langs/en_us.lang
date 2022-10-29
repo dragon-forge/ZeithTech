@@ -152,6 +152,7 @@ block.zeithtech.processing.fluid_pump=Fluid Pump
 block.zeithtech.processing.waste_processor=Waste Processor
 block.zeithtech.processing.metal_press=Metal Press
 block.zeithtech.processing.facade_slicer=Facade Slicer
+block.zeithtech.processing.pattern_storage=Recipe Pattern Storage
 
 item.zeithtech.processing.recipe_pattern=Recipe Pattern
 item.zeithtech.processing.redstone_control_tool=Redstone Control Tool
@@ -208,13 +209,13 @@ advancement.zeithtech.first_plate=First Plate
 advancement.zeithtech.first_plate.desc=Hit an ingot, placed on the anvil with Iron Hammer
 
 advancement.zeithtech.find_hevea=Find Hevea
-advancement.zeithtech.find_hevea.desc=Locate and observe Hevea wood
+advancement.zeithtech.find_hevea.desc=Locate and observe Hevea tree
 
 advancement.zeithtech.machine_assembler=Machine Assembly
-advancement.zeithtech.machine_assembler.desc=Craft machine assembler, to make machines!
+advancement.zeithtech.machine_assembler.desc=Craft Machine Assembler, to make machines!
 
 advancement.zeithtech.collect_resin=Resin Collector
-advancement.zeithtech.collect_resin.desc=Strip Hevea logs of it's barks, attach 5 sticks, Tree Tap and a Bowl, and wait till it fills up with resin
+advancement.zeithtech.collect_resin.desc=Strip Hevea Logs of it's barks, attach 5 Sticks, Tree Tap and a Bowl, and wait till it fills up with resin
 
 advancement.zeithtech.basic_fuel_generator=Fuel to Energy
 advancement.zeithtech.basic_fuel_generator.desc=Assemble Basic Solid Fuel Generator to convert fossil fuel into your first energy
@@ -222,11 +223,26 @@ advancement.zeithtech.basic_fuel_generator.desc=Assemble Basic Solid Fuel Genera
 advancement.zeithtech.smelt_latex=Latex Production
 advancement.zeithtech.smelt_latex.desc=Smelt Bowl of Resin into Latex
 
+advancement.zeithtech.oil_processing=Oil Refinery
+advancement.zeithtech.oil_processing.desc=Craft Fluid Centrifuge to convert Crude Oil into Refined Oil
+
+advancement.zeithtech.waste_processor=Multipurpose Processor
+advancement.zeithtech.waste_processor.desc=Craft Waste Processor to convert refined oil into gas and/or diesel fuel
+
+advancement.zeithtech.basic_fluid_generator=Liquid Fuel to Energy
+advancement.zeithtech.basic_fluid_generator.desc=Assemble Basic Liquid Fuel Generator to convert Diesel Fuel into a lot of energy
+
 advancement.zeithtech.craft_wire=Wiring things up
 advancement.zeithtech.craft_wire.desc=Craft any wire with wire cutter and metal plate
 
 advancement.zeithtech.insulate_wire=Safety first
 advancement.zeithtech.insulate_wire.desc=Insulate three wires with two pieces of latex to make a safer wiring that also looses less energy!
+
+advancement.zeithtech.plastic=Plastic
+advancement.zeithtech.plastic.desc=Reprocess some Gas with Coal Dust into Plastic
+
+advancement.zeithtech.machine_assembler_advanced=Machine Assembly: MK2
+advancement.zeithtech.machine_assembler_advanced.desc=Craft Advanced Machine Assembler, an automated and extended way of making machines
 
 ### Misc ###
 

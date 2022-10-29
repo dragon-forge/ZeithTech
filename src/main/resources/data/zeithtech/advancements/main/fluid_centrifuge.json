@@ -1,0 +1,37 @@
+{
+  "parent": "zeithtech:main/basic_fuel_generator",
+  "criteria": {
+    "trigger": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:processing/fluid_centrifuge"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.zeithtech.oil_processing.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "zeithtech:processing/fluid_centrifuge"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.zeithtech.oil_processing"
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ]
+}

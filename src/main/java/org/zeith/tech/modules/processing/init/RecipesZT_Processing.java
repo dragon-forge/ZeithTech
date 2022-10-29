@@ -43,7 +43,7 @@ public interface RecipesZT_Processing
 		event.shaped().shape(" p ", "ptp", " p ").map('p', Tags.Items.GEMS_DIAMOND).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.DIAMOND_MINING_HEAD).register();
 		event.shaped().shape(" p ", "ptp", " p ").map('p', TagsZT.Items.INGOTS_TUNGSTEN).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.TUNGSTEN_MINING_HEAD).register();
 		
-		event.shaped().shape("prp", "pcp", " p ").map('p', ItemsZT.PLASTIC).map('r', Tags.Items.DUSTS_REDSTONE).map('c', Items.COMPARATOR).result(ItemsZT_Processing.REDSTONE_CONTROL_TOOL).register();
+		event.shaped().shape("prp", "pcp", " p ").map('p', TagsZT.Items.PLASTIC).map('r', Tags.Items.DUSTS_REDSTONE).map('c', Items.COMPARATOR).result(ItemsZT_Processing.REDSTONE_CONTROL_TOOL).register();
 		
 		event.shapeless().add(Items.PAPER).add(Tags.Items.GEMS_LAPIS).add(Tags.Items.DUSTS_REDSTONE).add(ItemsZT.BASIC_CIRCUIT).result(ItemsZT_Processing.RECIPE_PATTERN).register();
 		
@@ -51,6 +51,8 @@ public interface RecipesZT_Processing
 		event.register(netheriteMiningHeadId, new UpgradeRecipe(netheriteMiningHeadId, Ingredient.of(ItemsZT.TUNGSTEN_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
 		
 		event.shaped().shape("p p", "i i", "p p").map('p', TagsZT.Items.PLATES_IRON).map('i', Tags.Items.INGOTS_IRON).result(new ItemStack(BlocksZT_Processing.MINING_PIPE, 6)).register();
+		
+		event.shaped().shape("prp", "rcr", "prp").map('r', ItemsZT.RECIPE_PATTERN).map('p', TagsZT.Items.PLATES_IRON).map('c', Tags.Items.CHESTS).result(BlocksZT_Processing.PATTERN_STORAGE).register();
 		
 		event.shaped()
 				.shape("ppp", "ici", "sss")
@@ -133,7 +135,7 @@ public interface RecipesZT_Processing
 				.map('m', ItemsZT.MOTOR)
 				.map('c', ItemsZT.COPPER_COIL)
 				.map('t', BlocksZT.BASIC_FLUID_TANK)
-				.map('l', ItemsZT.LATEX)
+				.map('l', TagsZT.Items.RUBBER_OR_LATEX)
 				.map('M', BlocksZT.MINING_PIPE)
 				.result(BlocksZT_Processing.FLUID_PUMP)
 				.register();
@@ -177,11 +179,11 @@ public interface RecipesZT_Processing
 				.map('a', BlocksZT.BASIC_MACHINE_ASSEMBLER)
 				.map('s', TagsZT.Items.PLATES_SILVER)
 				.map('r', Tags.Items.DUSTS_REDSTONE)
-				.map('l', ItemsZT.LATEX)
+				.map('l', TagsZT.Items.RUBBER_OR_LATEX)
 				.map('c', TagsZT.Items.COILS_COPPER)
-				.map('p', ItemsZT.PLASTIC)
+				.map('p', TagsZT.Items.PLASTIC)
 				.map('i', Tags.Items.STORAGE_BLOCKS_IRON)
-				.result(BlocksZT_Processing.ADVANVED_MACHINE_ASSEMBLER)
+				.result(BlocksZT_Processing.ADVANCED_MACHINE_ASSEMBLER)
 				.register();
 		
 	}

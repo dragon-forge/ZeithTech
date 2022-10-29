@@ -36,6 +36,18 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "transport/wires/silver/insulated": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "zeithtech:transport/wires/silver/insulated"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -55,9 +67,10 @@
   },
   "requirements": [
     [
-      "transport/wires/copper/insulated",
       "transport/wires/aluminum/insulated",
-      "transport/wires/gold/insulated"
+      "transport/wires/copper/insulated",
+      "transport/wires/gold/insulated",
+      "transport/wires/silver/insulated"
     ]
   ]
 }

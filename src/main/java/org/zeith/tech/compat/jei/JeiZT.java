@@ -169,7 +169,7 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(ItemsZT.IRON_HAMMER), RecipeTypesZT.MANUAL_HAMMERING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.METAL_PRESS), RecipeTypesZT.ADVANCED_HAMMERING, RecipeTypesZT.MANUAL_HAMMERING);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
-		registration.addRecipeCatalyst(new ItemStack(BlocksZT.ADVANVED_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_ADVANCED, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.ADVANCED_MACHINE_ASSEMBLER), RecipeTypesZT.MACHINE_ASSEMBLY_ADVANCED, RecipeTypesZT.MACHINE_ASSEMBLY_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_GRINDER), RecipeTypesZT.GRINDER_BASIC);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_SAWMILL), RecipeTypesZT.SAWMILL);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);

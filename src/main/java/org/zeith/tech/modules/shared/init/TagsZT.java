@@ -56,6 +56,11 @@ public class TagsZT
 		public static final TagKey<Item> GEARS_NETHERITE = tag("gears/netherite");
 		
 		public static final TagKey<Item> SILICON = tag("silicon");
+		public static final TagKey<Item> PLASTIC = tag("plastic");
+		public static final TagKey<Item> RUBBER_OR_LATEX = modTag("rubber_or_latex");
+		public static final TagKey<Item> RUBBER = tag("rubber");
+		public static final TagKey<Item> LATEX = tag("latex");
+		
 		public static final TagKey<Item> COILS_COPPER = tag("coils/copper");
 		public static final TagKey<Item> COILS_GOLD = tag("coils/gold");
 		
