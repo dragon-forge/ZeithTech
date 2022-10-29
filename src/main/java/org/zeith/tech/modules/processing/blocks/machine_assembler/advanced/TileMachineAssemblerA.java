@@ -115,18 +115,15 @@ public class TileMachineAssemblerA
 					craftResult.set(ItemStack.EMPTY);
 			}
 			
-			if(r != null && redstone.shouldWork(this) && craftingProgress.getInt() < craftTime.getInt() && energy.consumeEnergy(getEnergyUsage()))
-				if(isOnServer())
-				{
-					craftingProgress.setInt(_progress + 1);
-					sync();
-				}
+			if(isOnServer() && r != null && redstone.shouldWork(this) && craftingProgress.getInt() < craftTime.getInt() && energy.consumeEnergy(getEnergyUsage()))
+			{
+				if(_craftResult.isEmpty())
+					craftResult.set(r.getRecipeOutput(this));
+				craftingProgress.setInt(_progress + 1);
+			}
 			
 			if(_progress >= _craftTime)
 			{
-				if(_craftResult.isEmpty() && r != null)
-					craftResult.set(r.getRecipeOutput(this));
-				
 				if(!_craftResult.isEmpty())
 				{
 					var stored = resultInventory.getItem(0);
@@ -379,6 +376,7 @@ public class TileMachineAssemblerA
 		@Override
 		public void setChanged()
 		{
+			sync();
 			slotMapping.values()
 					.stream()
 					.map(Tuple2::a)

@@ -50,6 +50,7 @@ public abstract class TileAbstractMachineAssembler<T extends TileAbstractMachine
 	{
 		super(type, pos, state);
 		this.dispatcher.registerProperty("result", craftResult);
+		this.dispatcher.registerProperty("progress", craftingProgress);
 		resultInventory.isStackValid = (slot, stack) -> false;
 	}
 	

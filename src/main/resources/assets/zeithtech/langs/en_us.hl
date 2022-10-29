@@ -262,3 +262,8 @@ jei.zeithtech.manual_hammering=Hammering on Block
 jei.zeithtech.manual_hammering.info=To perform hammering, you need to drop an item onto the block and hit it with the hammer %s times.
 jei.info.zeithtech.bowl_of_resin=To obtain a Bowl of Resin, you need to find Hevea Tree, strip its barks with your axe, use 5 sticks on the Stripped Hevea Log, then place Tree Tap (click the sticks) and put a Bowl on the sticks. After some time, the Bowl will fill up with resin, which you can gather with your hand.
 jei.zeithtech.machine_assembler_t1.info=To perform the assembly, hit the items ontop of the Machine Assembler with Iron Hammer.
+
+recipe_type.zeithtech.hammering=Hammering
+recipe_type.zeithtech.machine_assembly=Machine Assembly
+recipe_type.zeithtech.grinding=Grinding
+recipe_type.zeithtech.sawmill=Sawmill

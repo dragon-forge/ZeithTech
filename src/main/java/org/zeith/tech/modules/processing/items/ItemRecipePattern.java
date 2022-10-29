@@ -1,6 +1,7 @@
 package org.zeith.tech.modules.processing.items;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -77,15 +78,14 @@ public class ItemRecipePattern
 		var patTag = stack.getTagElement("Pattern");
 		if(patTag != null && !patTag.isEmpty())
 		{
-			var registry = new ResourceLocation(patTag.getString("Registry"));
 			var recipe = new ResourceLocation(patTag.getString("Recipe"));
-			
-			return Cast.cast(AbstractRecipeRegistry.getAllRegistries()
-					.stream()
-					.filter(r -> r instanceof NamespacedRecipeRegistry<?> && r.getRegistryId().equals(registry))
-					.findFirst()
-					.map(reg -> ((NamespacedRecipeRegistry<?>) reg).getRecipe(recipe))
-					.orElse(null));
+			var registry = getProvidedRecipeRegistry(stack);
+			if(registry != null)
+				return registry.getRecipes()
+						.stream()
+						.filter(r -> r.getRecipeName().equals(recipe))
+						.findFirst()
+						.orElse(null);
 		}
 		
 		return null;
@@ -104,6 +104,8 @@ public class ItemRecipePattern
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items)
 	{
+		super.fillItemCategory(tab, items);
+		
 		if(allowedIn(tab))
 		{
 			List<Tuple2<NamespacedRecipeRegistry<?>, INameableRecipe>> recipes = AbstractRecipeRegistry.getAllRegistries()
@@ -120,7 +122,6 @@ public class ItemRecipePattern
 			for(var recipe : recipes)
 				items.add(createEncoded(Cast.cast(recipe.a()), recipe.b()));
 		}
-		super.fillItemCategory(tab, items);
 	}
 	
 	@Override
@@ -129,6 +130,8 @@ public class ItemRecipePattern
 		var reg = getProvidedRecipeRegistry(stack);
 		var rec = getProvidedRecipe(stack);
 		
+		if(reg != null)
+			lines.add(Component.translatable(Util.makeDescriptionId("recipe_type", reg.getRegistryId())).append(Component.literal(":")).withStyle(ChatFormatting.GRAY));
 		if(rec != null && rec.getResult() instanceof ItemStackResult res)
 			lines.add(Component.literal("- ").append(res.getBaseOutput().getHoverName()).withStyle(ChatFormatting.GRAY));
 	}

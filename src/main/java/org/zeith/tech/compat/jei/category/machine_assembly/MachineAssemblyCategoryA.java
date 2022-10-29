@@ -74,8 +74,7 @@ public class MachineAssemblyCategoryA
 	@Override
 	public void draw(RecipeMachineAssembler recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY)
 	{
-		arrow.draw(stack, 114, 37);
-		
+		arrow.draw(stack, 113, 37);
 		energyBar.draw(stack, 1, 13);
 		energyGlass.draw(stack, 0, 12);
 	}

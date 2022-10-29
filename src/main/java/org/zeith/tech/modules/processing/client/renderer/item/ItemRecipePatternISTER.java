@@ -27,7 +27,7 @@ public class ItemRecipePatternISTER
 				
 				pose.pushPose();
 				pose.translate(13.5F / 16F, 2.5F / 16F, 0);
-				pose.scale(0.25F, 0.25F, 0.5F);
+				pose.scale(0.25F, 0.25F, 0.35F);
 				
 				var mc = Minecraft.getInstance();
 				var ir = mc.getItemRenderer();
