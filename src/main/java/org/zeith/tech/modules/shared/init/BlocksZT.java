@@ -15,6 +15,7 @@ import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.shared.blocks.BlockMasut;
 import org.zeith.tech.modules.shared.blocks.SandBlockZT;
 import org.zeith.tech.modules.shared.blocks.aux_io_port.BlockAuxiliaryIOPort;
+import org.zeith.tech.modules.shared.blocks.multiblock_part.BlockMultiBlockPart;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 
@@ -26,6 +27,9 @@ public interface BlocksZT
 {
 	@RegistryName("auxiliary_io_port")
 	BlockAuxiliaryIOPort AUXILIARY_IO_PORT = new BlockAuxiliaryIOPort();
+	
+	@RegistryName("multiblock_part")
+	BlockMultiBlockPart MULTIBLOCK_PART = new BlockMultiBlockPart(Block.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5F));
 	
 	@RegistryName("masut")
 	Block MASUT = new BlockMasut(BlockBehaviour.Properties.of(Material.DIRT).sound(SoundType.MUDDY_MANGROVE_ROOTS).strength(0.5F), BlockHarvestAdapter.MineableType.SHOVEL).burnable(IBurnableItem.constantBurnTime(200 * 80)).dropsSelf();

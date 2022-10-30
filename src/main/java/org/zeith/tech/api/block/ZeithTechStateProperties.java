@@ -9,6 +9,7 @@ public class ZeithTechStateProperties
 	public static final BooleanProperty LAVA_LOGGED = BooleanProperty.create("lavalogged");
 	
 	public static final BooleanProperty OFFSET = BooleanProperty.create("offset");
+	public static final BooleanProperty VISIBLE = BooleanProperty.create("visible");
 	
 	public static final IntegerProperty LIGHT_LEVEL = IntegerProperty.create("light", 0, 15);
 }

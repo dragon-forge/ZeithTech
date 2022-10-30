@@ -2,13 +2,19 @@ package org.zeith.tech.modules.processing.blocks.pattern_storage;
 
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.entity.ChestLidController;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -18,33 +24,131 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.tiles.IContainerTile;
 import org.zeith.hammerlib.net.properties.PropertyInt;
-import org.zeith.hammerlib.tiles.TileSyncable;
+import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.SidedLocal;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.item.IRecipePatternItem;
 import org.zeith.tech.api.tile.ILoadableFromItem;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
+import org.zeith.tech.modules.shared.init.BlocksZT;
 
-import java.util.Collections;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class TilePatternStorage
-		extends TileSyncable
+		extends TileSyncableTickable
 		implements IContainerTile, ILoadableFromItem
 {
 	public final NonNullList<ItemStack> patterns = NonNullList.create();
 	
 	public final PropertyInt slotCount = new PropertyInt();
+	public final PropertyInt openPlayerCount = new PropertyInt();
+	
+	protected final List<Player> openPlayers = new ArrayList<>();
+	
+	public final ChestLidController shelf = new ChestLidController();
 	
 	public TilePatternStorage(BlockPos pos, BlockState state)
 	{
 		super(TilesZT_Processing.PATTERN_STORAGE, pos, state);
 		dispatcher.registerProperty("slots", slotCount);
+		dispatcher.registerProperty("open_players", openPlayerCount);
+	}
+	
+	public BlockPatternStorage getBlock()
+	{
+		return getBlockState().getBlock() instanceof BlockPatternStorage pat ? pat : BlocksZT.PATTERN_STORAGE;
+	}
+	
+	@Override
+	public void update()
+	{
+		if(isOnServer())
+		{
+			int ps = openPlayerCount.getInt();
+			
+			openPlayers.removeIf(player ->
+					!(player.containerMenu instanceof ContainerPatternStorage pat) || pat.tile != this
+			);
+			
+			int ns = openPlayers.size();
+			
+			if(ps != ns)
+			{
+				openPlayerCount.setInt(ns);
+				
+				if(ps == 0 && ns > 0)
+					ZeithTechAPI.get()
+							.getAudioSystem()
+							.playTileSound(this, SoundEvents.BARREL_OPEN, 0.25F, 1F);
+				
+				if(ns == 0)
+					ZeithTechAPI.get()
+							.getAudioSystem()
+							.playTileSound(this, SoundEvents.BARREL_CLOSE, 0.25F, 1F);
+			}
+			
+			slotCount.setInt(patterns.size());
+		}
+		
+		var blk = getBlock();
+		
+		float os = getOpenness(1F);
+		
+		shelf.tickLid();
+		shelf.shouldBeOpen(openPlayerCount.getInt() > 0);
+		
+		float ns;
+		if(os < (ns = getOpenness(1F)))
+		{
+			var shapePrev = blk.getShelfShape(getBlockState(), ns);
+			
+			var dir = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+			
+			float progress = ns;
+			progress = 1.0F - progress;
+			progress = 1F - progress * progress * progress;
+			progress *= 0.3125F;
+			double moveX = dir == Direction.EAST ? progress : dir == Direction.WEST ? -progress : 0;
+			double moveZ = dir == Direction.SOUTH ? progress : dir == Direction.NORTH ? -progress : 0;
+			
+			progress = os;
+			progress = 1.0F - progress;
+			progress = 1F - progress * progress * progress;
+			progress *= 0.3125F;
+			
+			moveX -= dir == Direction.EAST ? progress : dir == Direction.WEST ? -progress : 0;
+			moveZ -= dir == Direction.SOUTH ? progress : dir == Direction.NORTH ? -progress : 0;
+			
+			for(Entity entity : level.getEntities(null, shapePrev.bounds().move(worldPosition)))
+			{
+				entity.move(MoverType.SHULKER_BOX, new Vec3(moveX, 0, moveZ));
+			}
+		}
+	}
+	
+	public float getOpenness(float partial)
+	{
+		return this.shelf.getOpenness(partial);
 	}
 	
 	@Override
 	public AbstractContainerMenu openContainer(Player player, int windowId)
 	{
+		open(player);
 		return new ContainerPatternStorage(this, player.getInventory(), windowId);
+	}
+	
+	public void open(Player player)
+	{
+		if(hasLevel() && isOnServer())
+			openPlayers.add(player);
+	}
+	
+	public void close(Player player)
+	{
+		if(hasLevel() && isOnServer())
+			openPlayers.remove(player);
 	}
 	
 	@Override
@@ -78,6 +182,7 @@ public class TilePatternStorage
 	
 	public final WorldlyContainer itemHandler = new ItemHandler();
 	public final SidedLocal<Container> guiSlots = new SidedLocal<>(side -> side.isClient() ? new ClientContainer() : itemHandler);
+	
 	private final LazyOptional<IItemHandlerModifiable>[] itemStorage = SidedInvWrapper.create(itemHandler, Direction.values());
 	
 	@Override

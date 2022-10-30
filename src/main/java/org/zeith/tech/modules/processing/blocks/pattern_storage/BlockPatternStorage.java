@@ -7,9 +7,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -17,18 +18,26 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.*;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
-import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
+import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
+import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.api.forge.ContainerAPI;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.voxels.VoxelShapeCache;
+import org.zeith.tech.core.client.renderer.item.BlockItemWithAltISTER;
+import org.zeith.tech.modules.processing.init.TilesZT_Processing;
+import org.zeith.tech.modules.shared.BaseZT;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BlockPatternStorage
 		extends BaseEntityBlock
-		implements ICreativeTabBlock
+		implements ICustomBlockItem
 {
 	public BlockPatternStorage()
 	{
@@ -38,6 +47,54 @@ public class BlockPatternStorage
 				.sound(SoundType.METAL)
 				.strength(1.5F));
 		BlockHarvestAdapter.bindTool(BlockHarvestAdapter.MineableType.PICKAXE, Tiers.IRON, this);
+	}
+	
+	protected final VoxelShapeCache shapeCache = new VoxelShapeCache(this, ((state, $) ->
+	{
+		var dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+		return Shapes.or(
+				box(1, 0, 1, 15, 5, 15),
+				box(1, 13, 1, 15, 15, 15),
+				$.box(dir, 1, 5, 2, 2, 13, 14),
+				$.box(dir, 1, 5, 14, 15, 13, 15),
+				$.box(dir, 14, 5, 2, 15, 13, 14)
+		);
+	}));
+	
+	protected final VoxelShapeCache shelfCache = new VoxelShapeCache(this, ((state, $) ->
+	{
+		var dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+		return Shapes.or(
+				$.box(dir, 3, 5, 2, 13, 6, 14),
+				$.box(dir, 2, 5, 14, 14, 11, 15),
+				$.box(dir, 1, 5, 1, 15, 13, 2),
+				$.box(dir, 13, 5, 2, 14, 11, 14),
+				$.box(dir, 2, 5, 2, 3, 11, 14),
+				$.box(dir, 6, 10, 0, 10, 11, 1)
+		);
+	}));
+	
+	public VoxelShape getShelfShape(BlockState state, float openness)
+	{
+		var dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+		
+		float progress = openness;
+		progress = 1.0F - progress;
+		progress = 1F - progress * progress * progress;
+		progress *= 0.3125F;
+		
+		double moveX = dir == Direction.EAST ? progress : dir == Direction.WEST ? -progress : 0;
+		double moveZ = dir == Direction.SOUTH ? progress : dir == Direction.NORTH ? -progress : 0;
+		
+		return shelfCache.get(state).move(moveX, 0, moveZ);
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
+	{
+		if(level.getBlockEntity(pos) instanceof TilePatternStorage entity)
+			return Shapes.or(shapeCache.get(state), getShelfShape(state, entity.getOpenness(ZeithTechAPI.get().getPartialTick())));
+		return shapeCache.get(state);
 	}
 	
 	@Override
@@ -115,17 +172,25 @@ public class BlockPatternStorage
 						: Direction.NORTH);
 	}
 	
+	@Nullable
 	@Override
-	public CreativeModeTab getCreativeTab()
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_)
 	{
-		return ZeithTech.TAB;
+		return BlockAPI.ticker();
 	}
 	
 	@Override
-	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int event, int data)
+	public BlockItem createBlockItem()
 	{
-		super.triggerEvent(state, level, pos, event, data);
-		BlockEntity blockentity = level.getBlockEntity(pos);
-		return blockentity != null && blockentity.triggerEvent(event, data);
+		return new BlockItem(this, BaseZT.itemProps())
+		{
+			@Override
+			public void initializeClient(Consumer<IClientItemExtensions> consumer)
+			{
+				BlockItemWithAltISTER.INSTANCE
+						.bind(BlockPatternStorage.this, TilesZT_Processing.PATTERN_STORAGE)
+						.ifPresent(consumer);
+			}
+		};
 	}
 }

@@ -14,6 +14,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
 import org.zeith.tech.api.item.multitool.IMultiToolItem;
 import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
 import org.zeith.tech.api.item.tooltip.TooltipStack;
@@ -75,7 +76,7 @@ public class ClientSharedProxyZT
 	@Override
 	public float getPartialTick()
 	{
-		return Minecraft.getInstance().getPartialTick();
+		return LogicalSidePredictor.getCurrentLogicalSide().isClient() ? Minecraft.getInstance().getPartialTick() : 1F;
 	}
 	
 	private void registerBlockColors(RegisterColorHandlersEvent.Block e)

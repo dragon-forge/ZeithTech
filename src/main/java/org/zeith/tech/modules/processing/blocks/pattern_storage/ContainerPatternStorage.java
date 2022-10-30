@@ -40,6 +40,13 @@ public class ContainerPatternStorage
 	}
 	
 	@Override
+	public void removed(Player player)
+	{
+		super.removed(player);
+		tile.close(player);
+	}
+	
+	@Override
 	public boolean clickMenuButton(Player player, int id)
 	{
 		if(id >= 0 && id <= 255)
@@ -53,13 +60,25 @@ public class ContainerPatternStorage
 	{
 		var slot = getSlot(slotIdx);
 		
-		if(slot != null && slot.container == player.getInventory() && slot.hasItem())
+		if(slot != null && slot.hasItem())
 		{
-			var ctr = tile.itemHandler;
-			var lastSlot = ctr.getContainerSize() - 1;
-			if(ctr.canPlaceItem(lastSlot, slot.getItem()))
+			if(slot.container == player.getInventory())
 			{
-				ctr.setItem(lastSlot, slot.remove(slot.getMaxStackSize()));
+				var ctr = tile.itemHandler;
+				var lastSlot = ctr.getContainerSize() - 1;
+				if(ctr.canPlaceItem(lastSlot, slot.getItem()))
+				{
+					ctr.setItem(lastSlot, slot.remove(slot.getMaxStackSize()));
+				}
+			} else if(slot.container == tile.guiSlots.get())
+			{
+				ItemStack origin = slot.getItem();
+				var duped = origin.copy();
+				if(!this.moveItemStackTo(origin, 45, 45 + 36, true))
+					return ItemStack.EMPTY;
+				if(origin.getCount() == duped.getCount())
+					return ItemStack.EMPTY;
+				slot.onTake(player, origin);
 			}
 		}
 		

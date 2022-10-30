@@ -8,6 +8,7 @@ import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.tech.modules.shared.blocks.TileCapabilityProxy;
 import org.zeith.tech.modules.shared.blocks.aux_io_port.TileAuxiliaryIOPort;
+import org.zeith.tech.modules.shared.blocks.multiblock_part.TileMultiBlockPart;
 
 import java.util.HashSet;
 
@@ -26,4 +27,7 @@ public interface TilesZT
 			return state.getBlock() instanceof EntityBlock;
 		}
 	};
+	
+	@RegistryName("multiblock_part")
+	BlockEntityType<TileMultiBlockPart> MULTIBLOCK_PART = BlockAPI.createBlockEntityType(TileMultiBlockPart::new, BlocksZT.MULTIBLOCK_PART);
 }

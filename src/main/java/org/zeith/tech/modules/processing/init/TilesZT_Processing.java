@@ -63,5 +63,6 @@ public interface TilesZT_Processing
 	BlockEntityType<TileFacadeSlicer> FACADE_SLICER = BlockAPI.createBlockEntityType(TileFacadeSlicer::new, BlocksZT_Processing.FACADE_SLICER);
 	
 	@RegistryName("pattern_storage")
+	@TileRenderer(TileRendererPatternStorage.class)
 	BlockEntityType<TilePatternStorage> PATTERN_STORAGE = BlockAPI.createBlockEntityType(TilePatternStorage::new, BlocksZT_Processing.PATTERN_STORAGE);
 }

@@ -7,7 +7,7 @@ mod_version=19.1.0_b22
 # Maven Info
 maven_group=org.zeith.tech
 is3_version=19.2.4
-hl_version=19.2.35
+hl_version=19.2.36
 
 # MC Info
 mc_version=1.19.2

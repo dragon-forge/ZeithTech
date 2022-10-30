@@ -75,7 +75,7 @@ public class TileMachineAssemblerA
 		patternInventory.isStackValid = (slot, stack) -> slot == 0
 				&& !stack.isEmpty()
 				&& stack.getItem() instanceof IRecipePatternItem prov
-				&& (prov.getProvidedRecipe(stack) instanceof RecipeMachineAssembler || prov.getProvidedRecipe(stack) == null);
+				&& ((prov.getProvidedRecipe(stack) instanceof RecipeMachineAssembler rec && rec.isTierGoodEnough(getTechTier())) || prov.getProvidedRecipe(stack) == null);
 	}
 	
 	@Override
@@ -178,7 +178,7 @@ public class TileMachineAssemblerA
 		
 		if(!patternInventory.getItem(0).isEmpty() && patternInventory.getItem(0).getItem() instanceof IRecipePatternItem provider)
 		{
-			if(provider.getProvidedRecipe(patternInventory.getItem(0)) instanceof RecipeMachineAssembler recipe)
+			if(provider.getProvidedRecipe(patternInventory.getItem(0)) instanceof RecipeMachineAssembler recipe && recipe.isTierGoodEnough(getTechTier()))
 			{
 				forcedRecipeId.set(recipe.getRecipeName());
 				if(isValidRecipe(recipe))
