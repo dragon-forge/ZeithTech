@@ -16,9 +16,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeWasteProcessor;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
-import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.waste_processor.TileWasteProcessor;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
@@ -29,8 +29,8 @@ import java.util.List;
 public class WasteProcessorCategory
 		implements IRecipeCategory<RecipeWasteProcessor>
 {
-	public static final ResourceLocation WASTE_PROCESSOR_GUI = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/jei/waste_processor.png");
-	public static final ResourceLocation WIDGETS = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+	public static final ResourceLocation WASTE_PROCESSOR_GUI = ZeithTechAPI.id("textures/gui/jei/waste_processor.png");
+	public static final ResourceLocation WIDGETS = ZeithTechAPI.id("textures/gui/widgets.png");
 	
 	private final IDrawable icon, background, fluidGlass, energyBar, energyGlass;
 	private final Component localizedName;

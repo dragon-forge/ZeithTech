@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
 import org.zeith.tech.core.ZeithTech;
@@ -24,7 +25,7 @@ import java.awt.*;
 public class MachineAssemblyCategoryB
 		implements IRecipeCategory<RecipeMachineAssembler>
 {
-	public static final ResourceLocation MACHINE_ASSEMBLER = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/jei/machine_assembler_t1.png");
+	public static final ResourceLocation MACHINE_ASSEMBLER = ZeithTechAPI.id("textures/gui/jei/machine_assembler_t1.png");
 	
 	private final IDrawable icon, background;
 	private final Component localizedName;

@@ -8,7 +8,7 @@ import net.minecraft.advancements.critereon.SerializationContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ public class AdvancementTrigger
 	public AdvancementTrigger(String id)
 	{
 		super();
-		this.id = new ResourceLocation(ZeithTech.MOD_ID, id);
+		this.id = ZeithTechAPI.id(id);
 	}
 	
 	public Instance instance()

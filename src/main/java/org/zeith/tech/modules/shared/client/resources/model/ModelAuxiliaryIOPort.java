@@ -21,9 +21,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.client.model.IBakedModel;
 import org.zeith.hammerlib.client.model.LoadUnbakedGeometry;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.misc.AuxiliaryPortDefinition;
 import org.zeith.tech.api.tile.slots.SlotType;
-import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.blocks.aux_io_port.TileAuxiliaryIOPort;
 
 import java.util.*;
@@ -37,8 +37,8 @@ public class ModelAuxiliaryIOPort
 {
 	private static final FaceBakery FACE_BAKERY = new FaceBakery();
 	
-	public static final Material BASE_MATERIAL = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ZeithTech.MOD_ID, "block/aux_io_port/base"));
-	public static final Material UP_MATERIAL = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(ZeithTech.MOD_ID, "block/aux_io_port/up"));
+	public static final Material BASE_MATERIAL = new Material(InventoryMenu.BLOCK_ATLAS, ZeithTechAPI.id("block/aux_io_port/base"));
+	public static final Material UP_MATERIAL = new Material(InventoryMenu.BLOCK_ATLAS, ZeithTechAPI.id("block/aux_io_port/up"));
 	
 	public static final Supplier<Stream<Material>> ALL_MATERIALS = () ->
 			Stream.concat(

@@ -1,8 +1,7 @@
 package org.zeith.tech.modules.processing.init;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.registrar.SoundRegistrar;
 
 public interface SoundsZT_Processing
@@ -22,7 +21,7 @@ public interface SoundsZT_Processing
 	
 	static SoundEvent register(String s)
 	{
-		return SoundRegistrar.alloc(() -> new SoundEvent(new ResourceLocation(ZeithTech.MOD_ID, "processing." + s)));
+		return SoundRegistrar.alloc(() -> new SoundEvent(ZeithTechAPI.id("processing." + s)));
 	}
 	
 	static void setup()

@@ -6,14 +6,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.zeith.hammerlib.client.utils.FXUtils;
 import org.zeith.hammerlib.client.utils.RenderUtils;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.modules.processing.blocks.base.machine.GuiBaseMachine;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 
 public class GuiUnaryRecipeMachineB<C extends ContainerUnaryRecipeMachineB<?>>
 		extends GuiBaseMachine<C>
 {
-	public static final ResourceLocation DEFAULT_MACHINE_GUI = new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/gui/unary_recipe_machine/basic.png");
+	public static final ResourceLocation DEFAULT_MACHINE_GUI = ZeithTechAPI.id("textures/processing/gui/unary_recipe_machine/basic.png");
 	
 	protected ResourceLocation backgroundImage;
 	

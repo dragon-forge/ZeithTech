@@ -1,6 +1,8 @@
 package org.zeith.tech.api.audio;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.zeith.tech.api.tile.IEnableableTile;
 
@@ -16,4 +18,9 @@ public interface IAudioSystem
 	 * Plays a sound at the given tile's position.
 	 */
 	void playTileSound(BlockEntity tile, SoundEvent sound, float volume, float pitch);
+	
+	/**
+	 * Plays a sound at the given tile's position.
+	 */
+	void playPositionedSound(Level level, BlockPos pos, SoundEvent sound, float volume, float pitch);
 }

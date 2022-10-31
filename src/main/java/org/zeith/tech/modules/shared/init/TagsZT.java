@@ -5,7 +5,7 @@ import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 
 public class TagsZT
 {
@@ -104,7 +104,7 @@ public class TagsZT
 		
 		private static TagKey<Item> modTag(String name)
 		{
-			return ItemTags.create(new ResourceLocation(ZeithTech.MOD_ID, name));
+			return ItemTags.create(ZeithTechAPI.id(name));
 		}
 		
 		private static TagKey<Item> vanillaTag(String name)
@@ -125,6 +125,8 @@ public class TagsZT
 		public static final TagKey<Block> MINEABLE_WITH_MINING_HEAD = modTag("mineable/mining_head");
 		public static final TagKey<Block> MINEABLE_WITH_ELECTRIC_SAW = modTag("mineable/electric_saw");
 		public static final TagKey<Block> HEVEA_LOGS = modTag("hevea_logs");
+		
+		public static final TagKey<Block> COMPOSITE_BRICKS = modTag("composite_bricks");
 		
 		public static final TagKey<Block> ORES_TIN = tag("ores/tin");
 		public static final TagKey<Block> ORES_LEAD = tag("ores/lead");
@@ -161,7 +163,7 @@ public class TagsZT
 		
 		private static TagKey<Block> modTag(String name)
 		{
-			return BlockTags.create(new ResourceLocation(ZeithTech.MOD_ID, name));
+			return BlockTags.create(ZeithTechAPI.id(name));
 		}
 	}
 	

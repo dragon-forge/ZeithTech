@@ -154,7 +154,15 @@ block.zeithtech.processing.metal_press=Metal Press
 block.zeithtech.processing.facade_slicer=Facade Slicer
 block.zeithtech.processing.pattern_storage=Recipe Pattern Storage
 
+block.zeithtech.processing.blast_furnace.basic=Basic Blast Furnace
+block.zeithtech.processing.blast_furnace_burner=Blast Furnace Burner
+block.zeithtech.processing.composite_bricks.new=Composite Bricks
+block.zeithtech.processing.composite_bricks.cracked=Cracked Composite Bricks
+block.zeithtech.processing.composite_bricks.damaged=Damaged Composite Bricks
+block.zeithtech.processing.composite_bricks.broken=Broken Composite Bricks
+
 item.zeithtech.processing.recipe_pattern=Recipe Pattern
+item.zeithtech.processing.composite_brick=Composite Brick
 item.zeithtech.processing.redstone_control_tool=Redstone Control Tool
 item.zeithtech.processing.iron_hammer=Iron Hammer
 item.zeithtech.processing.wire_cutter=Wire Cutter

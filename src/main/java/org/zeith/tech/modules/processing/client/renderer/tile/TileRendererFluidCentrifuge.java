@@ -6,11 +6,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.*;
-import net.minecraft.resources.ResourceLocation;
 import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.hammerlib.client.utils.FluidTextureType;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.client.renderer.Cuboid;
 import org.zeith.tech.core.client.renderer.CuboidRenderer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
@@ -43,8 +42,8 @@ public class TileRendererFluidCentrifuge
 		animatedPart = LayerDefinition.create(mesh, 64, 64).bakeRoot();
 	}
 	
-	private static final RenderType CUTOUT_BLOCK_OFF = RenderType.entityCutout(new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/block/fluid_centrifuge_anim_off.png"));
-	private static final RenderType CUTOUT_BLOCK_ON = RenderType.entityCutout(new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/block/fluid_centrifuge_anim_on.png"));
+	private static final RenderType CUTOUT_BLOCK_OFF = RenderType.entityCutout(ZeithTechAPI.id("textures/processing/block/fluid_centrifuge_anim_off.png"));
+	private static final RenderType CUTOUT_BLOCK_ON = RenderType.entityCutout(ZeithTechAPI.id("textures/processing/block/fluid_centrifuge_anim_on.png"));
 	
 	@Override
 	public void render(TileFluidCentrifuge entity, float partial, PoseStack matrix, MultiBufferSource buf, int lighting, int overlay)

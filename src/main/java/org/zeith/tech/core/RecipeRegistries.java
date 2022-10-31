@@ -58,6 +58,12 @@ class RecipeRegistries
 	}
 	
 	@Override
+	public NamespacedRecipeRegistry<RecipeBlastFurnace> blastFurnace()
+	{
+		return RecipeRegistriesZT.BLAST_FURNACE;
+	}
+	
+	@Override
 	public <T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier)
 	{
 		return registry

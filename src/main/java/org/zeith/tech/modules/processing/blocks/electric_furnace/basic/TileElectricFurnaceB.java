@@ -83,7 +83,7 @@ public class TileElectricFurnaceB
 	
 	@NBTSerializable("Recipe")
 	public ResourceLocation _activeRecipe;
-	;
+	
 	public final PropertyResourceLocation activeRecipe = new PropertyResourceLocation(DirectStorage.create(i -> _activeRecipe = i, () -> _activeRecipe));
 	
 	public final PropertyItemStack inputItemDisplay = new PropertyItemStack(DirectStorage.allocate(ItemStack.EMPTY));

@@ -8,11 +8,13 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -20,6 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import org.zeith.tech.api.block.multiblock.base.MultiBlockFormer;
+import org.zeith.tech.api.block.multiblock.base.MultiBlockRegistry;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.HammerHitEvent;
 import org.zeith.tech.api.tile.IHammerable;
@@ -49,6 +53,38 @@ public class ItemHammer
 	{
 		super(props.defaultDurability(256));
 		this.repairItem = repairItem;
+	}
+	
+	@Override
+	public InteractionResult useOn(UseOnContext ctx)
+	{
+		final var level = ctx.getLevel();
+		final var pos = ctx.getClickedPos();
+		
+		final var horiz = Optional.ofNullable(ctx.getPlayer())
+				.map(Player::getDirection)
+				.map(Direction::getOpposite)
+				.orElse(Direction.NORTH);
+		
+		var multiblock = MultiBlockRegistry.registered()
+				.flatMap(former ->
+						former.findCenterAndRotation(level, pos, horiz)
+								.stream()
+								.map(t -> t.add(former))
+				)
+				.findFirst()
+				.orElse(null);
+		
+		if(multiblock != null)
+		{
+			if(!level.isClientSide)
+				multiblock.insert(multiblock.c(), level).acceptL(MultiBlockFormer::placeMultiBlock);
+			
+			ctx.getItemInHand()
+					.hurtAndBreak(1, ctx.getPlayer(), pl -> pl.broadcastBreakEvent(ctx.getHand()));
+		}
+		
+		return InteractionResult.sidedSuccess(multiblock != null);
 	}
 	
 	@Override

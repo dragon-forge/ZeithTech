@@ -14,10 +14,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.recipes.base.IUnaryRecipe;
 import org.zeith.tech.api.recipes.processing.RecipeSawmill;
-import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.ContainerUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.TileUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.init.*;
@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 public class TileSawmillB
 		extends TileUnaryRecipeMachineB<TileSawmillB, RecipeSawmill>
 {
-	public static final ResourceLocation SAWMILL_GUI_TEXTURE = new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/gui/sawmill/basic.png");
+	public static final ResourceLocation SAWMILL_GUI_TEXTURE = ZeithTechAPI.id("textures/processing/gui/sawmill/basic.png");
 	
 	public TileSawmillB(BlockPos pos, BlockState state)
 	{

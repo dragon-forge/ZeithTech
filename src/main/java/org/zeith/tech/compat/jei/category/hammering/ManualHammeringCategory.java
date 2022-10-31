@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeHammering;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
 import org.zeith.tech.core.ZeithTech;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 public class ManualHammeringCategory
 		implements IRecipeCategory<RecipeHammering>
 {
-	public static final ResourceLocation HAMMERING_GUI = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/jei/manual_hammering.png");
+	public static final ResourceLocation HAMMERING_GUI = ZeithTechAPI.id("textures/gui/jei/manual_hammering.png");
 	
 	private final IDrawable icon, background;
 	private final Component localizedName;

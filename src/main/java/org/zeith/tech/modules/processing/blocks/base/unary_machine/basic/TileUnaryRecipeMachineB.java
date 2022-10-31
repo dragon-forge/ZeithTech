@@ -188,7 +188,7 @@ public abstract class TileUnaryRecipeMachineB<T extends TileUnaryRecipeMachineB<
 	
 	public boolean store(ItemStack stacks, boolean simulate)
 	{
-		return InventoryHelper.storeStack(inventory, IntStream.range(1, 2), stacks, simulate);
+		return InventoryHelper.storeStack(inventory, IntStream.of(1), stacks, simulate);
 	}
 	
 	public Optional<R> getActiveRecipe()

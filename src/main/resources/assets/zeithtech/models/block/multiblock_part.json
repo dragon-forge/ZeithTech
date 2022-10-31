@@ -1,0 +1,4 @@
+{
+  "loader": "zeithtech:multiblock_part",
+  "particle": "minecraft:block/stone"
+}

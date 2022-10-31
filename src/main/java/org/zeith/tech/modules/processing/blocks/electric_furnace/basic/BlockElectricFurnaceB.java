@@ -24,13 +24,12 @@ public class BlockElectricFurnaceB
 	}
 	
 	public final VoxelShapeCache shapeCache = new VoxelShapeCache(this, (state, $) ->
-	{
-		return Shapes.join(
-				box(0, 0, 0, 16, 16, 16),
-				$.box(state.getValue(BlockStateProperties.HORIZONTAL_FACING), 2, 2, 0, 14, 10, 8),
-				BooleanOp.ONLY_FIRST
-		);
-	});
+			Shapes.join(
+					box(0, 0, 0, 16, 16, 16),
+					$.box(state.getValue(BlockStateProperties.HORIZONTAL_FACING), 2, 2, 0, 14, 10, 8),
+					BooleanOp.ONLY_FIRST
+			)
+	);
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_)

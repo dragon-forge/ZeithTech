@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "zeithtech:processing/block/blast_furnace_burner/down",
+    "north": "zeithtech:processing/block/composite_bricks/new",
+    "east": "zeithtech:processing/block/composite_bricks/new",
+    "south": "zeithtech:processing/block/composite_bricks/new",
+    "west": "zeithtech:processing/block/composite_bricks/new",
+    "up": "zeithtech:processing/block/blast_furnace_burner/up",
+    "particle": "zeithtech:processing/block/blast_furnace_burner/up"
+  }
+}

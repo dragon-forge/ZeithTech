@@ -25,6 +25,8 @@ public interface IRecipeRegistries
 	
 	NamespacedRecipeRegistry<RecipeWasteProcessor> wasteProcessing();
 	
+	NamespacedRecipeRegistry<RecipeBlastFurnace> blastFurnace();
+	
 	<T extends ITieredRecipe & INameableRecipe> List<T> getRecipesUpToTier(NamespacedRecipeRegistry<T> registry, TechTier tier);
 	
 	@ApiStatus.Internal

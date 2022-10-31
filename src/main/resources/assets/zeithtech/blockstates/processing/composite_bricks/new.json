@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "zeithtech:block/processing/composite_bricks/new"
+    }
+  }
+}

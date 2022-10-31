@@ -22,12 +22,14 @@ import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
 import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.block.multiblock.blast_furnace.IBlastFurnaceCasingBlock;
 import org.zeith.tech.api.compat.jei.ITieredRecipeType;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.base.ITieredRecipe;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.compat.jei.category.*;
+import org.zeith.tech.compat.jei.category.blast_furnace.BlastFurnaceCategoryB;
 import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
 import org.zeith.tech.compat.jei.category.hammering.AdvancedHammeringCategory;
 import org.zeith.tech.compat.jei.category.hammering.ManualHammeringCategory;
@@ -37,6 +39,8 @@ import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.cfg.ZeithTechTransportConfigs;
 import org.zeith.tech.modules.generators.blocks.fuel_generator.liquid.basic.GuiLiquidFuelGeneratorB;
 import org.zeith.tech.modules.generators.blocks.fuel_generator.solid.basic.GuiSolidFuelGeneratorB;
+import org.zeith.tech.modules.processing.blocks.blast_furnace.ContainerBlastFurnaceB;
+import org.zeith.tech.modules.processing.blocks.blast_furnace.GuiBlastFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.ContainerElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.GuiElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.grinder.basic.GuiGrinderB;
@@ -62,7 +66,7 @@ public class JeiZT
 		extends BaseCompat
 		implements IModPlugin
 {
-	public static final ResourceLocation UID = new ResourceLocation(ZeithTech.MOD_ID, "jei");
+	public static final ResourceLocation UID = ZeithTechAPI.id("jei");
 	
 	IJeiRuntime jeiRuntime;
 	List<RecipeType<?>> jeiRecipeTypes = List.of();
@@ -113,7 +117,8 @@ public class JeiZT
 				new SawmillCategoryB(gui$),
 				new FluidCentrifugeCategory(gui$),
 				new LiquidFuelCategory(gui$),
-				new WasteProcessorCategory(gui$)
+				new WasteProcessorCategory(gui$),
+				new BlastFurnaceCategoryB(gui$)
 		);
 	}
 	
@@ -132,6 +137,8 @@ public class JeiZT
 		registration.addRecipes(RecipeTypesZT.FLUID_CENTRIFUGE, api.fluidCentrifuge().getRecipes().stream().toList());
 		registration.addRecipes(RecipeTypesZT.LIQUID_FUEL, api.liquidFuel().getRecipes().stream().toList());
 		registration.addRecipes(RecipeTypesZT.WASTE_PROCESSING, api.wasteProcessing().getRecipes().stream().toList());
+		
+		registration.addRecipes(RecipeTypesZT.BASIC_BLASTING, api.blastFurnace().getRecipes().stream().filter(b -> b.getTier() == IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC).toList());
 		
 		registration.addRecipes(RecipeTypes.ANVIL, getRepairRecipes(registration.getVanillaRecipeFactory()).toList());
 		
@@ -159,6 +166,7 @@ public class JeiZT
 		
 		registration.addRecipeTransferHandler(TileGrinderB.ContainerGrinder.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.GRINDER_BASIC, 36, 1, 0, 36);
 		registration.addRecipeTransferHandler(TileSawmillB.ContainerSawmill.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.SAWMILL, 36, 1, 0, 36);
+		registration.addRecipeTransferHandler(ContainerBlastFurnaceB.class, ContainerAPI.TILE_CONTAINER, RecipeTypesZT.BASIC_BLASTING, 36, 2, 0, 36);
 	}
 	
 	@Override
@@ -175,6 +183,7 @@ public class JeiZT
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.FLUID_CENTRIFUGE), RecipeTypesZT.FLUID_CENTRIFUGE);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BASIC_LIQUID_FUEL_GENERATOR), RecipeTypesZT.LIQUID_FUEL);
 		registration.addRecipeCatalyst(new ItemStack(BlocksZT.WASTE_PROCESSOR), RecipeTypesZT.WASTE_PROCESSING);
+		registration.addRecipeCatalyst(new ItemStack(BlocksZT.BLAST_FURNACE_BURNER), RecipeTypesZT.BASIC_BLASTING);
 	}
 	
 	@Override
@@ -189,6 +198,7 @@ public class JeiZT
 		registration.addRecipeClickArea(GuiLiquidFuelGeneratorB.class, 84, 36, 13, 14, RecipeTypesZT.LIQUID_FUEL);
 		registration.addRecipeClickArea(GuiWasteProcessor.class, 103, 38, 22, 15, RecipeTypesZT.WASTE_PROCESSING);
 		registration.addRecipeClickArea(GuiMetalPress.class, 72, 35, 22, 15, RecipeTypesZT.ADVANCED_HAMMERING);
+		registration.addRecipeClickArea(GuiBlastFurnaceB.class, 88, 40, 22, 15, RecipeTypesZT.BASIC_BLASTING);
 	}
 	
 	private static Stream<RepairData> getRepairData()

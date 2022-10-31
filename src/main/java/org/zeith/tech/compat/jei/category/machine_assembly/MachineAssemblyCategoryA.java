@@ -14,9 +14,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
-import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -27,8 +27,8 @@ import java.util.List;
 public class MachineAssemblyCategoryA
 		implements IRecipeCategory<RecipeMachineAssembler>
 {
-	public static final ResourceLocation MACHINE_ASSEMBLER = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/jei/machine_assembler_t2.png");
-	public static final ResourceLocation WIDGETS = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+	public static final ResourceLocation MACHINE_ASSEMBLER = ZeithTechAPI.id("textures/gui/jei/machine_assembler_t2.png");
+	public static final ResourceLocation WIDGETS = ZeithTechAPI.id("textures/gui/widgets.png");
 	
 	private final IDrawable icon, background, energyBar, energyGlass;
 	private final Component localizedName;

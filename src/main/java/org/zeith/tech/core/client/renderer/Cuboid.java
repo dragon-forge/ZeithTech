@@ -23,7 +23,7 @@ public class Cuboid
 	public float maxX;
 	public float maxY;
 	public float maxZ;
-	private final SpriteInfo[] textures = new SpriteInfo[6];
+	private final ISpriteInfo[] textures = new ISpriteInfo[6];
 	private final boolean[] renderSides = new boolean[] {
 			true,
 			true,
@@ -59,7 +59,7 @@ public class Cuboid
 	}
 	
 	@Nullable
-	public SpriteInfo getSpriteToRender(Direction side)
+	public ISpriteInfo getSpriteToRender(Direction side)
 	{
 		int ordinal = side.ordinal();
 		return this.renderSides[ordinal] ? this.textures[ordinal] : null;
@@ -158,7 +158,7 @@ public class Cuboid
 		return this.setTextures(still, still, flowing, flowing, flowing, flowing);
 	}
 	
-	public Cuboid setTexture(Direction side, SpriteInfo spriteInfo)
+	public Cuboid setTexture(Direction side, ISpriteInfo spriteInfo)
 	{
 		this.textures[side.ordinal()] = spriteInfo;
 		return this;
@@ -171,11 +171,16 @@ public class Cuboid
 	
 	public Cuboid setTexture(TextureAtlasSprite tex, int size)
 	{
-		Arrays.fill(this.textures, new SpriteInfo(tex, size));
+		return setTexture(new SpriteInfo(tex, size));
+	}
+	
+	public Cuboid setTexture(ISpriteInfo sprite)
+	{
+		Arrays.fill(this.textures, sprite);
 		return this;
 	}
 	
-	public Cuboid setTextures(SpriteInfo down, SpriteInfo up, SpriteInfo north, SpriteInfo south, SpriteInfo west, SpriteInfo east)
+	public Cuboid setTextures(ISpriteInfo down, ISpriteInfo up, ISpriteInfo north, ISpriteInfo south, ISpriteInfo west, ISpriteInfo east)
 	{
 		this.textures[0] = down;
 		this.textures[1] = up;
@@ -186,22 +191,44 @@ public class Cuboid
 		return this;
 	}
 	
-	public record SpriteInfo(TextureAtlasSprite sprite, int size)
+	public interface ISpriteInfo
 	{
-		public SpriteInfo(TextureAtlasSprite sprite, int size)
+		float getU(float progress);
+		
+		float getV(float progress);
+		
+		static ISpriteInfo ofTexture(int x, int y, int spriteWidth, int spriteHeight, int textureWidth, int textureHeight)
 		{
-			this.sprite = sprite;
-			this.size = size;
+			return new ISpriteInfo()
+			{
+				@Override
+				public float getU(float progress)
+				{
+					return (x + spriteWidth * progress) / textureWidth;
+				}
+				
+				@Override
+				public float getV(float progress)
+				{
+					return (y + spriteHeight * progress) / textureHeight;
+				}
+			};
+		}
+	}
+	
+	public record SpriteInfo(TextureAtlasSprite sprite, int size)
+			implements ISpriteInfo
+	{
+		@Override
+		public float getU(float progress)
+		{
+			return sprite.getU(progress * size);
 		}
 		
-		public TextureAtlasSprite sprite()
+		@Override
+		public float getV(float progress)
 		{
-			return this.sprite;
-		}
-		
-		public int size()
-		{
-			return this.size;
+			return sprite.getV(progress * size);
 		}
 	}
 }

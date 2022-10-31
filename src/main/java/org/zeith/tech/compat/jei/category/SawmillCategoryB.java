@@ -14,9 +14,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeSawmill;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
-import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 public class SawmillCategoryB
 		implements IRecipeCategory<RecipeSawmill>
 {
-	public static final ResourceLocation SAWMILL_GUI = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/jei/sawmill/basic.png");
+	public static final ResourceLocation SAWMILL_GUI = ZeithTechAPI.id("textures/gui/jei/sawmill/basic.png");
 	
 	private final IDrawable icon, background;
 	private final Component localizedName;

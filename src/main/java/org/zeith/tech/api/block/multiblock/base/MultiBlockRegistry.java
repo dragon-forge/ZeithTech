@@ -8,10 +8,11 @@ public class MultiBlockRegistry
 {
 	private static final List<MultiBlockFormer> REGISTRY = new ArrayList<>();
 	
-	public static void register(MultiBlockFormer former)
+	public static <T extends MultiBlockFormer> T register(T former)
 	{
 		if(!REGISTRY.contains(former))
 			REGISTRY.add(former);
+		return former;
 	}
 	
 	public static Stream<MultiBlockFormer> registered()

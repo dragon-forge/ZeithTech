@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 
 import java.util.function.Consumer;
@@ -62,6 +62,6 @@ public abstract class SheetsMixin
 	
 	private static Material chestMaterialZT(String alt)
 	{
-		return new Material(CHEST_SHEET, new ResourceLocation(ZeithTech.MOD_ID, "entity/chest/" + alt));
+		return new Material(CHEST_SHEET, ZeithTechAPI.id("entity/chest/" + alt));
 	}
 }

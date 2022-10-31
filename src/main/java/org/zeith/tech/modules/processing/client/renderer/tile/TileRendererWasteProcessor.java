@@ -7,10 +7,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.zeith.hammerlib.client.render.tile.IBESR;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.modules.processing.blocks.waste_processor.TileWasteProcessor;
 
 public class TileRendererWasteProcessor
@@ -31,8 +30,8 @@ public class TileRendererWasteProcessor
 		animatedPart = LayerDefinition.create(meshdefinition, 32, 32).bakeRoot();
 	}
 	
-	private static final RenderType CUTOUT_BLOCK_OFF = RenderType.entityCutout(new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/block/waste_processor/anim_on.png"));
-	private static final RenderType CUTOUT_BLOCK_ON = RenderType.entityCutout(new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/block/waste_processor/anim_off.png"));
+	private static final RenderType CUTOUT_BLOCK_OFF = RenderType.entityCutout(ZeithTechAPI.id("textures/processing/block/waste_processor/anim_on.png"));
+	private static final RenderType CUTOUT_BLOCK_ON = RenderType.entityCutout(ZeithTechAPI.id("textures/processing/block/waste_processor/anim_off.png"));
 	
 	@Override
 	public void render(TileWasteProcessor entity, float partial, PoseStack matrix, MultiBufferSource buf, int lighting, int overlay)

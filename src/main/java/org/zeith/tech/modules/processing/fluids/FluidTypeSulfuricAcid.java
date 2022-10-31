@@ -18,7 +18,7 @@ import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.modules.processing.init.DamageTypesZT_Processing;
 
 import java.util.function.Consumer;
@@ -26,9 +26,9 @@ import java.util.function.Consumer;
 public class FluidTypeSulfuricAcid
 		extends FluidType
 {
-	public static final ResourceLocation ACID_STILL = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/sulfuric_acid"),
-			ACID_FLOW = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/sulfuric_acid_flow"),
-			ACID_RENDER_OVERLAY = new ResourceLocation(ZeithTech.MOD_ID, "textures/misc/under_sulfuric_acid.png");
+	public static final ResourceLocation ACID_STILL = ZeithTechAPI.id("processing/block/sulfuric_acid"),
+			ACID_FLOW = ZeithTechAPI.id("processing/block/sulfuric_acid_flow"),
+			ACID_RENDER_OVERLAY = ZeithTechAPI.id("textures/misc/under_sulfuric_acid.png");
 	
 	public static FluidType create()
 	{

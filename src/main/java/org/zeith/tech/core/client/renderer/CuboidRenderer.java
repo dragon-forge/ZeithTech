@@ -72,22 +72,22 @@ public class CuboidRenderer
 		
 		for(int y = 0; y <= yDelta; ++y)
 		{
-			Cuboid.SpriteInfo upSprite = y == yDelta ? cube.getSpriteToRender(Direction.UP) : null;
-			Cuboid.SpriteInfo downSprite = y == 0 ? cube.getSpriteToRender(Direction.DOWN) : null;
+			Cuboid.ISpriteInfo upSprite = y == yDelta ? cube.getSpriteToRender(Direction.UP) : null;
+			Cuboid.ISpriteInfo downSprite = y == 0 ? cube.getSpriteToRender(Direction.DOWN) : null;
 			from.setY(yBounds[y]);
 			to.setY(yBounds[y + 1]);
 			
 			for(int z = 0; z <= zDelta; ++z)
 			{
-				Cuboid.SpriteInfo northSprite = z == 0 ? cube.getSpriteToRender(Direction.NORTH) : null;
-				Cuboid.SpriteInfo southSprite = z == zDelta ? cube.getSpriteToRender(Direction.SOUTH) : null;
+				Cuboid.ISpriteInfo northSprite = z == 0 ? cube.getSpriteToRender(Direction.NORTH) : null;
+				Cuboid.ISpriteInfo southSprite = z == zDelta ? cube.getSpriteToRender(Direction.SOUTH) : null;
 				from.setZ(zBounds[z]);
 				to.setZ(zBounds[z + 1]);
 				
 				for(int x = 0; x <= xDelta; ++x)
 				{
-					Cuboid.SpriteInfo westSprite = x == 0 ? cube.getSpriteToRender(Direction.WEST) : null;
-					Cuboid.SpriteInfo eastSprite = x == xDelta ? cube.getSpriteToRender(Direction.EAST) : null;
+					Cuboid.ISpriteInfo westSprite = x == 0 ? cube.getSpriteToRender(Direction.WEST) : null;
+					Cuboid.ISpriteInfo eastSprite = x == xDelta ? cube.getSpriteToRender(Direction.EAST) : null;
 					from.setX(xBounds[x]);
 					to.setX(xBounds[x + 1]);
 					putTexturedQuad(buffer, matrix4f, normalMatrix, westSprite, from, to, Direction.WEST, colors, light, overlay, faceDisplay, normal);
@@ -129,7 +129,7 @@ public class CuboidRenderer
 		return delta;
 	}
 	
-	private static void putTexturedQuad(VertexConsumer buffer, Matrix4f matrix, Matrix3f normalMatrix, @Nullable Cuboid.@Nullable SpriteInfo spriteInfo, Vector3f from, Vector3f to, Direction face, int[] colors, int light, int overlay, FaceDisplay faceDisplay, Vector3f normal)
+	private static void putTexturedQuad(VertexConsumer buffer, Matrix4f matrix, Matrix3f normalMatrix, @Nullable Cuboid.@Nullable ISpriteInfo spriteInfo, Vector3f from, Vector3f to, Direction face, int[] colors, int light, int overlay, FaceDisplay faceDisplay, Vector3f normal)
 	{
 		if(spriteInfo != null)
 		{
@@ -195,15 +195,18 @@ public class CuboidRenderer
 			float temp = v1;
 			v1 = 1.0F - v2;
 			v2 = 1.0F - temp;
-			float minU = spriteInfo.sprite().getU(u1 * (float) spriteInfo.size());
-			float maxU = spriteInfo.sprite().getU(u2 * (float) spriteInfo.size());
-			float minV = spriteInfo.sprite().getV(v1 * (float) spriteInfo.size());
-			float maxV = spriteInfo.sprite().getV(v2 * (float) spriteInfo.size());
+			
+			float minU = spriteInfo.getU(u1);
+			float maxU = spriteInfo.getU(u2);
+			float minV = spriteInfo.getV(v1);
+			float maxV = spriteInfo.getV(v2);
+			
 			int argb = colors[face.ordinal()];
 			float red = ColorHelper.getRed(argb);
 			float green = ColorHelper.getGreen(argb);
 			float blue = ColorHelper.getBlue(argb);
 			float alpha = ColorHelper.getAlpha(argb);
+			
 			switch(face)
 			{
 				case DOWN:

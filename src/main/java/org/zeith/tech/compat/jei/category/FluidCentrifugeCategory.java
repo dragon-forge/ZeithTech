@@ -17,9 +17,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeFluidCentrifuge;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
-import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 
@@ -29,8 +29,8 @@ import java.util.List;
 public class FluidCentrifugeCategory
 		implements IRecipeCategory<RecipeFluidCentrifuge>
 {
-	public static final ResourceLocation FLUID_CENTRIFUGE_GUI = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/jei/fluid_centrifuge.png");
-	public static final ResourceLocation WIDGETS = new ResourceLocation(ZeithTech.MOD_ID, "textures/gui/widgets.png");
+	public static final ResourceLocation FLUID_CENTRIFUGE_GUI = ZeithTechAPI.id("textures/gui/jei/fluid_centrifuge.png");
+	public static final ResourceLocation WIDGETS = ZeithTechAPI.id("textures/gui/widgets.png");
 	
 	private final IDrawable icon, background, fluidGlass, energyBar, energyGlass;
 	private final Component localizedName;

@@ -32,6 +32,7 @@ public class ProcessingModule
 	public void enable()
 	{
 		wasEnabled = true;
+		
 		HammerLib.EVENT_BUS.addListener(RecipesZT_Processing::provideRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeMachineAssembler.class, RecipesZT_Processing::addMachineAssemblyRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeHammering.class, RecipesZT_Processing::addHammeringRecipes);
@@ -39,6 +40,7 @@ public class ProcessingModule
 		HammerLib.EVENT_BUS.addGenericListener(RecipeSawmill.class, RecipesZT_Processing::addSawmillRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeFluidCentrifuge.class, RecipesZT_Processing::addFluidCentrifugeRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeWasteProcessor.class, RecipesZT_Processing::addWasteProcessingRecipes);
+		HammerLib.EVENT_BUS.addGenericListener(RecipeBlastFurnace.class, RecipesZT_Processing::addBlastFurnaceRecipes);
 	}
 	
 	@Override

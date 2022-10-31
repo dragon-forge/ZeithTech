@@ -41,4 +41,7 @@ public interface ItemsZT_Processing
 	
 	@RegistryName("recipe_pattern")
 	ItemRecipePattern RECIPE_PATTERN = new ItemRecipePattern(BaseZT.itemProps().stacksTo(1));
+	
+	@RegistryName("composite_brick")
+	Item COMPOSITE_BRICK = BaseZT.newItem();
 }

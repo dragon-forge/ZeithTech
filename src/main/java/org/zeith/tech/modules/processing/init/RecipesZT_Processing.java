@@ -17,6 +17,7 @@ import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
+import org.zeith.tech.api.block.multiblock.blast_furnace.IBlastFurnaceCasingBlock;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.BasicHammeringRegistryEvent;
 import org.zeith.tech.api.events.recipe.GrindingRegistryEvent;
@@ -44,6 +45,15 @@ public interface RecipesZT_Processing
 		event.shaped().shape(" p ", "ptp", " p ").map('p', TagsZT.Items.INGOTS_TUNGSTEN).map('t', ItemsZT.MINING_HEAD).result(ItemsZT_Processing.TUNGSTEN_MINING_HEAD).register();
 		
 		event.shaped().shape("prp", "pcp", " p ").map('p', TagsZT.Items.PLASTIC).map('r', Tags.Items.DUSTS_REDSTONE).map('c', Items.COMPARATOR).result(ItemsZT_Processing.REDSTONE_CONTROL_TOOL).register();
+		
+		event.blasting().input(Items.BRICK).cookTime(30 * 20).result(ItemsZT_Processing.COMPOSITE_BRICK).register();
+		event.shapeless().add(BlocksZT.BROKEN_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.DAMAGED_COMPOSITE_BRICKS).register();
+		event.shapeless().add(BlocksZT.BROKEN_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.CRACKED_COMPOSITE_BRICKS).register();
+		event.shapeless().add(BlocksZT.BROKEN_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
+		event.shapeless().add(BlocksZT.DAMAGED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.CRACKED_COMPOSITE_BRICKS).register();
+		event.shapeless().add(BlocksZT.DAMAGED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
+		event.shapeless().add(BlocksZT.CRACKED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
+		event.shapeless().add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
 		
 		event.shapeless().add(Items.PAPER).add(Tags.Items.GEMS_LAPIS).add(Tags.Items.DUSTS_REDSTONE).add(ItemsZT.BASIC_CIRCUIT).result(ItemsZT_Processing.RECIPE_PATTERN).register();
 		
@@ -411,6 +421,20 @@ public interface RecipesZT_Processing
 				.result(
 						FluidsZT_Processing.SULFURIC_ACID.stack(1000)
 				)
+				.register();
+	}
+	
+	static void addBlastFurnaceRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeBlastFurnace> evt)
+	{
+		if(!evt.is(RecipeRegistriesZT_Processing.BLAST_FURNACE)) return;
+		
+		var f = evt.<RecipeBlastFurnace.BlastBuilder> builderFactory();
+		
+		f.get().tier(IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC)
+				.input(RecipeHelper.fromTag(TagsZT.Items.RAW_MATERIALS_TUNGSTEN))
+				.minTemperature(3422)
+				.craftTime(1000)
+				.result(ItemsZT.TUNGSTEN_INGOT)
 				.register();
 	}
 }

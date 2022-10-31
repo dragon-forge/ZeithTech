@@ -34,7 +34,6 @@ import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.api.tile.slots.*;
-import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.fluid.MultiTankHandler;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
@@ -50,7 +49,7 @@ public class TileWasteProcessor
 		extends TileBaseMachine<TileWasteProcessor>
 		implements ITileSlotProvider
 {
-	public static final ResourceLocation WASTE_PROCESSOR_GUI_TEXTURE = new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/gui/waste_processor.png");
+	public static final ResourceLocation WASTE_PROCESSOR_GUI_TEXTURE = ZeithTechAPI.id("textures/processing/gui/waste_processor.png");
 	
 	public final FrictionRotator rotator = new FrictionRotator();
 	

@@ -2,8 +2,10 @@ package org.zeith.tech.core.audio;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -53,5 +55,17 @@ public class ClientAudioSystem
 		}
 		
 		super.playTileSound(tile, sound, volume, pitch);
+	}
+	
+	@Override
+	public void playPositionedSound(Level level, BlockPos pos, SoundEvent sound, float volume, float pitch)
+	{
+		if(level instanceof ClientLevel cl)
+		{
+			cl.playLocalSound(pos, sound, SoundSource.BLOCKS, volume, pitch, true);
+			return;
+		}
+		
+		super.playPositionedSound(level, pos, sound, volume, pitch);
 	}
 }

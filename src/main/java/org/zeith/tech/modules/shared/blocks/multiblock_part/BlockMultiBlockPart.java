@@ -19,8 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.INoItemBlock;
 import org.zeith.hammerlib.api.forge.BlockAPI;
@@ -126,6 +125,14 @@ public class BlockMultiBlockPart
 		if(getter.getBlockEntity(pos) instanceof TileMultiBlockPart part && part.subState != null)
 			return part.subState.getDestroyProgress(player, getter, pos);
 		return super.getDestroyProgress(state, player, getter, pos);
+	}
+	
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+	{
+		if(level.getBlockEntity(pos) instanceof TileMultiBlockPart part && part.subState != null)
+			return part.subState.getCloneItemStack(target, level, pos, player);
+		return ItemStack.EMPTY;
 	}
 	
 	@Override

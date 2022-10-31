@@ -12,15 +12,15 @@ import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 
 import java.util.function.Consumer;
 
 public class FluidTypeGas
 		extends FluidType
 {
-	public static final ResourceLocation GAS_STILL = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/gas"),
-			GAS_FLOW = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/gas_flow");
+	public static final ResourceLocation GAS_STILL = ZeithTechAPI.id("processing/block/gas"),
+			GAS_FLOW = ZeithTechAPI.id("processing/block/gas_flow");
 	
 	public static FluidType create()
 	{

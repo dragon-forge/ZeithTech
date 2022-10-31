@@ -9,11 +9,10 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.zeith.hammerlib.client.render.tile.IBESR;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.client.renderer.RotatedRenderHelper;
 import org.zeith.tech.modules.processing.blocks.metal_press.TileMetalPress;
 
@@ -30,7 +29,7 @@ public class TileRendererMetalPress
 		animatedPart = LayerDefinition.create(meshdefinition, 64, 64).bakeRoot();
 	}
 	
-	private static final RenderType SOLID = RenderType.entitySolid(new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/block/metal_press.png"));
+	private static final RenderType SOLID = RenderType.entitySolid(ZeithTechAPI.id("textures/processing/block/metal_press.png"));
 	
 	@Override
 	public void render(TileMetalPress entity, float partial, PoseStack matrix, MultiBufferSource buf, int lighting, int overlay)

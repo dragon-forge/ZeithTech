@@ -17,4 +17,5 @@ public class RecipeTypesZT
 	public static final RecipeType<RecipeFluidCentrifuge> FLUID_CENTRIFUGE = RecipeType.create(ZeithTech.MOD_ID, "fluid_centrifuge", RecipeFluidCentrifuge.class);
 	public static final RecipeType<RecipeLiquidFuel> LIQUID_FUEL = RecipeType.create(ZeithTech.MOD_ID, "liquid_fuel", RecipeLiquidFuel.class);
 	public static final RecipeType<RecipeWasteProcessor> WASTE_PROCESSING = RecipeType.create(ZeithTech.MOD_ID, "waste_processing", RecipeWasteProcessor.class);
+	public static final RecipeType<RecipeBlastFurnace> BASIC_BLASTING = RecipeType.create(ZeithTech.MOD_ID, "basic_blast_furnace", RecipeBlastFurnace.class);
 }

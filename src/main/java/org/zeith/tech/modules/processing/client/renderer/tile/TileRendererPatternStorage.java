@@ -7,10 +7,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.zeith.hammerlib.client.render.tile.IBESR;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.client.renderer.RotatedRenderHelper;
 import org.zeith.tech.modules.processing.blocks.pattern_storage.TilePatternStorage;
 
@@ -45,7 +44,7 @@ public class TileRendererPatternStorage
 		}
 	}
 	
-	private static final RenderType CUTOUT_BLOCK = RenderType.entityCutout(new ResourceLocation(ZeithTech.MOD_ID, "textures/processing/block/pattern_storage/animated.png"));
+	private static final RenderType CUTOUT_BLOCK = RenderType.entityCutout(ZeithTechAPI.id("textures/processing/block/pattern_storage/animated.png"));
 	
 	@Override
 	public void render(TilePatternStorage entity, float partial, PoseStack matrix, MultiBufferSource buf, int lighting, int overlay)

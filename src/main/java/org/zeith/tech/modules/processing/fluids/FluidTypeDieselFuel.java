@@ -15,16 +15,16 @@ import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
-import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.api.ZeithTechAPI;
 
 import java.util.function.Consumer;
 
 public class FluidTypeDieselFuel
 		extends FluidType
 {
-	public static final ResourceLocation FUEL_STILL = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/diesel_fuel"),
-			FUEL_FLOW = new ResourceLocation(ZeithTech.MOD_ID, "processing/block/diesel_fuel_flow"),
-			FUEL_RENDER_OVERLAY = new ResourceLocation(ZeithTech.MOD_ID, "textures/misc/under_diesel_fuel.png");
+	public static final ResourceLocation FUEL_STILL = ZeithTechAPI.id("processing/block/diesel_fuel"),
+			FUEL_FLOW = ZeithTechAPI.id("processing/block/diesel_fuel_flow"),
+			FUEL_RENDER_OVERLAY = ZeithTechAPI.id("textures/misc/under_diesel_fuel.png");
 	
 	public static FluidType create()
 	{

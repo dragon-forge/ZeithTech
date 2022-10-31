@@ -6,7 +6,10 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
+import org.zeith.tech.api.block.multiblock.blast_furnace.IBlastFurnaceCasingBlock;
+import org.zeith.tech.modules.processing.blocks.BlockCompositeBricks;
 import org.zeith.tech.modules.processing.blocks.BlockMiningPipe;
+import org.zeith.tech.modules.processing.blocks.blast_furnace.BlockBlastFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.BlockElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.facade_slicer.BlockFacadeSlicer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.BlockFluidCentrifuge;
@@ -19,6 +22,7 @@ import org.zeith.tech.modules.processing.blocks.mining_quarry.basic.BlockMiningQ
 import org.zeith.tech.modules.processing.blocks.pattern_storage.BlockPatternStorage;
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.BlockSawmillB;
 import org.zeith.tech.modules.processing.blocks.waste_processor.BlockWasteProcessor;
+import org.zeith.tech.modules.shared.blocks.SimpleBlockZT;
 
 @SimplyRegister(prefix = "processing/")
 public interface BlocksZT_Processing
@@ -61,4 +65,22 @@ public interface BlocksZT_Processing
 	
 	@RegistryName("pattern_storage")
 	BlockPatternStorage PATTERN_STORAGE = new BlockPatternStorage();
+	
+	@RegistryName("blast_furnace_burner")
+	SimpleBlockZT BLAST_FURNACE_BURNER = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F).requiresCorrectToolForDrops()).dropsSelf();
+	
+	@RegistryName("composite_bricks/broken")
+	BlockCompositeBricks BROKEN_COMPOSITE_BRICKS = new BlockCompositeBricks(null, IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC, 1F, 0.25F);
+	
+	@RegistryName("composite_bricks/damaged")
+	BlockCompositeBricks DAMAGED_COMPOSITE_BRICKS = new BlockCompositeBricks(BROKEN_COMPOSITE_BRICKS, IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC, 0.25F, 0.75F);
+	
+	@RegistryName("composite_bricks/cracked")
+	BlockCompositeBricks CRACKED_COMPOSITE_BRICKS = new BlockCompositeBricks(DAMAGED_COMPOSITE_BRICKS, IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC, 0.1F, 0.9F);
+	
+	@RegistryName("composite_bricks/new")
+	BlockCompositeBricks COMPOSITE_BRICKS = new BlockCompositeBricks(CRACKED_COMPOSITE_BRICKS, IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC, 0F, 0.98F);
+	
+	@RegistryName("blast_furnace/basic")
+	BlockBlastFurnaceB BASIC_BLAST_FURNACE = new BlockBlastFurnaceB();
 }

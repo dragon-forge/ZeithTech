@@ -9,24 +9,24 @@ import java.util.stream.Stream;
 public record AuxiliaryPortDefinition(ResourceLocation auxPortTextureInput, ResourceLocation auxPortTextureOutput, ResourceLocation auxPortTextureBoth, ResourceLocation auxPortOverlayTexture)
 {
 	public static final AuxiliaryPortDefinition ENERGY_DEFINITION = new AuxiliaryPortDefinition(
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/energy_in"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/energy_out"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/energy_both"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/item_overlay")
+			ZeithTechAPI.id("block/aux_io_port/energy_in"),
+			ZeithTechAPI.id("block/aux_io_port/energy_out"),
+			ZeithTechAPI.id("block/aux_io_port/energy_both"),
+			ZeithTechAPI.id("block/aux_io_port/item_overlay")
 	);
 	
 	public static final AuxiliaryPortDefinition ITEM_DEFINITION = new AuxiliaryPortDefinition(
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/item_in"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/item_out"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/item_both"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/item_overlay")
+			ZeithTechAPI.id("block/aux_io_port/item_in"),
+			ZeithTechAPI.id("block/aux_io_port/item_out"),
+			ZeithTechAPI.id("block/aux_io_port/item_both"),
+			ZeithTechAPI.id("block/aux_io_port/item_overlay")
 	);
 	
 	public static final AuxiliaryPortDefinition FLUID_DEFINITION = new AuxiliaryPortDefinition(
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/fluid_in"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/fluid_out"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/fluid_both"),
-			new ResourceLocation(ZeithTechAPI.MOD_ID, "block/aux_io_port/fluid_overlay")
+			ZeithTechAPI.id("block/aux_io_port/fluid_in"),
+			ZeithTechAPI.id("block/aux_io_port/fluid_out"),
+			ZeithTechAPI.id("block/aux_io_port/fluid_both"),
+			ZeithTechAPI.id("block/aux_io_port/fluid_overlay")
 	);
 	
 	public Stream<ResourceLocation> textures()

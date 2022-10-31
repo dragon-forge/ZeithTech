@@ -5,6 +5,7 @@ import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.annotations.client.TileRenderer;
 import org.zeith.hammerlib.api.forge.BlockAPI;
+import org.zeith.tech.modules.processing.blocks.blast_furnace.TileBlastFurnaceB;
 import org.zeith.tech.modules.processing.blocks.electric_furnace.basic.TileElectricFurnaceB;
 import org.zeith.tech.modules.processing.blocks.facade_slicer.TileFacadeSlicer;
 import org.zeith.tech.modules.processing.blocks.fluid_centrifuge.TileFluidCentrifuge;
@@ -18,6 +19,7 @@ import org.zeith.tech.modules.processing.blocks.pattern_storage.TilePatternStora
 import org.zeith.tech.modules.processing.blocks.sawmill.basic.TileSawmillB;
 import org.zeith.tech.modules.processing.blocks.waste_processor.TileWasteProcessor;
 import org.zeith.tech.modules.processing.client.renderer.tile.*;
+import org.zeith.tech.modules.processing.client.renderer.tile.multiblock.TileRendererBlastFurnaceB;
 
 @SimplyRegister(prefix = "processing/")
 public interface TilesZT_Processing
@@ -65,4 +67,8 @@ public interface TilesZT_Processing
 	@RegistryName("pattern_storage")
 	@TileRenderer(TileRendererPatternStorage.class)
 	BlockEntityType<TilePatternStorage> PATTERN_STORAGE = BlockAPI.createBlockEntityType(TilePatternStorage::new, BlocksZT_Processing.PATTERN_STORAGE);
+	
+	@RegistryName("blast_furnace/basic")
+	@TileRenderer(TileRendererBlastFurnaceB.class)
+	BlockEntityType<TileBlastFurnaceB> BASIC_BLAST_FURNACE = BlockAPI.createBlockEntityType(TileBlastFurnaceB::new, BlocksZT_Processing.BASIC_BLAST_FURNACE);
 }

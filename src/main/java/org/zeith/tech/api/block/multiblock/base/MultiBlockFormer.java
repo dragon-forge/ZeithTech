@@ -1,13 +1,16 @@
 package org.zeith.tech.api.block.multiblock.base;
 
 import net.minecraft.core.*;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.zeith.hammerlib.util.java.tuples.Tuple2;
-import org.zeith.hammerlib.util.java.tuples.Tuples;
+import org.zeith.hammerlib.util.java.consumers.Consumer3;
+import org.zeith.hammerlib.util.java.tuples.*;
 import org.zeith.hammerlib.util.mcf.RotationHelper;
 import org.zeith.tech.api.block.IBlockStatePredicate;
+import org.zeith.tech.modules.shared.blocks.multiblock_part.TileMultiBlockPart;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -20,18 +23,25 @@ public class MultiBlockFormer
 			{ RotationHelper.PivotRotation.Y_0 }
 	};
 	
+	private final Consumer3<Level, BlockPos, Direction> placeMultiblock;
 	private final List<MultiblockPart> components;
 	private final BlockPos size;
 	private final boolean isSymmetrical;
 	
-	public MultiBlockFormer(boolean isSymmetrical, MultiblockPart... offsets)
+	public MultiBlockFormer(boolean isSymmetrical, Consumer3<Level, BlockPos, Direction> placeMultiblock, MultiblockPart... offsets)
 	{
-		this(isSymmetrical, List.of(offsets));
+		this(isSymmetrical, placeMultiblock, List.of(offsets));
 	}
 	
-	public MultiBlockFormer(boolean isSymmetrical, Collection<MultiblockPart> offsets)
+	public MultiBlockFormer(boolean isSymmetrical, Consumer3<Level, BlockPos, Direction> placeMultiblock, MultiblockPart[]... offsets)
+	{
+		this(isSymmetrical, placeMultiblock, Stream.of(offsets).flatMap(Arrays::stream).toList());
+	}
+	
+	public MultiBlockFormer(boolean isSymmetrical, Consumer3<Level, BlockPos, Direction> placeMultiblock, Collection<MultiblockPart> offsets)
 	{
 		this.isSymmetrical = isSymmetrical;
+		this.placeMultiblock = placeMultiblock;
 		this.components = List.copyOf(offsets);
 		
 		var minPos = new BlockPos.MutableBlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -60,42 +70,63 @@ public class MultiBlockFormer
 		);
 	}
 	
+	public void placeMultiBlock(Level level, BlockPos origin, Direction direction)
+	{
+		var positions = getPositionsFrom(origin, direction);
+		for(BlockPos rel : positions)
+			if(!rel.equals(origin))
+				TileMultiBlockPart.wrap(level, rel, origin);
+		placeMultiblock.accept(level, origin, direction);
+	}
+	
+	public void deform(Level level, BlockPos origin, Direction direction)
+	{
+		var positions = getPositionsFrom(origin, direction);
+		for(BlockPos rel : positions) TileMultiBlockPart.unwrap(level, rel);
+	}
+	
 	public List<BlockPos> getPositionsFrom(BlockPos origin, Direction horizontal)
 	{
 		var rotator = RotationHelper.getRotationFromHorizontal(horizontal);
 		return components
 				.stream()
 				.map(MultiblockPart::a)
-				.map(pos -> rotator.transform(origin, pos))
+				.map(pos -> rotator.transform(BlockPos.ZERO, pos).offset(origin))
 				.toList();
 	}
 	
-	public Optional<Tuple2<BlockPos, Direction>> findCenterAndRotation(Level level, BlockPos pos)
+	public Optional<Tuple1<BlockPos>> findCenter(Level level, BlockPos pos, RotationHelper.PivotRotation rot)
 	{
-		for(var rot : ROTATION_MATRIX[isSymmetrical ? 1 : 0])
-		{
-			var identity = rot == RotationHelper.PivotRotation.Y_0 || rot == RotationHelper.PivotRotation.Y_180;
-			
-			int xSize = size.get(identity ? Direction.Axis.X : Direction.Axis.Z);
-			int ySize = size.getY();
-			int zSize = size.get(identity ? Direction.Axis.Z : Direction.Axis.X);
-			
-			var match =
-					BlockPos.betweenClosedStream(pos.offset(-xSize, -ySize, -zSize), pos.offset(xSize, ySize, zSize))
-							.map(BlockPos::immutable)
-							.filter(off -> test(level, off, rot))
-							.map(off -> Tuples.immutable(off, rot.toHorizontal()))
-							.findFirst();
-			
-			if(match.isPresent()) return match;
-		}
+		var identity = rot == RotationHelper.PivotRotation.Y_0 || rot == RotationHelper.PivotRotation.Y_180;
 		
-		return Optional.empty();
+		int xSize = size.get(identity ? Direction.Axis.X : Direction.Axis.Z) / 2;
+		int ySize = size.getY() / 2;
+		int zSize = size.get(identity ? Direction.Axis.Z : Direction.Axis.X) / 2;
+		
+		return BlockPos.betweenClosedStream(pos.offset(-xSize, -ySize, -zSize), pos.offset(xSize, ySize, zSize))
+				.map(BlockPos::immutable)
+				.filter(off -> test(level, off, rot))
+				.map(Tuples::immutable)
+				.findFirst();
 	}
 	
-	public Stream<Tuple2<BlockPos, Direction>> findCenterAndRotationAsStream(Level level, BlockPos pos)
+	public Optional<Tuple2<BlockPos, Direction>> findCenterAndRotation(Level level, BlockPos pos, Direction preferred)
 	{
-		return findCenterAndRotation(level, pos).stream();
+		if(preferred != null)
+		{
+			var rot = RotationHelper.getRotationFromHorizontal(preferred);
+			var found = findCenter(level, pos, rot);
+			if(found.isPresent()) return found.map(t -> t.add(preferred));
+		}
+		
+		for(var rot : ROTATION_MATRIX[isSymmetrical ? 1 : 0])
+			if(rot.toHorizontal() != preferred)
+			{
+				var found = findCenter(level, pos, rot);
+				if(found.isPresent()) return found.map(t -> t.add(rot.toHorizontal()));
+			}
+		
+		return Optional.empty();
 	}
 	
 	public Vec3i getSize()
@@ -113,20 +144,36 @@ public class MultiBlockFormer
 		if(rotator == null) rotator = RotationHelper.PivotRotation.Y_0;
 		for(var part : components)
 		{
-			var translated = rotator.transform(origin, part.a());
-			if(!part.test(origin, rotator, level, translated)) return false;
+			var translated = rotator.transform(BlockPos.ZERO, part.a()).offset(origin);
+			if(!part.test(origin, rotator, level, translated))
+				return false;
 		}
 		return true;
 	}
 	
-	public static MultiblockPart ofBlocks(BlockPos offset, Predicate<Block> filter)
+	public static MultiblockPart air(int x, int y, int z)
 	{
-		return ofBlockStates(offset, state -> filter.test(state.getBlock()));
+		return ofBlocks(x, y, z, AirBlock.class::isInstance);
 	}
 	
-	public static MultiblockPart ofBlockStates(BlockPos offset, Predicate<BlockState> filter)
+	public static MultiblockPart ofBlock(int x, int y, int z, Block block)
 	{
-		return new MultiblockPart(offset, (state, level, pos) -> filter.test(state));
+		return ofBlocks(x, y, z, b -> b == block);
+	}
+	
+	public static MultiblockPart ofBlocks(int x, int y, int z, Predicate<Block> filter)
+	{
+		return ofBlockStates(x, y, z, state -> filter.test(state.getBlock()));
+	}
+	
+	public static MultiblockPart ofBlockTag(int x, int y, int z, TagKey<Block> tag)
+	{
+		return ofBlockStates(x, y, z, state -> state.is(tag));
+	}
+	
+	public static MultiblockPart ofBlockStates(int x, int y, int z, Predicate<BlockState> filter)
+	{
+		return new MultiblockPart(new BlockPos(x, y, z), (state, level, pos) -> filter.test(state));
 	}
 	
 	public static class MultiblockPart
@@ -139,7 +186,12 @@ public class MultiBlockFormer
 		
 		public boolean test(BlockPos origin, RotationHelper.PivotRotation rotation, Level level, BlockPos pos)
 		{
-			return b.test(level.getBlockState(pos), level, pos);
+			return b.test(TileMultiBlockPart.getPartState(level, pos), level, pos);
+		}
+		
+		public MultiblockPart or(IBlockStatePredicate filter)
+		{
+			return new MultiblockPart(a(), b().or(filter));
 		}
 	}
 }
