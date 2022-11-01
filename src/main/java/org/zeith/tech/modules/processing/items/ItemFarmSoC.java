@@ -5,6 +5,8 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -34,6 +36,14 @@ public class ItemFarmSoC
 		return null;
 	}
 	
+	public void setAlgorithm(ItemStack stack, FarmAlgorithm algorithm)
+	{
+		if(algorithm != null)
+			stack.addTagElement("Algorithm", StringTag.valueOf(algorithm.getRegistryName().toString()));
+		else
+			stack.removeTagKey("Algorithm");
+	}
+	
 	public ItemStack ofAlgorithm(FarmAlgorithm algorithm)
 	{
 		var stack = new ItemStack(this);
@@ -57,6 +67,20 @@ public class ItemFarmSoC
 		var algo = getAlgorithm(stack);
 		if(algo != null)
 			tooltip.add(algo.getDisplayName().withStyle(s -> s.withColor(TextColor.fromRgb(algo.getColor()))));
+	}
+	
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
+	{
+		var held = player.getItemInHand(hand);
+		
+		if(held.getTagElement("Algorithm") != null && player.isShiftKeyDown())
+		{
+			held.removeTagKey("Algorithm");
+			return new InteractionResultHolder<>(InteractionResult.SUCCESS, held);
+		}
+		
+		return super.use(level, player, hand);
 	}
 	
 	@Override

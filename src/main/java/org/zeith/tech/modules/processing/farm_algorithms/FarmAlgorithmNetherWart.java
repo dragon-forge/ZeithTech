@@ -6,15 +6,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CactusBlock;
+import net.minecraft.world.level.block.NetherWartBlock;
 import org.jetbrains.annotations.NotNull;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.tech.api.misc.farm.*;
 
-public class FarmAlgorithmCactus
+public class FarmAlgorithmNetherWart
 		extends FarmAlgorithm
 {
-	public FarmAlgorithmCactus()
+	public FarmAlgorithmNetherWart()
 	{
 		super(new Properties()
 				.upsideDown(false)
@@ -24,24 +24,24 @@ public class FarmAlgorithmCactus
 	@Override
 	public int getColor()
 	{
-		return 0x39581A;
+		return 0x992127;
 	}
 	
 	@Override
 	public @NotNull Ingredient getProgrammingItem()
 	{
-		return RecipeHelper.fromComponent(Items.CACTUS);
+		return RecipeHelper.fromComponent(Items.NETHER_WART);
 	}
 	
 	@Override
 	public @NotNull EnumFarmItemCategory categorizeItem(IFarmController controller, ItemStack stack)
 	{
-		if(stack.is(Items.CACTUS)) return EnumFarmItemCategory.PLANT;
+		if(stack.is(Items.NETHER_WART)) return EnumFarmItemCategory.PLANT;
 		
 		if(stack.getItem() instanceof BlockItem bi)
 		{
 			var state = bi.getBlock().defaultBlockState();
-			if(state.canSustainPlant(controller.getFarmLevel(), controller.getFarmPosition(), Direction.UP, (CactusBlock) Blocks.CACTUS))
+			if(state.canSustainPlant(controller.getFarmLevel(), controller.getFarmPosition(), Direction.UP, (NetherWartBlock) Blocks.NETHER_WART))
 				return EnumFarmItemCategory.SOIL;
 		}
 		
@@ -55,9 +55,9 @@ public class FarmAlgorithmCactus
 		var sandState = level.getBlockState(sandPos);
 		
 		// Place sand
-		if(!sandState.canSustainPlant(level, sandPos, Direction.UP, (CactusBlock) Blocks.CACTUS) && level.isEmptyBlock(sandPos))
+		if(!sandState.canSustainPlant(level, sandPos, Direction.UP, (NetherWartBlock) Blocks.NETHER_WART) && level.isEmptyBlock(sandPos))
 		{
-			ItemStack match = new ItemStack(Items.SAND);
+			ItemStack match = new ItemStack(Items.SOUL_SAND);
 			
 			var inv = controller.getInventory(EnumFarmItemCategory.SOIL);
 			for(int i = 0; i < inv.getSlots(); ++i)
@@ -77,52 +77,27 @@ public class FarmAlgorithmCactus
 			return AlgorithmUpdateResult.RETRY;
 		}
 		
-		var cactiPos = sandPos.above();
-		var cactiState = level.getBlockState(cactiPos);
+		var wartPos = sandPos.above();
+		var wartState = level.getBlockState(wartPos);
 		
-		// Plant cacti
-		if(!cactiState.is(Blocks.CACTUS) && level.isEmptyBlock(cactiPos))
+		// Plant nether wart
+		if(!wartState.is(Blocks.NETHER_WART) && level.isEmptyBlock(wartPos))
 		{
-			for(var dir : Direction.Plane.HORIZONTAL)
-			{
-				var rp = platform.relative(dir);
-				if(controller.hasPlatform(rp) && level.getBlockState(rp.above(2)).is(Blocks.CACTUS))
-				{
-					// Do not place cactus if we detect any of them nearby.
-					return AlgorithmUpdateResult.PASS;
-				}
-			}
-			
-			controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.PLANT, new ItemStack(Items.CACTUS)),
-					cactiPos, Blocks.CACTUS.defaultBlockState(), 100, 0);
+			controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.PLANT, new ItemStack(Items.NETHER_WART)),
+					wartPos, Blocks.NETHER_WART.defaultBlockState(), 0, 0);
 			
 			return AlgorithmUpdateResult.SUCCESS;
 		}
 		
-		// Harvest cacti
-		if(cactiState.is(Blocks.CACTUS))
+		// Harvest grown nether wart
+		if(wartState.is(Blocks.NETHER_WART) && wartState.getValue(NetherWartBlock.AGE) >= 3)
 		{
-			var maxCacti = cactiPos;
+			controller.queueBlockHarvest(wartPos, 0);
 			
-			var grownCacti = cactiPos.above();
-			while(true)
-			{
-				if(level.getBlockState(grownCacti).is(Blocks.CACTUS))
-				{
-					maxCacti = grownCacti;
-					grownCacti = grownCacti.above();
-					continue;
-				}
-				
-				break;
-			}
+			controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.PLANT, new ItemStack(Items.NETHER_WART)),
+					wartPos, Blocks.NETHER_WART.defaultBlockState(), 0, 0);
 			
-			// We have found a cactus above the original one, might as well harvest it.
-			if(maxCacti.getY() > cactiPos.getY())
-			{
-				controller.queueBlockHarvest(maxCacti, 0);
-				return AlgorithmUpdateResult.SUCCESS;
-			}
+			return AlgorithmUpdateResult.SUCCESS;
 		}
 		
 		return AlgorithmUpdateResult.PASS;

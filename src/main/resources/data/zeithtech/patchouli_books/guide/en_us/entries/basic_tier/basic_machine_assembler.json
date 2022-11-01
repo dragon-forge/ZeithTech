@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "ZeithTech machines require a special upgrade to your crafting table. It has 4 extra crafting cells which you are going to need.$(br2)To perform a craft on the assembler, place the recipe inside, and hit the block's top side with $(l:zeithtech:basics/iron_hammer)$(item)Iron Hammer$() a few times."
+      "text": "ZeithTech machines require a special upgrade to your crafting table. It has 4 extra crafting cells which you are going to need.$(br2)To perform a craft on the assembler, place the recipe inside, and hit the block's top side with $(l:zeithtech:basics/iron_hammer)$(thing)Iron Hammer$() a few times."
     },
     {
       "type": "patchouli:crafting",

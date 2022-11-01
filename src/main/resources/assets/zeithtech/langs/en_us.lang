@@ -170,6 +170,7 @@ block.zeithtech.processing.composite_bricks.broken=Broken Composite Bricks
 
 item.zeithtech.processing.recipe_pattern=Recipe Pattern
 item.zeithtech.processing.farm_soc=Farm Chip
+item.zeithtech.processing.farm_soc_programmer=Farm Chip Programmer
 item.zeithtech.processing.composite_brick=Composite Brick
 item.zeithtech.processing.redstone_control_tool=Redstone Control Tool
 item.zeithtech.processing.iron_hammer=Iron Hammer
@@ -301,3 +302,4 @@ recipe_type.zeithtech.grinding=Grinding
 recipe_type.zeithtech.sawmill=Sawmill
 
 farm_algorithm.zeithtech.cactus=Cactus Algorithm
+farm_algorithm.zeithtech.nether_wart=Nether Wart Algorithm

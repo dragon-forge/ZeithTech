@@ -38,7 +38,7 @@ public class BlockMultiBlockPart
 {
 	public BlockMultiBlockPart(Properties props)
 	{
-		super(props);
+		super(props.dynamicShape());
 		BlockHarvestAdapter.bindTool(BlockHarvestAdapter.MineableType.PICKAXE, Tiers.WOOD, this);
 	}
 	

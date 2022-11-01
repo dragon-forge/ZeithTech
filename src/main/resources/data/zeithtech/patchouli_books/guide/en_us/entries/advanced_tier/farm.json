@@ -8,9 +8,39 @@
       "text": "Farm is a multi-block structure that automates planting and harvesting process completely.$(br)It is going to handle crops, as per the algorithm given on a $(item)Farm Chip$().$(br)The Farm covers 5 blocks to each side, forming a functional 13x13 area, except the middle 3x3 that is taken up by the farm itself."
     },
     {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/farm_soc",
+      "text": "$(item)Farm Chip$() holds an algorithm by which the $(item)Farm$() functions. It has to be programmed before it may be used."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/farm_soc_programmer",
+      "text": "$(item)Farm Chip Programmer$() allows programming $(item)Farm Chips$(). To use it, look at a farm target (cactus, nether wart, saplings, etc) and start using it, while there is an empty $(item)Farm Chip$() in your inventory."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/farm/energy_port",
+      "text": "$(item)Farm Energy Port$() is used to charge the Farm with energy, which is required for it to function. You need one or more energy ports instead of $(l:zeithtech:basics/decoratives#reinforced_planks)$(thing)Reinforced Planks$() to assemble the $(item)Farm$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/farm/fluid_port",
+      "text": "$(item)Farm Fluid Port$() is used to fill the Farm with water, that is used to sustain plant life. You need one or more fluid ports instead of $(l:zeithtech:basics/decoratives#reinforced_planks)$(thing)Reinforced Planks$() to assemble the $(item)Farm$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/farm/item_port",
+      "text": "$(item)Farm Item Port$() is used to establish communication between farm and item pipes, or other means of moving items around. You need zero or more item ports instead of $(l:zeithtech:basics/decoratives#reinforced_planks)$(thing)Reinforced Planks$() to assemble the $(item)Farm$()."
+    },
+    {
+      "type": "zeithtech:machine_assembly",
+      "recipe": "zeithtech:processing/farm/controller"
+    },
+    {
       "type": "patchouli:multiblock",
       "name": "Farm",
-      "multiblock_id": "zeithtech:farm"
+      "multiblock_id": "zeithtech:farm",
+      "text": "$(l:zeithtech:basics/decoratives#reinforced_planks)$(thing)Reinforced Planks$() on the bottom layer may be replaced with $(item)Farm ports$() allow for automation to take place on the farm."
     }
   ]
 }

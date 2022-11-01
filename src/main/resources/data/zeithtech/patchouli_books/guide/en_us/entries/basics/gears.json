@@ -1,0 +1,35 @@
+{
+  "name": "Gears",
+  "icon": "zeithtech:gears/diamond",
+  "category": "zeithtech:basics",
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:gears/wooden",
+      "recipe2": "zeithtech:gears/stone"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:gears/copper",
+      "recipe2": "zeithtech:gears/tin"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:gears/iron",
+      "recipe2": "zeithtech:gears/silver"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:gears/gold",
+      "recipe2": "zeithtech:gears/diamond"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:gears/tungsten"
+    },
+    {
+      "type": "patchouli:smithing",
+      "recipe": "zeithtech:gears/netherite"
+    }
+  ]
+}

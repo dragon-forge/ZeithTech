@@ -1,0 +1,19 @@
+{
+  "name": "Decorative Blocks",
+  "icon": "zeithtech:hevea_planks",
+  "category": "zeithtech:basics",
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:reinforced_planks",
+      "anchor": "reinforced_planks",
+      "text": "$(item)Reinforced Planks$() are mostly decorative block. They are used in creating a $(l:zeithtech:advanced_tier/farm)$(thing)Farm$()"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:hevea_planks",
+      "anchor": "hevea_planks",
+      "text": "As with the regular wood, $(l:zeithtech:basics/hevea)$(thing)Hevea$() may also bee converted into planks for decoration purposes."
+    }
+  ]
+}

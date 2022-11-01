@@ -4,6 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -13,6 +16,7 @@ import org.zeith.hammerlib.api.inv.IScreenContainer;
 import org.zeith.hammerlib.client.utils.RenderUtils;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.modules.processing.client.renderer.item.ItemPropertyAlt;
 import org.zeith.tech.modules.processing.init.FluidsZT_Processing;
 import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
 import org.zeith.tech.modules.processing.items.redstone_control_tool.ContainerRedstoneControl;
@@ -30,11 +34,6 @@ public class ClientProcessingProxyZT
 		modBus.addListener(RegisterColorHandlersEvent.Item.class, this::registerItemColors);
 	}
 	
-	private void registerItemColors(RegisterColorHandlersEvent.Item e)
-	{
-		e.register((stack, i) -> i > 0 ? ItemsZT_Processing.FARM_SOC.getBarColor(stack) : 0xFFFFFF, ItemsZT_Processing.FARM_SOC);
-	}
-	
 	private void clientSetup(FMLClientSetupEvent e)
 	{
 		ItemBlockRenderTypes.setRenderLayer(FluidsZT_Processing.SULFURIC_ACID.getSource(), RenderType.translucent());
@@ -50,6 +49,15 @@ public class ClientProcessingProxyZT
 				.optionally(ctr, IScreenContainer.class)
 				.map(c -> c.openScreen(inv, txt))
 				.orElse(null));
+		
+		ItemProperties.register(ItemsZT_Processing.SOC_PROGRAMMER, new ResourceLocation("active"),
+				new ItemPropertyAlt(stack -> stack.getTag() != null && stack.getTag().contains("soc_programmer_target", Tag.TAG_STRING)));
+	}
+	
+	private void registerItemColors(RegisterColorHandlersEvent.Item e)
+	{
+		e.register((stack, i) -> i > 0 ? ItemsZT_Processing.FARM_SOC.getBarColor(stack) : 0xFFFFFF, ItemsZT_Processing.FARM_SOC);
+		e.register((stack, i) -> i > 0 ? ItemsZT_Processing.SOC_PROGRAMMER.getBarColor(stack) : 0xFFFFFF, ItemsZT_Processing.SOC_PROGRAMMER);
 	}
 	
 	private void registerOverlays(RegisterGuiOverlaysEvent e)

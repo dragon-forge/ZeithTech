@@ -1,5 +1,7 @@
 package org.zeith.tech.modules.shared.init;
 
+import net.minecraft.nbt.StringTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +15,7 @@ import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
@@ -27,6 +30,8 @@ public interface RecipesZT
 {
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
+		event.shaped().shape("nnn", "npn", "nnn").map('n', Tags.Items.NUGGETS_IRON).map('p', ItemTags.PLANKS).result(BlocksZT.REINFORCED_PLANKS).register();
+		
 		event.shaped().shape("wsw", "wsw", "wsw").map('w', BlocksZT_Transport.UNINSULATED_COPPER_WIRE).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT.COPPER_COIL).register();
 		event.shaped().shape("wsw", "wsw", "wsw").map('w', BlocksZT_Transport.UNINSULATED_GOLD_WIRE).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT.GOLD_COIL).register();
 		event.shaped().shape("icc", "iii", "icc").map('i', Tags.Items.INGOTS_IRON).map('c', ItemsZT.COPPER_COIL).result(ItemsZT.MOTOR).register();
@@ -53,6 +58,18 @@ public interface RecipesZT
 		
 		upgradeId = ForgeRegistries.ITEMS.getKey(ItemsZT.MULTI_TOOL_NETHERITE_MOTOR);
 		event.register(upgradeId, new UpgradeRecipe(upgradeId, Ingredient.of(ItemsZT.MULTI_TOOL_TUNGSTEN_MOTOR), RecipeHelper.fromTag(TagsZT.Items.GEARS_NETHERITE), new ItemStack(ItemsZT.MULTI_TOOL_NETHERITE_MOTOR)));
+		
+		// PATCHOULI COMPAT
+		var guideBook = ForgeRegistries.ITEMS.getValue(new ResourceLocation("patchouli", "guide_book"));
+		if(guideBook != Items.AIR)
+		{
+			ItemStack bookStack = new ItemStack(guideBook);
+			if(!bookStack.isEmpty())
+			{
+				bookStack.addTagElement("patchouli:book", StringTag.valueOf(ZeithTechAPI.id("guide").toString()));
+				event.shapeless().add(Items.BOOK).add(Tags.Items.INGOTS_COPPER).result(bookStack).register();
+			}
+		}
 	}
 	
 	static void machineAssembler(ReloadRecipeRegistryEvent.AddRecipes<RecipeMachineAssembler> e)

@@ -8,13 +8,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.capabilities.Capability;
@@ -271,12 +268,7 @@ public class TileMiningQuarryB
 			
 			if(state.is(TagsZT.Blocks.MINING_PIPE) && level instanceof ServerLevel srv)
 			{
-				List<ItemStack> blockDrops = state.getDrops(new LootContext.Builder(srv)
-						.withRandom(srv.random)
-						.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(qpos))
-						.withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(qpos))
-						.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())
-				);
+				var blockDrops = InventoryHelper.getBlockDropsAt(srv, qpos);
 				
 				// Create copy of all drops!
 				List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);
@@ -346,12 +338,7 @@ public class TileMiningQuarryB
 			
 			if(head.canMine(level, pos, state, miningHead) && level instanceof ServerLevel srv)
 			{
-				List<ItemStack> blockDrops = state.getDrops(new LootContext.Builder(srv)
-						.withRandom(srv.random)
-						.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-						.withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(pos))
-						.withParameter(LootContextParams.TOOL, miningHead)
-				);
+				var blockDrops = InventoryHelper.getBlockDropsAt(srv, pos);
 				
 				// Create copy of all drops!
 				List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);

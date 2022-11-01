@@ -41,11 +41,17 @@ public record PatchouliStateMatcher(BlockStatePredicate predicate)
 		int minY = -former.getComponents().stream().map(MultiBlockFormer.MultiblockPart::a).mapToInt(Vec3i::getY).min().getAsInt();
 		int minZ = -former.getComponents().stream().map(MultiBlockFormer.MultiblockPart::a).mapToInt(Vec3i::getZ).min().getAsInt();
 		
-		return new SparseMultiblock(
+		var mb = new SparseMultiblock(
 				former.getComponents()
 						.stream()
 						.map(part -> Tuples.immutable(part.a().offset(minX, minY, minZ), new PatchouliStateMatcher(part.b())))
 						.collect(Collectors.toMap(Tuple2::a, Tuple2::b))
-		).setOffset(minX, minY - 1, minZ).setSymmetrical(former.isSymmetrical());
+		);
+		
+		mb.setOffset(minX, minY, minZ);
+		mb.setViewOffset(minX, minY - 1, minZ);
+		mb.setSymmetrical(former.isSymmetrical());
+		
+		return mb;
 	}
 }

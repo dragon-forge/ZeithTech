@@ -141,7 +141,6 @@ public class TileBlastFurnaceB
 			var former = getFormer();
 			var dir = getFront();
 			
-			var v = isValid;
 			isValidSynced.setBool(former != null && former.test(level, worldPosition, dir));
 			if(former != null)
 			{

@@ -1,5 +1,6 @@
 {
   "name": "Advanced Machinery",
   "description": "Second tier technology. Here you're going to find a lot of advanced machinery, and a few multiblock structure.",
-  "icon": "zeithtech:processing/machine_assembler/advanced"
+  "icon": "zeithtech:processing/machine_assembler/advanced",
+  "sortnum": 2
 }

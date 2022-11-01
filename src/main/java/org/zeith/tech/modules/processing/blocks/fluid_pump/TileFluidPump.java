@@ -11,9 +11,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -280,12 +277,7 @@ public class TileFluidPump
 				
 				if(state.is(TagsZT.Blocks.MINING_PIPE))
 				{
-					List<ItemStack> blockDrops = state.getDrops(new LootContext.Builder(srv)
-							.withRandom(srv.random)
-							.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(qpos))
-							.withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(qpos))
-							.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())
-					);
+					var blockDrops = InventoryHelper.getBlockDropsAt(srv, qpos);
 					
 					// Create copy of all drops!
 					List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);

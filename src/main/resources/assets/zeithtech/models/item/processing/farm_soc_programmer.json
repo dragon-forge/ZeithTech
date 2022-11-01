@@ -1,0 +1,14 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "zeithtech:processing/item/farm_soc_programmer/base"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "active": 0.5
+      },
+      "model": "zeithtech:item/processing/farm_soc_programmer_alt"
+    }
+  ]
+}

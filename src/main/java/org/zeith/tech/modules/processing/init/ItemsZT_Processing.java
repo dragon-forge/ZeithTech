@@ -47,4 +47,7 @@ public interface ItemsZT_Processing
 	
 	@RegistryName("farm_soc")
 	ItemFarmSoC FARM_SOC = new ItemFarmSoC();
+	
+	@RegistryName("farm_soc_programmer")
+	ItemSoCProgrammer SOC_PROGRAMMER = new ItemSoCProgrammer();
 }

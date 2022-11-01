@@ -57,7 +57,9 @@ public interface RecipesZT_Processing
 		event.shapeless().add(BlocksZT.DAMAGED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
 		event.shapeless().add(BlocksZT.CRACKED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
 		
-		event.shapeless().add(Items.PAPER).add(Tags.Items.GEMS_LAPIS).add(Tags.Items.DUSTS_REDSTONE).add(ItemsZT.BASIC_CIRCUIT).result(ItemsZT_Processing.RECIPE_PATTERN).register();
+		event.shaped().shape("wpw", "wcw", "wpw").map('w', BlocksZT.REINFORCED_PLANKS).map('p', BlocksZT.INSULATED_GOLD_WIRE).map('c', ItemsZT.BASIC_CIRCUIT).result(BlocksZT_Processing.FARM_ENERGY_PORT).register();
+		event.shaped().shape("wpw", "wcw", "wpw").map('w', BlocksZT.REINFORCED_PLANKS).map('p', BlocksZT.IRON_FLUID_PIPE).map('c', ItemsZT.BASIC_CIRCUIT).result(BlocksZT_Processing.FARM_FLUID_PORT).register();
+		event.shaped().shape("wpw", "wcw", "wpw").map('w', BlocksZT.REINFORCED_PLANKS).map('p', BlocksZT.COPPER_ITEM_PIPE).map('c', ItemsZT.BASIC_CIRCUIT).result(BlocksZT_Processing.FARM_ITEM_PORT).register();
 		
 		var netheriteMiningHeadId = ForgeRegistries.ITEMS.getKey(ItemsZT_Processing.NETHERITE_MINING_HEAD);
 		event.register(netheriteMiningHeadId, new UpgradeRecipe(netheriteMiningHeadId, Ingredient.of(ItemsZT.TUNGSTEN_MINING_HEAD), RecipeHelper.fromTag(Tags.Items.INGOTS_NETHERITE), new ItemStack(ItemsZT_Processing.NETHERITE_MINING_HEAD)));
@@ -65,15 +67,12 @@ public interface RecipesZT_Processing
 		event.shaped().shape("p p", "i i", "p p").map('p', TagsZT.Items.PLATES_IRON).map('i', Tags.Items.INGOTS_IRON).result(new ItemStack(BlocksZT_Processing.MINING_PIPE, 6)).register();
 		
 		event.shaped().shape("prp", "rcr", "prp").map('r', ItemsZT.RECIPE_PATTERN).map('p', TagsZT.Items.PLATES_IRON).map('c', Tags.Items.CHESTS).result(BlocksZT_Processing.PATTERN_STORAGE).register();
+		event.shaped().shape("ppp", "ici", "sss").map('p', TagsZT.Items.PLATES_IRON).map('i', Tags.Items.STORAGE_BLOCKS_IRON).map('c', Blocks.CRAFTING_TABLE).map('s', Blocks.SMOOTH_STONE).result(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER).register();
 		
-		event.shaped()
-				.shape("ppp", "ici", "sss")
-				.map('p', TagsZT.Items.PLATES_IRON)
-				.map('i', Tags.Items.STORAGE_BLOCKS_IRON)
-				.map('c', Blocks.CRAFTING_TABLE)
-				.map('s', Blocks.SMOOTH_STONE)
-				.result(BlocksZT_Processing.BASIC_MACHINE_ASSEMBLER)
-				.register();
+		event.shapeless().add(Items.PAPER).add(Tags.Items.GEMS_LAPIS).add(Tags.Items.DUSTS_REDSTONE).add(ItemsZT.BASIC_CIRCUIT).result(ItemsZT_Processing.RECIPE_PATTERN).register();
+		event.shaped().shape(" p ", "pcp", "gpg").map('p', TagsZT.Items.PLASTIC).map('c', ItemsZT.BASIC_CIRCUIT).map('g', BlocksZT.UNINSULATED_GOLD_WIRE).result(ItemsZT_Processing.FARM_SOC).register();
+		
+		event.shaped().shape("pgp", "pcp", " ro").map('p', TagsZT.Items.PLASTIC).map('g', BlocksZT.UNINSULATED_GOLD_WIRE).map('c', ItemsZT.BASIC_CIRCUIT).map('o', Items.OBSERVER).map('r', Tags.Items.DUSTS_REDSTONE).result(ItemsZT_Processing.SOC_PROGRAMMER).register();
 	}
 	
 	static void addMachineAssemblyRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeMachineAssembler> evt)
@@ -207,6 +206,17 @@ public interface RecipesZT_Processing
 				.map('t', BlocksZT.BASIC_FLUID_TANK)
 				.map('p', BlocksZT.IRON_FLUID_PIPE)
 				.result(BlocksZT_Processing.BLAST_FURNACE_BURNER)
+				.register();
+		
+		f.get().minTier(TechTier.ADVANCED)
+				.shape(" ttt ", "tcsct", "tgCgt", "trcrt", " ttt ")
+				.map('t', TagsZT.Items.STORAGE_BLOCKS_TIN)
+				.map('c', Items.COMPARATOR)
+				.map('s', TagsZT.Items.STORAGE_BLOCKS_SILVER)
+				.map('g', TagsZT.Items.GEARS_TUNGSTEN)
+				.map('C', ItemsZT.BASIC_CIRCUIT)
+				.map('r', Tags.Items.DUSTS_REDSTONE)
+				.result(BlocksZT_Processing.FARM_CONTROLLER)
 				.register();
 	}
 	

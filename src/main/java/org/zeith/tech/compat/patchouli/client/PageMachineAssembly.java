@@ -62,7 +62,7 @@ public class PageMachineAssembly
 	@Override
 	protected ItemStack getRecipeOutput(RecipeMachineAssembler recipe)
 	{
-		return recipe.getRecipeOutput();
+		return recipe != null ? recipe.getRecipeOutput() : ItemStack.EMPTY;
 	}
 	
 	@Override

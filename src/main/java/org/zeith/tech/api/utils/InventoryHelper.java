@@ -1,6 +1,12 @@
 package org.zeith.tech.api.utils;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import org.zeith.hammerlib.api.inv.SimpleInventory;
 
 import java.util.List;
@@ -48,5 +54,15 @@ public class InventoryHelper
 		}
 		
 		return stack.isEmpty();
+	}
+	
+	public static List<ItemStack> getBlockDropsAt(ServerLevel server, BlockPos pos)
+	{
+		return server.getBlockState(pos).getDrops(new LootContext.Builder(server)
+				.withRandom(server.random)
+				.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+				.withOptionalParameter(LootContextParams.BLOCK_ENTITY, server.getBlockEntity(pos))
+				.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())
+		);
 	}
 }

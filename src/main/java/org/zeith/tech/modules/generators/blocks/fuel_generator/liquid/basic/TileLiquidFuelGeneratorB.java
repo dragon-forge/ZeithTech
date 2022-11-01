@@ -116,6 +116,11 @@ public class TileLiquidFuelGeneratorB
 			var works = redstone.shouldWork(this);
 			var input = inventory.getItem(0);
 			
+			if(_fuelTicksLeft <= 0 && (storage.isEmpty() || storage.getFluidAmount() < 100))
+			{
+				setEnabledState(false);
+			}
+			
 			deposit_fuel_from_item:
 			if(!input.isEmpty() && input.getCount() == 1)
 			{

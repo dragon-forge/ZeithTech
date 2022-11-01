@@ -4,18 +4,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -46,8 +47,7 @@ import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.core.fluid.MultiTankHandler;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
-import org.zeith.tech.modules.processing.blocks.farm.actions.BreakBlockAction;
-import org.zeith.tech.modules.processing.blocks.farm.actions.PlaceBlockAction;
+import org.zeith.tech.modules.processing.blocks.farm.actions.*;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.modules.processing.items.ItemFarmSoC;
 import org.zeith.tech.modules.shared.blocks.multiblock_part.TileMultiBlockPart;
@@ -103,8 +103,11 @@ public class TileFarm
 	
 	public final List<PlaceBlockAction> placeActions = new ArrayList<>();
 	public final List<BreakBlockAction> breakActions = new ArrayList<>();
+	public final List<TransformBlockAction> transformActions = new ArrayList<>();
 	
 	public final PropertyBool isValidSynced = new PropertyBool(DirectStorage.create(v -> isValid = v, () -> isValid));
+	
+	private final Map<BlockPos, VoxelShape> fixedShapes = new HashMap<>();
 	
 	public TileFarm(BlockPos pos, BlockState state)
 	{
@@ -118,6 +121,18 @@ public class TileFarm
 		soilInventory.isStackValid = (slot, stack) -> Optional.ofNullable(getAlgorithm()).map(a -> a.categorizeItem(this, stack) == EnumFarmItemCategory.SOIL).orElse(false);
 		plantInventory.isStackValid = (slot, stack) -> Optional.ofNullable(getAlgorithm()).map(a -> a.categorizeItem(this, stack) == EnumFarmItemCategory.PLANT).orElse(false);
 		resultInventory.isStackValid = (slot, stack) -> false;
+		
+		fixedShapes.put(pos.above(), Shapes.block());
+		fixedShapes.put(pos.above(), Shapes.block().move(0, 1 / 16F, 0));
+		fixedShapes.put(pos.above(2), Block.box(4, 1, 4, 12, 17, 12));
+		fixedShapes.put(pos.above().north(), Block.box(0, 0, 8, 16, 9, 16));
+		fixedShapes.put(pos.above().north().east(), Block.box(0, 0, 8, 8, 9, 16));
+		fixedShapes.put(pos.above().north().west(), Block.box(8, 0, 8, 16, 9, 16));
+		fixedShapes.put(pos.above().west(), Block.box(8, 0, 0, 16, 9, 16));
+		fixedShapes.put(pos.above().east(), Block.box(0, 0, 0, 8, 9, 16));
+		fixedShapes.put(pos.above().south(), Block.box(0, 0, 0, 16, 9, 8));
+		fixedShapes.put(pos.above().south().east(), Block.box(0, 0, 0, 8, 9, 8));
+		fixedShapes.put(pos.above().south().west(), Block.box(8, 0, 0, 16, 9, 8));
 	}
 	
 	@Override
@@ -158,33 +173,13 @@ public class TileFarm
 			checkNow = false;
 		}
 		
-		if(atTickRate(10) && level instanceof ServerLevel server)
+		if(atTickRate(5) && level instanceof ServerLevel server)
 		{
-			if(!placeActions.isEmpty())
-			{
-				var action = placeActions.remove(0);
-				int needWater = action.waterUsage();
-				var efluid = water.drain(needWater, IFluidHandler.FluidAction.SIMULATE);
-				if(action.canPlace(this, server) && !efluid.isEmpty() && efluid.getAmount() == needWater && energy.consumeEnergy(64))
-				{
-					water.drain(needWater, IFluidHandler.FluidAction.EXECUTE);
-					action.item().consumeItem(this, false);
-					server.setBlockAndUpdate(action.pos(), action.state());
-				}
-			}
-			
 			if(!breakActions.isEmpty())
 			{
 				var action = breakActions.remove(0);
 				
-				var state = server.getBlockState(action.pos());
-				
-				List<ItemStack> blockDrops = state.getDrops(new LootContext.Builder(server)
-						.withRandom(server.random)
-						.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(action.pos()))
-						.withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(action.pos()))
-						.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())
-				);
+				var blockDrops = InventoryHelper.getBlockDropsAt(server, action.pos());
 				
 				// Create copy of all drops!
 				List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);
@@ -194,6 +189,40 @@ public class TileFarm
 				{
 					InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDropsCopy, false);
 					level.destroyBlock(action.pos(), false);
+				}
+			} else if(!transformActions.isEmpty())
+			{
+				var action = transformActions.remove(0);
+				
+				int needWater = action.waterUsage();
+				var efluid = water.drain(needWater, IFluidHandler.FluidAction.SIMULATE);
+				
+				if(level.getBlockState(action.pos()).equals(action.source())
+						&& (needWater == 0 || (!efluid.isEmpty() && efluid.getAmount() == needWater))
+						&& energy.consumeEnergy(64))
+				{
+					if(needWater > 0) water.drain(needWater, IFluidHandler.FluidAction.EXECUTE);
+					server.setBlockAndUpdate(action.pos(), action.dest());
+					
+					var sound = action.dest().getSoundType();
+					server.playSound(null, action.pos(), sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
+				}
+			} else if(!placeActions.isEmpty())
+			{
+				var action = placeActions.remove(0);
+				
+				int needWater = action.waterUsage();
+				var efluid = water.drain(needWater, IFluidHandler.FluidAction.SIMULATE);
+				
+				if(action.canPlace(this, server) && (needWater == 0 || (!efluid.isEmpty() && efluid.getAmount() == needWater)) && energy.consumeEnergy(64))
+				{
+					if(needWater > 0) water.drain(needWater, IFluidHandler.FluidAction.EXECUTE);
+					action.item().consumeItem(this, false);
+					server.setBlockAndUpdate(action.pos(), action.state());
+					
+					var sound = action.state().getSoundType();
+					
+					server.playSound(null, action.pos(), sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
 				}
 			}
 		}
@@ -226,7 +255,7 @@ public class TileFarm
 			return;
 		}
 		
-		if(algorithm == null)
+		if(algorithm == null || placeActions.size() + breakActions.size() + transformActions.size() > 10)
 			return;
 		
 		if(isOnClient())
@@ -234,14 +263,19 @@ public class TileFarm
 			return;
 		}
 		
+		var movePosition = true;
+		
 		var pos = getPositionFromIndex(positionIdx);
-		if(hasPlatform(pos) && level instanceof ServerLevel server && algorithm.handleUpdate(this, server, pos))
+		if(hasPlatform(pos) && level instanceof ServerLevel server)
 		{
-			cooldown += 10;
+			var res = algorithm.handleUpdate(this, server, pos);
+			
+			if(res.wait) cooldown += 10;
+			movePosition = res.moveOn;
 		}
 		
 		// Move to next position
-		positionIdx = (positionIdx + 1) % (13 * 13);
+		if(movePosition) positionIdx = (positionIdx + 1) % (13 * 13);
 	}
 	
 	@Override
@@ -266,6 +300,7 @@ public class TileFarm
 		nbt = super.writeNBT(nbt);
 		nbt.put("BreakQueue", CodecHelper.encodeList(BreakBlockAction.CODEC, breakActions));
 		nbt.put("PlaceQueue", CodecHelper.encodeList(PlaceBlockAction.CODEC, placeActions));
+		nbt.put("TransformQueue", CodecHelper.encodeList(TransformBlockAction.CODEC, transformActions));
 		return nbt;
 	}
 	
@@ -274,8 +309,10 @@ public class TileFarm
 	{
 		breakActions.clear();
 		placeActions.clear();
+		transformActions.clear();
 		breakActions.addAll(CodecHelper.decodeList(BreakBlockAction.CODEC, nbt.get("BreakQueue")));
 		placeActions.addAll(CodecHelper.decodeList(PlaceBlockAction.CODEC, nbt.get("PlaceQueue")));
+		transformActions.addAll(CodecHelper.decodeList(TransformBlockAction.CODEC, nbt.get("TransformQueue")));
 		super.readNBT(nbt);
 	}
 	
@@ -364,6 +401,13 @@ public class TileFarm
 	}
 	
 	@Override
+	public void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, int waterUsage, int priority)
+	{
+		transformActions.add(new TransformBlockAction(pos, source, dest, waterUsage, priority));
+		transformActions.sort(TransformBlockAction.COMPARATOR.reversed()); // Reverse to put the highest priority actions into lower indices.
+	}
+	
+	@Override
 	public Direction getMultiblockDirection()
 	{
 		return getFront();
@@ -403,6 +447,12 @@ public class TileFarm
 	public AABB getRenderBoundingBox()
 	{
 		return new AABB(worldPosition.offset(-2, -2, -2), worldPosition.offset(2, 3, 2));
+	}
+	
+	@Override
+	public VoxelShape getShapeFor(BlockPos relativePos)
+	{
+		return fixedShapes.get(relativePos);
 	}
 	
 	protected class AutomatedContainer

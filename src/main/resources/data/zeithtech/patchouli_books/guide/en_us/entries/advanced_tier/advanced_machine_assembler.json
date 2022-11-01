@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Advanced machines require more space to be assembled. For that, you might have to upgrade your $(l:zeithtech:basic_tier/basic_machine_assembler)$(item)Basic Machine Assembler$().$(br)Unlike the basic tier, $(item)Advanced Machine Assembler$() is completely autonomous, and does not require hammer hitting it."
+      "text": "Advanced machines require more space to be assembled. For that, you might have to upgrade your $(l:zeithtech:basic_tier/basic_machine_assembler)$(thing)Basic Machine Assembler$().$(br)Unlike the basic tier, $(item)Advanced Machine Assembler$() is completely autonomous, and does not require hammer hitting it."
     },
     {
       "type": "patchouli:text",

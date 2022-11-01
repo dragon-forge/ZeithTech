@@ -7,6 +7,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +57,12 @@ public abstract class FarmAlgorithm
 	}
 	
 	/**
+	 * Provide an ingredient that should be matched in order to create a farm chip with this algorithm.
+	 */
+	@NotNull
+	public abstract Ingredient getProgrammingItem();
+	
+	/**
 	 * Requests this algorithm to figure out, where any given item may be inserted.
 	 * If the item does not fit into any category, return {@link EnumFarmItemCategory#UNKNOWN}.
 	 *
@@ -67,13 +74,14 @@ public abstract class FarmAlgorithm
 	/**
 	 * Perform a single update for on given farm at the platform position.
 	 * This logic should perform PLANT and HARVEST operations.
-	 * Harvesting should be done by calling {@link IFarmController#queueBlockHarvest(BlockPos, int)} method.
-	 * Placement should be done by calling {@link IFarmController#queueBlockPlacement(FarmItemConsumer, BlockPos, BlockState, int)}.
+	 * Harvesting should be done by calling {@link IFarmController#queueBlockHarvest(BlockPos, int)}.
+	 * Placement should be done by calling {@link IFarmController#queueBlockPlacement(FarmItemConsumer, BlockPos, BlockState, int, int)}.
+	 * Soil conversion should be done by calling {@link IFarmController#queueBlockTransformation(BlockPos, BlockState, BlockState, int, int)}.
 	 * {@link FarmItemConsumer} is obtained using {@link IFarmController#createItemConsumer(EnumFarmItemCategory, ItemStack)} to consume an item.
 	 *
 	 * @return true if the farm should go on an update cool-down (and drain energy), before handing another update to next position; false otherwise.
 	 */
-	public abstract boolean handleUpdate(IFarmController controller, ServerLevel level, BlockPos platform);
+	public abstract AlgorithmUpdateResult handleUpdate(IFarmController controller, ServerLevel level, BlockPos platform);
 	
 	/**
 	 * Attempts to fertilize the plant on given platform position.

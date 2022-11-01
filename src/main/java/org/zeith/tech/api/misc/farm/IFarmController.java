@@ -38,4 +38,6 @@ public interface IFarmController
 	void queueBlockPlacement(FarmItemConsumer itemConsumer, BlockPos pos, BlockState toPlace, int waterUsage, int priority);
 	
 	void queueBlockHarvest(BlockPos pos, int priority);
+	
+	void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, int waterUsage, int priority);
 }
