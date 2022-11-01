@@ -8,9 +8,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeTier;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.zeith.tech.api.audio.IAudioSystem;
+import org.zeith.tech.api.misc.farm.FarmAlgorithm;
 import org.zeith.tech.api.modules.IZeithTechModules;
 import org.zeith.tech.api.recipes.IRecipeRegistries;
 import org.zeith.tech.modules.shared.init.TagsZT;
@@ -63,6 +65,10 @@ public abstract class ZeithTechAPI
 	public abstract IAudioSystem getAudioSystem();
 	
 	public abstract CreativeModeTab getCreativeTab();
+	
+	public abstract IForgeRegistry<FarmAlgorithm> getFarmAlgorithms();
+	
+	public abstract void registerItemSprite(ResourceLocation path);
 	
 	public float getPartialTick()
 	{

@@ -2,21 +2,27 @@ package org.zeith.tech.core;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.*;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.zeith.api.registry.RegistryMapping;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.audio.IAudioSystem;
+import org.zeith.tech.api.misc.farm.FarmAlgorithm;
 import org.zeith.tech.api.modules.IZeithTechModules;
 import org.zeith.tech.api.recipes.IRecipeRegistries;
 import org.zeith.tech.compat.BaseCompat;
@@ -34,6 +40,7 @@ import org.zeith.tech.utils.LegacyEventBus;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @Mod(ZeithTech.MOD_ID)
 public class ZeithTech
@@ -50,6 +57,10 @@ public class ZeithTech
 	public static final CreativeModeTab TAB = new CreativeModeTabZT();
 	public static final CreativeModeTab FACADES_TAB = new CreativeModeTabZTF();
 	
+	private static final List<ResourceLocation> REGISTERED_TEXTURES = new ArrayList<>();
+	
+	private static Supplier<IForgeRegistry<FarmAlgorithm>> FARM_ALGORITHMS;
+	
 	public final LegacyEventBus busses;
 	
 	public ZeithTech()
@@ -61,6 +72,8 @@ public class ZeithTech
 		
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::setup);
+		bus.addListener(this::newRegistries);
+		bus.addListener(this::addExtraTextures);
 		
 		this.busses = new LegacyEventBus(bus, MinecraftForge.EVENT_BUS);
 		
@@ -128,6 +141,19 @@ public class ZeithTech
 		LOG.info("Setup complete.");
 	}
 	
+	private void addExtraTextures(TextureStitchEvent.Pre e)
+	{
+		if(e.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS))
+			REGISTERED_TEXTURES.forEach(e::addSprite);
+	}
+	
+	private void newRegistries(NewRegistryEvent e)
+	{
+		FARM_ALGORITHMS = e.create(new RegistryBuilder<FarmAlgorithm>()
+				.setName(ZeithTechAPI.id("farm_algorithms"))
+				.disableSync(), reg -> RegistryMapping.report(FarmAlgorithm.class, reg, false));
+	}
+	
 	@Override
 	public IZeithTechModules getModules()
 	{
@@ -150,6 +176,19 @@ public class ZeithTech
 	public CreativeModeTab getCreativeTab()
 	{
 		return TAB;
+	}
+	
+	@Override
+	public IForgeRegistry<FarmAlgorithm> getFarmAlgorithms()
+	{
+		return FARM_ALGORITHMS.get();
+	}
+	
+	@Override
+	public void registerItemSprite(ResourceLocation path)
+	{
+		if(!REGISTERED_TEXTURES.contains(path))
+			REGISTERED_TEXTURES.add(path);
 	}
 	
 	@Override

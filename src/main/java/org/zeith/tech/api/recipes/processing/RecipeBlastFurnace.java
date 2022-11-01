@@ -19,9 +19,10 @@ public class RecipeBlastFurnace
 	protected final IBlastFurnaceCasingBlock.BlastFurnaceTier tier;
 	protected final Ingredient inputA, inputB;
 	protected final ItemStack result;
-	protected final int craftTime, neededTemperature;
+	protected final int craftTime;
+	protected final float neededTemperature;
 	
-	public RecipeBlastFurnace(ResourceLocation id, IBlastFurnaceCasingBlock.BlastFurnaceTier tier, int neededTemperature, ItemStack output, Ingredient inputA, Ingredient inputB, int craftTime)
+	public RecipeBlastFurnace(ResourceLocation id, IBlastFurnaceCasingBlock.BlastFurnaceTier tier, float neededTemperature, ItemStack output, Ingredient inputA, Ingredient inputB, int craftTime)
 	{
 		super(id, new ItemStackResult(output), Util.make(NonNullList.create(), lst ->
 		{
@@ -42,7 +43,7 @@ public class RecipeBlastFurnace
 		return tier;
 	}
 	
-	public int getNeededTemperature()
+	public float getNeededTemperature()
 	{
 		return neededTemperature;
 	}
@@ -71,7 +72,8 @@ public class RecipeBlastFurnace
 			extends BuilderWithStackResult<RecipeBlastFurnace, BlastBuilder>
 	{
 		protected Ingredient inputA = Ingredient.EMPTY, inputB = Ingredient.EMPTY;
-		protected int time = 200, neededTemperature = 1536;
+		protected int time = 200;
+		protected float neededTemperature = 1536;
 		protected IBlastFurnaceCasingBlock.BlastFurnaceTier tier = IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC;
 		
 		public BlastBuilder(IRecipeRegistrationEvent<RecipeBlastFurnace> event)
@@ -91,7 +93,7 @@ public class RecipeBlastFurnace
 			return this;
 		}
 		
-		public BlastBuilder minTemperature(int neededTemperature)
+		public BlastBuilder minTemperature(float neededTemperature)
 		{
 			this.neededTemperature = neededTemperature;
 			return this;

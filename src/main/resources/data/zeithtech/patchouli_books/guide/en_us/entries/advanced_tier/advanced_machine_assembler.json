@@ -1,0 +1,29 @@
+{
+  "name": "Advanced Assembler",
+  "icon": "zeithtech:processing/machine_assembler/advanced",
+  "category": "zeithtech:advanced_tier",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Advanced machines require more space to be assembled. For that, you might have to upgrade your $(l:zeithtech:basic_tier/basic_machine_assembler)$(item)Basic Machine Assembler$().$(br)Unlike the basic tier, $(item)Advanced Machine Assembler$() is completely autonomous, and does not require hammer hitting it."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Moreover, it can also be automated with use of $(item)Recipe Patterns$(). Place one in the input slot, and perform an assembly, and the pattern will be encoded.$(br)This is the only item you can put inside the station automatically. After the pattern, external systems may place only one item for each slot used by the recipe."
+    },
+    {
+      "type": "zeithtech:machine_assembly",
+      "title": "Recipe",
+      "recipe": "zeithtech:processing/machine_assembler/advanced"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/recipe_pattern"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/pattern_storage",
+      "text": "Patterns, while being a useful automation method, have to be stored somewhere. This is where the $(item)Recipe Pattern Storage$() comes into play. It stores (reasonably) unlimited amount of patterns, that can be accessed by automation at any instant."
+    }
+  ]
+}

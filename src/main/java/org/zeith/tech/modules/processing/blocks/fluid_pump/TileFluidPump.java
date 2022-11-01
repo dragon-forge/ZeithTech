@@ -37,12 +37,12 @@ import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
+import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.modules.shared.init.TagsZT;
-import org.zeith.tech.utils.InventoryHelper;
 import org.zeith.tech.utils.SerializableFluidTank;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 

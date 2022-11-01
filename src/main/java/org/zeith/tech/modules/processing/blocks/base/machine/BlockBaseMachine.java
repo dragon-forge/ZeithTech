@@ -107,7 +107,6 @@ public abstract class BlockBaseMachine<T extends TileBaseMachine<T>>
 		return InteractionResult.SUCCESS;
 	}
 	
-	@javax.annotation.Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx)
 	{

@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.zeith.hammerlib.api.inv.IScreenContainer;
@@ -26,6 +27,12 @@ public class ClientProcessingProxyZT
 	{
 		modBus.addListener(FMLClientSetupEvent.class, this::clientSetup);
 		modBus.addListener(RegisterGuiOverlaysEvent.class, this::registerOverlays);
+		modBus.addListener(RegisterColorHandlersEvent.Item.class, this::registerItemColors);
+	}
+	
+	private void registerItemColors(RegisterColorHandlersEvent.Item e)
+	{
+		e.register((stack, i) -> i > 0 ? ItemsZT_Processing.FARM_SOC.getBarColor(stack) : 0xFFFFFF, ItemsZT_Processing.FARM_SOC);
 	}
 	
 	private void clientSetup(FMLClientSetupEvent e)

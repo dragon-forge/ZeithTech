@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "zeithtech:processing/item/farm_soc/base",
+    "layer1": "zeithtech:processing/item/farm_soc/overlay"
+  }
+}

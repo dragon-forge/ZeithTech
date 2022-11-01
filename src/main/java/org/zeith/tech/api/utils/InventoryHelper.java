@@ -1,4 +1,4 @@
-package org.zeith.tech.utils;
+package org.zeith.tech.api.utils;
 
 import net.minecraft.world.item.ItemStack;
 import org.zeith.hammerlib.api.inv.SimpleInventory;

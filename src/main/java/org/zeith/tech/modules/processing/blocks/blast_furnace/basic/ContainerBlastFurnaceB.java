@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.processing.blocks.blast_furnace;
+package org.zeith.tech.modules.processing.blocks.blast_furnace.basic;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -25,7 +25,7 @@ public class ContainerBlastFurnaceB
 		super(tile, player, windowId, List.of(
 				new PropertyInt(DirectStorage.create(i -> tile._maxProgress = i, () -> tile._maxProgress)),
 				new PropertyInt(DirectStorage.create(i -> tile.maxBurnTime = i, () -> tile.maxBurnTime)),
-				new PropertyInt(DirectStorage.create(i -> tile._progress = i, () -> tile._progress)),
+				new PropertyFloat(DirectStorage.create(i -> tile._progress = i, () -> tile._progress)),
 				new PropertyFloat(DirectStorage.create(i -> tile.burnTime = i, () -> tile.burnTime)),
 				new PropertyFloat(DirectStorage.create(i -> tile.temperature = i, () -> tile.temperature))
 		));

@@ -4,6 +4,7 @@ itemGroup.zeithtech=ZeithTech
 itemGroup.zeithtech.facades=ZeithTech: Facades
 
 ### World Module ###
+block.zeithtech.reinforced_planks=Reinforced Planks
 block.zeithtech.hevea_sapling=Hevea Sapling
 block.zeithtech.hevea_log=Hevea Log
 block.zeithtech.stripped_hevea_log=Stripped Hevea Log
@@ -154,6 +155,12 @@ block.zeithtech.processing.metal_press=Metal Press
 block.zeithtech.processing.facade_slicer=Facade Slicer
 block.zeithtech.processing.pattern_storage=Recipe Pattern Storage
 
+block.zeithtech.processing.farm=Farm
+block.zeithtech.processing.farm.controller=Farm Controller
+block.zeithtech.processing.farm.item_port=Farm Item Port
+block.zeithtech.processing.farm.fluid_port=Farm Fluid Port
+block.zeithtech.processing.farm.energy_port=Farm Energy Port
+
 block.zeithtech.processing.blast_furnace.basic=Basic Blast Furnace
 block.zeithtech.processing.blast_furnace_burner=Blast Furnace Burner
 block.zeithtech.processing.composite_bricks.new=Composite Bricks
@@ -162,6 +169,7 @@ block.zeithtech.processing.composite_bricks.damaged=Damaged Composite Bricks
 block.zeithtech.processing.composite_bricks.broken=Broken Composite Bricks
 
 item.zeithtech.processing.recipe_pattern=Recipe Pattern
+item.zeithtech.processing.farm_soc=Farm Chip
 item.zeithtech.processing.composite_brick=Composite Brick
 item.zeithtech.processing.redstone_control_tool=Redstone Control Tool
 item.zeithtech.processing.iron_hammer=Iron Hammer
@@ -291,3 +299,5 @@ recipe_type.zeithtech.hammering=Hammering
 recipe_type.zeithtech.machine_assembly=Machine Assembly
 recipe_type.zeithtech.grinding=Grinding
 recipe_type.zeithtech.sawmill=Sawmill
+
+farm_algorithm.zeithtech.cactus=Cactus Algorithm

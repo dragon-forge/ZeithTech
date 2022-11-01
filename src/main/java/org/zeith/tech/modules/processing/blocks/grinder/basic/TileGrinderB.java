@@ -18,12 +18,12 @@ import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.enums.*;
 import org.zeith.tech.api.recipes.base.IUnaryRecipe;
 import org.zeith.tech.api.recipes.processing.RecipeGrinding;
+import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.ContainerUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.TileUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.shared.ui.SlotInput;
 import org.zeith.tech.modules.shared.ui.SlotOutput;
-import org.zeith.tech.utils.InventoryHelper;
 import org.zeith.tech.utils.SidedInventory;
 
 import java.util.stream.IntStream;

@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -22,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import org.zeith.tech.api.block.multiblock.base.MultiBlockFormer;
+import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.block.multiblock.base.MultiBlockRegistry;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.events.recipe.HammerHitEvent;
@@ -78,7 +77,7 @@ public class ItemHammer
 		if(multiblock != null)
 		{
 			if(!level.isClientSide)
-				multiblock.insert(multiblock.c(), level).acceptL(MultiBlockFormer::placeMultiBlock);
+				multiblock.d().placeMultiBlock(level, multiblock.b(), multiblock.c(), Cast.cast(multiblock.a()));
 			
 			ctx.getItemInHand()
 					.hurtAndBreak(1, ctx.getPlayer(), pl -> pl.broadcastBreakEvent(ctx.getHand()));
@@ -265,13 +264,23 @@ public class ItemHammer
 				}
 			}
 			
-			if(hitResult.getType() == HitResult.Type.BLOCK && hitResult instanceof BlockHitResult res && level.getBlockEntity(pos) instanceof IHammerable h && h.onHammerLeftClicked(hammerStack, e.getSide(), e.getFace(), e.getEntity(), e.getHand(), res))
+			if(hitResult.getType() == HitResult.Type.BLOCK && hitResult instanceof BlockHitResult res)
 			{
+				IHammerable h;
+				
+				if(level.getBlockEntity(pos) instanceof IHammerable h0 && h0.onHammerLeftClicked(hammerStack, e.getSide(), e.getFace(), e.getEntity(), e.getHand(), res))
+					h = h0;
+				else if(level.getBlockState(pos).getBlock() instanceof IHammerable h0 && h0.onHammerLeftClicked(hammerStack, e.getSide(), e.getFace(), e.getEntity(), e.getHand(), res))
+					h = h0;
+				else
+					return;
+				
 				if(level instanceof ServerLevel srv)
 				{
 					var pp = res.getLocation();
 					srv.sendParticles(ParticleTypes.CRIT, pp.x, pp.y + 0.05, pp.z, 10, 0.1, -0.1, 0.1, 0.2);
-					srv.playSound(null, player, SoundEvents.ANVIL_PLACE, SoundSource.PLAYERS, 1F, 1F);
+					
+					srv.playSound(null, player, h.getHammeredSound(hammerStack, e.getSide(), e.getFace(), e.getEntity(), e.getHand(), res), SoundSource.PLAYERS, 1F, 1F);
 				}
 				
 				hammerStack.hurtAndBreak(1, player, pl -> pl.broadcastBreakEvent(e.getHand()));

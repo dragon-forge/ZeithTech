@@ -4,9 +4,11 @@ import net.minecraftforge.fml.DistExecutor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.zeith.hammerlib.HammerLib;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.modules.IModuleProcessing;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.IInternalCode;
+import org.zeith.tech.modules.processing.blocks.farm.ContainerFarm;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.processing.proxy.ClientProcessingProxyZT;
 import org.zeith.tech.modules.processing.proxy.CommonProcessingProxyZT;
@@ -41,6 +43,8 @@ public class ProcessingModule
 		HammerLib.EVENT_BUS.addGenericListener(RecipeFluidCentrifuge.class, RecipesZT_Processing::addFluidCentrifugeRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeWasteProcessor.class, RecipesZT_Processing::addWasteProcessingRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeBlastFurnace.class, RecipesZT_Processing::addBlastFurnaceRecipes);
+		
+		ContainerFarm.registerSprites(ZeithTechAPI.get());
 	}
 	
 	@Override

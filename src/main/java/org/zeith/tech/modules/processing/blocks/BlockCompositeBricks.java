@@ -1,10 +1,13 @@
 package org.zeith.tech.modules.processing.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -14,11 +17,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.core.adapter.TagAdapter;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.block.multiblock.blast_furnace.IBlastFurnaceCasingBlock;
+import org.zeith.tech.api.tile.IHammerable;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
 import org.zeith.tech.modules.shared.blocks.SimpleBlockZT;
 import org.zeith.tech.modules.shared.blocks.multiblock_part.TileMultiBlockPart;
@@ -27,7 +32,7 @@ import org.zeith.tech.modules.shared.init.TagsZT;
 
 public class BlockCompositeBricks
 		extends SimpleBlockZT
-		implements IBlastFurnaceCasingBlock
+		implements IBlastFurnaceCasingBlock, IHammerable
 {
 	protected final BlastFurnaceTier tier;
 	protected final float tempLoss, reflectivity;
@@ -128,5 +133,43 @@ public class BlockCompositeBricks
 	public float getTemperatureReflectivityCoef(Level level, BlockPos pos, BlockState state)
 	{
 		return reflectivity;
+	}
+	
+	@Override
+	public boolean onHammerLeftClicked(ItemStack hammerStack, LogicalSide side, Direction face, Player player, InteractionHand hand, BlockHitResult vec)
+	{
+		var level = player.level;
+		var pos = vec.getBlockPos();
+		var state = level.getBlockState(pos);
+		
+		if(state.getBlock() == this)
+		{
+			var dmg = getDamagedState(state);
+			if(!dmg.is(this))
+			{
+				level.setBlockAndUpdate(pos, dmg);
+				
+				var item = new ItemStack(ItemsZT.COMPOSITE_BRICK);
+				if(!player.addItem(item))
+				{
+					var ie = player.drop(item, false);
+					if(ie != null)
+					{
+						ie.setNoPickUpDelay();
+						ie.setOwner(player.getUUID());
+					}
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public SoundEvent getHammeredSound(ItemStack hammerStack, LogicalSide side, Direction face, Player player, InteractionHand hand, BlockHitResult vec)
+	{
+		return getCasingDamageSound();
 	}
 }

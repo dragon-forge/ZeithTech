@@ -35,6 +35,8 @@ public interface RecipesZT_Processing
 {
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
+		event.removeRecipe(new ResourceLocation("netherite_ingot"));
+		
 		event.shaped().shape("iin", "is ", " s ").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).map('n', Tags.Items.NUGGETS_IRON).result(ItemsZT_Processing.IRON_HAMMER).register();
 		event.shaped().shape("i i", " i ", "s s").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT_Processing.WIRE_CUTTER).register();
 		
@@ -46,14 +48,14 @@ public interface RecipesZT_Processing
 		
 		event.shaped().shape("prp", "pcp", " p ").map('p', TagsZT.Items.PLASTIC).map('r', Tags.Items.DUSTS_REDSTONE).map('c', Items.COMPARATOR).result(ItemsZT_Processing.REDSTONE_CONTROL_TOOL).register();
 		
-		event.blasting().input(Items.BRICK).cookTime(30 * 20).result(ItemsZT_Processing.COMPOSITE_BRICK).register();
+		event.blasting().input(Items.BRICK).cookTime(30 * 20).xp(1F).result(ItemsZT_Processing.COMPOSITE_BRICK).register();
+		event.shaped().shape("cc", "cc").map('c', ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
 		event.shapeless().add(BlocksZT.BROKEN_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.DAMAGED_COMPOSITE_BRICKS).register();
 		event.shapeless().add(BlocksZT.BROKEN_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.CRACKED_COMPOSITE_BRICKS).register();
 		event.shapeless().add(BlocksZT.BROKEN_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
 		event.shapeless().add(BlocksZT.DAMAGED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.CRACKED_COMPOSITE_BRICKS).register();
 		event.shapeless().add(BlocksZT.DAMAGED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
 		event.shapeless().add(BlocksZT.CRACKED_COMPOSITE_BRICKS).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
-		event.shapeless().add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).add(ItemsZT.COMPOSITE_BRICK).result(BlocksZT_Processing.COMPOSITE_BRICKS).register();
 		
 		event.shapeless().add(Items.PAPER).add(Tags.Items.GEMS_LAPIS).add(Tags.Items.DUSTS_REDSTONE).add(ItemsZT.BASIC_CIRCUIT).result(ItemsZT_Processing.RECIPE_PATTERN).register();
 		
@@ -196,6 +198,16 @@ public interface RecipesZT_Processing
 				.result(BlocksZT_Processing.ADVANCED_MACHINE_ASSEMBLER)
 				.register();
 		
+		f.get().minTier(TechTier.ADVANCED)
+				.shape(" cIc ", "ciIic", "ccdcc", "cctcc", " cpc ")
+				.map('c', BlocksZT.COMPOSITE_BRICKS)
+				.map('I', TagsZT.Items.PLATES_IRON)
+				.map('i', Tags.Items.INGOTS_IRON)
+				.map('d', Items.DISPENSER)
+				.map('t', BlocksZT.BASIC_FLUID_TANK)
+				.map('p', BlocksZT.IRON_FLUID_PIPE)
+				.result(BlocksZT_Processing.BLAST_FURNACE_BURNER)
+				.register();
 	}
 	
 	static void addHammeringRecipes(ReloadRecipeRegistryEvent.AddRecipes<RecipeHammering> evt)
@@ -431,10 +443,17 @@ public interface RecipesZT_Processing
 		var f = evt.<RecipeBlastFurnace.BlastBuilder> builderFactory();
 		
 		f.get().tier(IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC)
-				.input(RecipeHelper.fromTag(TagsZT.Items.RAW_MATERIALS_TUNGSTEN))
+				.input(TagsZT.Items.RAW_MATERIALS_TUNGSTEN)
 				.minTemperature(3422)
 				.craftTime(1000)
 				.result(ItemsZT.TUNGSTEN_INGOT)
+				.register();
+		
+		f.get().tier(IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC)
+				.input(Items.NETHERITE_SCRAP, Tags.Items.STORAGE_BLOCKS_GOLD)
+				.minTemperature(2048)
+				.craftTime(5 * 60 * 20)
+				.result(Items.NETHERITE_INGOT)
 				.register();
 	}
 }

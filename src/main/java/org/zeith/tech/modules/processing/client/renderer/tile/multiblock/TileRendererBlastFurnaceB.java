@@ -12,7 +12,7 @@ import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.hammerlib.util.mcf.RotationHelper;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.client.renderer.*;
-import org.zeith.tech.modules.processing.blocks.blast_furnace.TileBlastFurnaceB;
+import org.zeith.tech.modules.processing.blocks.blast_furnace.basic.TileBlastFurnaceB;
 
 public class TileRendererBlastFurnaceB
 		implements IBESR<TileBlastFurnaceB>
@@ -22,6 +22,11 @@ public class TileRendererBlastFurnaceB
 	public TileRendererBlastFurnaceB()
 	{
 		cuboid = new Cuboid();
+		
+		cuboid.bounds(
+				new AABB(0, 0, 0, 1, 1, 1)
+						.inflate(0.001)
+		);
 		
 		cuboid.setTexture(Cuboid.ISpriteInfo.ofTexture(0, 48, 48, 48, 96, 96));
 		cuboid.setTexture(Direction.UP, Cuboid.ISpriteInfo.ofTexture(0, 0, 48, 48, 96, 96));
@@ -35,11 +40,6 @@ public class TileRendererBlastFurnaceB
 	public void render(TileBlastFurnaceB entity, float partial, PoseStack pose, MultiBufferSource buf, int lighting, int overlay)
 	{
 		if(!entity.isMultiblockValid()) return;
-		
-		cuboid.bounds(
-				new AABB(0, 0, 0, 1, 1, 1)
-						.inflate(0.001)
-		);
 		
 		lighting = entity.updateLighting(tile ->
 		{

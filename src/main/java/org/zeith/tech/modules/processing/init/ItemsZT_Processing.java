@@ -44,4 +44,7 @@ public interface ItemsZT_Processing
 	
 	@RegistryName("composite_brick")
 	Item COMPOSITE_BRICK = BaseZT.newItem();
+	
+	@RegistryName("farm_soc")
+	ItemFarmSoC FARM_SOC = new ItemFarmSoC();
 }

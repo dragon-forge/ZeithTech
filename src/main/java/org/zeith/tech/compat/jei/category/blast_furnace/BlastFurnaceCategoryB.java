@@ -9,10 +9,13 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.*;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.hammerlib.util.java.Chars;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeBlastFurnace;
 import org.zeith.tech.compat.jei.RecipeTypesZT;
@@ -82,6 +85,27 @@ public class BlastFurnaceCategoryB
 	{
 		getArrow(recipe).draw(pose, 31, 24);
 		WidgetAPI.drawFuelBar(pose, 6, 48, 0.5F);
+		
+		final int cookTime = recipe.getCraftTime();
+		if(cookTime > 0)
+		{
+			final int cookTimeSeconds = cookTime / 20;
+			final Component timeString = Component.translatable("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
+			final Minecraft minecraft = Minecraft.getInstance();
+			final Font fontRenderer = minecraft.font;
+			final int stringWidth = fontRenderer.width(timeString);
+			fontRenderer.draw(pose, timeString, (float) (this.background.getWidth() - stringWidth), 50, -8355712);
+		}
+		
+		final float temp = recipe.getNeededTemperature();
+		if(temp > 0)
+		{
+			final Component timeString = Component.literal("%.01f%sC".formatted(temp, Chars.DEGREE_SIGN));
+			final Minecraft minecraft = Minecraft.getInstance();
+			final Font fontRenderer = minecraft.font;
+			final int stringWidth = fontRenderer.width(timeString);
+			fontRenderer.draw(pose, timeString, (float) (this.background.getWidth() - stringWidth), 5, -8355712);
+		}
 	}
 	
 	@Override

@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.INoItemBlock;
 import org.zeith.hammerlib.api.forge.BlockAPI;
@@ -39,6 +40,16 @@ public class BlockMultiBlockPart
 	{
 		super(props);
 		BlockHarvestAdapter.bindTool(BlockHarvestAdapter.MineableType.PICKAXE, Tiers.WOOD, this);
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext ctx)
+	{
+		if(getter.getBlockEntity(pos) instanceof TileMultiBlockPart part)
+			return part.findMultiBlock()
+					.map(mbt -> mbt.getShapeFor(pos))
+					.orElseGet(() -> part.subState != null ? part.subState.getShape(getter, pos) : Shapes.block());
+		return Shapes.block();
 	}
 	
 	@Override
@@ -101,6 +112,15 @@ public class BlockMultiBlockPart
 		if(tile instanceof TileMultiBlockPart part && part.subState != null)
 			return part.subState.getDrops(builder);
 		return List.of();
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState state2, boolean p_60519_)
+	{
+		var be = level.getBlockEntity(pos);
+		super.onRemove(state, level, pos, state2, p_60519_);
+		if(be instanceof TileMultiBlockPart part && !(level.getBlockEntity(pos) instanceof TileMultiBlockPart))
+			part.findMultiBlock().ifPresent(IMultiblockTile::queueMultiBlockValidityCheck);
 	}
 	
 	@Override

@@ -1,0 +1,15 @@
+{
+  "name": "Hevea",
+  "icon": "zeithtech:hevea_sapling",
+  "category": "zeithtech:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(item)Hevea Trees$() are found in the wilderness. Strip its barks with your axe, use 5 $(item)Sticks$() on the $(item)Stripped Hevea Log$(), then place $(item)Tree Tap$() (click the sticks) and put a $(item)Bowl$() on the sticks. After some time, the $(item)Bowl$() will fill up with resin, which you can gather with your hand."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:tree_tap"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Farm",
+  "icon": "zeithtech:processing/farm/controller",
+  "category": "zeithtech:advanced_tier",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Farm is a multi-block structure that automates planting and harvesting process completely.$(br)It is going to handle crops, as per the algorithm given on a $(item)Farm Chip$().$(br)The Farm covers 5 blocks to each side, forming a functional 13x13 area, except the middle 3x3 that is taken up by the farm itself."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Farm",
+      "multiblock_id": "zeithtech:farm"
+    }
+  ]
+}

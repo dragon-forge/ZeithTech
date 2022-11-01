@@ -1,10 +1,9 @@
-package org.zeith.tech.modules.processing.blocks.blast_furnace;
+package org.zeith.tech.modules.processing.blocks.blast_furnace.basic;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +31,7 @@ import org.zeith.tech.api.recipes.processing.RecipeBlastFurnace;
 import org.zeith.tech.api.tile.IFluidPipe;
 import org.zeith.tech.api.tile.multiblock.IMultiblockTile;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
+import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.core.fluid.MultiTankHandler;
 import org.zeith.tech.core.net.PacketAddDestroyBlockEffect;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
@@ -39,7 +39,8 @@ import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.shared.blocks.multiblock_part.TileMultiBlockPart;
 import org.zeith.tech.modules.shared.init.RecipeRegistriesZT;
-import org.zeith.tech.utils.*;
+import org.zeith.tech.utils.SerializableFluidTank;
+import org.zeith.tech.utils.SidedInventory;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
 
 import java.util.EnumSet;
@@ -76,7 +77,7 @@ public class TileBlastFurnaceB
 	public float burnTime;
 	
 	@NBTSerializable("Progress")
-	public int _progress;
+	public float _progress;
 	
 	@NBTSerializable("MaxProgress")
 	public int _maxProgress = 200;
@@ -84,6 +85,7 @@ public class TileBlastFurnaceB
 	@NBTSerializable("Temperature")
 	public float temperature;
 	
+	@NBTSerializable("BiomeTemp")
 	public float biomeTemperature;
 	
 	@NBTSerializable("HeatMult")
@@ -146,7 +148,7 @@ public class TileBlastFurnaceB
 				if(!isValid)
 					former.deform(level, worldPosition, getFront());
 				else
-					former.placeMultiBlock(level, worldPosition, dir);
+					former.placeMultiBlock(level, worldPosition, dir, null);
 			}
 			
 			if(former != null && isValid)
@@ -172,7 +174,11 @@ public class TileBlastFurnaceB
 			checkNow = false;
 		}
 		
-		if(!isValid || level == null) return;
+		if(isOnServer() && temperature > biomeTemperature && atTickRate(2))
+			temperature = Math.max(biomeTemperature, temperature - (1F - heatSaveMultiplier) * 0.125F);
+		
+		if(!isValid || level == null)
+			return;
 		
 		if(isOnClient())
 		{
@@ -207,16 +213,15 @@ public class TileBlastFurnaceB
 			}
 		}
 		
-		if(temperature > biomeTemperature && burnTime < 1 && temperature < maxTemperature)
-			temperature = Math.max(biomeTemperature, temperature - (1F - heatSaveMultiplier));
-		
 		if(burnTime > 0)
 		{
-			if(temperature < maxTemperature)
+			float add = 0.75F * heatingMultiplier;
+			
+			if(temperature + add <= maxTemperature)
 			{
 				--burnTime;
-				temperature += 0.75F * heatingMultiplier;
-			} else burnTime -= 0.0e25F;
+				temperature += add;
+			} else burnTime -= 0.025F;
 		}
 		
 		setEnabledState(burnTime > 0);
@@ -236,10 +241,15 @@ public class TileBlastFurnaceB
 			if(_progress < _maxProgress && isOnServer()
 					&& (_progress > 0 || storeRecipeResult(recipe, true)))
 			{
-				if(temperature >= recipe.getNeededTemperature())
+				float minTemp = recipe.getNeededTemperature();
+				
+				if(temperature >= minTemp)
 				{
-					_progress += 1;
-					temperature -= 0.525F;
+					float mul = 1F + (temperature - minTemp) / 256F;
+					
+					_progress += 1 * mul;
+					temperature -= 0.525F * mul;
+					
 					isInterrupted.setBool(false);
 				} else
 				{
@@ -272,7 +282,7 @@ public class TileBlastFurnaceB
 								else level.setBlockAndUpdate(pos, cracked);
 								
 								PacketAddDestroyBlockEffect.spawn(level, pos, state);
-								ZeithTechAPI.get().getAudioSystem().playTileSound(this, SoundEvents.TURTLE_EGG_CRACK, 0.5F, 1F);
+								ZeithTechAPI.get().getAudioSystem().playTileSound(this, casing.getCasingDamageSound(), 0.5F, 1F);
 							}
 						}
 					}
@@ -317,7 +327,7 @@ public class TileBlastFurnaceB
 	private boolean matches(RecipeBlastFurnace recipe)
 	{
 		return recipe.getInputA().test(inventory.getItem(0))
-				&& (recipe.getInputB().isEmpty() || recipe.getInputB().test(inventory.getItem(0)))
+				&& (recipe.getInputB().isEmpty() || recipe.getInputB().test(inventory.getItem(1)))
 				&& recipe.getNeededTemperature() <= maxTemperature;
 	}
 	
@@ -386,9 +396,9 @@ public class TileBlastFurnaceB
 	}
 	
 	@Override
-	public MultiBlockFormer getFormer()
+	public MultiBlockFormer<?> getFormer()
 	{
-		return BlockBlastFurnaceB.BASIC_BLAST_FURNACE;
+		return BlockBlastFurnaceB.getBasicBlastFurnaceStructure();
 	}
 	
 	@Override
@@ -406,6 +416,6 @@ public class TileBlastFurnaceB
 	@Override
 	public AABB getRenderBoundingBox()
 	{
-		return new AABB(worldPosition.offset(-1, -1, -1), worldPosition.offset(1, 1, 1));
+		return new AABB(worldPosition.offset(-2, -2, -2), worldPosition.offset(2, 2, 2));
 	}
 }

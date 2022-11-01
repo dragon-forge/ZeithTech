@@ -1,0 +1,30 @@
+{
+  "name": "Blast Furnace",
+  "icon": "zeithtech:processing/blast_furnace_burner",
+  "category": "zeithtech:advanced_tier",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "To burn down more complex metals, like $(item)Tungsten$(), you are going to need to build yourself a $(item)Blast Furnace$(). It is a 3x3x3 multi-block structure. You are also going to need to make quite a lot of composite bricks for this."
+    },
+    {
+      "type": "patchouli:blasting",
+      "recipe": "zeithtech:processing/composite_brick",
+      "text": "Notice that cooking time of 30 seconds. You might need to make a few blast furnaces to make the process faster."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/composite_bricks/new",
+      "text": "These are core building blocks of your $(item)Blast Furnace$(), which are also used to assemble the $(item)Blast Furnace Burner$()"
+    },
+    {
+      "type": "zeithtech:machine_assembly",
+      "recipe": "zeithtech:processing/blast_furnace_burner"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Blast Furnace",
+      "multiblock_id": "zeithtech:basic_blast_furnace"
+    }
+  ]
+}

@@ -57,7 +57,7 @@ public class CustomBlastFurnaceRecipeGenerator
 		var inputB = inputs.size() > 1 ? Ingredient.fromJson(inputs.get(1)) : Ingredient.EMPTY;
 		
 		var tier = IBlastFurnaceCasingBlock.BlastFurnaceTier.values()[GsonHelper.getAsInt(root, "tier", 0)];
-		var temp = GsonHelper.getAsInt(root, "temperature", 1536);
+		var temp = GsonHelper.getAsFloat(root, "temperature", 1536.0F);
 		var time = GsonHelper.getAsInt(root, "time", 2000);
 		
 		var result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(root, "result"));
@@ -72,7 +72,7 @@ public class CustomBlastFurnaceRecipeGenerator
 		
 		$.addProperty("tier", 0);
 		$.addProperty("time", 2000);
-		$.addProperty("temperature", 1536);
+		$.addProperty("temperature", 1536.0F);
 		
 		JsonArray inputs = new JsonArray();
 		inputs.add(ingredientTemplate());
@@ -89,7 +89,7 @@ public class CustomBlastFurnaceRecipeGenerator
 	{
 		buf.writeResourceLocation(obj.id);
 		buf.writeVarInt(obj.getTier().ordinal());
-		buf.writeInt(obj.getNeededTemperature());
+		buf.writeFloat(obj.getNeededTemperature());
 		buf.writeInt(obj.getCraftTime());
 		buf.writeItemStack(obj.assemble(), false);
 		obj.getInputA().toNetwork(buf);
@@ -101,7 +101,7 @@ public class CustomBlastFurnaceRecipeGenerator
 	{
 		var rl = buf.readResourceLocation();
 		var tier = IBlastFurnaceCasingBlock.BlastFurnaceTier.values()[buf.readInt()];
-		var temp = buf.readInt();
+		var temp = buf.readFloat();
 		var time = buf.readInt();
 		var result = buf.readItem();
 		var inputA = Ingredient.fromNetwork(buf);

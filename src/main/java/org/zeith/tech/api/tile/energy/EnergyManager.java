@@ -113,7 +113,7 @@ public class EnergyManager
 		else
 			chargeItem(batteryInventory.getItem(0));
 		
-		var e = configs.getSideConfigs(SidedConfigTyped.ENERGY);
+		var e = configs != null ? configs.getSideConfigs(SidedConfigTyped.ENERGY) : null;
 		if(e == null) return;
 		
 		Direction.stream().forEach(dir ->

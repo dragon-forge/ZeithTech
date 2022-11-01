@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "zeithtech:processing/block/farm/item_port"
+  }
+}

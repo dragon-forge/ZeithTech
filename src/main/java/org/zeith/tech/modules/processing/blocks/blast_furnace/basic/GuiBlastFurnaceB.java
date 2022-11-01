@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.processing.blocks.blast_furnace;
+package org.zeith.tech.modules.processing.blocks.blast_furnace.basic;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;

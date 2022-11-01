@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "zeithtech:block/processing/farm/energy_port"
+    }
+  }
+}

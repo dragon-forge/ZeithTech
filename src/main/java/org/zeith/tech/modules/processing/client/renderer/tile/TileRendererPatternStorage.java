@@ -51,7 +51,7 @@ public class TileRendererPatternStorage
 	{
 		float openness = entity.getOpenness(partial);
 		openness = 1.0F - openness;
-		openness = openness * openness * openness;
+		openness = openness * openness * openness - 0.01F;
 		
 		matrix.pushPose();
 		RotatedRenderHelper.rotateHorizontalPoseStack(matrix, entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), 0F, 0F, 0F);

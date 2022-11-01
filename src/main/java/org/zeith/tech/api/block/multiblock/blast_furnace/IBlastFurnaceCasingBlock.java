@@ -2,6 +2,8 @@ package org.zeith.tech.api.block.multiblock.blast_furnace;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,6 +26,11 @@ public interface IBlastFurnaceCasingBlock
 	default BlockState getDamagedState(BlockState state)
 	{
 		return state;
+	}
+	
+	default SoundEvent getCasingDamageSound()
+	{
+		return SoundEvents.TURTLE_EGG_CRACK;
 	}
 	
 	default int getBreakRarity()

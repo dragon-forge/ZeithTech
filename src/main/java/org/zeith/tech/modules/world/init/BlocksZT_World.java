@@ -25,6 +25,9 @@ import static org.zeith.hammerlib.core.adapter.BlockHarvestAdapter.MineableType.
 @SimplyRegister
 public interface BlocksZT_World
 {
+	@RegistryName("reinforced_planks")
+	SimpleBlockZT REINFORCED_PLANKS = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.WOOD, MaterialColor.WOOD).strength(3.0F, 10.0F).sound(SoundType.WOOD)).addBlockTags(List.of(BlockTags.MINEABLE_WITH_AXE, BlockTags.PLANKS)).addItemTags(List.of(ItemTags.PLANKS)).dropsSelf();
+	
 	// Hevea tree stuff
 	
 	@RegistryName("hevea_planks")

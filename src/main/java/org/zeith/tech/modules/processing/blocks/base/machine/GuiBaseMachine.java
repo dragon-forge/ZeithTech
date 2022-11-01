@@ -15,9 +15,9 @@ public class GuiBaseMachine<C extends ContainerBaseMachine<?>>
 		extends ScreenWTFMojang<C>
 		implements IAdvancedGui<GuiBaseMachine<C>>
 {
-	public GuiBaseMachine(C container, Inventory plyerInv, Component name)
+	public GuiBaseMachine(C container, Inventory playerInv, Component name)
 	{
-		super(container, plyerInv, name);
+		super(container, playerInv, name);
 	}
 	
 	@Override

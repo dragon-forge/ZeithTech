@@ -72,9 +72,9 @@ public interface ItemsZT
 	
 	@RegistryName("multi_tool/electric_saw/iron")
 	ItemElectricSaw IRON_ELECTRIC_SAW = new ItemElectricSaw(Tiers.IRON, ZeithTechAPI.id("multi_tool/electric_saw/iron"), BaseZT.itemProps());
-	
-	@RegistryName("multi_tool/wrench")
-	ItemElectricWrench ELECTRIC_WRENCH = new ItemElectricWrench(BaseZT.itemProps(), ZeithTechAPI.id("multi_tool/electric_wrench"));
+
+//	@RegistryName("multi_tool/wrench")
+//	ItemElectricWrench ELECTRIC_WRENCH = new ItemElectricWrench(BaseZT.itemProps(), ZeithTechAPI.id("multi_tool/electric_wrench"));
 	
 	@RegistryName("multi_tool/electric_saw/diamond")
 	ItemElectricSaw DIAMOND_ELECTRIC_SAW = new ItemElectricSaw(Tiers.DIAMOND, ZeithTechAPI.id("multi_tool/electric_saw/diamond"), BaseZT.itemProps());

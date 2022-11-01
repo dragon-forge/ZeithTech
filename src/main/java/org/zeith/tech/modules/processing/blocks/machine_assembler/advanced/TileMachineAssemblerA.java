@@ -33,11 +33,11 @@ import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
+import org.zeith.tech.api.utils.ItemStackHelper;
 import org.zeith.tech.modules.processing.blocks.machine_assembler.TileAbstractMachineAssembler;
 import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.utils.ISidedItemAccess;
-import org.zeith.tech.utils.ItemStackHelper;
 
 import java.util.*;
 import java.util.stream.IntStream;

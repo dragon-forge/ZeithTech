@@ -14,8 +14,8 @@ import org.zeith.hammerlib.net.properties.PropertyItemStack;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.recipes.processing.RecipeMachineAssembler;
 import org.zeith.tech.api.tile.ITieredTile;
+import org.zeith.tech.api.utils.ItemStackHelper;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
-import org.zeith.tech.utils.ItemStackHelper;
 
 public abstract class TileAbstractMachineAssembler<T extends TileAbstractMachineAssembler<T>>
 		extends TileBaseMachine<T>

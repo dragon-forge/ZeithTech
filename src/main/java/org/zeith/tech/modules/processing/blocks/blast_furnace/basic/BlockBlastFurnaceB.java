@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.processing.blocks.blast_furnace;
+package org.zeith.tech.modules.processing.blocks.blast_furnace.basic;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -17,8 +17,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.INoItemBlock;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
-import org.zeith.tech.api.block.multiblock.base.MultiBlockFormer;
-import org.zeith.tech.api.block.multiblock.base.MultiBlockRegistry;
+import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.block.multiblock.BlockStatePredicate;
+import org.zeith.tech.api.block.multiblock.base.*;
 import org.zeith.tech.modules.processing.blocks.base.machine.BlockBaseMachine;
 import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
@@ -27,7 +28,7 @@ public class BlockBlastFurnaceB
 		extends BlockBaseMachine<TileBlastFurnaceB>
 		implements IRegisterListener, INoItemBlock
 {
-	public static MultiBlockFormer BASIC_BLAST_FURNACE;
+	private static MultiBlockFormer<?> BASIC_BLAST_FURNACE;
 	
 	public static final VoxelShape SHAPE = box(4, 4, 4, 12, 12, 12);
 	
@@ -37,8 +38,13 @@ public class BlockBlastFurnaceB
 				.of(Material.STONE)
 				.requiresCorrectToolForDrops()
 				.sound(SoundType.STONE)
-				.instabreak()
+				.strength(5F)
 		);
+	}
+	
+	public static MultiBlockFormer<?> getBasicBlastFurnaceStructure()
+	{
+		return BASIC_BLAST_FURNACE;
 	}
 	
 	@Override
@@ -70,14 +76,14 @@ public class BlockBlastFurnaceB
 	@Override
 	public void onPostRegistered()
 	{
-		BASIC_BLAST_FURNACE = MultiBlockRegistry.register(new MultiBlockFormer(true,
-				(level, origin, direction) ->
+		BASIC_BLAST_FURNACE = MultiBlockRegistry.register(ZeithTechAPI.id("basic_blast_furnace"), new MultiBlockFormer<>(true,
+				MultiBlockMetadata.noData((level, origin, direction) ->
 				{
 					level.setBlockAndUpdate(origin,
 							defaultBlockState()
 									.setValue(BlockStateProperties.HORIZONTAL_FACING, direction)
 					);
-				},
+				}),
 				new MultiBlockFormer.MultiblockPart[] {
 						MultiBlockFormer.ofBlockTag(-1, -1, -1, TagsZT.Blocks.COMPOSITE_BRICKS),
 						MultiBlockFormer.ofBlockTag(-1, -1, 0, TagsZT.Blocks.COMPOSITE_BRICKS),
@@ -94,7 +100,7 @@ public class BlockBlastFurnaceB
 						MultiBlockFormer.ofBlockTag(-1, 0, 0, TagsZT.Blocks.COMPOSITE_BRICKS),
 						MultiBlockFormer.ofBlockTag(-1, 0, 1, TagsZT.Blocks.COMPOSITE_BRICKS),
 						MultiBlockFormer.ofBlockTag(0, 0, -1, TagsZT.Blocks.COMPOSITE_BRICKS),
-						MultiBlockFormer.air(0, 0, 0).or((state, getter, pos) -> state.is(this)),
+						MultiBlockFormer.air(0, 0, 0).or(BlockStatePredicate.block(this)),
 						MultiBlockFormer.ofBlockTag(0, 0, 1, TagsZT.Blocks.COMPOSITE_BRICKS),
 						MultiBlockFormer.ofBlockTag(1, 0, -1, TagsZT.Blocks.COMPOSITE_BRICKS),
 						MultiBlockFormer.ofBlockTag(1, 0, 0, TagsZT.Blocks.COMPOSITE_BRICKS),

@@ -1,0 +1,15 @@
+{
+  "name": "Iron Hammer",
+  "icon": "zeithtech:processing/iron_hammer",
+  "category": "zeithtech:basics",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(item)Iron Hammer$() is an essential tool to make plates from ingots. You are going to need a lot of them while progressing through the mod.$(br2)Simply drop an ingot onto the anvil and hit it with a hammer a few times."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:processing/iron_hammer"
+    }
+  ]
+}

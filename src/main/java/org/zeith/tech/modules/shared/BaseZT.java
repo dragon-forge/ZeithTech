@@ -6,8 +6,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -22,6 +21,12 @@ import java.util.function.UnaryOperator;
 
 public class BaseZT
 {
+	public static final BlockBehaviour.Properties BASE_MACHINE_PROPS = Block.Properties
+			.of(Material.METAL)
+			.requiresCorrectToolForDrops()
+			.sound(SoundType.METAL)
+			.strength(1.5F);
+	
 	public static Item newItem()
 	{
 		return new Item(itemProps());

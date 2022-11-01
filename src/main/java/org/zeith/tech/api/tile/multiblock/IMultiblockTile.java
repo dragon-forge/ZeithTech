@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.zeith.tech.api.block.multiblock.base.MultiBlockFormer;
@@ -18,15 +19,20 @@ public interface IMultiblockTile
 {
 	Direction getMultiblockDirection();
 	
-	MultiBlockFormer getFormer();
+	MultiBlockFormer<?> getFormer();
 	
 	boolean isMultiblockValid();
 	
 	void queueMultiBlockValidityCheck();
 	
-	default <T> LazyOptional<T> getCapability(BlockPos relativePos, Capability<T> capability, Direction from)
+	default <T> LazyOptional<T> getCapability(BlockPos relativePos, Capability<T> cap, Direction side)
 	{
 		return LazyOptional.empty();
+	}
+	
+	default VoxelShape getShapeFor(BlockPos relativePos)
+	{
+		return null;
 	}
 	
 	default BlockEntity selfMBT()

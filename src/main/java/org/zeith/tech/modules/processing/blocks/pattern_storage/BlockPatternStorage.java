@@ -80,7 +80,7 @@ public class BlockPatternStorage
 		
 		float progress = openness;
 		progress = 1.0F - progress;
-		progress = 1F - progress * progress * progress;
+		progress = 1F - progress * progress * progress + 0.01F;
 		progress *= 0.3125F;
 		
 		double moveX = dir == Direction.EAST ? progress : dir == Direction.WEST ? -progress : 0;

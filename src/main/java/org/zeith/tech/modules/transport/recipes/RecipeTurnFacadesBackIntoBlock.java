@@ -14,8 +14,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.StrictNBTIngredient;
 import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
+import org.zeith.tech.api.utils.ItemStackHelper;
 import org.zeith.tech.modules.shared.init.ItemsZT;
-import org.zeith.tech.utils.ItemStackHelper;
 
 @SimplyRegister
 public class RecipeTurnFacadesBackIntoBlock
