@@ -31,6 +31,7 @@ public interface RecipesZT
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
 		event.shaped().shape("dd", "dd").map('d', ItemsZT.BIOLUMINESCENT_DUST).result(BlocksZT.BIOLUMINESCENT_BLOCK).register();
+		event.shaped().shape("dd", "dd").map('d', ItemsZT.PLASTIC).result(BlocksZT.PLASTIC_CASING).register();
 		
 		event.shaped().shape("nnn", "npn", "nnn").map('n', Tags.Items.NUGGETS_IRON).map('p', ItemTags.PLANKS).result(BlocksZT.REINFORCED_PLANKS).register();
 		

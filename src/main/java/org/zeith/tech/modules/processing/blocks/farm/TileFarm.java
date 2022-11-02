@@ -395,7 +395,7 @@ public class TileFarm
 	public boolean hasPlatform(BlockPos platform)
 	{
 		return level.getBlockState(platform)
-				.is(BlocksZT.REINFORCED_PLANKS);
+				.is(BlocksZT.PLASTIC_CASING);
 	}
 	
 	@Override

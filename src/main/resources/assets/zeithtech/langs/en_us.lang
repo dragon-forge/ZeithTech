@@ -95,6 +95,7 @@ block.zeithtech.auxiliary_io_port=Auxiliary IO Port
 block.zeithtech.pure_sand=Pure Sand
 block.zeithtech.masut=Masut
 block.zeithtech.bioluminescent_block=Bioluminescent Block
+block.zeithtech.plastic_casing=Plastic Casing
 
 item.zeithtech.copper_coil=Copper Coil
 item.zeithtech.gold_coil=Gold Coil

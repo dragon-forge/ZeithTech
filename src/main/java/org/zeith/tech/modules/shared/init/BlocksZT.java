@@ -12,6 +12,7 @@ import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.tech.api.item.IBurnableItem;
 import org.zeith.tech.modules.generators.init.BlocksZT_Generators;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
+import org.zeith.tech.modules.shared.BaseZT;
 import org.zeith.tech.modules.shared.blocks.*;
 import org.zeith.tech.modules.shared.blocks.aux_io_port.BlockAuxiliaryIOPort;
 import org.zeith.tech.modules.shared.blocks.multiblock_part.BlockMultiBlockPart;
@@ -38,4 +39,7 @@ public interface BlocksZT
 	
 	@RegistryName("bioluminescent_block")
 	SimpleBlockZT BIOLUMINESCENT_BLOCK = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.SAND).strength(0.3F).sound(SoundType.GLASS).lightLevel(state -> 15));
+	
+	@RegistryName("plastic_casing")
+	SimpleWaterLoggableBlockZT PLASTIC_CASING = new SimpleWaterLoggableBlockZT(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).noOcclusion().isViewBlocking(BaseZT::never).strength(0.5F).sound(SoundType.STONE));
 }

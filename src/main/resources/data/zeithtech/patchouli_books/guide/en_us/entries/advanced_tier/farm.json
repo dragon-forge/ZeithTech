@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Farm is a multi-block structure that automates planting and harvesting process completely.$(br)It is going to handle crops, as per the algorithm given on a $(item)Farm Chip$().$(br)The Farm covers 5 blocks to each side, forming a functional 13x13 area, except the middle 3x3 that is taken up by the farm itself. To define an area, place $(l:zeithtech:basics/decoratives#reinforced_planks)$(thing)Reinforced Planks$() within the farm's range on the lowest farm layer. For upside-down farms, such as glow berry, Planks should be placed one layer higher, than usual."
+      "text": "Farm is a multi-block structure that automates planting and harvesting process completely.$(br)It is going to handle crops, as per the algorithm given on a $(item)Farm Chip$().$(br)The Farm covers 5 blocks to each side, forming a functional 13x13 area, except the middle 3x3 that is taken up by the farm itself. To define an area, place $(l:zeithtech:basics/decoratives#plastic_casing)$(thing)Plastic Casing$() within the farm's range on the lowest farm layer. For upside-down farms, such as glow berry, Casings should be placed one layer higher, than usual."
     },
     {
       "type": "patchouli:crafting",

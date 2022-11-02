@@ -1,27 +1,35 @@
 package org.zeith.tech.modules.processing.farm_algorithms;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-import org.zeith.tech.api.block.IFarmlandBlock;
 import org.zeith.tech.api.misc.SoundConfiguration;
 import org.zeith.tech.api.misc.farm.*;
-import org.zeith.tech.api.utils.*;
+import org.zeith.tech.api.utils.LazyValue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FarmAlgorithmCrops
+public class FarmAlgorithmBerries
 		extends FarmAlgorithm
 {
-	public FarmAlgorithmCrops()
+	protected final LazyValue<Ingredient> item = LazyValue.of(() ->
+	{
+		List<Item> items = new ArrayList<>();
+		for(Item item : ForgeRegistries.ITEMS)
+			if(item instanceof BlockItem ib && ib.getBlock() instanceof SweetBerryBushBlock)
+				items.add(item);
+		return Ingredient.of(items.toArray(Item[]::new));
+	});
+	
+	public FarmAlgorithmBerries()
 	{
 		super(new Properties()
 				.upsideDown(false)
@@ -31,17 +39,8 @@ public class FarmAlgorithmCrops
 	@Override
 	public int getColor()
 	{
-		return 0x5EFF00;
+		return 0x7F0000;
 	}
-	
-	protected final LazyValue<Ingredient> item = LazyValue.of(() ->
-	{
-		List<Item> items = new ArrayList<>();
-		for(Item item : ForgeRegistries.ITEMS)
-			if(item instanceof BlockItem ib && ib.getBlock() instanceof CropBlock)
-				items.add(item);
-		return Ingredient.of(items.toArray(Item[]::new));
-	});
 	
 	@Override
 	public @NotNull Ingredient getProgrammingItem()
@@ -52,9 +51,18 @@ public class FarmAlgorithmCrops
 	@Override
 	public @NotNull EnumFarmItemCategory categorizeItem(IFarmController controller, ItemStack stack)
 	{
-		if(getProgrammingItem().test(stack)) return EnumFarmItemCategory.PLANT;
-		if(stack.is(Items.DIRT)) return EnumFarmItemCategory.SOIL;
 		if(stack.is(Items.BONE_MEAL)) return EnumFarmItemCategory.FERTILIZER;
+		
+		if(stack.getItem() instanceof BlockItem bi)
+		{
+			if(bi.getBlock() instanceof SweetBerryBushBlock)
+				return EnumFarmItemCategory.PLANT;
+			
+			var state = bi.getBlock().defaultBlockState();
+			if(state.canSustainPlant(controller.getFarmLevel(), controller.getFarmPosition(), Direction.UP, (SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH))
+				return EnumFarmItemCategory.SOIL;
+		}
+		
 		return EnumFarmItemCategory.UNKNOWN;
 	}
 	
@@ -69,14 +77,12 @@ public class FarmAlgorithmCrops
 		
 		var hasSoil = false;
 		
-		BlockState tilled;
-		
 		if(level.isEmptyBlock(dirtPos))
 		{
-			var soilInv = controller.getInventory(EnumFarmItemCategory.SOIL);
-			for(int i = 0; i < soilInv.getSlots(); ++i)
+			var plantInv = controller.getInventory(EnumFarmItemCategory.SOIL);
+			for(int i = 0; i < plantInv.getSlots(); ++i)
 			{
-				var stack = soilInv.getStackInSlot(i);
+				var stack = plantInv.getStackInSlot(i);
 				if(!stack.isEmpty() && stack.getItem() instanceof BlockItem bi)
 				{
 					var newState = bi.getBlock().defaultBlockState();
@@ -85,15 +91,7 @@ public class FarmAlgorithmCrops
 					return AlgorithmUpdateResult.RETRY;
 				}
 			}
-		} else if((tilled = InteractionHelper.getTilledState(level, controller.getAsPlayer(level), dirtPos)) != null && tilled.is(Blocks.FARMLAND))
-		{
-			var sound = new SoundConfiguration(SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1F, 1F);
-			
-			controller.queueBlockTransformation(dirtPos, dirtState, tilled,
-					List.of(), sound, 100, 0);
-			
-			return AlgorithmUpdateResult.RETRY;
-		} else if(dirtState.getBlock() instanceof IFarmlandBlock)
+		} else if(dirtState.canSustainPlant(level, dirtPos, Direction.UP, (SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH))
 		{
 			hasSoil = true;
 		} else if(!level.isEmptyBlock(dirtPos) && level.isEmptyBlock(cropPos))
@@ -102,29 +100,18 @@ public class FarmAlgorithmCrops
 			return AlgorithmUpdateResult.RETRY;
 		}
 		
-		if(cropState.getBlock() instanceof CropBlock crop)
+		if(cropState.getBlock() instanceof SweetBerryBushBlock bush)
 		{
-			if(crop.isMaxAge(cropState))
+			if(cropState.getValue(SweetBerryBushBlock.AGE) == 3)
 			{
-				var drops = InventoryHelper.getBlockDropsAt(level, cropPos);
-				var removedPlantable = false;
+				int j = 1 + level.random.nextInt(2);
+				var drops = List.of(new ItemStack(Items.SWEET_BERRIES, j + 1));
 				
-				for(var drop : drops)
-				{
-					if(!drop.isEmpty() && drop.getItem() instanceof BlockItem bi && bi.getBlock() == crop)
-					{
-						removedPlantable = true;
-						drop.shrink(1);
-						break;
-					}
-				}
+				controller.queueBlockTransformation(cropPos, cropState, cropState.setValue(SweetBerryBushBlock.AGE, 0), drops,
+						new SoundConfiguration(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F),
+						5, 5);
 				
-				if(removedPlantable) // If we found this crop's seed item, replant it back instantly.
-					controller.queueBlockTransformation(cropPos, cropState, crop.getStateForAge(0), drops, SoundConfiguration.place(cropState.getSoundType()), 5, 5);
-				else
-					controller.queueBlockHarvest(cropPos, 5);
-				
-				return AlgorithmUpdateResult.RETRY;
+				return AlgorithmUpdateResult.SUCCESS;
 			}
 			
 			return AlgorithmUpdateResult.PASS;
@@ -138,9 +125,9 @@ public class FarmAlgorithmCrops
 					for(int i = 0; i < plantInv.getSlots(); ++i)
 					{
 						var stack = plantInv.getStackInSlot(i);
-						if(!stack.isEmpty() && stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof CropBlock crop)
+						if(!stack.isEmpty() && stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof SweetBerryBushBlock bush)
 						{
-							var newState = crop.getPlant(level, cropPos);
+							var newState = bush.getPlant(level, cropPos);
 							controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.PLANT, stack.copy().split(1)), cropPos, newState, 100, 1);
 							return AlgorithmUpdateResult.RETRY;
 						}

@@ -133,20 +133,20 @@ public class FarmAlgorithmGlowBerries
 		
 		if(vineState.getBlock() instanceof CaveVines)
 		{
-			List<BlockPos> lowestBerry = new ArrayList<>();
+			List<BlockPos> berries = new ArrayList<>();
 			
 			var cPos = vinePos;
 			BlockState st;
 			while((st = level.getBlockState(cPos)).getBlock() instanceof CaveVines)
 			{
 				if(!CaveVines.hasGlowBerries(st))
-					lowestBerry.add(cPos);
+					berries.add(cPos);
 				cPos = cPos.below();
 			}
 			
-			if(!lowestBerry.isEmpty())
+			if(!berries.isEmpty())
 			{
-				var berryPos = lowestBerry.get(level.random.nextInt(lowestBerry.size()));
+				var berryPos = berries.get(level.random.nextInt(berries.size()));
 				
 				var theBerry = level.getBlockState(berryPos);
 				level.setBlock(berryPos, theBerry.setValue(CaveVines.BERRIES, Boolean.TRUE), 2);

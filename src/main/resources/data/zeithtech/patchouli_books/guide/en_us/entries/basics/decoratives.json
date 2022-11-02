@@ -14,6 +14,12 @@
       "recipe": "zeithtech:hevea_planks",
       "anchor": "hevea_planks",
       "text": "As with the regular wood, $(l:zeithtech:basics/hevea)$(thing)Hevea$() may also bee converted into planks for decoration purposes."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "zeithtech:plastic_casing",
+      "anchor": "plastic_casing",
+      "text": "$(item)Plastic Casing$() is mostly used to define a working area of a $(l:zeithtech:advanced_tier/farm)$(thing)Farm$()."
     }
   ]
 }
