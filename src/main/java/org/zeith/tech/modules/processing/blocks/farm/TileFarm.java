@@ -167,11 +167,11 @@ public class TileFarm
 			checkNow = false;
 		}
 		
-		if(atTickRate(5) && level instanceof ServerLevel server)
+		if(level instanceof ServerLevel server)
 		{
 			if(!breakActions.isEmpty())
 			{
-				var action = breakActions.remove(0);
+				var action = breakActions.get(0);
 				
 				// Check if we can break the block first!
 				if(server.getBlockState(action.pos()).getDestroySpeed(server, action.pos()) >= 0)
@@ -186,8 +186,10 @@ public class TileFarm
 					{
 						InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDropsCopy, false);
 						level.destroyBlock(action.pos(), false);
+						breakActions.remove(0);
 					}
-				}
+				} else
+					breakActions.remove(0);
 			} else if(!transformActions.isEmpty())
 			{
 				var action = transformActions.remove(0);
@@ -420,8 +422,23 @@ public class TileFarm
 	@Override
 	public void queueBlockHarvest(BlockPos pos, int priority)
 	{
-		breakActions.add(new BreakBlockAction(pos, priority));
-		breakActions.sort(BreakBlockAction.COMPARATOR.reversed()); // Reverse to put the highest priority actions into lower indices.
+		var action = new BreakBlockAction(pos, priority);
+		if(!breakActions.contains(action))
+		{
+			breakActions.add(action);
+			breakActions.sort(BreakBlockAction.COMPARATOR.reversed()); // Reverse to put the highest priority actions into lower indices.
+		}
+	}
+	
+	@Override
+	public void queueMultipleBlockHarvests(Collection<BreakBlockAction> action)
+	{
+		var toAdd = action.stream().filter(a -> !breakActions.contains(a)).toList();
+		if(!toAdd.isEmpty())
+		{
+			breakActions.addAll(toAdd);
+			breakActions.sort(BreakBlockAction.COMPARATOR.reversed()); // Reverse to put the highest priority actions into lower indices.
+		}
 	}
 	
 	@Override

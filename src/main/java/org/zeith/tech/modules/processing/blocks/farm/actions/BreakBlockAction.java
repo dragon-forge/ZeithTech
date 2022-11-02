@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 public record BreakBlockAction(BlockPos pos, int priority)
 		implements Comparable<BreakBlockAction>
@@ -24,5 +25,14 @@ public record BreakBlockAction(BlockPos pos, int priority)
 	public int compareTo(@NotNull BreakBlockAction o)
 	{
 		return COMPARATOR.compare(this, o);
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || getClass() != o.getClass()) return false;
+		BreakBlockAction that = (BreakBlockAction) o;
+		return Objects.equals(pos, that.pos);
 	}
 }

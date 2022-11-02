@@ -17,9 +17,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.misc.SoundConfiguration;
+import org.zeith.tech.modules.processing.blocks.farm.actions.BreakBlockAction;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public interface IFarmController
 {
@@ -57,7 +57,12 @@ public interface IFarmController
 	
 	void queueBlockPlacement(FarmItemConsumer itemConsumer, BlockPos pos, BlockState toPlace, int waterUsage, int priority);
 	
-	void queueBlockHarvest(BlockPos pos, int priority);
+	default void queueBlockHarvest(BlockPos pos, int priority)
+	{
+		queueMultipleBlockHarvests(List.of(new BreakBlockAction(pos, priority)));
+	}
+	
+	void queueMultipleBlockHarvests(Collection<BreakBlockAction> action);
 	
 	void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, List<ItemStack> drops, SoundConfiguration sound, int waterUsage, int priority);
 	

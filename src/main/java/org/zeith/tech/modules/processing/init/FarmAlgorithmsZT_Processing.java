@@ -30,4 +30,7 @@ public interface FarmAlgorithmsZT_Processing
 	
 	@RegistryName("berries")
 	FarmAlgorithmBerries BERRIES_ALGORITHM = new FarmAlgorithmBerries();
+	
+	@RegistryName("forester")
+	FarmAlgorithmForester FORESTER_ALGORITHM = new FarmAlgorithmForester();
 }
