@@ -1,12 +1,13 @@
 package org.zeith.tech.modules.processing.proxy;
 
+import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -14,6 +15,7 @@ import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.zeith.hammerlib.api.inv.IScreenContainer;
 import org.zeith.hammerlib.client.utils.RenderUtils;
+import org.zeith.hammerlib.util.colors.ColorHelper;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.modules.processing.client.renderer.item.ItemPropertyAlt;
@@ -84,6 +86,55 @@ public class ClientProcessingProxyZT
 				var h = wnd.getHeight() / scale;
 				
 				RenderUtils.drawTexturedModalRect(poseStack, (w - 9F) / 2, (h - 9F) / 2, 52, 0, 4, 4);
+			}
+		});
+		
+		e.registerAboveAll("farm_soc_programmer", (gui, poseStack, partialTick, screenWidth, screenHeight) ->
+		{
+			ItemStack programmer;
+			if(mc.player != null
+					&& !mc.options.hideGui
+					&& ((programmer = mc.player.getMainHandItem()).is(ItemsZT_Processing.SOC_PROGRAMMER) || (programmer = mc.player.getOffhandItem()).is(ItemsZT_Processing.SOC_PROGRAMMER))
+			)
+			{
+				var wnd = mc.getWindow();
+				var algorithm = ItemsZT_Processing.SOC_PROGRAMMER.getAlgorithm(programmer);
+				
+				float scale = (float) wnd.getGuiScale();
+				var w = wnd.getWidth() / scale;
+				var h = wnd.getHeight() / scale;
+				
+				if(algorithm != null)
+				{
+					int x = (int) (w / 2 + 4);
+					int y = (int) (h / 2 - 28);
+					algorithm.getIcon().render(poseStack, x, y, 24, 24);
+					var font = gui.getFont();
+					
+					int mainColor = algorithm.getColor();
+					float luma = (float) ColorHelper.luma(mainColor);
+					
+					int outlineColor;
+					
+					if(luma > 0.5F) outlineColor = ColorHelper.multiply(mainColor, 2 / 4F);
+					else
+					{
+						var multi = 4 / 2F;
+						float r = ColorHelper.getRed(mainColor) * multi, g = ColorHelper.getGreen(mainColor) * multi, b = ColorHelper.getBlue(mainColor) * multi;
+						if(r > 1 || g > 1 || b > 1)
+						{
+							float max = Math.max(r, Math.max(g, b));
+							r /= max;
+							g /= max;
+							b /= max;
+						}
+						outlineColor = ColorHelper.packRGB(r, g, b);
+					}
+					
+					MultiBufferSource.BufferSource src = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+					font.drawInBatch8xOutline(algorithm.getDisplayName().getVisualOrderText(), x + 26, y + (24 - font.lineHeight) / 2, mainColor, outlineColor, poseStack.last().pose(), src, 0xf000f0);
+					src.endBatch();
+				}
 			}
 		});
 	}

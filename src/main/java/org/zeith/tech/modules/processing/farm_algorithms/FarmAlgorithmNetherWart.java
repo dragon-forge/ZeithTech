@@ -80,7 +80,7 @@ public class FarmAlgorithmNetherWart
 			} else
 			{
 				controller.queueBlockHarvest(sandPos, 2);
-				return AlgorithmUpdateResult.SUCCESS;
+				return AlgorithmUpdateResult.RETRY;
 			}
 		}
 		

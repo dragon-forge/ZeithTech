@@ -5,6 +5,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -97,7 +98,7 @@ public class ItemSoCProgrammer
 					
 					items.add(state.getCloneItemStack(res, level, res.getBlockPos(), player));
 					
-					items.addAll(InventoryHelper.getBlockDropsAt(player.getLevel(), res.getBlockPos()));
+					items.addAll(InventoryHelper.getBlockDropsAt(player.getLevel(), res.getBlockPos(), RandomSource.create(1L)));
 					
 					var hitLoc = res.getLocation();
 					level.getEntitiesOfClass(ItemEntity.class, new AABB(hitLoc, hitLoc).inflate(0.125F))

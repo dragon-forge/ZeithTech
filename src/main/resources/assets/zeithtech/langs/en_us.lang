@@ -303,5 +303,10 @@ recipe_type.zeithtech.grinding=Grinding
 recipe_type.zeithtech.sawmill=Sawmill
 
 farm_algorithm.zeithtech.cactus=Cactus Algorithm
+farm_algorithm.zeithtech.bamboo=Bamboo Algorithm
 farm_algorithm.zeithtech.nether_wart=Nether Wart Algorithm
 farm_algorithm.zeithtech.glow_berries=Glow Berry Algorithm
+farm_algorithm.zeithtech.crops=Crop Algorithm
+farm_algorithm.zeithtech.stems=Stem Algorithm
+farm_algorithm.zeithtech.cocoa=Cocoa Algorithm
+farm_algorithm.zeithtech.berries=Berry Algorithm

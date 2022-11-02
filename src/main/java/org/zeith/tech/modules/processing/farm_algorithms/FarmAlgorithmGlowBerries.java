@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.zeith.tech.api.misc.SoundConfiguration;
 import org.zeith.tech.api.misc.farm.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FarmAlgorithmGlowBerries
@@ -80,7 +81,7 @@ public class FarmAlgorithmGlowBerries
 			} else
 			{
 				controller.queueBlockHarvest(dirtPos, 2);
-				return AlgorithmUpdateResult.SUCCESS;
+				return AlgorithmUpdateResult.RETRY;
 			}
 		}
 		
@@ -125,6 +126,35 @@ public class FarmAlgorithmGlowBerries
 	@Override
 	public boolean tryFertilize(IFarmController controller, ServerLevel level, BlockPos platform)
 	{
+		var dirtPos = platform.below();
+		var vinePos = dirtPos.below();
+		
+		var vineState = level.getBlockState(vinePos);
+		
+		if(vineState.getBlock() instanceof CaveVines)
+		{
+			List<BlockPos> lowestBerry = new ArrayList<>();
+			
+			var cPos = vinePos;
+			BlockState st;
+			while((st = level.getBlockState(cPos)).getBlock() instanceof CaveVines)
+			{
+				if(!CaveVines.hasGlowBerries(st))
+					lowestBerry.add(cPos);
+				cPos = cPos.below();
+			}
+			
+			if(!lowestBerry.isEmpty())
+			{
+				var berryPos = lowestBerry.get(level.random.nextInt(lowestBerry.size()));
+				
+				var theBerry = level.getBlockState(berryPos);
+				level.setBlock(berryPos, theBerry.setValue(CaveVines.BERRIES, Boolean.TRUE), 2);
+				level.levelEvent(1505, berryPos, 0);
+				return true;
+			}
+		}
+		
 		return false;
 	}
 }

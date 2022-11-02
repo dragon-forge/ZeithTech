@@ -2,6 +2,7 @@ package org.zeith.tech.api.utils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -20,8 +21,9 @@ public class InventoryHelper
 	 */
 	public static boolean storeAllStacks(SimpleInventory inventory, IntStream slots, List<ItemStack> stacks, boolean simulate)
 	{
+		int[] slotsArr = slots.toArray();
 		for(ItemStack sub : stacks)
-			if(!storeStack(inventory, slots, sub, simulate))
+			if(!storeStack(inventory, IntStream.of(slotsArr), sub, simulate))
 				return false;
 		return true;
 	}
@@ -60,6 +62,16 @@ public class InventoryHelper
 	{
 		return server.getBlockState(pos).getDrops(new LootContext.Builder(server)
 				.withRandom(server.random)
+				.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+				.withOptionalParameter(LootContextParams.BLOCK_ENTITY, server.getBlockEntity(pos))
+				.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())
+		);
+	}
+	
+	public static List<ItemStack> getBlockDropsAt(ServerLevel server, BlockPos pos, RandomSource random)
+	{
+		return server.getBlockState(pos).getDrops(new LootContext.Builder(server)
+				.withRandom(random)
 				.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
 				.withOptionalParameter(LootContextParams.BLOCK_ENTITY, server.getBlockEntity(pos))
 				.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())

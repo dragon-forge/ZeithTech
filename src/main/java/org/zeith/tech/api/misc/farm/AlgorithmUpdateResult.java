@@ -4,7 +4,8 @@ public enum AlgorithmUpdateResult
 {
 	SUCCESS(true, true),
 	PASS(false, true),
-	RETRY(true, false);
+	RETRY(true, false),
+	RETRY_NOW(false, false);
 	
 	public final boolean wait, moveOn;
 	

@@ -30,6 +30,8 @@ import org.zeith.tech.compat.Compats;
 import org.zeith.tech.core.audio.ClientAudioSystem;
 import org.zeith.tech.core.audio.CommonAudioSystem;
 import org.zeith.tech.core.mixins.TiersAccessor;
+import org.zeith.tech.core.proxy.ClientCoreProxyZT;
+import org.zeith.tech.core.proxy.CommonCoreProxyZT;
 import org.zeith.tech.core.tabs.CreativeModeTabZT;
 import org.zeith.tech.core.tabs.CreativeModeTabZTF;
 import org.zeith.tech.modules.generators.init.AdvancementTriggersZT;
@@ -46,6 +48,8 @@ import java.util.function.Supplier;
 public class ZeithTech
 		extends ZeithTechAPI
 {
+	public static final CommonCoreProxyZT PROXY = DistExecutor.unsafeRunForDist(() -> ClientCoreProxyZT::new, () -> CommonCoreProxyZT::new);
+	
 	private final ModulesImpl modules;
 	private final RecipeRegistries registries;
 	private final CommonAudioSystem audioSystem;
@@ -74,6 +78,8 @@ public class ZeithTech
 		bus.addListener(this::setup);
 		bus.addListener(this::newRegistries);
 		bus.addListener(this::addExtraTextures);
+		
+		PROXY.construct(bus);
 		
 		this.busses = new LegacyEventBus(bus, MinecraftForge.EVENT_BUS);
 		

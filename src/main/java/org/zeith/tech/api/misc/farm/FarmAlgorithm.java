@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
+import org.zeith.hammerlib.client.utils.UV;
 import org.zeith.tech.api.ZeithTechAPI;
 
 import java.util.Objects;
@@ -45,10 +46,14 @@ public abstract class FarmAlgorithm
 		return Component.translatable(descriptionId);
 	}
 	
-	public ResourceLocation getIcon()
+	public UV getIcon()
 	{
 		var reg = getRegistryName();
-		return new ResourceLocation(reg.getNamespace(), "textures/gui/farm_algorithms/" + reg.getPath() + ".png");
+		return new UV(
+				new ResourceLocation(reg.getNamespace(), "textures/gui/farm_algorithms/" + reg.getPath() + ".png"),
+				0, 0,
+				256, 256
+		);
 	}
 	
 	public int getColor()

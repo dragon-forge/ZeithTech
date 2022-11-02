@@ -16,12 +16,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
 import org.zeith.tech.api.item.multitool.IMultiToolItem;
-import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
-import org.zeith.tech.api.item.tooltip.TooltipStack;
-import org.zeith.tech.modules.shared.client.renderer.tooltip.ClientTooltipEnergy;
-import org.zeith.tech.modules.shared.client.renderer.tooltip.ClientTooltipStack;
+import org.zeith.tech.core.client.particle.MovableWaterParticle;
 import org.zeith.tech.modules.shared.client.resources.model.ModelMultiTool;
 import org.zeith.tech.modules.shared.init.BlocksZT;
+import org.zeith.tech.modules.shared.init.ParticlesZT;
 import org.zeith.tech.modules.shared.items.multitool.ContainerMultiTool;
 import org.zeith.tech.modules.shared.items.multitool.GuiMultiTool;
 
@@ -50,10 +48,11 @@ public class ClientSharedProxyZT
 	@Override
 	public void subEvents(IEventBus modBus)
 	{
+		super.subEvents(modBus);
 		modBus.addListener(this::registerBlockColors);
 		modBus.addListener(this::registerGeometryLoaders);
-		modBus.addListener(this::registerClientTooltips);
 		modBus.addListener(this::clientSetup);
+		modBus.addListener(this::registerParticles);
 	}
 	
 	private void clientSetup(FMLClientSetupEvent e)
@@ -66,11 +65,14 @@ public class ClientSharedProxyZT
 				.forEach(item -> registerMultiToolProperty(Cast.cast(item)));
 	}
 	
-	private <T extends Item & IMultiToolItem> void registerMultiToolProperty(T item)
+	private void registerGeometryLoaders(ModelEvent.RegisterGeometryLoaders e)
 	{
-		ItemProperties.register(item,
-				new ResourceLocation("empty"), (ClampedItemPropertyFunction) (stack, level, entity, layer) -> item.shouldRender2D(stack) ? 1 : 0
-		);
+		e.register("item/multi_tool", new ModelMultiTool.Loader());
+	}
+	
+	private void registerParticles(RegisterParticleProvidersEvent e)
+	{
+		e.register(ParticlesZT.WATER, MovableWaterParticle.WaterProvider::new);
 	}
 	
 	@Override
@@ -86,14 +88,10 @@ public class ClientSharedProxyZT
 		);
 	}
 	
-	private void registerGeometryLoaders(ModelEvent.RegisterGeometryLoaders e)
+	private <T extends Item & IMultiToolItem> void registerMultiToolProperty(T item)
 	{
-		e.register("item/multi_tool", new ModelMultiTool.Loader());
-	}
-	
-	private void registerClientTooltips(RegisterClientTooltipComponentFactoriesEvent e)
-	{
-		e.register(TooltipStack.class, ClientTooltipStack::new);
-		e.register(TooltipEnergyBar.class, ClientTooltipEnergy::new);
+		ItemProperties.register(item,
+				new ResourceLocation("empty"), (ClampedItemPropertyFunction) (stack, level, entity, layer) -> item.shouldRender2D(stack) ? 1 : 0
+		);
 	}
 }

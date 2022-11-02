@@ -1,6 +1,5 @@
 package org.zeith.tech.modules.processing.blocks.farm.actions;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -11,13 +10,11 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.zeith.tech.api.misc.farm.FarmItemConsumer;
 import org.zeith.tech.api.misc.farm.IFarmController;
 
 import java.util.Comparator;
-import java.util.UUID;
 
 public record PlaceBlockAction(FarmItemConsumer item, BlockPos pos, BlockState state, int waterUsage, int priority)
 		implements Comparable<PlaceBlockAction>
@@ -41,15 +38,13 @@ public record PlaceBlockAction(FarmItemConsumer item, BlockPos pos, BlockState s
 		return COMPARATOR.compare(this, o);
 	}
 	
-	public static final GameProfile FARM_PLAYER = new GameProfile(new UUID(640839673496L, 3497230482305L), "ZeithTechFarm");
-	
 	public boolean canPlace(IFarmController controller, ServerLevel level)
 	{
 		if(!item.consumeItem(controller, true))
 			return false;
 		
 		var item = this.item.getConsumedItem(controller);
-		var player = FakePlayerFactory.get(level, FARM_PLAYER);
+		var player = controller.getAsPlayer(level);
 		player.setItemInHand(InteractionHand.MAIN_HAND, item);
 		
 		if(level.isEmptyBlock(pos))

@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.ZeithTechAPI;
+import org.zeith.tech.api.item.tooltip.TooltipImage;
 import org.zeith.tech.api.misc.farm.FarmAlgorithm;
 import org.zeith.tech.modules.shared.BaseZT;
 
@@ -74,7 +75,7 @@ public class ItemFarmSoC
 	{
 		var held = player.getItemInHand(hand);
 		
-		if(held.getTagElement("Algorithm") != null && player.isShiftKeyDown())
+		if(held.getTag() != null && held.getTag().contains("Algorithm") && player.isShiftKeyDown())
 		{
 			held.removeTagKey("Algorithm");
 			return new InteractionResultHolder<>(InteractionResult.SUCCESS, held);
@@ -92,6 +93,8 @@ public class ItemFarmSoC
 	@Override
 	public @NotNull Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack)
 	{
-		return Optional.empty();
+		return Optional.ofNullable(getAlgorithm(stack))
+				.map(FarmAlgorithm::getIcon)
+				.map(uv -> new TooltipImage(uv, 24, 24));
 	}
 }

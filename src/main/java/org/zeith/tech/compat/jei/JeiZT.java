@@ -89,7 +89,7 @@ public class JeiZT
 		
 		NonNullList<ItemStack> items = NonNullList.create();
 		
-		ItemsZT.FARM_SOC.fillItemCategory(ZeithTech.TAB, items);
+		ZeithTechAPI.get().getFarmAlgorithms().getValues().stream().map(ItemsZT.FARM_SOC::ofAlgorithm).forEach(items::add);
 		
 		if(ZeithTechTransportConfigs.INSTANCE.getCurrent().main.facadesInJEI) ZeithTech.FACADES_TAB.fillItemList(items);
 		
@@ -101,6 +101,10 @@ public class JeiZT
 	{
 		registration.registerSubtypeInterpreter(ItemsZT.RECIPE_PATTERN, (itemStack, context) ->
 				Optional.ofNullable(itemStack.getTagElement("Pattern")).map(Object::toString).orElse("null")
+		);
+		
+		registration.registerSubtypeInterpreter(ItemsZT.FARM_SOC, (itemStack, context) ->
+				Optional.ofNullable(itemStack.getTagElement("Algorithm")).map(Object::toString).orElse("null")
 		);
 	}
 	

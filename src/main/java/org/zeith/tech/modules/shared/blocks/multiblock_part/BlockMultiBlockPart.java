@@ -38,7 +38,7 @@ public class BlockMultiBlockPart
 {
 	public BlockMultiBlockPart(Properties props)
 	{
-		super(props.dynamicShape());
+		super(props.dynamicShape().noOcclusion());
 		BlockHarvestAdapter.bindTool(BlockHarvestAdapter.MineableType.PICKAXE, Tiers.WOOD, this);
 	}
 	
@@ -83,8 +83,8 @@ public class BlockMultiBlockPart
 				if(res.consumesAction()) return res;
 			}
 			
-			if(part.origin != null && level.getBlockEntity(part.origin) instanceof IMultiblockTile mbt)
-				return mbt.useFromPart(state, level, pos, player, hand, hit, part);
+			var mbt = part.findMultiBlock().orElse(null);
+			if(mbt != null) return mbt.useFromPart(state, level, pos, player, hand, hit, part);
 		}
 		
 		return InteractionResult.PASS;
@@ -186,7 +186,12 @@ public class BlockMultiBlockPart
 		{
 			Vec3 vec3 = entity.getDeltaMovement();
 			var random = level.getRandom();
-			level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, part.subState).setPos(pos), entity.getX() + (random.nextDouble() - 0.5D) * entity.getBbWidth(), entity.getY() + 0.1D, entity.getZ() + (random.nextDouble() - 0.5D) * entity.getBbWidth(), vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
+			level.addParticle(
+					new BlockParticleOption(ParticleTypes.BLOCK, part.subState),
+					entity.getX() + (random.nextDouble() - 0.5D) * entity.getBbWidth(),
+					entity.getY() + 0.1D,
+					entity.getZ() + (random.nextDouble() - 0.5D) * entity.getBbWidth(),
+					vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
 		}
 		
 		return true;

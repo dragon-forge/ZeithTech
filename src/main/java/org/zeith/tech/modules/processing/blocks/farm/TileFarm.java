@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.processing.blocks.farm;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +20,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.*;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -30,6 +31,7 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.inv.SimpleInventory;
 import org.zeith.hammerlib.api.io.NBTSerializable;
+import org.zeith.hammerlib.net.Network;
 import org.zeith.hammerlib.net.properties.PropertyBool;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.hammerlib.util.java.tuples.Tuple2;
@@ -42,10 +44,12 @@ import org.zeith.tech.api.misc.SoundConfiguration;
 import org.zeith.tech.api.misc.farm.*;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
+import org.zeith.tech.api.tile.multiblock.IMultiblockHydratesFarmland;
 import org.zeith.tech.api.tile.multiblock.IMultiblockTile;
 import org.zeith.tech.api.utils.CodecHelper;
 import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.core.fluid.MultiTankHandler;
+import org.zeith.tech.core.net.PacketSpawnHydrateParticles;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
 import org.zeith.tech.modules.processing.blocks.farm.actions.*;
@@ -62,7 +66,7 @@ import java.util.stream.IntStream;
 
 public class TileFarm
 		extends TileBaseMachine<TileFarm>
-		implements IFarmController, IMultiblockTile
+		implements IFarmController, IMultiblockTile, IMultiblockHydratesFarmland
 {
 	public static final FluidIngredient WATER_INPUT = FluidIngredient.ofTags(List.of(FluidTags.WATER));
 	
@@ -232,24 +236,28 @@ public class TileFarm
 			}
 		}
 		
-		if(atTickRate(30))
+		if(atTickRate(80))
 		{
-			var pos = getPositionFromIndex(level.random.nextInt(13 * 13));
-			var fertilizer = fertilizerInventory.getItem(0);
-			
-			int fertilizeEnergyReq = 200;
-			int fertilizeWaterReq = 100;
-			
-			var efluid = water.drain(fertilizeWaterReq, IFluidHandler.FluidAction.SIMULATE);
-			
-			if(algorithm != null && !fertilizer.isEmpty() && level instanceof ServerLevel server
-					&& energy.getEnergyStored() >= fertilizeEnergyReq
-					&& !efluid.isEmpty() && efluid.getAmount() == fertilizeWaterReq
-					&& algorithm.tryFertilize(this, server, pos))
+			for(int attempt = 0; attempt < 16; ++attempt)
 			{
-				water.drain(fertilizeWaterReq, IFluidHandler.FluidAction.EXECUTE);
-				energy.consumeEnergy(fertilizeEnergyReq);
-				fertilizer.shrink(1);
+				var pos = getPositionFromIndex(level.random.nextInt(13 * 13));
+				var fertilizer = fertilizerInventory.getItem(0);
+				
+				int fertilizeEnergyReq = 200;
+				int fertilizeWaterReq = 100;
+				
+				var efluid = water.drain(fertilizeWaterReq, IFluidHandler.FluidAction.SIMULATE);
+				
+				if(algorithm != null && !fertilizer.isEmpty() && level instanceof ServerLevel server
+						&& energy.getEnergyStored() >= fertilizeEnergyReq
+						&& !efluid.isEmpty() && efluid.getAmount() == fertilizeWaterReq
+						&& algorithm.tryFertilize(this, server, pos))
+				{
+					water.drain(fertilizeWaterReq, IFluidHandler.FluidAction.EXECUTE);
+					energy.consumeEnergy(fertilizeEnergyReq);
+					fertilizer.shrink(1);
+					break;
+				}
 			}
 		}
 		
@@ -363,6 +371,14 @@ public class TileFarm
 		return level;
 	}
 	
+	public static final GameProfile FARM_PLAYER = new GameProfile(new UUID(640839673496L, 3497230482305L), "ZeithTechFarm");
+	
+	@Override
+	public FakePlayer getAsPlayer(ServerLevel level)
+	{
+		return FakePlayerFactory.get(level, FARM_PLAYER);
+	}
+	
 	@Override
 	public BlockPos getFarmPosition()
 	{
@@ -461,6 +477,21 @@ public class TileFarm
 	public VoxelShape getShapeFor(BlockPos relativePos)
 	{
 		return fixedShapes.get(relativePos);
+	}
+	
+	@Override
+	public boolean doesHydrate(BlockPos pos)
+	{
+		if(!water.isEmpty() && water.getFluidAmount() >= 25 && water.drain(25, IFluidHandler.FluidAction.EXECUTE).getAmount() >= 25)
+		{
+			if(level instanceof ServerLevel)
+			{
+				Network.sendToTracking(this, new PacketSpawnHydrateParticles(worldPosition.above(2), pos));
+			}
+			return true;
+		}
+		
+		return false;
 	}
 	
 	protected class AutomatedContainer

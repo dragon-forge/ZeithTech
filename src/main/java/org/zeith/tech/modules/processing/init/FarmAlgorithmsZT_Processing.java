@@ -10,9 +10,24 @@ public interface FarmAlgorithmsZT_Processing
 	@RegistryName("cactus")
 	FarmAlgorithmCactus CACTUS_ALGORITHM = new FarmAlgorithmCactus();
 	
+	@RegistryName("bamboo")
+	FarmAlgorithmBamboo BAMBOO_ALGORITHM = new FarmAlgorithmBamboo();
+	
 	@RegistryName("nether_wart")
 	FarmAlgorithmNetherWart NETHER_WART_ALGORITHM = new FarmAlgorithmNetherWart();
 	
 	@RegistryName("glow_berries")
 	FarmAlgorithmGlowBerries GLOW_BERRY_ALGORITHM = new FarmAlgorithmGlowBerries();
+	
+	@RegistryName("crops")
+	FarmAlgorithmCrops CROP_ALGORITHM = new FarmAlgorithmCrops();
+	
+	@RegistryName("stems")
+	FarmAlgorithmStems STEM_ALGORITHM = new FarmAlgorithmStems();
+	
+	@RegistryName("cocoa")
+	FarmAlgorithmCocoaBeans COCOA_ALGORITHM = new FarmAlgorithmCocoaBeans();
+	
+	@RegistryName("berries")
+	FarmAlgorithmBerries BERRIES_ALGORITHM = new FarmAlgorithmBerries();
 }

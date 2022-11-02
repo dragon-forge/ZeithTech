@@ -1,4 +1,4 @@
-package org.zeith.tech.modules.shared.client.renderer.tooltip;
+package org.zeith.tech.core.client.renderer.tooltip;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;

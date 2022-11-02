@@ -65,7 +65,7 @@ public class TileMultiBlockPart
 	@Override
 	public void update()
 	{
-		if(isOnServer() && atTickRate(40) && origin != null && level.isLoaded(origin) && findMultiBlock().isEmpty())
+		if(isOnServer() && atTickRate(40) && getOrigin() != null && level.isLoaded(getOrigin()) && findMultiBlock().isEmpty())
 			unwrap(level, worldPosition);
 		if(isOnServer() && subState != null && atTickRate(2))
 			subStateSynced.setInt(Block.getId(subState));
@@ -73,7 +73,7 @@ public class TileMultiBlockPart
 	
 	public Optional<IMultiblockTile> findMultiBlock()
 	{
-		return Optional.ofNullable(origin)
+		return Optional.ofNullable(getOrigin())
 				.map(level::getBlockEntity)
 				.flatMap(t -> Cast.optionally(t, IMultiblockTile.class))
 				.filter(IMultiblockTile::isMultiblockValid);
@@ -128,6 +128,16 @@ public class TileMultiBlockPart
 				.build();
 	}
 	
+	public BlockPos getOrigin()
+	{
+		return origin != null ? worldPosition.offset(origin) : null;
+	}
+	
+	public void setOrigin(BlockPos origin)
+	{
+		this.origin = origin != null ? origin.subtract(worldPosition) : null;
+	}
+	
 	public static BlockState getPartState(Level level, BlockPos pos)
 	{
 		if(level == null) return Blocks.AIR.defaultBlockState();
@@ -163,7 +173,7 @@ public class TileMultiBlockPart
 		if(level.getBlockEntity(rel) instanceof TileMultiBlockPart p) part = p;
 		else level.setBlockEntity(part = new TileMultiBlockPart(rel, BlocksZT.MULTIBLOCK_PART.defaultBlockState()));
 		
-		part.origin = origin.immutable();
+		part.setOrigin(origin.immutable());
 		part.subTileData = tileData;
 		part.setSubState(state);
 		part.sync();

@@ -1,16 +1,20 @@
 package org.zeith.tech.api.misc.farm;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.misc.SoundConfiguration;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IFarmController
 {
@@ -18,6 +22,14 @@ public interface IFarmController
 	FarmAlgorithm getAlgorithm();
 	
 	Level getFarmLevel();
+	
+	FakePlayer getAsPlayer(ServerLevel level);
+	
+	default Optional<FakePlayer> getAsPlayer()
+	{
+		return Cast.optionally(getFarmLevel(), ServerLevel.class)
+				.map(this::getAsPlayer);
+	}
 	
 	BlockPos getFarmPosition();
 	
