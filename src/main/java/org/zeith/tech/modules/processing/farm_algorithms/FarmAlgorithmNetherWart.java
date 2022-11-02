@@ -55,26 +55,33 @@ public class FarmAlgorithmNetherWart
 		var sandState = level.getBlockState(sandPos);
 		
 		// Place sand
-		if(!sandState.canSustainPlant(level, sandPos, Direction.UP, (NetherWartBlock) Blocks.NETHER_WART) && level.isEmptyBlock(sandPos))
+		if(!sandState.canSustainPlant(level, sandPos, Direction.UP, (NetherWartBlock) Blocks.NETHER_WART))
 		{
-			ItemStack match = new ItemStack(Items.SOUL_SAND);
-			
-			var inv = controller.getInventory(EnumFarmItemCategory.SOIL);
-			for(int i = 0; i < inv.getSlots(); ++i)
+			if(level.isEmptyBlock(sandPos))
 			{
-				var it = inv.getStackInSlot(i);
-				if(!it.isEmpty() && categorizeItem(controller, it) == EnumFarmItemCategory.SOIL)
+				ItemStack match = new ItemStack(Items.SOUL_SAND);
+				
+				var inv = controller.getInventory(EnumFarmItemCategory.SOIL);
+				for(int i = 0; i < inv.getSlots(); ++i)
 				{
-					match = it.copy().split(1);
-					break;
+					var it = inv.getStackInSlot(i);
+					if(!it.isEmpty() && categorizeItem(controller, it) == EnumFarmItemCategory.SOIL)
+					{
+						match = it.copy().split(1);
+						break;
+					}
 				}
+				
+				if(!match.isEmpty() && match.getItem() instanceof BlockItem bi)
+					controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.SOIL, match),
+							sandPos, bi.getBlock().defaultBlockState(), 0, 1);
+				
+				return AlgorithmUpdateResult.RETRY;
+			} else
+			{
+				controller.queueBlockHarvest(sandPos, 2);
+				return AlgorithmUpdateResult.SUCCESS;
 			}
-			
-			if(!match.isEmpty() && match.getItem() instanceof BlockItem bi)
-				controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.SOIL, match),
-						sandPos, bi.getBlock().defaultBlockState(), 0, 1);
-			
-			return AlgorithmUpdateResult.RETRY;
 		}
 		
 		var wartPos = sandPos.above();

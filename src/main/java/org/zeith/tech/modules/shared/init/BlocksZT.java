@@ -12,8 +12,7 @@ import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.tech.api.item.IBurnableItem;
 import org.zeith.tech.modules.generators.init.BlocksZT_Generators;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
-import org.zeith.tech.modules.shared.blocks.BlockMasut;
-import org.zeith.tech.modules.shared.blocks.SandBlockZT;
+import org.zeith.tech.modules.shared.blocks.*;
 import org.zeith.tech.modules.shared.blocks.aux_io_port.BlockAuxiliaryIOPort;
 import org.zeith.tech.modules.shared.blocks.multiblock_part.BlockMultiBlockPart;
 import org.zeith.tech.modules.transport.init.BlocksZT_Transport;
@@ -36,4 +35,7 @@ public interface BlocksZT
 	
 	@RegistryName("pure_sand")
 	SandBlockZT PURE_SAND = new SandBlockZT(0xEDFCFF, BlockBehaviour.Properties.of(Material.SAND, MaterialColor.SAND).strength(0.5F).sound(SoundType.SAND)).addBlockTags(List.of(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.SAND)).dropsSelf();
+	
+	@RegistryName("bioluminescent_block")
+	SimpleBlockZT BIOLUMINESCENT_BLOCK = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.SAND).strength(0.3F).sound(SoundType.GLASS).lightLevel(state -> 15));
 }

@@ -38,6 +38,7 @@ import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.block.multiblock.base.MultiBlockFormer;
 import org.zeith.tech.api.energy.EnergyTier;
+import org.zeith.tech.api.misc.SoundConfiguration;
 import org.zeith.tech.api.misc.farm.*;
 import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
@@ -159,17 +160,6 @@ public class TileFarm
 					former.placeMultiBlock(level, worldPosition, dir, null);
 			}
 			
-			if(former != null && isValid)
-			{
-				var positions = former.getPositionsFrom(worldPosition, dir);
-				
-				for(var pos : positions)
-				{
-					var state = TileMultiBlockPart.getPartState(level, pos);
-					
-				}
-			}
-			
 			checkNow = false;
 		}
 		
@@ -179,33 +169,48 @@ public class TileFarm
 			{
 				var action = breakActions.remove(0);
 				
-				var blockDrops = InventoryHelper.getBlockDropsAt(server, action.pos());
-				
-				// Create copy of all drops!
-				List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);
-				blockDropsCopy.replaceAll(ItemStack::copy);
-				
-				if(InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDrops, true))
+				// Check if we can break the block first!
+				if(server.getBlockState(action.pos()).getDestroySpeed(server, action.pos()) >= 0)
 				{
-					InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDropsCopy, false);
-					level.destroyBlock(action.pos(), false);
+					var blockDrops = InventoryHelper.getBlockDropsAt(server, action.pos());
+					
+					// Create copy of all drops!
+					List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);
+					blockDropsCopy.replaceAll(ItemStack::copy);
+					
+					if(InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDrops, true))
+					{
+						InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDropsCopy, false);
+						level.destroyBlock(action.pos(), false);
+					}
 				}
 			} else if(!transformActions.isEmpty())
 			{
 				var action = transformActions.remove(0);
 				
-				int needWater = action.waterUsage();
-				var efluid = water.drain(needWater, IFluidHandler.FluidAction.SIMULATE);
-				
-				if(level.getBlockState(action.pos()).equals(action.source())
-						&& (needWater == 0 || (!efluid.isEmpty() && efluid.getAmount() == needWater))
-						&& energy.consumeEnergy(64))
+				if(InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), action.copyDrops(), true))
 				{
-					if(needWater > 0) water.drain(needWater, IFluidHandler.FluidAction.EXECUTE);
-					server.setBlockAndUpdate(action.pos(), action.dest());
+					int needWater = action.waterUsage();
+					var efluid = water.drain(needWater, IFluidHandler.FluidAction.SIMULATE);
 					
-					var sound = action.dest().getSoundType();
-					server.playSound(null, action.pos(), sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
+					if(level.getBlockState(action.pos()).equals(action.source())
+							&& (needWater == 0 || (!efluid.isEmpty() && efluid.getAmount() == needWater))
+							&& energy.consumeEnergy(64))
+					{
+						InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), action.copyDrops(), false);
+						
+						if(needWater > 0) water.drain(needWater, IFluidHandler.FluidAction.EXECUTE);
+						server.setBlockAndUpdate(action.pos(), action.dest());
+						
+						var soundCfg = action.sound();
+						if(soundCfg == null)
+						{
+							var sound = action.dest().getSoundType();
+							soundCfg = new SoundConfiguration(sound.getPlaceSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
+						}
+						
+						soundCfg.play(server, action.pos());
+					}
 				}
 			} else if(!placeActions.isEmpty())
 			{
@@ -289,8 +294,10 @@ public class TileFarm
 		int x = (idx % 13) - 6; // [-6; 6]
 		int z = (idx / 13) - 6; // [-6; 6]
 		var algo = getAlgorithm();
+		
 		var y = -1;
 		if(algo != null && algo.isUpsideDown()) y = 0;
+		
 		return worldPosition.offset(x, y, z);
 	}
 	
@@ -371,7 +378,8 @@ public class TileFarm
 	@Override
 	public boolean hasPlatform(BlockPos platform)
 	{
-		return level.getBlockState(platform).is(BlocksZT.REINFORCED_PLANKS);
+		return level.getBlockState(platform)
+				.is(BlocksZT.REINFORCED_PLANKS);
 	}
 	
 	@Override
@@ -401,9 +409,9 @@ public class TileFarm
 	}
 	
 	@Override
-	public void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, int waterUsage, int priority)
+	public void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, List<ItemStack> drops, SoundConfiguration sound, int waterUsage, int priority)
 	{
-		transformActions.add(new TransformBlockAction(pos, source, dest, waterUsage, priority));
+		transformActions.add(new TransformBlockAction(pos, source, dest, drops, sound, waterUsage, priority));
 		transformActions.sort(TransformBlockAction.COMPARATOR.reversed()); // Reverse to put the highest priority actions into lower indices.
 	}
 	

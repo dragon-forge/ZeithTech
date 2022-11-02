@@ -103,6 +103,17 @@ public class LootTableGeneratorZT
 		add(BlocksZT.DEEPSLATE_TUNGSTEN_ORE, block -> createOreDrop(block, ItemsZT.RAW_TUNGSTEN));
 		add(BlocksZT.ZINC_ORE, block -> createOreDrop(block, ItemsZT.RAW_ZINC));
 		add(BlocksZT.DEEPSLATE_ZINC_ORE, block -> createOreDrop(block, ItemsZT.RAW_ZINC));
+		
+		add(BlocksZT.BIOLUMINESCENT_BLOCK, (block) ->
+				createSilkTouchDispatchTable(block,
+						applyExplosionDecay(block,
+								LootItem.lootTableItem(ItemsZT.BIOLUMINESCENT_DUST)
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 4.0F)))
+										.apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE))
+										.apply(LimitCount.limitCount(IntRange.range(1, 4)))
+						)
+				)
+		);
 	}
 	
 	protected void add(Block block, Function<Block, LootTable.Builder> builder)

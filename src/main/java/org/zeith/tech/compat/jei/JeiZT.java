@@ -87,12 +87,13 @@ public class JeiZT
 		if(this.jeiRuntime == null) ZeithTech.compats.add(this);
 		this.jeiRuntime = jeiRuntime;
 		
-		if(ZeithTechTransportConfigs.INSTANCE.getCurrent().main.facadesInJEI)
-		{
-			NonNullList<ItemStack> items = NonNullList.create();
-			ZeithTech.FACADES_TAB.fillItemList(items);
-			jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, items);
-		}
+		NonNullList<ItemStack> items = NonNullList.create();
+		
+		ItemsZT.FARM_SOC.fillItemCategory(ZeithTech.TAB, items);
+		
+		if(ZeithTechTransportConfigs.INSTANCE.getCurrent().main.facadesInJEI) ZeithTech.FACADES_TAB.fillItemList(items);
+		
+		jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, items);
 	}
 	
 	@Override

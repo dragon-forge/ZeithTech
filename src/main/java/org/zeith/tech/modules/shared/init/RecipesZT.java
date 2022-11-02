@@ -30,6 +30,8 @@ public interface RecipesZT
 {
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
+		event.shaped().shape("dd", "dd").map('d', ItemsZT.BIOLUMINESCENT_DUST).result(BlocksZT.BIOLUMINESCENT_BLOCK).register();
+		
 		event.shaped().shape("nnn", "npn", "nnn").map('n', Tags.Items.NUGGETS_IRON).map('p', ItemTags.PLANKS).result(BlocksZT.REINFORCED_PLANKS).register();
 		
 		event.shaped().shape("wsw", "wsw", "wsw").map('w', BlocksZT_Transport.UNINSULATED_COPPER_WIRE).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT.COPPER_COIL).register();

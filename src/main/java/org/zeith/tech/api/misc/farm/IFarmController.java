@@ -8,6 +8,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.tech.api.misc.SoundConfiguration;
+
+import java.util.List;
 
 public interface IFarmController
 {
@@ -39,5 +42,10 @@ public interface IFarmController
 	
 	void queueBlockHarvest(BlockPos pos, int priority);
 	
-	void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, int waterUsage, int priority);
+	void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, List<ItemStack> drops, SoundConfiguration sound, int waterUsage, int priority);
+	
+	default void queueBlockTransformation(BlockPos pos, BlockState source, BlockState dest, int waterUsage, int priority)
+	{
+		queueBlockTransformation(pos, source, dest, List.of(), null, waterUsage, priority);
+	}
 }

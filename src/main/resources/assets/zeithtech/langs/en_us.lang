@@ -94,6 +94,7 @@ fluid_type.zeithtech.crude_oil=Crude Oil
 block.zeithtech.auxiliary_io_port=Auxiliary IO Port
 block.zeithtech.pure_sand=Pure Sand
 block.zeithtech.masut=Masut
+block.zeithtech.bioluminescent_block=Bioluminescent Block
 
 item.zeithtech.copper_coil=Copper Coil
 item.zeithtech.gold_coil=Gold Coil
@@ -303,3 +304,4 @@ recipe_type.zeithtech.sawmill=Sawmill
 
 farm_algorithm.zeithtech.cactus=Cactus Algorithm
 farm_algorithm.zeithtech.nether_wart=Nether Wart Algorithm
+farm_algorithm.zeithtech.glow_berries=Glow Berry Algorithm
