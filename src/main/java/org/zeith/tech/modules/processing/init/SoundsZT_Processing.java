@@ -7,8 +7,6 @@ import org.zeith.tech.core.registrar.SoundRegistrar;
 public interface SoundsZT_Processing
 {
 	SoundEvent BASIC_MACHINE_INTERRUPT = register("block.basic_interrupt");
-	SoundEvent BASIC_FUEL_GENERATOR = register("block.fuel_generator.basic");
-	SoundEvent BASIC_LIQUID_FUEL_GENERATOR = register("block.lfuel_generator.basic");
 	SoundEvent WASTE_PROCESSOR = register("block.waste_processor");
 	SoundEvent METAL_PRESS_ACT = register("block.metal_press.act");
 	SoundEvent BASIC_ELECTRIC_FURNACE = register("block.electric_furnace.basic");
@@ -16,7 +14,6 @@ public interface SoundsZT_Processing
 	SoundEvent BASIC_SAWMILL = register("block.sawmill.basic");
 	SoundEvent FLUID_PUMP = register("block.fluid_pump.basic");
 	SoundEvent FLUID_CENTRIFUGE = register("block.fluid_centrifuge.basic");
-	SoundEvent MAGMATIC_GENERATOR = register("block.magmatic_generator");
 	SoundEvent FACADE_SLICER = register("block.facade_slicer");
 	
 	static SoundEvent register(String s)

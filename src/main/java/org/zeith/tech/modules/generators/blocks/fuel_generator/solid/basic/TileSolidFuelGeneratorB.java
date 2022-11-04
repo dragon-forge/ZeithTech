@@ -28,10 +28,11 @@ import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
+import org.zeith.tech.modules.generators.init.SoundsZT_Generators;
 import org.zeith.tech.modules.generators.init.TilesZT_Generators;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
-import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
+import org.zeith.tech.modules.shared.init.SoundsZT;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -125,7 +126,7 @@ public class TileSolidFuelGeneratorB
 		{
 			ZeithTechAPI.get()
 					.getAudioSystem()
-					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
+					.playMachineSoundLoop(this, SoundsZT_Generators.BASIC_FUEL_GENERATOR, SoundsZT.BASIC_MACHINE_INTERRUPT);
 			
 			Vec3 pos = Vec3.atBottomCenterOf(worldPosition);
 			if(getRNG().nextInt(5) == 0)

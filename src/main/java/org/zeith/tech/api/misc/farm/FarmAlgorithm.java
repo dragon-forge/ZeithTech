@@ -2,19 +2,27 @@ package org.zeith.tech.api.misc.farm;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.zeith.hammerlib.client.utils.UV;
 import org.zeith.tech.api.ZeithTechAPI;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class FarmAlgorithm
 {
@@ -59,6 +67,17 @@ public abstract class FarmAlgorithm
 	public int getColor()
 	{
 		return getRegistryName().hashCode();
+	}
+	
+	public Optional<BlockState> getStateForPlacement(IFarmController controller, BlockPos pos, ItemStack item)
+	{
+		if(item.isEmpty()) return Optional.empty();
+		var blk = Block.byItem(item.getItem());
+		if(blk == Blocks.AIR) return Optional.empty();
+		return controller.getAsPlayer()
+				.map(player -> new BlockPlaceContext(player, InteractionHand.MAIN_HAND, item, new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false)))
+				.map(blk::getStateForPlacement)
+				.or(() -> Optional.of(blk.defaultBlockState()));
 	}
 	
 	/**

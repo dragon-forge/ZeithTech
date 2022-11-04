@@ -33,4 +33,10 @@ public interface FarmAlgorithmsZT_Processing
 	
 	@RegistryName("forester")
 	FarmAlgorithmForester FORESTER_ALGORITHM = new FarmAlgorithmForester();
+	
+	@RegistryName("sugar_cane")
+	FarmAlgorithmSugarCane CANE_ALGORITHM = new FarmAlgorithmSugarCane();
+	
+	@RegistryName("chorus")
+	FarmAlgorithmChorus CHORUS_ALGORITHM = new FarmAlgorithmChorus();
 }

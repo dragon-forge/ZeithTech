@@ -5,18 +5,22 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BambooBlock;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.tech.api.misc.farm.*;
+import org.zeith.tech.modules.processing.farm_algorithms.base.FarmAlgorithmPlantBased;
 
 public class FarmAlgorithmBamboo
-		extends FarmAlgorithm
+		extends FarmAlgorithmPlantBased
 {
 	public FarmAlgorithmBamboo()
 	{
 		super(new Properties()
-				.upsideDown(false)
+						.upsideDown(false),
+				(BambooBlock) Blocks.BAMBOO,
+				Direction.UP
 		);
 	}
 	
@@ -37,14 +41,7 @@ public class FarmAlgorithmBamboo
 	{
 		if(stack.is(Items.BAMBOO)) return EnumFarmItemCategory.PLANT;
 		if(stack.is(Items.BONE_MEAL)) return EnumFarmItemCategory.FERTILIZER;
-		
-		if(stack.getItem() instanceof BlockItem bi)
-		{
-			var state = bi.getBlock().defaultBlockState();
-			if(state.canSustainPlant(controller.getFarmLevel(), controller.getFarmPosition(), Direction.UP, (BambooBlock) Blocks.BAMBOO))
-				return EnumFarmItemCategory.SOIL;
-		}
-		
+		if(isValidSoil(controller, controller.getFarmPosition(), stack)) return EnumFarmItemCategory.SOIL;
 		return EnumFarmItemCategory.UNKNOWN;
 	}
 	
@@ -52,10 +49,9 @@ public class FarmAlgorithmBamboo
 	public AlgorithmUpdateResult handleUpdate(IFarmController controller, ServerLevel level, BlockPos platform)
 	{
 		var sandPos = platform.above();
-		var sandState = level.getBlockState(sandPos);
 		
 		// Place dirt
-		if(!sandState.canSustainPlant(level, sandPos, Direction.UP, (BambooBlock) Blocks.BAMBOO))
+		if(!canSustainPlant(controller, sandPos))
 		{
 			if(level.isEmptyBlock(sandPos))
 			{
@@ -88,12 +84,12 @@ public class FarmAlgorithmBamboo
 		var cactiState = level.getBlockState(cactiPos);
 		
 		// Plant bamboo
-		if(!cactiState.is(Blocks.BAMBOO) && level.isEmptyBlock(cactiPos))
+		if(!cactiState.is(Blocks.BAMBOO) && !cactiState.is(Blocks.BAMBOO_SAPLING) && level.isEmptyBlock(cactiPos))
 		{
-			if(Blocks.BAMBOO.defaultBlockState().canSurvive(level, cactiPos))
+			if(canBePlantedHere(level, cactiPos))
 			{
 				controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.PLANT, new ItemStack(Items.BAMBOO)),
-						cactiPos, Blocks.BAMBOO.defaultBlockState(), 100, 0);
+						cactiPos, Blocks.BAMBOO_SAPLING.defaultBlockState(), 100, 0);
 				
 				return AlgorithmUpdateResult.SUCCESS;
 			}
@@ -126,28 +122,10 @@ public class FarmAlgorithmBamboo
 			if(maxCacti.getY() > cactiPos.getY())
 			{
 				controller.queueBlockHarvest(maxCacti, 0);
-				return harvest > 1 ? AlgorithmUpdateResult.RETRY_NOW : AlgorithmUpdateResult.SUCCESS;
+				return harvest > 1 ? AlgorithmUpdateResult.RETRY : AlgorithmUpdateResult.SUCCESS;
 			}
 		}
 		
 		return AlgorithmUpdateResult.PASS;
-	}
-	
-	@Override
-	public boolean tryFertilize(IFarmController controller, ServerLevel level, BlockPos platform)
-	{
-		var cropPos = platform.above(2);
-		var cropState = level.getBlockState(cropPos);
-		
-		if(cropState.getBlock() instanceof BonemealableBlock gr
-				&& gr.isValidBonemealTarget(level, cropPos, cropState, level.isClientSide)
-				&& gr.isBonemealSuccess(level, level.random, cropPos, cropState))
-		{
-			gr.performBonemeal(level, level.random, cropPos, cropState);
-			level.levelEvent(1505, cropPos, 0);
-			return true;
-		}
-		
-		return false;
 	}
 }

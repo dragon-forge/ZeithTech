@@ -33,11 +33,12 @@ import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.api.tile.slots.*;
+import org.zeith.tech.modules.generators.init.SoundsZT_Generators;
 import org.zeith.tech.modules.generators.init.TilesZT_Generators;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
-import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.shared.init.RecipeRegistriesZT;
+import org.zeith.tech.modules.shared.init.SoundsZT;
 import org.zeith.tech.utils.SerializableFluidTank;
 import org.zeith.tech.utils.fluid.FluidHelperZT;
 import org.zeith.tech.utils.fluid.FluidSmoothing;
@@ -190,7 +191,7 @@ public class TileLiquidFuelGeneratorB
 		if(isOnClient() && isEnabled() && !isInterrupted())
 			ZeithTechAPI.get()
 					.getAudioSystem()
-					.playMachineSoundLoop(this, SoundsZT_Processing.BASIC_LIQUID_FUEL_GENERATOR, SoundsZT_Processing.BASIC_MACHINE_INTERRUPT);
+					.playMachineSoundLoop(this, SoundsZT_Generators.BASIC_LIQUID_FUEL_GENERATOR, SoundsZT.BASIC_MACHINE_INTERRUPT);
 	}
 	
 	public void consumeFuel()

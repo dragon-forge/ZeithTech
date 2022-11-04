@@ -54,7 +54,7 @@ public class FarmAlgorithmCocoaBeans
 	protected boolean isWoodPosition(BlockPos delta)
 	{
 		int x = delta.getX(), z = delta.getZ();
-		return (x + (1 - (z / 2) % 2) + 2) % 3 == 0 && z % 2 == 0;
+		return (x + z * 2) % 5 == 1;
 	}
 	
 	@Override

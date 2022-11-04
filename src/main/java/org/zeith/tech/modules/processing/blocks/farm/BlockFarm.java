@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -139,5 +140,11 @@ public class BlockFarm
 						MultiBlockFormer.ofBlockInvisible(0, 2, 0, BlocksZT.IRON_FLUID_PIPE)
 				}
 		));
+	}
+	
+	@Override
+	public boolean canBeHydrated(BlockState state, BlockGetter getter, BlockPos pos, FluidState fluid, BlockPos fluidPos)
+	{
+		return super.canBeHydrated(state, getter, pos, fluid, fluidPos);
 	}
 }

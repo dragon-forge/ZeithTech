@@ -41,5 +41,5 @@ public interface BlocksZT
 	SimpleBlockZT BIOLUMINESCENT_BLOCK = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.SAND).strength(0.3F).sound(SoundType.GLASS).lightLevel(state -> 15));
 	
 	@RegistryName("plastic_casing")
-	SimpleWaterLoggableBlockZT PLASTIC_CASING = new SimpleWaterLoggableBlockZT(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).noOcclusion().isViewBlocking(BaseZT::never).strength(0.5F).sound(SoundType.STONE));
+	SimpleWaterLoggableBlockZT PLASTIC_CASING = new SimpleWaterLoggableBlockZT(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).noOcclusion().isViewBlocking(BaseZT::never).strength(0.5F).sound(SoundType.STONE)).dropsSelf();
 }

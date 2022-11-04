@@ -146,17 +146,21 @@ public class FarmAlgorithmForester
 				}
 			}
 			
-			leafPositions.sort(Comparator.comparingDouble(controller.getFarmPosition()::distSqr));
-			treePositions.sort(Comparator.comparingDouble(controller.getFarmPosition()::distSqr));
-			
-			int sp = treePositions.size();
-			
-			controller.queueMultipleBlockHarvests(Stream.concat(
-					IntStream.range(0, leafPositions.size())
-							.mapToObj(i -> new BreakBlockAction(leafPositions.get(i), sp + i)),
-					IntStream.range(0, sp)
-							.mapToObj(i -> new BreakBlockAction(treePositions.get(i), i))
-			).toList());
+			if(leafPositions.size() + treePositions.size() > 0)
+			{
+				leafPositions.sort(Comparator.comparingDouble(controller.getFarmPosition()::distSqr));
+				treePositions.sort(Comparator.comparingDouble(controller.getFarmPosition()::distSqr));
+				
+				int sp = treePositions.size();
+				
+				controller.queueMultipleBlockHarvests(Stream.concat(
+						IntStream.range(0, leafPositions.size())
+								.mapToObj(i -> new BreakBlockAction(leafPositions.get(i), sp + i)),
+						IntStream.range(0, sp)
+								.mapToObj(i -> new BreakBlockAction(treePositions.get(i), i))
+				).toList());
+			} else
+				controller.queueBlockHarvest(cropPos, 0);
 			
 			return AlgorithmUpdateResult.RETRY;
 		}

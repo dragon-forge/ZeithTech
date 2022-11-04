@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.*;
@@ -195,5 +196,16 @@ public class BlockMultiBlockPart
 		}
 		
 		return true;
+	}
+	
+	@Override
+	public boolean canBeHydrated(BlockState state, BlockGetter getter, BlockPos pos, FluidState fluid, BlockPos fluidPos)
+	{
+		if(getter.getBlockEntity(fluidPos) instanceof TileMultiBlockPart part)
+		{
+			var mbt = part.getOrigin();
+			return getter.getBlockState(mbt).canBeHydrated(getter, pos, fluid, fluidPos);
+		}
+		return false;
 	}
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import org.zeith.hammerlib.api.inv.SimpleInventory;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class InventoryHelper
 				.withRandom(server.random)
 				.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
 				.withOptionalParameter(LootContextParams.BLOCK_ENTITY, server.getBlockEntity(pos))
+				.withOptionalParameter(LootContextParams.THIS_ENTITY, FakePlayerFactory.getMinecraft(server))
 				.withParameter(LootContextParams.TOOL, Items.NETHERITE_PICKAXE.getDefaultInstance())
 		);
 	}

@@ -7,18 +7,20 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SweetBerryBushBlock;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.zeith.tech.api.misc.SoundConfiguration;
 import org.zeith.tech.api.misc.farm.*;
 import org.zeith.tech.api.utils.LazyValue;
+import org.zeith.tech.modules.processing.farm_algorithms.base.FarmAlgorithmPlantBased;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FarmAlgorithmBerries
-		extends FarmAlgorithm
+		extends FarmAlgorithmPlantBased
 {
 	protected final LazyValue<Ingredient> item = LazyValue.of(() ->
 	{
@@ -32,7 +34,9 @@ public class FarmAlgorithmBerries
 	public FarmAlgorithmBerries()
 	{
 		super(new Properties()
-				.upsideDown(false)
+						.upsideDown(false),
+				(SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH,
+				Direction.UP
 		);
 	}
 	
@@ -52,17 +56,8 @@ public class FarmAlgorithmBerries
 	public @NotNull EnumFarmItemCategory categorizeItem(IFarmController controller, ItemStack stack)
 	{
 		if(stack.is(Items.BONE_MEAL)) return EnumFarmItemCategory.FERTILIZER;
-		
-		if(stack.getItem() instanceof BlockItem bi)
-		{
-			if(bi.getBlock() instanceof SweetBerryBushBlock)
-				return EnumFarmItemCategory.PLANT;
-			
-			var state = bi.getBlock().defaultBlockState();
-			if(state.canSustainPlant(controller.getFarmLevel(), controller.getFarmPosition(), Direction.UP, (SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH))
-				return EnumFarmItemCategory.SOIL;
-		}
-		
+		if(getProgrammingItem().test(stack)) return EnumFarmItemCategory.PLANT;
+		if(isValidSoil(controller, controller.getFarmPosition(), stack)) return EnumFarmItemCategory.SOIL;
 		return EnumFarmItemCategory.UNKNOWN;
 	}
 	
@@ -70,7 +65,6 @@ public class FarmAlgorithmBerries
 	public AlgorithmUpdateResult handleUpdate(IFarmController controller, ServerLevel level, BlockPos platform)
 	{
 		var dirtPos = platform.above();
-		var dirtState = level.getBlockState(dirtPos);
 		
 		var cropPos = dirtPos.above();
 		var cropState = level.getBlockState(cropPos);
@@ -83,24 +77,24 @@ public class FarmAlgorithmBerries
 			for(int i = 0; i < plantInv.getSlots(); ++i)
 			{
 				var stack = plantInv.getStackInSlot(i);
-				if(!stack.isEmpty() && stack.getItem() instanceof BlockItem bi)
+				var stateOpt = getStateForPlacement(controller, dirtPos, stack);
+				var newState = stateOpt.orElse(null);
+				if(newState != null)
 				{
-					var newState = bi.getBlock().defaultBlockState();
-					
 					controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.SOIL, stack.copy().split(1)), dirtPos, newState, 0, 1);
 					return AlgorithmUpdateResult.RETRY;
 				}
 			}
-		} else if(dirtState.canSustainPlant(level, dirtPos, Direction.UP, (SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH))
+		} else if(canSustainPlant(controller, dirtPos))
 		{
 			hasSoil = true;
-		} else if(!level.isEmptyBlock(dirtPos) && level.isEmptyBlock(cropPos))
+		} else if(!level.isEmptyBlock(dirtPos))
 		{
 			controller.queueBlockHarvest(dirtPos, 2);
 			return AlgorithmUpdateResult.RETRY;
 		}
 		
-		if(cropState.getBlock() instanceof SweetBerryBushBlock bush)
+		if(cropState.getBlock() instanceof SweetBerryBushBlock)
 		{
 			if(cropState.getValue(SweetBerryBushBlock.AGE) == 3)
 			{
@@ -141,23 +135,5 @@ public class FarmAlgorithmBerries
 		}
 		
 		return AlgorithmUpdateResult.PASS;
-	}
-	
-	@Override
-	public boolean tryFertilize(IFarmController controller, ServerLevel level, BlockPos platform)
-	{
-		var cropPos = platform.above(2);
-		var cropState = level.getBlockState(cropPos);
-		
-		if(cropState.getBlock() instanceof BonemealableBlock gr
-				&& gr.isValidBonemealTarget(level, cropPos, cropState, level.isClientSide)
-				&& gr.isBonemealSuccess(level, level.random, cropPos, cropState))
-		{
-			gr.performBonemeal(level, level.random, cropPos, cropState);
-			level.levelEvent(1505, cropPos, 0);
-			return true;
-		}
-		
-		return false;
 	}
 }

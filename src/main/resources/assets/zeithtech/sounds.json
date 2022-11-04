@@ -66,6 +66,42 @@
       "zeithtech:processing/block/sawmill/basic/5"
     ]
   },
+  "processing.block.waste_processor": {
+    "sounds": [
+      "zeithtech:processing/block/waste_processor/1",
+      "zeithtech:processing/block/waste_processor/2",
+      "zeithtech:processing/block/waste_processor/3",
+      "zeithtech:processing/block/waste_processor/4",
+      "zeithtech:processing/block/waste_processor/5"
+    ]
+  },
+  "processing.block.fluid_pump.basic": {
+    "sounds": [
+      "zeithtech:processing/block/fluid_pump/basic/1",
+      "zeithtech:processing/block/fluid_pump/basic/2",
+      "zeithtech:processing/block/fluid_pump/basic/3",
+      "zeithtech:processing/block/fluid_pump/basic/4",
+      "zeithtech:processing/block/fluid_pump/basic/5"
+    ]
+  },
+  "processing.block.fluid_centrifuge.basic": {
+    "sounds": [
+      "zeithtech:processing/block/fluid_centrifuge/basic/1",
+      "zeithtech:processing/block/fluid_centrifuge/basic/2",
+      "zeithtech:processing/block/fluid_centrifuge/basic/3",
+      "zeithtech:processing/block/fluid_centrifuge/basic/4",
+      "zeithtech:processing/block/fluid_centrifuge/basic/5"
+    ]
+  },
+  "processing.block.facade_slicer": {
+    "sounds": [
+      "zeithtech:processing/block/facade_slicer/1",
+      "zeithtech:processing/block/facade_slicer/2",
+      "zeithtech:processing/block/facade_slicer/3",
+      "zeithtech:processing/block/facade_slicer/4",
+      "zeithtech:processing/block/facade_slicer/5"
+    ]
+  },
   "processing.block.metal_press.act": {
     "sounds": [
       "zeithtech:random/anvil_use_done"

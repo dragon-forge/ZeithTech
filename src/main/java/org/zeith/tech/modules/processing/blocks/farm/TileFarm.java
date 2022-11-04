@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -173,23 +174,30 @@ public class TileFarm
 			{
 				var action = breakActions.get(0);
 				
-				// Check if we can break the block first!
-				if(server.getBlockState(action.pos()).getDestroySpeed(server, action.pos()) >= 0)
+				var state = server.getBlockState(action.pos());
+				
+				if(state.getBlock() instanceof LiquidBlock liq)
 				{
-					var blockDrops = InventoryHelper.getBlockDropsAt(server, action.pos());
-					
-					// Create copy of all drops!
-					List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);
-					blockDropsCopy.replaceAll(ItemStack::copy);
-					
-					if(InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDrops, true))
-					{
-						InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDropsCopy, false);
-						level.destroyBlock(action.pos(), false);
-						breakActions.remove(0);
-					}
-				} else
+					liq.pickupBlock(level, action.pos(), state);
 					breakActions.remove(0);
+				} else
+					// Check if we can break the block first!
+					if(state.getDestroySpeed(server, action.pos()) >= 0)
+					{
+						var blockDrops = InventoryHelper.getBlockDropsAt(server, action.pos());
+						
+						// Create copy of all drops!
+						List<ItemStack> blockDropsCopy = new ArrayList<>(blockDrops);
+						blockDropsCopy.replaceAll(ItemStack::copy);
+						
+						if(InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDrops, true))
+						{
+							InventoryHelper.storeAllStacks(resultInventory, IntStream.range(0, resultInventory.getSlots()), blockDropsCopy, false);
+							level.destroyBlock(action.pos(), false);
+							breakActions.remove(0);
+						}
+					} else
+						breakActions.remove(0);
 			} else if(!transformActions.isEmpty())
 			{
 				var action = transformActions.remove(0);

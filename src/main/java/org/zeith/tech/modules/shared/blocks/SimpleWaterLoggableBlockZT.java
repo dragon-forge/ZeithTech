@@ -73,4 +73,10 @@ public class SimpleWaterLoggableBlockZT
 	{
 		return getFluidLoggedState(state);
 	}
+	
+	@Override
+	public SimpleWaterLoggableBlockZT dropsSelf()
+	{
+		return (SimpleWaterLoggableBlockZT) super.dropsSelf();
+	}
 }

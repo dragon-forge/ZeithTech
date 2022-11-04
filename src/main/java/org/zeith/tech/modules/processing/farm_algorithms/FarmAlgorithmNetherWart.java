@@ -88,7 +88,7 @@ public class FarmAlgorithmNetherWart
 		var wartState = level.getBlockState(wartPos);
 		
 		// Plant nether wart
-		if(!wartState.is(Blocks.NETHER_WART) && level.isEmptyBlock(wartPos))
+		if(level.isEmptyBlock(wartPos))
 		{
 			controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.PLANT, new ItemStack(Items.NETHER_WART)),
 					wartPos, Blocks.NETHER_WART.defaultBlockState(), 0, 0);
