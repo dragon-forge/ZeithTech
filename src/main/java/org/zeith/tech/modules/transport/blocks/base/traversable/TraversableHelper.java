@@ -55,6 +55,7 @@ public class TraversableHelper
 		
 		// De-duplicate paths by using EndpointDistinct, effectively fixing all loops and branches that lead to the same endpoint.
 		return listOfPaths.stream()
+				.sorted(Comparator.comparingInt(TraversablePath::size))
 				.map(EndpointDistinct::new)
 				.distinct()
 				.map(EndpointDistinct::path)

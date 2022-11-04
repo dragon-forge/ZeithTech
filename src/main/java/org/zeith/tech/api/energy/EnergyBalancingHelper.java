@@ -39,7 +39,7 @@ public class EnergyBalancingHelper
 			if(storage != null && storage.canReceive())
 			{
 				int rec = storage.receiveEnergy(totalFE, true);
-				inf.add(new StorageInfo(storage, rec));
+				inf.add(new StorageInfo(storage, rec + (int) Math.ceil(needExtra.apply(storagesLst.indexOf(storage), rec))));
 			}
 		}
 		

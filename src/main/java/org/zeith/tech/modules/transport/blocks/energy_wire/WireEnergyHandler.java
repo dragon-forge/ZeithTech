@@ -50,6 +50,8 @@ public record WireEnergyHandler(Direction from, TileEnergyWire wire)
 		
 		var receives = EnergyBalancingHelper.balanceOut(targets, lossByPath, paths.size(), charge.FE);
 		
+		float receiveAmount = 0;
+		
 		if(!simulate)
 		{
 			Set<BlockPos> lost = new HashSet<>();
@@ -64,20 +66,21 @@ public record WireEnergyHandler(Direction from, TileEnergyWire wire)
 					ITraversable<FECharge> component = path.get(j);
 					if(component instanceof TileEnergyWire rem)
 					{
-						rem.energyPassed += sendToPath[i] - loss;
-						
 						if(lost.add(rem.getPosition()))
 							loss += rem.getWireProps().energyLoss();
 						
-						float rec = Math.max(0F, sendToPath[i] - loss);
-						if(j == path.size() - 1 && rec > 0)
+						float rec;
+						if(j == path.size() - 1 && (rec = Math.max(0F, sendToPath[i] - Math.max(0, loss))) > 0)
+						{
 							rem.emitTo(path.endpoint.dir(), rec);
+							receiveAmount += rec;
+						} else rem.energyPassed += sendToPath[i] - Math.max(0, loss);
 					}
 				}
 			}
 		}
 		
-		return maxReceive - receives.leftover();
+		return (int) Math.ceil(receiveAmount);
 	}
 	
 	@Override
