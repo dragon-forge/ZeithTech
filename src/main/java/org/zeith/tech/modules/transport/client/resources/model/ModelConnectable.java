@@ -129,7 +129,7 @@ public class ModelConnectable
 				for(String part : inventoryParts)
 					for(var m : models.get(part))
 						quads.addAll(m.getQuads(null, null, rand, data, renderType));
-			} else if(state != null && blockRenderTypes.contains(renderType))
+			} else if(state != null && renderType != null && blockRenderTypes.contains(renderType))
 			{
 				for(Property<?> property : state.getProperties())
 					if(property instanceof BooleanProperty b)

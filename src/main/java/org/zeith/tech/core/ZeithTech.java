@@ -3,10 +3,8 @@ package org.zeith.tech.core;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.*;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -61,8 +59,6 @@ public class ZeithTech
 	public static final CreativeModeTab TAB = new CreativeModeTabZT();
 	public static final CreativeModeTab FACADES_TAB = new CreativeModeTabZTF();
 	
-	private static final List<ResourceLocation> REGISTERED_TEXTURES = new ArrayList<>();
-	
 	private static Supplier<IForgeRegistry<FarmAlgorithm>> FARM_ALGORITHMS;
 	
 	public final LegacyEventBus busses;
@@ -77,7 +73,6 @@ public class ZeithTech
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::setup);
 		bus.addListener(this::newRegistries);
-		bus.addListener(this::addExtraTextures);
 		
 		PROXY.construct(bus);
 		
@@ -147,12 +142,6 @@ public class ZeithTech
 		LOG.info("Setup complete.");
 	}
 	
-	private void addExtraTextures(TextureStitchEvent.Pre e)
-	{
-		if(e.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS))
-			REGISTERED_TEXTURES.forEach(e::addSprite);
-	}
-	
 	private void newRegistries(NewRegistryEvent e)
 	{
 		FARM_ALGORITHMS = e.create(new RegistryBuilder<FarmAlgorithm>()
@@ -193,8 +182,7 @@ public class ZeithTech
 	@Override
 	public void registerItemSprite(ResourceLocation path)
 	{
-		if(!REGISTERED_TEXTURES.contains(path))
-			REGISTERED_TEXTURES.add(path);
+		PROXY.registerItemSprite(path);
 	}
 	
 	@Override

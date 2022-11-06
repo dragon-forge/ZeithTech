@@ -147,7 +147,8 @@ public class TileEnergyWire
 	public boolean doesConnectTo(Direction to)
 	{
 		return sideConfigs.get(to.ordinal()) != SideConfig.DISABLE &&
-				(getRelativeTraversable(to, null).isPresent() || relativeEnergyHandler(to).isPresent());
+				((level.getBlockEntity(worldPosition.relative(to)) instanceof TileEnergyWire wire && wire.sideConfigs.get(to.getOpposite().ordinal()) != SideConfig.DISABLE)
+						|| relativeEnergyHandler(to).isPresent());
 	}
 	
 	private final net.minecraftforge.common.util.LazyOptional<?>[] sidedEnergyHandlers =

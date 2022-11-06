@@ -7,6 +7,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.*;
@@ -24,6 +25,8 @@ import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.tech.api.block.IPipeCuttable;
+import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
 import org.zeith.tech.core.ZeithTech;
@@ -36,7 +39,7 @@ import java.util.Map;
 
 public class BlockEnergyWire
 		extends BaseEntityBlockZT
-		implements ICreativeTabBlock, IRegisterListener, SimpleWaterloggedBlock
+		implements ICreativeTabBlock, IRegisterListener, SimpleWaterloggedBlock, IPipeCuttable
 {
 	static final Direction[] DIRECTIONS = Direction.values();
 	public static final Map<Direction, BooleanProperty> DIR2PROP = Map.of(
@@ -51,6 +54,8 @@ public class BlockEnergyWire
 	
 	public final EnergyWireProperties properties;
 	
+	protected final Map<Direction, VoxelShape> DIR2SHAPE;
+	
 	public BlockEnergyWire(EnergyWireProperties properties)
 	{
 		super(properties.blockProps());
@@ -58,11 +63,13 @@ public class BlockEnergyWire
 		
 		addBlockTag(TagsZT.Blocks.MINEABLE_WITH_WIRE_CUTTER);
 		
+		this.DIR2SHAPE = properties.insulated() ? DIR2SHAPE_INSULATED : DIR2SHAPE_UNINSULATED;
+		
 		shapeCache = new VoxelShapeCache(this, (state, $) -> Shapes.or(this.properties.insulated() ? CORE_SHAPE_INSULATED : CORE_SHAPE_UNINSULATED,
 				DIR2PROP.entrySet()
 						.stream()
 						.filter(dir -> state.getValue(dir.getValue()))
-						.map(dir -> (this.properties.insulated() ? DIR2SHAPE_INSULATED : DIR2SHAPE_UNINSULATED).get(dir.getKey()))
+						.map(dir -> DIR2SHAPE.get(dir.getKey()))
 						.toArray(VoxelShape[]::new)
 		));
 		
@@ -229,5 +236,29 @@ public class BlockEnergyWire
 			
 			super.onRemove(prevState, world, pos, newState, flag64);
 		}
+	}
+	
+	
+	@Override
+	public VoxelShape getConnectionBoundary(BlockState state, Direction to)
+	{
+		return DIR2SHAPE.get(to);
+	}
+	
+	@Override
+	public boolean performCut(BlockState state, UseOnContext context, Direction cutPart)
+	{
+		if(context.getLevel().getBlockEntity(context.getClickedPos()) instanceof TileEnergyWire wire)
+		{
+			var idx = cutPart.ordinal();
+			var cfg = wire.sideConfigs.get(idx);
+			wire.sideConfigs.set(idx, cfg == SideConfig.DISABLE ? SideConfig.NONE : SideConfig.DISABLE);
+			
+			if(context.getLevel().getBlockEntity(context.getClickedPos().relative(cutPart)) instanceof TileEnergyWire wire2)
+				wire2.sideConfigs.set(cutPart.getOpposite().ordinal(), wire.sideConfigs.get(idx));
+			
+			return true;
+		}
+		return true;
 	}
 }

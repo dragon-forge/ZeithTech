@@ -239,7 +239,8 @@ public class TileItemPipe
 	public boolean doesConnectTo(Direction to)
 	{
 		return sideConfigs.get(to.ordinal()) != SideConfig.DISABLE
-				&& (getRelativeTraversable(to, null).isPresent() || relativeItemHandler(to).isPresent());
+				&& ((level.getBlockEntity(worldPosition.relative(to)) instanceof TileItemPipe pipe && pipe.sideConfigs.get(to.getOpposite().ordinal()) != SideConfig.DISABLE)
+				|| relativeItemHandler(to).isPresent());
 	}
 	
 	private LazyOptional<IItemHandler> relativeItemHandler(Direction to)

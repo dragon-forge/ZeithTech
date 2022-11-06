@@ -12,17 +12,18 @@ import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.BaseZT;
+import org.zeith.tech.modules.shared.blocks.SimpleBlockZT;
 
 import java.util.List;
 
 public class BlockFarmController
-		extends Block
+		extends SimpleBlockZT
 		implements ICreativeTabBlock
 {
 	public BlockFarmController()
 	{
-		super(BaseZT.BASE_MACHINE_PROPS);
-		BlockHarvestAdapter.bindTool(BlockHarvestAdapter.MineableType.PICKAXE, Tiers.STONE);
+		super(BaseZT.BASE_MACHINE_PROPS, BlockHarvestAdapter.MineableType.PICKAXE, Tiers.STONE);
+		dropsSelf();
 	}
 	
 	@Override

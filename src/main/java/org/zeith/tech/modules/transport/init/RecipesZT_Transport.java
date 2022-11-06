@@ -33,6 +33,8 @@ public interface RecipesZT_Transport
 		event.shaped()
 				.shape("ata", "aca", "owo").map('a', ItemsZT.ACCUMULATOR_BASIC).map('t', TagsZT.Items.INGOTS_TIN).map('c', ItemsZT.BASIC_CIRCUIT).map('o', Tags.Items.COBBLESTONE).map('w', ItemTags.PLANKS).result(BlocksZT_Transport.BASIC_ENERGY_CELL).register();
 		
+		event.shaped().shape(" cc", "cnc", "pgc").map('c', Tags.Items.INGOTS_COPPER).map('n', Tags.Items.NUGGETS_IRON).map('p', TagsZT.Items.PLATES_IRON).map('g', TagsZT.Items.GEARS_IRON).result(ItemsZT_Transport.PIPE_CUTTER).register();
+		
 		event.add(new RecipeTurnFacadesBackIntoBlock(ZeithTechAPI.id("facade_to_block"), ""));
 	}
 }

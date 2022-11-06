@@ -9,6 +9,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
+import org.zeith.hammerlib.core.init.TagsHL;
 import org.zeith.tech.api.item.IBurnableItem;
 import org.zeith.tech.modules.generators.init.BlocksZT_Generators;
 import org.zeith.tech.modules.processing.init.BlocksZT_Processing;
@@ -38,7 +39,8 @@ public interface BlocksZT
 	SandBlockZT PURE_SAND = new SandBlockZT(0xEDFCFF, BlockBehaviour.Properties.of(Material.SAND, MaterialColor.SAND).strength(0.5F).sound(SoundType.SAND)).addBlockTags(List.of(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.SAND)).dropsSelf();
 	
 	@RegistryName("bioluminescent_block")
-	SimpleBlockZT BIOLUMINESCENT_BLOCK = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.SAND).strength(0.3F).sound(SoundType.GLASS).lightLevel(state -> 15));
+	SimpleBlockZT BIOLUMINESCENT_BLOCK = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.GLASS, MaterialColor.SAND).strength(0.3F).sound(SoundType.GLASS).lightLevel(state -> 15))
+			.addItemTag(TagsHL.Items.STORAGE_BLOCKS_GLOWSTONE);
 	
 	@RegistryName("plastic_casing")
 	SimpleWaterLoggableBlockZT PLASTIC_CASING = new SimpleWaterLoggableBlockZT(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).noOcclusion().isViewBlocking(BaseZT::never).strength(0.5F).sound(SoundType.STONE)).dropsSelf();

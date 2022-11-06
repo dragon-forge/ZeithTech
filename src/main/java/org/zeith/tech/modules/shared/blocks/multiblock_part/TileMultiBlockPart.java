@@ -21,6 +21,7 @@ import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.block.ZeithTechStateProperties;
 import org.zeith.tech.api.tile.multiblock.IMultiblockTile;
+import org.zeith.tech.api.utils.BlockUpdateEmitter;
 import org.zeith.tech.api.utils.CodecHelper;
 import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.init.TilesZT;
@@ -47,13 +48,7 @@ public class TileMultiBlockPart
 		subState = Block.stateById(v);
 		
 		requestModelDataUpdate();
-		
-		if(hasLevel())
-		{
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-			level.blockUpdated(worldPosition, getBlockState().getBlock());
-			Block.updateFromNeighbourShapes(getBlockState(), level, worldPosition);
-		}
+		BlockUpdateEmitter.blockUpdated(level, worldPosition);
 	}, () -> stateId));
 	
 	public TileMultiBlockPart(BlockPos pos, BlockState state)

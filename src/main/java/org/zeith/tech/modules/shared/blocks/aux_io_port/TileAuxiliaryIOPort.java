@@ -18,6 +18,7 @@ import org.zeith.api.wrench.IWrenchable;
 import org.zeith.hammerlib.tiles.TileSyncable;
 import org.zeith.tech.api.misc.RecursionGuard;
 import org.zeith.tech.api.tile.slots.*;
+import org.zeith.tech.api.utils.BlockUpdateEmitter;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TilesZT;
 
@@ -72,11 +73,7 @@ public class TileAuxiliaryIOPort
 			slotMap.put(dir, sides.getUUID(key));
 		}
 		
-		if(isOnClient())
-		{
-			requestModelDataUpdate();
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockAuxiliaryIOPort.ALT, !getBlockState().getValue(BlockAuxiliaryIOPort.ALT)));
-		}
+		BlockUpdateEmitter.blockUpdated(level, worldPosition);
 	}
 	
 	@Override

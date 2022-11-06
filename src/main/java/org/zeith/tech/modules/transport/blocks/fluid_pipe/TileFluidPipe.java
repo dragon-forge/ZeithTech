@@ -512,7 +512,8 @@ public class TileFluidPipe
 	public boolean doesConnectTo(Direction to)
 	{
 		return sideConfigs.get(to.ordinal()) != SideConfig.DISABLE &&
-				(level.getBlockEntity(worldPosition.relative(to)) instanceof TileFluidPipe || relativeFluidHandler(to).isPresent());
+				((level.getBlockEntity(worldPosition.relative(to)) instanceof TileFluidPipe pipe && pipe.sideConfigs.get(to.getOpposite().ordinal()) != SideConfig.DISABLE)
+						|| relativeFluidHandler(to).isPresent());
 	}
 	
 	private LazyOptional<IFluidHandler> relativeFluidHandler(Direction to)

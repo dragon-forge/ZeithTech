@@ -7,6 +7,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -24,8 +25,8 @@ import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.tech.api.block.IMultiFluidLoggableBlock;
-import org.zeith.tech.api.block.ZeithTechStateProperties;
+import org.zeith.tech.api.block.*;
+import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
 import org.zeith.tech.core.ZeithTech;
@@ -37,7 +38,7 @@ import java.util.Map;
 
 public class BlockFluidPipe
 		extends BaseEntityBlockZT
-		implements ICreativeTabBlock, IRegisterListener, IMultiFluidLoggableBlock
+		implements ICreativeTabBlock, IRegisterListener, IMultiFluidLoggableBlock, IPipeCuttable
 {
 	static final Direction[] DIRECTIONS = Direction.values();
 	public static final Map<Direction, BooleanProperty> DIR2PROP = Map.of(
@@ -232,5 +233,28 @@ public class BlockFluidPipe
 			
 			super.onRemove(prevState, world, pos, newState, flag64);
 		}
+	}
+	
+	@Override
+	public VoxelShape getConnectionBoundary(BlockState state, Direction to)
+	{
+		return DIR2SHAPE.get(to);
+	}
+	
+	@Override
+	public boolean performCut(BlockState state, UseOnContext context, Direction cutPart)
+	{
+		if(context.getLevel().getBlockEntity(context.getClickedPos()) instanceof TileFluidPipe pipe)
+		{
+			var idx = cutPart.ordinal();
+			var cfg = pipe.sideConfigs.get(idx);
+			pipe.sideConfigs.set(idx, cfg == SideConfig.DISABLE ? SideConfig.NONE : SideConfig.DISABLE);
+			
+			if(context.getLevel().getBlockEntity(context.getClickedPos().relative(cutPart)) instanceof TileFluidPipe pipe2)
+				pipe2.sideConfigs.set(cutPart.getOpposite().ordinal(), pipe.sideConfigs.get(idx));
+			
+			return true;
+		}
+		return true;
 	}
 }

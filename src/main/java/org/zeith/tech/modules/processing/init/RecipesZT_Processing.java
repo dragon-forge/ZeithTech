@@ -25,6 +25,7 @@ import org.zeith.tech.api.item.ItemComparators;
 import org.zeith.tech.api.recipes.base.ExtraOutput;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.ZeithTech;
+import org.zeith.tech.core.cfg.ZeithTechBalanceConfigs;
 import org.zeith.tech.modules.shared.init.*;
 import org.zeith.tech.utils.RecipeManagerHelper;
 
@@ -35,7 +36,8 @@ public interface RecipesZT_Processing
 {
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
-		event.removeRecipe(new ResourceLocation("netherite_ingot"));
+		if(ZeithTechBalanceConfigs.INSTANCE.getCurrent().vanilla.netheriteTweaks)
+			event.removeRecipe(new ResourceLocation("netherite_ingot"));
 		
 		event.shaped().shape("iin", "is ", " s ").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).map('n', Tags.Items.NUGGETS_IRON).result(ItemsZT_Processing.IRON_HAMMER).register();
 		event.shaped().shape("i i", " i ", "s s").map('i', Tags.Items.INGOTS_IRON).map('s', Tags.Items.RODS_WOODEN).result(ItemsZT_Processing.WIRE_CUTTER).register();
@@ -459,11 +461,12 @@ public interface RecipesZT_Processing
 				.result(ItemsZT.TUNGSTEN_INGOT)
 				.register();
 		
-		f.get().tier(IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC)
-				.input(Items.NETHERITE_SCRAP, Tags.Items.STORAGE_BLOCKS_GOLD)
-				.minTemperature(2048)
-				.craftTime(5 * 60 * 20)
-				.result(Items.NETHERITE_INGOT)
-				.register();
+		if(ZeithTechBalanceConfigs.INSTANCE.getCurrent().vanilla.netheriteTweaks)
+			f.get().tier(IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC)
+					.input(Items.NETHERITE_SCRAP, Tags.Items.STORAGE_BLOCKS_GOLD)
+					.minTemperature(2048)
+					.craftTime(5 * 60 * 20)
+					.result(Items.NETHERITE_INGOT)
+					.register();
 	}
 }

@@ -1,12 +1,14 @@
 package org.zeith.tech.modules.processing.init;
 
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import org.zeith.hammerlib.annotations.RegistryName;
 import org.zeith.hammerlib.annotations.SimplyRegister;
+import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.tech.api.block.multiblock.blast_furnace.IBlastFurnaceCasingBlock;
 import org.zeith.tech.modules.processing.blocks.BlockCompositeBricks;
 import org.zeith.tech.modules.processing.blocks.BlockMiningPipe;
@@ -72,7 +74,7 @@ public interface BlocksZT_Processing
 	BlockPatternStorage PATTERN_STORAGE = new BlockPatternStorage();
 	
 	@RegistryName("blast_furnace_burner")
-	SimpleBlockZT BLAST_FURNACE_BURNER = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F).requiresCorrectToolForDrops()).dropsSelf();
+	SimpleBlockZT BLAST_FURNACE_BURNER = new SimpleBlockZT(BlockBehaviour.Properties.of(Material.STONE).strength(1.5F).requiresCorrectToolForDrops(), BlockHarvestAdapter.MineableType.PICKAXE, Tiers.STONE).dropsSelf();
 	
 	@RegistryName("composite_bricks/broken")
 	BlockCompositeBricks BROKEN_COMPOSITE_BRICKS = new BlockCompositeBricks(null, IBlastFurnaceCasingBlock.BlastFurnaceTier.BASIC, 1F, 0.25F);

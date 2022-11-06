@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.*;
@@ -24,6 +25,8 @@ import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.tech.api.block.IPipeCuttable;
+import org.zeith.tech.api.enums.SideConfig;
 import org.zeith.tech.api.tile.facade.FacadeData;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
 import org.zeith.tech.core.ZeithTech;
@@ -34,7 +37,7 @@ import java.util.Map;
 
 public class BlockItemPipe
 		extends BaseEntityBlockZT
-		implements ICreativeTabBlock, IRegisterListener, SimpleWaterloggedBlock
+		implements ICreativeTabBlock, IRegisterListener, SimpleWaterloggedBlock, IPipeCuttable
 {
 	static final Direction[] DIRECTIONS = Direction.values();
 	public static final Map<Direction, BooleanProperty> DIR2PROP = Map.of(
@@ -290,5 +293,28 @@ public class BlockItemPipe
 			
 			super.onRemove(prevState, world, pos, newState, flag64);
 		}
+	}
+	
+	@Override
+	public VoxelShape getConnectionBoundary(BlockState state, Direction to)
+	{
+		return DIR2SHAPE.get(to);
+	}
+	
+	@Override
+	public boolean performCut(BlockState state, UseOnContext context, Direction cutPart)
+	{
+		if(context.getLevel().getBlockEntity(context.getClickedPos()) instanceof TileItemPipe pipe)
+		{
+			var idx = cutPart.ordinal();
+			var cfg = pipe.sideConfigs.get(idx);
+			pipe.sideConfigs.set(idx, cfg == SideConfig.DISABLE ? SideConfig.NONE : SideConfig.DISABLE);
+			
+			if(context.getLevel().getBlockEntity(context.getClickedPos().relative(cutPart)) instanceof TileItemPipe pipe2)
+				pipe2.sideConfigs.set(cutPart.getOpposite().ordinal(), pipe.sideConfigs.get(idx));
+			
+			return true;
+		}
+		return true;
 	}
 }
