@@ -22,10 +22,12 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.hammerlib.api.io.NBTSerializable;
 import org.zeith.hammerlib.api.tiles.IContainerTile;
 import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.SidedLocal;
+import org.zeith.hammerlib.util.java.DirectStorage;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.item.IRecipePatternItem;
 import org.zeith.tech.api.tile.ILoadableFromItem;
@@ -41,7 +43,10 @@ public class TilePatternStorage
 {
 	public final NonNullList<ItemStack> patterns = NonNullList.create();
 	
-	public final PropertyInt slotCount = new PropertyInt();
+	@NBTSerializable("SlotCount")
+	private int _slotCount;
+	
+	public final PropertyInt slotCount = new PropertyInt(DirectStorage.create(v -> _slotCount = v, () -> _slotCount));
 	public final PropertyInt openPlayerCount = new PropertyInt();
 	
 	protected final List<Player> openPlayers = new ArrayList<>();
@@ -176,7 +181,7 @@ public class TilePatternStorage
 			if(!item.isEmpty())
 				patterns.add(item);
 		}
-		
+		slotCount.setInt(patterns.size());
 		super.readNBT(nbt);
 	}
 	
