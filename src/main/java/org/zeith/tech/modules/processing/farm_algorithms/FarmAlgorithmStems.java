@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.block.IFarmlandBlock;
 import org.zeith.tech.api.misc.SoundConfiguration;
 import org.zeith.tech.api.misc.farm.*;
@@ -54,7 +55,8 @@ public class FarmAlgorithmStems
 	public @NotNull EnumFarmItemCategory categorizeItem(IFarmController controller, ItemStack stack)
 	{
 		if(getProgrammingItem().test(stack)) return EnumFarmItemCategory.PLANT;
-		if(stack.is(Items.DIRT)) return EnumFarmItemCategory.SOIL;
+		if(ZeithTechAPI.get().getModules().processing().farmData().isFarmlandPlaceable(stack))
+			return EnumFarmItemCategory.SOIL;
 		if(stack.is(Items.BONE_MEAL)) return EnumFarmItemCategory.FERTILIZER;
 		return EnumFarmItemCategory.UNKNOWN;
 	}
@@ -90,7 +92,7 @@ public class FarmAlgorithmStems
 					return AlgorithmUpdateResult.RETRY;
 				}
 			}
-		} else if((tilled = InteractionHelper.getTilledState(level, controller.getAsPlayer(level), dirtPos)) != null && tilled.is(Blocks.FARMLAND))
+		} else if((tilled = InteractionHelper.getTilledState(level, controller.getAsPlayer(level), dirtPos)) != null && tilled.getBlock() instanceof IFarmlandBlock)
 		{
 			if(plantStem)
 			{

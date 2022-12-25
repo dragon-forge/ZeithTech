@@ -6,10 +6,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.block.IFarmlandBlock;
 import org.zeith.tech.api.misc.SoundConfiguration;
 import org.zeith.tech.api.misc.farm.*;
@@ -37,8 +39,9 @@ public class FarmAlgorithmCrops
 	protected final LazyValue<Ingredient> item = LazyValue.of(() ->
 	{
 		List<Item> items = new ArrayList<>();
+		var farmData = ZeithTechAPI.get().getModules().processing().farmData();
 		for(Item item : ForgeRegistries.ITEMS)
-			if(item instanceof BlockItem ib && ib.getBlock() instanceof CropBlock)
+			if((item instanceof BlockItem ib && ib.getBlock() instanceof CropBlock) || farmData.findCropSubAlgorithm(item).isPresent())
 				items.add(item);
 		return Ingredient.of(items.toArray(Item[]::new));
 	});
@@ -53,7 +56,10 @@ public class FarmAlgorithmCrops
 	public @NotNull EnumFarmItemCategory categorizeItem(IFarmController controller, ItemStack stack)
 	{
 		if(getProgrammingItem().test(stack)) return EnumFarmItemCategory.PLANT;
-		if(stack.is(Items.DIRT)) return EnumFarmItemCategory.SOIL;
+		
+		if(ZeithTechAPI.get().getModules().processing().farmData().isFarmlandPlaceable(stack))
+			return EnumFarmItemCategory.SOIL;
+		
 		if(stack.is(Items.BONE_MEAL)) return EnumFarmItemCategory.FERTILIZER;
 		return EnumFarmItemCategory.UNKNOWN;
 	}
@@ -85,7 +91,7 @@ public class FarmAlgorithmCrops
 					return AlgorithmUpdateResult.RETRY;
 				}
 			}
-		} else if((tilled = InteractionHelper.getTilledState(level, controller.getAsPlayer(level), dirtPos)) != null && tilled.is(Blocks.FARMLAND))
+		} else if((tilled = InteractionHelper.getTilledState(level, controller.getAsPlayer(level), dirtPos)) != null && tilled.getBlock() instanceof IFarmlandBlock)
 		{
 			var sound = new SoundConfiguration(SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1F, 1F);
 			
@@ -101,6 +107,12 @@ public class FarmAlgorithmCrops
 			controller.queueBlockHarvest(dirtPos, 2);
 			return AlgorithmUpdateResult.RETRY;
 		}
+		
+		var farmData = ZeithTechAPI.get().getModules().processing().farmData();
+		
+		var subAlg = farmData.findCropSubAlgorithm(level.getBlockState(cropPos).getBlock());
+		if(subAlg.isPresent())
+			return subAlg.orElseThrow().takeCareOfPlant(controller, level, platform, cropPos, cropState);
 		
 		if(cropState.getBlock() instanceof CropBlock crop)
 		{
@@ -138,6 +150,11 @@ public class FarmAlgorithmCrops
 					for(int i = 0; i < plantInv.getSlots(); ++i)
 					{
 						var stack = plantInv.getStackInSlot(i);
+						
+						subAlg = farmData.findCropSubAlgorithm(stack.getItem());
+						if(subAlg.isPresent() && subAlg.orElseThrow().plant(controller, level, platform, cropPos, stack))
+							return AlgorithmUpdateResult.RETRY;
+						
 						if(!stack.isEmpty() && stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof CropBlock crop)
 						{
 							var newState = crop.getPlant(level, cropPos);

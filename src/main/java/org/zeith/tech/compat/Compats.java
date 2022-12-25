@@ -2,6 +2,7 @@ package org.zeith.tech.compat;
 
 import net.minecraftforge.fml.ModList;
 import org.zeith.tech.compat.ae2.AE2Compat;
+import org.zeith.tech.compat.farmersdelight.FarmersDelightCompat;
 import org.zeith.tech.compat.patchouli.PatchouliCompat;
 
 import java.util.*;
@@ -15,6 +16,7 @@ public class Compats
 	{
 		COMPAT_MAP.put("ae2", () -> AE2Compat::new);
 		COMPAT_MAP.put("patchouli", () -> PatchouliCompat::new);
+		COMPAT_MAP.put("farmersdelight", () -> FarmersDelightCompat::new);
 	}
 	
 	public static List<? extends BaseCompat> gatherAll()

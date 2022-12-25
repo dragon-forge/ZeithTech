@@ -9,6 +9,7 @@
     "EarlyStartupMixin",
     "FarmBlockMixin",
     "TiersAccessor",
+    "compat.farmersdelight.RichSoilFarmlandBlockMixin",
     "compat.jei.JeiRecipeTypeMixin"
   ],
   "client": [

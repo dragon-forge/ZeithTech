@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.zeith.hammerlib.HammerLib;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.modules.IModuleProcessing;
+import org.zeith.tech.api.modules.processing.FarmData;
 import org.zeith.tech.api.recipes.processing.*;
 import org.zeith.tech.core.IInternalCode;
 import org.zeith.tech.modules.processing.blocks.farm.ContainerFarm;
@@ -21,6 +22,7 @@ public class ProcessingModule
 	public static final CommonProcessingProxyZT PROXY = DistExecutor.unsafeRunForDist(() -> ClientProcessingProxyZT::new, () -> CommonProcessingProxyZT::new);
 	
 	private boolean wasEnabled = false;
+	private final FarmData farmData = new FarmData();
 	
 	@Override
 	public void construct(LegacyEventBus bus)
@@ -51,5 +53,11 @@ public class ProcessingModule
 	public boolean isModuleActivated()
 	{
 		return wasEnabled;
+	}
+	
+	@Override
+	public FarmData farmData()
+	{
+		return farmData;
 	}
 }
