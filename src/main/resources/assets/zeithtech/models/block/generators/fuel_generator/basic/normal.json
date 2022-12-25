@@ -5,6 +5,7 @@
     "1": "zeithtech:processing/block/base_vertical",
     "2": "zeithtech:generators/block/fuel_generator/basic/back",
     "3": "zeithtech:generators/block/fuel_generator/basic/front_off",
+    "3_shimmer": "zeithtech:generators/block/fuel_generator/basic/front_off",
     "4": "zeithtech:processing/block/base_horizontal",
     "particle": "zeithtech:generators/block/fuel_generator/basic/front_off"
   }

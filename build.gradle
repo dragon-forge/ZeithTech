@@ -98,6 +98,9 @@ repositories {
         name = "jei"
         url = "https://dvs1.progwml6.com/files/maven"
     }
+    maven {
+        url "https://maven.firstdarkdev.xyz/snapshots"
+    }
     flatDir { dirs 'libraries/all' }
     flatDir { dirs 'libraries/classpathOnly' }
     flatDir { dirs 'libraries/runtimeOnly' }
@@ -105,6 +108,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
+
+    implementation fg.deobf("com.lowdragmc.shimmer:Shimmer-forge:${config.mc_version}-${config.shimmer_version}")
 
     implementation "org.zeith.hammerlib:HammerLib-${config.mc_version}:${config.hl_version}:deobf"
     implementation fg.deobf("org.zeith.improvableskills:ImprovableSkills-${config.mc_version}:${config.is3_version}")
@@ -217,6 +222,7 @@ curseforge {
             requiredDependency 'Hammer-Lib'
             optionalDependency 'Patchouli'
             optionalDependency 'JEI'
+            optionalDependency 'Shimmer'
         }
     }
 }

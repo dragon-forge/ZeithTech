@@ -3,6 +3,7 @@
   "textures": {
     "0": "zeithtech:generators/block/lfuel_generator/basic",
     "1": "zeithtech:generators/block/fuel_generator/basic/front_off",
+    "1_shimmer": "zeithtech:generators/block/fuel_generator/basic/front_off",
     "2": "zeithtech:processing/block/base_vertical",
     "3": "zeithtech:processing/block/base_vertical",
     "4": "zeithtech:generators/block/fuel_generator/basic/back",

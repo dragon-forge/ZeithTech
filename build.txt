@@ -8,6 +8,7 @@ mod_version=19.1.0_b26
 maven_group=org.zeith.tech
 is3_version=19.2.4
 hl_version=19.2.37
+shimmer_version=0.1.14
 
 # MC Info
 mc_version=1.19.2

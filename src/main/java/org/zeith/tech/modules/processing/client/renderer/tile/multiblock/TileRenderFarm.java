@@ -40,7 +40,7 @@ public class TileRenderFarm
 	}
 	
 	public static final RenderType FARM_TYPE = RenderType.entityCutout(ZeithTechAPI.id("textures/processing/entity/farm/base.png"));
-	public static final RenderType FARM_OVERLAY_TYPE = RenderType.entityCutout(ZeithTechAPI.id("textures/processing/entity/farm/overlay.png"));
+	public static final RenderType FARM_OVERLAY_TYPE = RenderType.entityTranslucentEmissive(ZeithTechAPI.id("textures/processing/entity/farm/overlay.png"));
 	
 	@Override
 	public void render(TileFarm entity, float partial, PoseStack pose, MultiBufferSource buf, int lighting, int overlay)
@@ -86,7 +86,7 @@ public class TileRenderFarm
 		
 		int rgb = entity.algorithmInventory.getItem(0).getBarColor();
 		float r = ColorHelper.getRed(rgb), g = ColorHelper.getGreen(rgb), b = ColorHelper.getBlue(rgb);
-		bone.render(pose, buf.getBuffer(FARM_OVERLAY_TYPE), lighting, overlay, r, g, b, 1F);
+		bone.render(pose, buf.getBuffer(FARM_OVERLAY_TYPE), lighting | 0x1000100, overlay, r, g, b, 1F);
 		
 		pose.popPose();
 		

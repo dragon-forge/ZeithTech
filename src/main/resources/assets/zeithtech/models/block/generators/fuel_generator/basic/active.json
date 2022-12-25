@@ -1,10 +1,12 @@
 {
   "parent": "zeithtech:block/generators/fuel_generator/basic/base",
+  "render_type": "cutout",
   "textures": {
     "0": "zeithtech:processing/block/base_vertical",
     "1": "zeithtech:processing/block/base_vertical",
     "2": "zeithtech:generators/block/fuel_generator/basic/back",
     "3": "zeithtech:generators/block/fuel_generator/basic/front_on",
+    "3_shimmer": "zeithtech:generators/block/fuel_generator/basic/front_on_glow",
     "4": "zeithtech:processing/block/base_horizontal",
     "particle": "zeithtech:generators/block/fuel_generator/basic/front_on"
   }

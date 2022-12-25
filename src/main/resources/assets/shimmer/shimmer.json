@@ -1,0 +1,21 @@
+{
+  "ColorReference": {
+    "bioluminescentGreen": {
+      "r": 200,
+      "g": 237,
+      "b": 166,
+      "a": 250
+    }
+  },
+  "Bloom": [
+  ],
+  "LightBlock": [
+    {
+      "block": "zeithtech:bioluminescent_block",
+      "color": "#bioluminescentGreen",
+      "radius": 15
+    }
+  ],
+  "LightItem": [
+  ]
+}
