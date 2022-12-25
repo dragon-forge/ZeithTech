@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
@@ -40,13 +39,13 @@ public interface Mesh
      * threadlocal/reused and should never be retained by the consumer.
      */
     void forEach(Consumer<QuadView> consumer);
-    
-    default Collection<BakedQuad> toBakedBlockQuads()
-    {
-        SpriteFinder finder = SpriteFinder
-                .get(Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS));
-        var result = new ArrayList<BakedQuad>();
-        forEach(qv -> result.add(qv.toBakedQuad(0, finder.find(qv, 0), false)));
-        return result;
-    }
+	
+	default ArrayList<BakedQuad> toBakedBlockQuads()
+	{
+		SpriteFinder finder = SpriteFinder
+				.get(Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS));
+		var result = new ArrayList<BakedQuad>();
+		forEach(qv -> result.add(qv.toBakedQuad(0, finder.find(qv, 0), false)));
+		return result;
+	}
 }

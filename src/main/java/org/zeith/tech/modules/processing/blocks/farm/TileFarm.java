@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -47,8 +48,7 @@ import org.zeith.tech.api.tile.energy.EnergyManager;
 import org.zeith.tech.api.tile.energy.EnumEnergyManagerKind;
 import org.zeith.tech.api.tile.multiblock.IMultiblockHydratesFarmland;
 import org.zeith.tech.api.tile.multiblock.IMultiblockTile;
-import org.zeith.tech.api.utils.CodecHelper;
-import org.zeith.tech.api.utils.InventoryHelper;
+import org.zeith.tech.api.utils.*;
 import org.zeith.tech.core.fluid.MultiTankHandler;
 import org.zeith.tech.core.net.PacketSpawnHydrateParticles;
 import org.zeith.tech.modules.processing.blocks.base.machine.ContainerBaseMachine;
@@ -147,9 +147,7 @@ public class TileFarm
 		tankSmooth.update(water.getFluid());
 		energy.update(level, worldPosition, null);
 		
-		var algo = algorithmInventory.getItem(0);
-		if(!algo.isEmpty() && algo.getItem() instanceof ItemFarmSoC soc) algorithm = soc.getAlgorithm(algo);
-		else algorithm = null;
+		var controllerPos = worldPosition.relative(getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
 		
 		if((checkNow || atTickRate(40)) && isOnServer() && level != null)
 		{
@@ -166,6 +164,18 @@ public class TileFarm
 			}
 			
 			checkNow = false;
+		}
+		
+		var pa = algorithm;
+		var algo = algorithmInventory.getItem(0);
+		if(!algo.isEmpty() && algo.getItem() instanceof ItemFarmSoC soc)
+		{
+			algorithm = soc.getAlgorithm(algo);
+			if(pa != algorithm) BlockUpdateEmitter.blockUpdated(level, controllerPos);
+		} else
+		{
+			algorithm = null;
+			if(pa != algorithm) BlockUpdateEmitter.blockUpdated(level, controllerPos);
 		}
 		
 		if(level instanceof ServerLevel server)

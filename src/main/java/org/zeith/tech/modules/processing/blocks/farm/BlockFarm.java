@@ -108,7 +108,7 @@ public class BlockFarm
 						MultiBlockFormer.ofBlockTagInvisible(-1, 0, 0, TagsZT.Blocks.STORAGE_BLOCKS_TIN),
 						MultiBlockFormer.ofBlockTagInvisible(-1, 0, 1, TagsZT.Blocks.STORAGE_BLOCKS_TIN),
 						
-						new MultiBlockFormer.MultiblockPart(new MultiBlockFormer.VisibleBlockPos(0, 0, -1, false), new BlockStatePredicate((state, getter, pos) -> state.is(BlocksZT_Processing.FARM_CONTROLLER), LazyValue.of(() -> new BlockState[] { BlocksZT_Processing.FARM_CONTROLLER.defaultBlockState() })))
+						new MultiBlockFormer.MultiblockPart(new MultiBlockFormer.VisibleBlockPos(0, 0, -1, true), new BlockStatePredicate((state, getter, pos) -> state.is(BlocksZT_Processing.FARM_CONTROLLER), LazyValue.of(() -> new BlockState[] { BlocksZT_Processing.FARM_CONTROLLER.defaultBlockState() })))
 						{
 							@Override
 							public boolean test(BlockPos origin, RotationHelper.PivotRotation rotation, Level level, BlockPos pos)

@@ -4,6 +4,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -24,6 +25,10 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.client.model.IBakedModel;
 import org.zeith.hammerlib.client.model.LoadUnbakedGeometry;
 import org.zeith.tech.modules.shared.blocks.multiblock_part.TileMultiBlockPart;
+import org.zeith.tech.modules.transport.client.resources.model.ModelFacadeSystem;
+import org.zeith.tech.shadow.codechicken.lib.model.pipeline.transformers.QuadReInterpolator;
+import org.zeith.tech.shadow.codechicken.lib.model.pipeline.transformers.QuadTinter;
+import org.zeith.tech.shadow.fabric.*;
 
 import java.util.*;
 import java.util.function.Function;
@@ -61,18 +66,51 @@ public class ModelMultiBlockPart
 			this.particle = particle;
 		}
 		
+		private static final Renderer renderer = Renderer.getInstance();
+		
 		@Override
 		public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @Nullable RenderType renderType)
 		{
 			var sub = data.get(TileMultiBlockPart.SUB_STATE);
+			var lvl = data.get(TileMultiBlockPart.SUB_LEVEL);
+			var pos = data.get(TileMultiBlockPart.SUB_POS);
 			
-			if(sub != null)
+			if(sub != null && lvl != null && pos != null)
 			{
 				var dispatcher = Minecraft.getInstance().getBlockRenderer();
 				var model = dispatcher.getBlockModel(sub);
 				
-				return renderType == null || model.getRenderTypes(sub, rand, ModelData.EMPTY).contains(renderType) ?
-						model.getQuads(sub, side, rand, ModelData.EMPTY, renderType) : List.of();
+				if(renderType == null || model.getRenderTypes(sub, rand, ModelData.EMPTY).contains(renderType))
+				{
+					var quads = model.getQuads(sub, side, rand, ModelData.EMPTY, renderType);
+					var facadeAccess = new ModelFacadeSystem.FacadeBlockAccess(lvl, pos, side, sub);
+					BlockColors blockColors = Minecraft.getInstance().getBlockColors();
+					QuadReInterpolator interpolator = new QuadReInterpolator();
+					
+					MeshBuilder meshBuilder = renderer.meshBuilder();
+					QuadEmitter emitter = meshBuilder.getEmitter();
+					
+					for(var quad : quads)
+					{
+						var ti = quad.getTintIndex();
+						QuadTinter quadTinter = null;
+						if(ti != -1)
+							quadTinter = new QuadTinter(blockColors.getColor(sub, facadeAccess, pos, ti));
+						
+						emitter.fromVanilla(quad.getVertices(), 0, false);
+						emitter.nominalFace(quad.getDirection());
+						
+						interpolator.setInputQuad(emitter);
+						
+						interpolator.transform(emitter);
+						
+						if(quadTinter != null) quadTinter.transform(emitter);
+						
+						emitter.emit();
+					}
+					
+					return meshBuilder.build().toBakedBlockQuads();
+				}
 			}
 			
 			return List.of();

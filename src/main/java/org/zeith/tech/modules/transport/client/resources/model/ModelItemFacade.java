@@ -159,8 +159,7 @@ public class ModelItemFacade
 			if(side != null) return Collections.emptyList();
 			if(quads == null)
 			{
-				quads = new ArrayList<>();
-				quads.addAll(buildFacadeItemQuads(this.textureStack, Direction.NORTH).toBakedBlockQuads());
+				quads = buildFacadeItemQuads(this.textureStack, Direction.NORTH).toBakedBlockQuads();
 				quads.addAll(base.getQuads(state, null, rand, data, renderType));
 				quads = Collections.unmodifiableList(quads);
 			}

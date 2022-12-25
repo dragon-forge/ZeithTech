@@ -18,9 +18,9 @@ import org.zeith.hammerlib.client.utils.RenderUtils;
 import org.zeith.hammerlib.util.colors.ColorHelper;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechCapabilities;
+import org.zeith.tech.modules.processing.blocks.farm.BlockFarmController;
 import org.zeith.tech.modules.processing.client.renderer.item.ItemPropertyAlt;
-import org.zeith.tech.modules.processing.init.FluidsZT_Processing;
-import org.zeith.tech.modules.processing.init.ItemsZT_Processing;
+import org.zeith.tech.modules.processing.init.*;
 import org.zeith.tech.modules.processing.items.redstone_control_tool.ContainerRedstoneControl;
 import org.zeith.tech.modules.shared.client.gui.WidgetAPI;
 import org.zeith.tech.utils.LegacyEventBus;
@@ -34,6 +34,7 @@ public class ClientProcessingProxyZT
 		modBus.addListener(FMLClientSetupEvent.class, this::clientSetup);
 		modBus.addListener(RegisterGuiOverlaysEvent.class, this::registerOverlays);
 		modBus.addListener(RegisterColorHandlersEvent.Item.class, this::registerItemColors);
+		modBus.addListener(RegisterColorHandlersEvent.Block.class, this::registerBlockColors);
 	}
 	
 	private void clientSetup(FMLClientSetupEvent e)
@@ -60,6 +61,11 @@ public class ClientProcessingProxyZT
 	{
 		e.register((stack, i) -> i > 0 ? ItemsZT_Processing.FARM_SOC.getBarColor(stack) : 0xFFFFFF, ItemsZT_Processing.FARM_SOC);
 		e.register((stack, i) -> i > 0 ? ItemsZT_Processing.SOC_PROGRAMMER.getBarColor(stack) : 0xFFFFFF, ItemsZT_Processing.SOC_PROGRAMMER);
+	}
+	
+	private void registerBlockColors(RegisterColorHandlersEvent.Block e)
+	{
+		e.register(BlockFarmController::getLightColor, BlocksZT_Processing.FARM_CONTROLLER);
 	}
 	
 	private void registerOverlays(RegisterGuiOverlaysEvent e)

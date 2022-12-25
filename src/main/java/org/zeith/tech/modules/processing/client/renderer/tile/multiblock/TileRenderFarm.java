@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.zeith.hammerlib.client.render.FluidRendererHelper;
 import org.zeith.hammerlib.client.render.tile.IBESR;
 import org.zeith.hammerlib.client.utils.FluidTextureType;
-import org.zeith.hammerlib.util.colors.ColorHelper;
 import org.zeith.hammerlib.util.mcf.RotationHelper;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.core.client.renderer.*;
@@ -83,10 +82,10 @@ public class TileRenderFarm
 		pose.mulPose(Vector3f.XP.rotationDegrees(180));
 		
 		bone.render(pose, buf.getBuffer(FARM_TYPE), lighting, overlay, 1F, 1F, 1F, 1F);
-		
-		int rgb = entity.algorithmInventory.getItem(0).getBarColor();
-		float r = ColorHelper.getRed(rgb), g = ColorHelper.getGreen(rgb), b = ColorHelper.getBlue(rgb);
-		bone.render(pose, buf.getBuffer(FARM_OVERLAY_TYPE), lighting | 0x1000100, overlay, r, g, b, 1F);
+
+//		int rgb = entity.algorithmInventory.getItem(0).getBarColor();
+//		float r = ColorHelper.getRed(rgb), g = ColorHelper.getGreen(rgb), b = ColorHelper.getBlue(rgb);
+//		bone.render(pose, buf.getBuffer(FARM_OVERLAY_TYPE), lighting, overlay, r, g, b, 1F);
 		
 		pose.popPose();
 		

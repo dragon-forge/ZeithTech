@@ -3,6 +3,7 @@ package org.zeith.tech.modules.shared.blocks.multiblock_part;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -19,6 +20,7 @@ import org.zeith.hammerlib.net.properties.PropertyInt;
 import org.zeith.hammerlib.tiles.TileSyncableTickable;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.DirectStorage;
+import org.zeith.tech.api.block.IMultiBlockPartWrapListener;
 import org.zeith.tech.api.block.ZeithTechStateProperties;
 import org.zeith.tech.api.tile.multiblock.IMultiblockTile;
 import org.zeith.tech.api.utils.BlockUpdateEmitter;
@@ -34,6 +36,8 @@ public class TileMultiBlockPart
 		extends TileSyncableTickable
 {
 	public static final ModelProperty<BlockState> SUB_STATE = new ModelProperty<>();
+	public static final ModelProperty<Level> SUB_LEVEL = new ModelProperty<>();
+	public static final ModelProperty<BlockPos> SUB_POS = new ModelProperty<>();
 	
 	@NBTSerializable("Origin")
 	public BlockPos origin = BlockPos.ZERO;
@@ -120,6 +124,8 @@ public class TileMultiBlockPart
 	{
 		return ModelData.builder()
 				.with(SUB_STATE, subState)
+				.with(SUB_LEVEL, level)
+				.with(SUB_POS, worldPosition)
 				.build();
 	}
 	
@@ -133,7 +139,7 @@ public class TileMultiBlockPart
 		this.origin = origin != null ? origin.subtract(worldPosition) : null;
 	}
 	
-	public static BlockState getPartState(Level level, BlockPos pos)
+	public static BlockState getPartState(BlockGetter level, BlockPos pos)
 	{
 		if(level == null) return Blocks.AIR.defaultBlockState();
 		if(level.getBlockEntity(pos) instanceof TileMultiBlockPart p && p.subState != null)
@@ -146,7 +152,9 @@ public class TileMultiBlockPart
 		if(level.getBlockEntity(pos) instanceof TileMultiBlockPart part)
 		{
 			level.removeBlockEntity(pos);
-			level.setBlockAndUpdate(pos, part.subState);
+			var state = part.subState;
+			if(state.getBlock() instanceof IMultiBlockPartWrapListener l) state = l.deformFromPart(part, level, pos, state);
+			level.setBlockAndUpdate(pos, state);
 		}
 	}
 	
@@ -170,6 +178,7 @@ public class TileMultiBlockPart
 		
 		part.setOrigin(origin.immutable());
 		part.subTileData = tileData;
+		if(state.getBlock() instanceof IMultiBlockPartWrapListener l) state = l.formToPart(part, level, rel, state);
 		part.setSubState(state);
 		part.sync();
 	}

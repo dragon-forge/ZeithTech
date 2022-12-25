@@ -1,0 +1,61 @@
+{
+  "parent": "block/block",
+  "render_type": "cutout",
+  "textures": {
+    "0": "zeithtech:processing/block/farm/controller_up_light",
+    "1": "zeithtech:processing/block/farm/controller_up",
+    "particle": "zeithtech:processing/block/farm/controller_up"
+  },
+  "elements": [
+    {
+      "from": [
+        8,
+        16.01,
+        3
+      ],
+      "to": [
+        14,
+        16.02,
+        8
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            2,
+            8,
+            8,
+            13
+          ],
+          "rotation": 180,
+          "texture": "#0",
+          "cullface": "up",
+          "tintindex": -102
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        16,
+        0
+      ],
+      "to": [
+        16,
+        16.01,
+        16
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "rotation": 180,
+          "texture": "#1"
+        }
+      }
+    }
+  ]
+}

@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
+    "enabled=false,facing=north": {
       "model": "zeithtech:block/processing/farm/controller"
     },
-    "facing=south": {
+    "enabled=false,facing=south": {
       "model": "zeithtech:block/processing/farm/controller",
       "y": 180
     },
-    "facing=west": {
+    "enabled=false,facing=west": {
       "model": "zeithtech:block/processing/farm/controller",
       "y": 270
     },
-    "facing=east": {
+    "enabled=false,facing=east": {
       "model": "zeithtech:block/processing/farm/controller",
+      "y": 90
+    },
+    "enabled=true,facing=north": {
+      "model": "zeithtech:block/processing/farm/controller_formed"
+    },
+    "enabled=true,facing=south": {
+      "model": "zeithtech:block/processing/farm/controller_formed",
+      "y": 180
+    },
+    "enabled=true,facing=west": {
+      "model": "zeithtech:block/processing/farm/controller_formed",
+      "y": 270
+    },
+    "enabled=true,facing=east": {
+      "model": "zeithtech:block/processing/farm/controller_formed",
       "y": 90
     }
   }

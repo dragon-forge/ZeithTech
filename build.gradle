@@ -223,6 +223,8 @@ curseforge {
             optionalDependency 'Patchouli'
             optionalDependency 'JEI'
             optionalDependency 'Shimmer'
+            optionalDependency 'Farmers-Delight'
+            optionalDependency 'Applied-Energistics-2'
         }
     }
 }
