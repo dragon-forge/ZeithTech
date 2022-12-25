@@ -13,11 +13,31 @@ import net.minecraft.world.level.material.*;
 
 import java.util.Map;
 
+/**
+ * An interface for blocks that can be logged with multiple different fluids.
+ * <p>
+ * These blocks will have a boolean property for each fluid that they can be logged with,
+ * and the fluid state of the block will be determined by the fluid properties that are set to true.
+ */
 public interface IMultiFluidLoggableBlock
 		extends SimpleWaterloggedBlock
 {
+	/**
+	 * Gets a map of fluid to boolean property representing the fluids that this block can be logged with and
+	 * the corresponding property for each fluid.
+	 *
+	 * @return A map of fluid to boolean property.
+	 */
 	Map<FlowingFluid, BooleanProperty> getFluidLoggableProperties();
 	
+	/**
+	 * Gets the block state with all fluid properties set to false.
+	 *
+	 * @param state
+	 * 		The current block state.
+	 *
+	 * @return The block state with all fluid properties set to false.
+	 */
 	default BlockState getStateWithNoFluids(BlockState state)
 	{
 		for(var entry : getFluidLoggableProperties().entrySet())
@@ -25,6 +45,18 @@ public interface IMultiFluidLoggableBlock
 		return state;
 	}
 	
+	/**
+	 * Updates the block state with the correct shape for the fluids logged in it.
+	 *
+	 * @param accessor
+	 * 		The level accessor.
+	 * @param pos
+	 * 		The position of the block.
+	 * @param state
+	 * 		The current block state.
+	 *
+	 * @return The updated block state.
+	 */
 	default BlockState updateFluidLoggedShape(LevelAccessor accessor, BlockPos pos, BlockState state)
 	{
 		for(var entry : getFluidLoggableProperties().entrySet())
@@ -33,6 +65,16 @@ public interface IMultiFluidLoggableBlock
 		return state;
 	}
 	
+	/**
+	 * Gets the block state with the correct fluid properties set for placement.
+	 *
+	 * @param ctx
+	 * 		The block placement context.
+	 * @param def
+	 * 		The default block state.
+	 *
+	 * @return The block state with the correct fluid properties set.
+	 */
 	default BlockState getFluidLoggedStateForPlacement(BlockPlaceContext ctx, BlockState def)
 	{
 		var accessor = ctx.getLevel();
@@ -44,6 +86,20 @@ public interface IMultiFluidLoggableBlock
 		return def;
 	}
 	
+	/**
+	 * Determines if the given fluid can be placed in this block.
+	 *
+	 * @param getter
+	 * 		The block getter.
+	 * @param pos
+	 * 		The position of the block.
+	 * @param state
+	 * 		The current block state.
+	 * @param fluid
+	 * 		The fluid to place.
+	 *
+	 * @return {@code true} if the fluid can be placed in this block, {@code false} otherwise.
+	 */
 	@Override
 	default boolean canPlaceLiquid(BlockGetter getter, BlockPos pos, BlockState state, Fluid fluid)
 	{
@@ -53,6 +109,14 @@ public interface IMultiFluidLoggableBlock
 		return fluid instanceof FlowingFluid && props.containsKey(fluid);
 	}
 	
+	/**
+	 * Gets the fluid state of the block.
+	 *
+	 * @param state
+	 * 		The current block state.
+	 *
+	 * @return The fluid state of the block.
+	 */
 	default FluidState getFluidLoggedState(BlockState state)
 	{
 		for(var entry : getFluidLoggableProperties().entrySet())
@@ -62,6 +126,20 @@ public interface IMultiFluidLoggableBlock
 		return Fluids.EMPTY.defaultFluidState();
 	}
 	
+	/**
+	 * Places the given fluid in this block.
+	 *
+	 * @param level
+	 * 		The level.
+	 * @param pos
+	 * 		The position of the block.
+	 * @param state
+	 * 		The current block state.
+	 * @param fluid
+	 * 		The fluid to place.
+	 *
+	 * @return {@code true} if the fluid was placed, {@code false} otherwise.
+	 */
 	@Override
 	default boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluid)
 	{
@@ -87,6 +165,19 @@ public interface IMultiFluidLoggableBlock
 		return false;
 	}
 	
+	/**
+	 * Picks up the block and returns it as an {@link ItemStack}. If the block is logged with a fluid,
+	 * the fluid will be drained from the block and the block will be returned as an empty bucket.
+	 *
+	 * @param level
+	 * 		The level containing the block.
+	 * @param pos
+	 * 		The position of the block.
+	 * @param state
+	 * 		The state of the block.
+	 *
+	 * @return The {@link ItemStack} representing the picked up liquid.
+	 */
 	@Override
 	default ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
 	{

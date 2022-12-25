@@ -17,6 +17,12 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+/**
+ * A utility class for creating multi-block structures.
+ *
+ * @param <DATA>
+ * 		The type of data to be associated with the multi-block structure.
+ */
 public class MultiBlockFormer<DATA>
 {
 	private static final RotationHelper.PivotRotation[][] ROTATION_MATRIX = {
@@ -29,16 +35,46 @@ public class MultiBlockFormer<DATA>
 	private final BlockPos size;
 	private final boolean isSymmetrical;
 	
+	/**
+	 * Creates a new {@code MultiBlockFormer} instance with the given metadata, component offsets, and symmetry flag.
+	 *
+	 * @param isSymmetrical
+	 * 		Whether the multi-block structure is symmetrical or not.
+	 * @param metadata
+	 * 		The metadata to be associated with the multi-block structure.
+	 * @param offsets
+	 * 		The components of the multi-block structure.
+	 */
 	public MultiBlockFormer(boolean isSymmetrical, MultiBlockMetadata<DATA> metadata, MultiblockPart... offsets)
 	{
 		this(isSymmetrical, metadata, List.of(offsets));
 	}
 	
+	/**
+	 * Creates a new {@code MultiBlockFormer} instance with the given metadata, component offsets, and symmetry flag.
+	 *
+	 * @param isSymmetrical
+	 * 		Whether the multi-block structure is symmetrical or not.
+	 * @param metadata
+	 * 		The metadata to be associated with the multi-block structure.
+	 * @param offsets
+	 * 		The components of the multi-block structure.
+	 */
 	public MultiBlockFormer(boolean isSymmetrical, MultiBlockMetadata<DATA> metadata, MultiblockPart[]... offsets)
 	{
 		this(isSymmetrical, metadata, Stream.of(offsets).flatMap(Arrays::stream).toList());
 	}
 	
+	/**
+	 * Creates a new {@code MultiBlockFormer} instance with the given metadata, component offsets, and symmetry flag.
+	 *
+	 * @param isSymmetrical
+	 * 		Whether the multi-block structure is symmetrical or not.
+	 * @param metadata
+	 * 		The metadata to be associated with the multi-block structure.
+	 * @param offsets
+	 * 		The components of the multi-block structure.
+	 */
 	public MultiBlockFormer(boolean isSymmetrical, MultiBlockMetadata<DATA> metadata, Collection<MultiblockPart> offsets)
 	{
 		this.isSymmetrical = isSymmetrical;
@@ -71,11 +107,28 @@ public class MultiBlockFormer<DATA>
 		);
 	}
 	
+	/**
+	 * Returns the components of the multi-block structure.
+	 *
+	 * @return The components of the multi-block structure.
+	 */
 	public List<MultiblockPart> getComponents()
 	{
 		return components;
 	}
 	
+	/**
+	 * Places a multi-block structure at the given origin with the given orientation and data.
+	 *
+	 * @param level
+	 * 		The level in which the multi-block structure will be placed.
+	 * @param origin
+	 * 		The origin position of the multi-block structure.
+	 * @param direction
+	 * 		The orientation of the multi-block structure.
+	 * @param data
+	 * 		The data to be associated with the multi-block structure.
+	 */
 	public void placeMultiBlock(Level level, BlockPos origin, Direction direction, DATA data)
 	{
 		var positions = getPositionsFrom(origin, direction);
@@ -85,12 +138,33 @@ public class MultiBlockFormer<DATA>
 		metadata.originBuilder().accept(level, origin, direction, data);
 	}
 	
+	/**
+	 * Deforms the multi-block structure at the given origin with the given orientation.
+	 * This removes any tile entities associated with the multi-block structure and restores the original blocks.
+	 *
+	 * @param level
+	 * 		The level in which the multi-block structure is located.
+	 * @param origin
+	 * 		The origin position of the multi-block structure.
+	 * @param direction
+	 * 		The orientation of the multi-block structure.
+	 */
 	public void deform(Level level, BlockPos origin, Direction direction)
 	{
 		var positions = getPositionsFrom(origin, direction);
 		for(BlockPos rel : positions) TileMultiBlockPart.unwrap(level, rel);
 	}
 	
+	/**
+	 * Returns the positions of the blocks in the multi-block structure relative to the given origin and orientation.
+	 *
+	 * @param origin
+	 * 		The origin position of the multi-block structure.
+	 * @param horizontal
+	 * 		The horizontal orientation of the multi-block structure.
+	 *
+	 * @return The positions of the blocks in the multi-block structure.
+	 */
 	public List<VisibleBlockPos> getPositionsFrom(BlockPos origin, Direction horizontal)
 	{
 		var rotator = RotationHelper.getRotationFromHorizontal(horizontal);
@@ -101,6 +175,19 @@ public class MultiBlockFormer<DATA>
 				.toList();
 	}
 	
+	/**
+	 * Finds the center position of the multi-block structure within the given level at the given position,
+	 * with the given rotation applied.
+	 *
+	 * @param level
+	 * 		The level to search within.
+	 * @param pos
+	 * 		The position to start searching from.
+	 * @param rot
+	 * 		The rotation to apply to the multi-block structure.
+	 *
+	 * @return The center position of the multi-block structure, or {@code Optional.empty()} if the center could not be found.
+	 */
 	public Optional<Tuple2<DATA, BlockPos>> findCenter(Level level, BlockPos pos, RotationHelper.PivotRotation rot)
 	{
 		var identity = rot == RotationHelper.PivotRotation.Y_0 || rot == RotationHelper.PivotRotation.Y_180;
@@ -117,6 +204,19 @@ public class MultiBlockFormer<DATA>
 				.findFirst();
 	}
 	
+	/**
+	 * Finds the center position and orientation of the multi-block structure within the given level,
+	 * starting from the given position and using the given preferred orientation as a hint.
+	 *
+	 * @param level
+	 * 		The level to search in.
+	 * @param pos
+	 * 		The starting position for the search.
+	 * @param preferred
+	 * 		The preferred orientation to use as a hint.
+	 *
+	 * @return An optional tuple containing the center position, data, and orientation of the multi-block structure, or an empty optional if the center could not be found.
+	 */
 	public Optional<Tuple3<DATA, BlockPos, Direction>> findCenterAndRotation(Level level, BlockPos pos, Direction preferred)
 	{
 		if(preferred != null)
@@ -136,21 +236,55 @@ public class MultiBlockFormer<DATA>
 		return Optional.empty();
 	}
 	
+	/**
+	 * Returns whether the multi-block structure is symmetrical or not.
+	 *
+	 * @return {@code true} if the multi-block structure is symmetrical, {@code false} otherwise.
+	 */
 	public boolean isSymmetrical()
 	{
 		return isSymmetrical;
 	}
 	
+	/**
+	 * Returns the size of the multi-block structure.
+	 *
+	 * @return The size of the multi-block structure.
+	 */
 	public Vec3i getSize()
 	{
 		return size;
 	}
 	
+	/**
+	 * Tests whether the multi-block structure can be placed at the given origin with the given orientation.
+	 *
+	 * @param level
+	 * 		The level in which the multi-block structure will be placed.
+	 * @param origin
+	 * 		The origin position of the multi-block structure.
+	 * @param horizontal
+	 * 		The horizontal orientation of the multi-block structure.
+	 *
+	 * @return {@code true} if the multi-block structure can be placed, {@code false} otherwise.
+	 */
 	public boolean test(Level level, BlockPos origin, Direction horizontal)
 	{
 		return test(level, origin, RotationHelper.getRotationFromHorizontal(horizontal));
 	}
 	
+	/**
+	 * Tests whether the multi-block structure can be placed at the given origin with the given rotation.
+	 *
+	 * @param level
+	 * 		The level in which the multi-block structure will be tested.
+	 * @param origin
+	 * 		The origin position of the multi-block structure.
+	 * @param rotator
+	 * 		The orientation of the multi-block structure.
+	 *
+	 * @return {@code true} if the multi-block structure can be placed, {@code false} otherwise.
+	 */
 	public boolean test(Level level, BlockPos origin, RotationHelper.PivotRotation rotator)
 	{
 		if(rotator == null) rotator = RotationHelper.PivotRotation.Y_0;

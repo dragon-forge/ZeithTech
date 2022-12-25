@@ -33,20 +33,17 @@ public class TomatoCropSubAlgorithm
 	@Override
 	public AlgorithmUpdateResult takeCareOfPlant(IFarmController controller, ServerLevel level, BlockPos platform, BlockPos cropPos, BlockState cropState)
 	{
-		if(cropState.getBlock() instanceof TomatoVineBlock vine)
+		if(cropState.getBlock() instanceof TomatoVineBlock vine && vine.isMaxAge(cropState))
 		{
-			if(vine.isMaxAge(cropState))
-			{
-				var drops = new ArrayList<ItemStack>();
-				
-				int quantity = 1 + level.random.nextInt(2);
-				drops.add(new ItemStack(ModItems.TOMATO.get(), quantity));
-				if(level.random.nextFloat() < 0.05) drops.add(new ItemStack(ModItems.ROTTEN_TOMATO.get()));
-				
-				controller.queueBlockTransformation(cropPos, cropState, vine.getStateForAge(0), drops, SoundConfiguration.place(cropState.getSoundType()), 5, 5);
-				
-				return AlgorithmUpdateResult.RETRY;
-			}
+			var drops = new ArrayList<ItemStack>();
+			
+			int quantity = 1 + level.random.nextInt(2);
+			drops.add(new ItemStack(ModItems.TOMATO.get(), quantity));
+			if(level.random.nextFloat() < 0.05) drops.add(new ItemStack(ModItems.ROTTEN_TOMATO.get()));
+			
+			controller.queueBlockTransformation(cropPos, cropState, vine.getStateForAge(0), drops, SoundConfiguration.place(cropState.getSoundType()), 5, 5);
+			
+			return AlgorithmUpdateResult.RETRY;
 		}
 		
 		return AlgorithmUpdateResult.PASS;

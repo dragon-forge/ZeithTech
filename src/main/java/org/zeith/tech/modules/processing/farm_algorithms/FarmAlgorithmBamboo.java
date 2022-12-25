@@ -80,16 +80,16 @@ public class FarmAlgorithmBamboo
 			}
 		}
 		
-		var cactiPos = sandPos.above();
-		var cactiState = level.getBlockState(cactiPos);
+		var bambooPos = sandPos.above();
+		var bambooState = level.getBlockState(bambooPos);
 		
 		// Plant bamboo
-		if(!cactiState.is(Blocks.BAMBOO) && !cactiState.is(Blocks.BAMBOO_SAPLING) && level.isEmptyBlock(cactiPos))
+		if(!bambooState.is(Blocks.BAMBOO) && !bambooState.is(Blocks.BAMBOO_SAPLING) && level.isEmptyBlock(bambooPos))
 		{
-			if(canBePlantedHere(level, cactiPos))
+			if(canBePlantedHere(level, bambooPos))
 			{
 				controller.queueBlockPlacement(controller.createItemConsumer(EnumFarmItemCategory.PLANT, new ItemStack(Items.BAMBOO)),
-						cactiPos, Blocks.BAMBOO_SAPLING.defaultBlockState(), 100, 0);
+						bambooPos, Blocks.BAMBOO_SAPLING.defaultBlockState(), 100, 0);
 				
 				return AlgorithmUpdateResult.SUCCESS;
 			}
@@ -98,13 +98,13 @@ public class FarmAlgorithmBamboo
 		}
 		
 		// Harvest bamboo
-		if(cactiState.is(Blocks.BAMBOO))
+		if(bambooState.is(Blocks.BAMBOO))
 		{
-			var maxCacti = cactiPos;
+			var maxCacti = bambooPos;
 			
 			int harvest = 0;
 			
-			var grownCacti = cactiPos.above();
+			var grownCacti = bambooPos.above();
 			while(true)
 			{
 				if(level.getBlockState(grownCacti).is(Blocks.BAMBOO))
@@ -119,7 +119,7 @@ public class FarmAlgorithmBamboo
 			}
 			
 			// We have found more bamboo above the original one, might as well harvest it.
-			if(maxCacti.getY() > cactiPos.getY())
+			if(maxCacti.getY() > bambooPos.getY())
 			{
 				controller.queueBlockHarvest(maxCacti, 0);
 				return harvest > 1 ? AlgorithmUpdateResult.RETRY : AlgorithmUpdateResult.SUCCESS;
