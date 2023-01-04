@@ -7,17 +7,13 @@ mod_version=19.1.0_b26
 # Maven Info
 maven_group=org.zeith.tech
 is3_version=19.2.4
-hl_version=19.3.44
+hl_version=19.3.45
 shimmer_version=0.1.14
 
 # MC Info
 mc_version=1.19.2
-forge_version=43.1.43
+forge_version=43.2.0
 mc_user=Zeitheron,63fa4c485b5640809727d5d59663e603
-
-# MCP Info
-mcp_ch=official
-mcp_vr=1.19.2
 
 # Misc Info
 java=17
