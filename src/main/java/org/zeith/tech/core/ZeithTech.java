@@ -1,7 +1,5 @@
 package org.zeith.tech.core;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
@@ -16,10 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.zeith.api.registry.RegistryMapping;
 import org.zeith.hammerlib.api.items.CreativeTab;
-import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.compat.base.CompatList;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
-import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
+import org.zeith.hammerlib.event.fml.FMLFingerprintCheckEvent;
+import org.zeith.hammerlib.util.CommonMessages;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.audio.IAudioSystem;
@@ -81,45 +79,13 @@ public class ZeithTech
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::setup);
 		bus.addListener(this::newRegistries);
+		bus.addListener(this::fingerprintCheck);
 		PROXY.construct(bus);
 		
 		this.busses = new LegacyEventBus(bus, MinecraftForge.EVENT_BUS);
 		
-		var illegalSourceNotice = ModSourceAdapter.getModSource(ZeithTech.class)
-				.filter(ModSourceAdapter.ModSource::wasDownloadedIllegally)
-				.orElse(null);
-		
-		if(illegalSourceNotice != null)
-		{
-			String officialUrl = "https://www.curseforge.com/minecraft/mc-mods/hammer-lib";
-			
-			LOG.fatal("====================================================");
-			LOG.fatal("WARNING: ZeithTech was downloaded from " + illegalSourceNotice.referrerDomain() +
-					", which has been marked as illegal site over at stopmodreposts.org.");
-			LOG.fatal("Please download the mod from " + officialUrl);
-			LOG.fatal("====================================================");
-			
-			var illegalUri = Component.literal(illegalSourceNotice.referrerDomain())
-					.withStyle(s -> s.withColor(ChatFormatting.RED));
-			var smrUri = Component.literal("stopmodreposts.org")
-					.withStyle(s -> s.withColor(ChatFormatting.BLUE)
-							.withUnderlined(true)
-							.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://stopmodreposts.org/"))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("Click to open webpage."))));
-			var curseforgeUri = Component.literal("curseforge.com")
-					.withStyle(s -> s.withColor(ChatFormatting.BLUE)
-							.withUnderlined(true)
-							.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, officialUrl))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal("Click to open webpage."))));
-			ChatMessageAdapter.sendOnFirstWorldLoad(Component.literal("WARNING: ZeithTech was downloaded from ")
-					.append(illegalUri)
-					.append(", which has been marked as illegal site over at ")
-					.append(smrUri)
-					.append(". Please download the mod from ")
-					.append(curseforgeUri)
-					.append(".")
-			);
-		}
+		CommonMessages.printMessageOnIllegalRedistribution(ZeithTech.class,
+				LOG, "ZeithTech", "https://www.curseforge.com/minecraft/mc-mods/zeith-tech");
 		
 		this.modules = new ModulesImpl();
 		this.modules.construct(this.busses);
@@ -128,6 +94,12 @@ public class ZeithTech
 		this.audioSystem = DistExecutor.unsafeRunForDist(() -> ClientAudioSystem::new, () -> CommonAudioSystem::new);
 		
 		forCompats(c -> c.setup(busses));
+	}
+	
+	private void fingerprintCheck(FMLFingerprintCheckEvent e)
+	{
+		CommonMessages.printMessageOnFingerprintViolation(e, "97e852e9b3f01b83574e8315f7e77651c6605f2b455919a7319e9869564f013c",
+				LOG, "ZeithTech", "https://www.curseforge.com/minecraft/mc-mods/zeith-tech");
 	}
 	
 	private void setup(FMLCommonSetupEvent e)

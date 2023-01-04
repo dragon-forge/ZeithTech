@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
@@ -22,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.client.model.IBakedModel;
 import org.zeith.hammerlib.util.java.Cast;
+import org.zeith.hammerlib.util.java.tuples.Tuple2;
+import org.zeith.hammerlib.util.java.tuples.Tuples;
 import org.zeith.tech.api.item.multitool.IMultiToolItem;
 import org.zeith.tech.api.item.multitool.IMultiToolPart;
 import org.zeith.tech.core.ZeithTech;
@@ -46,6 +47,9 @@ public class ModelMultiTool
 	protected ItemTransforms itemTransforms;
 	protected Material particle;
 	
+	protected final Set<ResourceLocation> childModelKeys;
+	protected final Map<ResourceLocation, UnbakedModel> unbakedModelMap = new HashMap<>();
+	
 	public ModelMultiTool(JsonObject json, JsonDeserializationContext ctx) throws JsonParseException
 	{
 		ItemTransforms transforms = ItemTransforms.NO_TRANSFORMS;
@@ -63,6 +67,13 @@ public class ModelMultiTool
 		});
 		
 		this.itemTransforms = transforms;
+		
+		this.childModelKeys = ForgeRegistries.ITEMS
+				.getValues()
+				.stream()
+				.flatMap(item -> Cast.optionally(item, IMultiToolPart.class).stream())
+				.flatMap(i -> i.getAllPossibleMultiToolPartModels().stream())
+				.collect(Collectors.toSet());
 	}
 	
 	private static Either<Material, String> parseTextureLocationOrReference(ResourceLocation atlas, String texture)
@@ -88,37 +99,34 @@ public class ModelMultiTool
 		return texture.charAt(0) == '#';
 	}
 	
-	public Map<Item, List<UnbakedModel>> getAllPartModels(Function<ResourceLocation, UnbakedModel> modelGetter)
+	public Map<ResourceLocation, BakedModel> getAllPartModelLocations(Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ModelBaker bakery)
 	{
-		return ForgeRegistries.ITEMS
-				.getValues()
+		return unbakedModelMap
+				.entrySet()
 				.stream()
-				.flatMap(item -> Cast.optionally(item, IMultiToolPart.class).stream())
-				.collect(Collectors.toMap(IMultiToolPart::multiToolPartAsItem, i -> i.getAllPossibleMultiToolPartModels().stream().map(modelGetter).toList()));
+				.map(path -> Tuples.immutable(
+						path.getKey(),
+						path.getValue().bake(bakery, spriteGetter, modelState, path.getKey())
+				))
+				.filter(t -> t.b() != null)
+				.collect(Collectors.toMap(Tuple2::a, Tuple2::b));
 	}
 	
-	public Map<ResourceLocation, UnbakedModel> getAllPartModelLocations(Function<ResourceLocation, UnbakedModel> modelGetter)
+	@Override
+	public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context)
 	{
-		return ForgeRegistries.ITEMS
-				.getValues()
-				.stream()
-				.flatMap(item -> Cast.optionally(item, IMultiToolPart.class).stream())
-				.flatMap(i -> i.getAllPossibleMultiToolPartModels().stream())
-				.collect(Collectors.toMap(r -> r, modelGetter));
+		for(var c : childModelKeys)
+		{
+			var model = modelGetter.apply(c);
+			model.resolveParents(modelGetter);
+			unbakedModelMap.put(c, model);
+		}
 	}
 	
 	@Override
 	public BakedModel bake(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 	{
-		var bakedMap = getAllPartModelLocations(bakery::getModel)
-				.entrySet()
-				.stream()
-				.flatMap(e ->
-						Optional.ofNullable(e.getValue().bake(bakery, spriteGetter, modelState, e.getKey()))
-								.map(baked -> Map.entry(e.getKey(), baked)).stream()
-				)
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-		
+		var bakedMap = getAllPartModelLocations(spriteGetter, modelState, bakery);
 		return new BakedMultiToolModel(itemTransforms, bakedMap, particle, spriteGetter, overrides);
 	}
 	
@@ -144,6 +152,20 @@ public class ModelMultiTool
 		public ItemOverrides getOverrides()
 		{
 			return overrides;
+		}
+		
+		@Override
+		public List<RenderType> getRenderTypes(ItemStack itemStack, boolean fabulous)
+		{
+			if(!(itemStack.getItem() instanceof IMultiToolItem mt))
+				return List.of();
+			return mt.getParts(itemStack, true, true)
+					.map(pair -> pair.getA().getMultiToolPartModel(pair.getB(), itemStack))
+					.map(modelLocations::get)
+					.filter(Objects::nonNull)
+					.flatMap(m -> m.getRenderTypes(itemStack, fabulous).stream())
+					.distinct()
+					.toList();
 		}
 		
 		@Override

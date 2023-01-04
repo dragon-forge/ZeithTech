@@ -46,7 +46,8 @@ public class BoatZTRenderer
 	
 	private BoatModel createBoatModel(EntityRendererProvider.Context ctx, BoatZT.Type type, boolean chest)
 	{
-		ModelLayerLocation loc = new ModelLayerLocation(new ResourceLocation("zeithtech", (chest ? "chest_" : "") + "boat/" + type.getName()), "main");
+		ModelLayerLocation loc = chest ? createChestBoatModelName(type) : createBoatModelName(type);
+		
 		return chest ? new ChestBoatModel(ctx.bakeLayer(loc))
 				: new BoatModel(ctx.bakeLayer(loc));
 	}

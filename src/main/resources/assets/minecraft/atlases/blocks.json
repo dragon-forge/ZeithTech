@@ -1,0 +1,34 @@
+{
+  "sources": [
+    {
+      "type": "directory",
+      "source": "generators/block",
+      "prefix": "generators/block/"
+    },
+    {
+      "type": "directory",
+      "source": "generators/item",
+      "prefix": "generators/item/"
+    },
+    {
+      "type": "directory",
+      "source": "processing/block",
+      "prefix": "processing/block/"
+    },
+    {
+      "type": "directory",
+      "source": "processing/item",
+      "prefix": "processing/item/"
+    },
+    {
+      "type": "directory",
+      "source": "transport/block",
+      "prefix": "transport/block/"
+    },
+    {
+      "type": "directory",
+      "source": "transport/item",
+      "prefix": "transport/item/"
+    }
+  ]
+}

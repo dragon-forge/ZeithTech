@@ -1,7 +1,7 @@
 # English translations
 
-itemGroup.zeithtech=ZeithTech
-itemGroup.zeithtech.facades=ZeithTech: Facades
+creative_tab.zeithtech.root=ZeithTech
+creative_tab.zeithtech.facades=ZeithTech: Facades
 
 ### World Module ###
 block.zeithtech.reinforced_planks=Reinforced Planks
