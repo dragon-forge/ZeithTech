@@ -66,8 +66,11 @@ public class ItemFarmSoC
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items)
 	{
 		if(allowedIn(tab))
+		{
+			items.add(getDefaultInstance());
 			for(FarmAlgorithm algorithm : ZeithTechAPI.get().getFarmAlgorithms())
 				items.add(ofAlgorithm(algorithm));
+		}
 	}
 	
 	@Override
