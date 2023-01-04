@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.processing.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -54,9 +54,9 @@ public class TileRendererFluidCentrifuge
 		
 		matrix.pushPose();
 		matrix.translate(0.5, 0, 0.5);
-		matrix.mulPose(Vector3f.YP.rotationDegrees(rotation));
+		matrix.mulPose(Axis.YP.rotationDegrees(rotation));
 		matrix.translate(0.5, 1.5, 0.5);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(180));
+		matrix.mulPose(Axis.XP.rotationDegrees(180));
 		animatedPart.render(matrix, cutout, lighting, overlay, 1F, 1F, 1F, 1F);
 		matrix.popPose();
 		
@@ -73,7 +73,7 @@ public class TileRendererFluidCentrifuge
 			
 			matrix.pushPose();
 			matrix.translate(0.5, 0, 0.5);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(rotation));
+			matrix.mulPose(Axis.YP.rotationDegrees(rotation));
 			matrix.translate(-0.5, 0, -0.5);
 			CuboidRenderer.renderCube(cuboid, matrix, fluidsSrc, argb, lighting, overlay, CuboidRenderer.FaceDisplay.FRONT, true);
 			matrix.popPose();

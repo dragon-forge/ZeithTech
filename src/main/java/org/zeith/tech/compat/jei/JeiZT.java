@@ -83,7 +83,7 @@ public class JeiZT
 		
 		ZeithTechAPI.get().getFarmAlgorithms().getValues().stream().map(ItemsZT.FARM_SOC::ofAlgorithm).forEach(items::add);
 		
-		if(ZeithTechTransportConfigs.INSTANCE.getCurrent().main.facadesInJEI) ZeithTech.FACADES_TAB.fillItemList(items);
+		if(ZeithTechTransportConfigs.INSTANCE.getCurrent().main.facadesInJEI) items.addAll(ZeithTech.FACADES_TAB.tab().getDisplayItems());
 		
 		jeiRuntime.getIngredientManager().addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, items);
 	}

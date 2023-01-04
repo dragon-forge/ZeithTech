@@ -15,12 +15,12 @@ package org.zeith.tech.shadow.fabric;
  * limitations under the License.
  */
 
-import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import static net.minecraft.util.Mth.equal;
 

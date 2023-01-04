@@ -1,9 +1,10 @@
 package org.zeith.tech.modules.world.blocks;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.WoodButtonBlock;
+import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.zeith.hammerlib.api.blocks.ICustomBlockItem;
@@ -14,7 +15,7 @@ import org.zeith.tech.core.ZeithTech;
 import java.util.*;
 
 public class BlockHeveaWoodButton
-		extends WoodButtonBlock
+		extends ButtonBlock
 		implements IRegisterListener, ICustomBlockItem
 {
 	private final List<TagKey<Item>> itemTags = new ArrayList<>();
@@ -22,7 +23,7 @@ public class BlockHeveaWoodButton
 	
 	public BlockHeveaWoodButton(Properties props)
 	{
-		super(props);
+		super(props, 30, true, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundEvents.WOODEN_BUTTON_CLICK_ON);
 	}
 	
 	public BlockHeveaWoodButton dropsSelf()
@@ -66,12 +67,12 @@ public class BlockHeveaWoodButton
 	@Override
 	public BlockItem createBlockItem()
 	{
-		var props = new Item.Properties().tab(ZeithTech.TAB);
+		var props = new Item.Properties();
 		var gen = new BlockItem(this, props);
 		itemBlock = gen;
 		for(var tag : itemTags)
 			TagAdapter.bind(tag, gen);
-		return gen;
+		return ZeithTech.TAB.add(gen);
 	}
 	
 	@Override

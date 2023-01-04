@@ -28,6 +28,7 @@ import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.voxels.VoxelShapeCache;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.client.renderer.item.BlockItemWithAltISTER;
 import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.modules.shared.BaseZT;
@@ -182,7 +183,7 @@ public class BlockPatternStorage
 	@Override
 	public BlockItem createBlockItem()
 	{
-		return new BlockItem(this, BaseZT.itemProps())
+		return ZeithTech.TAB.add(new BlockItem(this, BaseZT.itemProps())
 		{
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer)
@@ -191,6 +192,6 @@ public class BlockPatternStorage
 						.bind(BlockPatternStorage.this, TilesZT_Processing.PATTERN_STORAGE)
 						.ifPresent(consumer);
 			}
-		};
+		});
 	}
 }

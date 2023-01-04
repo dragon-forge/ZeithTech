@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.world.blocks;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +24,7 @@ public class BlockHeveaDoor
 	
 	public BlockHeveaDoor(Properties props)
 	{
-		super(props);
+		super(props, SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN);
 	}
 	
 	public BlockHeveaDoor dropsSelf()
@@ -67,12 +68,12 @@ public class BlockHeveaDoor
 	@Override
 	public BlockItem createBlockItem()
 	{
-		var props = new Item.Properties().tab(ZeithTech.TAB);
+		var props = new Item.Properties();
 		var gen = new BlockItem(this, props);
 		itemBlock = gen;
 		for(var tag : itemTags)
 			TagAdapter.bind(tag, gen);
-		return gen;
+		return ZeithTech.TAB.add(gen);
 	}
 	
 	@Override

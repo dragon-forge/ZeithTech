@@ -15,8 +15,7 @@ package org.zeith.tech.core.mixins.client;
  * limitations under the License.
  */
 
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.*;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,8 +35,8 @@ public class TextureAtlasMixin
 	
 	private SpriteFinderImpl fabric_spriteFinder = null;
 	
-	@Inject(at = @At("RETURN"), method = "reload")
-	private void uploadHook(TextureAtlas.Preparations input, CallbackInfo info)
+	@Inject(at = @At("RETURN"), method = "upload")
+	private void uploadHook(SpriteLoader.Preparations input, CallbackInfo info)
 	{
 		fabric_spriteFinder = null;
 	}

@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.HammerLib;
+import org.zeith.hammerlib.api.items.ITabItem;
 import org.zeith.hammerlib.event.recipe.BuildTagsEvent;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TagsZT;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 public class ItemFacade
 		extends Item
+		implements ITabItem
 {
 	public ItemFacade(Properties props)
 	{
@@ -76,6 +78,12 @@ public class ItemFacade
 		{
 		}
 		return super.getName(is);
+	}
+	
+	@Override
+	public CreativeModeTab getItemCategory()
+	{
+		return ZeithTech.FACADES_TAB.tab();
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.processing.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -56,9 +56,9 @@ public class TileRendererPatternStorage
 		matrix.pushPose();
 		RotatedRenderHelper.rotateHorizontalPoseStack(matrix, entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), 0F, 0F, 0F);
 		matrix.translate(0, 1.5, 1 + 0.3125F * openness);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(180));
+		matrix.mulPose(Axis.XP.rotationDegrees(180));
 		
-		matrix.mulPose(Vector3f.YP.rotationDegrees(90));
+		matrix.mulPose(Axis.YP.rotationDegrees(90));
 		
 		var b = buf.getBuffer(CUTOUT_BLOCK);
 		root.render(matrix, b, lighting, overlay, 1F, 1F, 1F, 1F);

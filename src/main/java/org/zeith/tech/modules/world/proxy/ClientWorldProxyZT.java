@@ -38,13 +38,12 @@ public class ClientWorldProxyZT
 	
 	private void registerLayerDefinition(EntityRenderersEvent.RegisterLayerDefinitions e)
 	{
-		Supplier<LayerDefinition> boathNoChest = () -> BoatModel.createBodyModel(false);
-		Supplier<LayerDefinition> boathWithChest = () -> BoatModel.createBodyModel(true);
+		Supplier<LayerDefinition> boat = BoatModel::createBodyModel;
 		
 		for(BoatZT.Type type : BoatZT.Type.values())
 		{
-			e.registerLayerDefinition(BoatZTRenderer.createBoatModelName(type), boathNoChest);
-			e.registerLayerDefinition(BoatZTRenderer.createChestBoatModelName(type), boathWithChest);
+			e.registerLayerDefinition(BoatZTRenderer.createBoatModelName(type), boat);
+			e.registerLayerDefinition(BoatZTRenderer.createChestBoatModelName(type), boat);
 		}
 	}
 	

@@ -1,7 +1,6 @@
 package org.zeith.tech.modules.transport.client.resources.model;
 
 import com.google.gson.*;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -72,7 +71,7 @@ public class ModelConnectable
 	}
 	
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 	{
 		var renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
 		
@@ -82,18 +81,6 @@ public class ModelConnectable
 				.stream()
 				.map(e -> Tuples.immutable(e.getKey(), e.getValue().stream().map(bakery::getModel).map(m -> m.bake(bakery, spriteGetter, modelState, modelLocation)).toList()))
 				.collect(Collectors.toMap(Tuple2::a, Tuple2::b)), inventoryParts, facades, renderTypes);
-	}
-	
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
-	{
-		return models.values()
-				.stream()
-				.flatMap(List::stream)
-				.map(modelGetter)
-				.flatMap(u -> u.getMaterials(modelGetter, missingTextureErrors).stream())
-				.distinct()
-				.toList();
 	}
 	
 	private static class Baked

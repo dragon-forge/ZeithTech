@@ -140,7 +140,7 @@ public class BlockMetalPress
 	@Override
 	public BlockItem createBlockItem()
 	{
-		return new BlockItem(this, new Item.Properties().tab(ZeithTech.TAB))
+		return ZeithTech.TAB.add(new BlockItem(this, new Item.Properties())
 		{
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer)
@@ -149,7 +149,7 @@ public class BlockMetalPress
 						.bind(BlockMetalPress.this, TilesZT_Processing.METAL_PRESS)
 						.ifPresent(consumer);
 			}
-		};
+		});
 	}
 	
 	@Override

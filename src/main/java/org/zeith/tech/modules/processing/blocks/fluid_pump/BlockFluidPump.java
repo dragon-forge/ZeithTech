@@ -64,7 +64,7 @@ public class BlockFluidPump
 	@Override
 	public BlockItem createBlockItem()
 	{
-		return new BlockItem(this, new Item.Properties().tab(ZeithTech.TAB))
+		return ZeithTech.TAB.add(new BlockItem(this, new Item.Properties())
 		{
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer)
@@ -73,6 +73,6 @@ public class BlockFluidPump
 						.bind(BlockFluidPump.this, TilesZT_Processing.FLUID_PUMP)
 						.ifPresent(consumer);
 			}
-		};
+		});
 	}
 }

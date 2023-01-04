@@ -13,7 +13,7 @@ public record SoundConfiguration(SoundEvent sound, SoundSource source, float vol
 {
 	public static final Codec<SoundConfiguration> CODEC = RecordCodecBuilder.create(instance ->
 			instance.group(
-					SoundEvent.CODEC.fieldOf("sound").forGetter(SoundConfiguration::sound),
+					SoundEvent.DIRECT_CODEC.fieldOf("sound").forGetter(SoundConfiguration::sound),
 					Codec.STRING.xmap(SoundSource::valueOf, SoundSource::name).fieldOf("source").forGetter(SoundConfiguration::source),
 					Codec.FLOAT.fieldOf("volume").forGetter(SoundConfiguration::volume),
 					Codec.FLOAT.fieldOf("pitch").forGetter(SoundConfiguration::pitch),

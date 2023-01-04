@@ -52,6 +52,7 @@ public class ItemHammer
 	{
 		super(props.defaultDurability(256));
 		this.repairItem = repairItem;
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

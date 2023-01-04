@@ -18,13 +18,13 @@ public interface ItemsZT_World
 	// Hevea tree stuff
 	
 	@RegistryName("hevea_sign")
-	SignItem HEVEA_SIGN = new SignItem((new Item.Properties()).stacksTo(16).tab(ZeithTech.TAB), BlocksZT_World.HEVEA_SIGN, BlocksZT_World.HEVEA_WALL_SIGN);
+	SignItem HEVEA_SIGN = ZeithTech.TAB.add(new SignItem(new Item.Properties().stacksTo(16), BlocksZT_World.HEVEA_SIGN, BlocksZT_World.HEVEA_WALL_SIGN));
 	
 	@RegistryName("hevea_boat")
-	ItemBoat HEVEA_BOAT = new ItemBoat(false, BoatZT.Type.HEVEA, (new Item.Properties()).stacksTo(1).tab(ZeithTech.TAB));
+	ItemBoat HEVEA_BOAT = ZeithTech.TAB.add(new ItemBoat(false, BoatZT.Type.HEVEA, new Item.Properties().stacksTo(1)));
 	
 	@RegistryName("hevea_chest_boat")
-	ItemBoat HEVEA_CHEST_BOAT = new ItemBoat(true, BoatZT.Type.HEVEA, (new Item.Properties()).stacksTo(1).tab(ZeithTech.TAB));
+	ItemBoat HEVEA_CHEST_BOAT = ZeithTech.TAB.add(new ItemBoat(true, BoatZT.Type.HEVEA, new Item.Properties().stacksTo(1)));
 	
 	// Raw ores
 	

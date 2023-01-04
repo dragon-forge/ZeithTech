@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.processing.client.renderer.tile.multiblock;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -79,7 +79,7 @@ public class TileRenderFarm
 		pose.pushPose();
 		
 		RotatedRenderHelper.rotateHorizontalPoseStack(pose, entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite(), 0.5F, 0.5F, 0.5F);
-		pose.mulPose(Vector3f.XP.rotationDegrees(180));
+		pose.mulPose(Axis.XP.rotationDegrees(180));
 		
 		bone.render(pose, buf.getBuffer(FARM_TYPE), lighting, overlay, 1F, 1F, 1F, 1F);
 

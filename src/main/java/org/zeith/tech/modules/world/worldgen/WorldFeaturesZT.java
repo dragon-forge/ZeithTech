@@ -1,8 +1,8 @@
 package org.zeith.tech.modules.world.worldgen;
 
 import net.minecraft.core.Holder;
-import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.level.block.Blocks;
@@ -14,16 +14,18 @@ import net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlac
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.BeehiveDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import org.zeith.tech.core.ZeithTech;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 import org.zeith.tech.modules.world.worldgen.oil.OilLakeFeature;
 
 import java.util.List;
 
-import static net.minecraft.data.worldgen.features.OreFeatures.*;
-
 public class WorldFeaturesZT
 {
+	private static final RuleTest STONE_ORE_REPLACEABLES = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
+	private static final RuleTest DEEPSLATE_ORE_REPLACEABLES = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
+	
 	private static final List<OreConfiguration.TargetBlockState> ORE_TIN_TARGET_LIST = List.of(
 			OreConfiguration.target(STONE_ORE_REPLACEABLES, BlocksZT_World.TIN_ORE.defaultBlockState()),
 			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_TIN_ORE.defaultBlockState())
@@ -64,35 +66,35 @@ public class WorldFeaturesZT
 			OreConfiguration.target(DEEPSLATE_ORE_REPLACEABLES, BlocksZT_World.DEEPSLATE_URANIUM_ORE.defaultBlockState())
 	);
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TIN_ORE = register("tin_ore", Feature.ORE, new OreConfiguration(ORE_TIN_TARGET_LIST, 9));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TIN_ORE_SMALL = register("small_tin_ore", Feature.ORE, new OreConfiguration(ORE_TIN_TARGET_LIST, 4));
+	public static final Holder<ConfiguredFeature<?, ?>> TIN_ORE = register("tin_ore", Feature.ORE, new OreConfiguration(ORE_TIN_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<?, ?>> TIN_ORE_SMALL = register("small_tin_ore", Feature.ORE, new OreConfiguration(ORE_TIN_TARGET_LIST, 4));
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEAD_ORE = register("lead_ore", Feature.ORE, new OreConfiguration(ORE_LEAD_TARGET_LIST, 9));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LEAD_ORE_SMALL = register("small_lead_ore", Feature.ORE, new OreConfiguration(ORE_LEAD_TARGET_LIST, 4));
+	public static final Holder<ConfiguredFeature<?, ?>> LEAD_ORE = register("lead_ore", Feature.ORE, new OreConfiguration(ORE_LEAD_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<?, ?>> LEAD_ORE_SMALL = register("small_lead_ore", Feature.ORE, new OreConfiguration(ORE_LEAD_TARGET_LIST, 4));
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE = register("aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 9));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ALUMINUM_ORE_SMALL = register("small_aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 4));
+	public static final Holder<ConfiguredFeature<?, ?>> ALUMINUM_ORE = register("aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<?, ?>> ALUMINUM_ORE_SMALL = register("small_aluminum_ore", Feature.ORE, new OreConfiguration(ORE_ALUMINUM_TARGET_LIST, 4));
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> SILVER_ORE = register("silver_ore", Feature.ORE, new OreConfiguration(ORE_SILVER_TARGET_LIST, 8));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> SILVER_ORE_SMALL = register("small_silver_ore", Feature.ORE, new OreConfiguration(ORE_SILVER_TARGET_LIST, 3));
+	public static final Holder<ConfiguredFeature<?, ?>> SILVER_ORE = register("silver_ore", Feature.ORE, new OreConfiguration(ORE_SILVER_TARGET_LIST, 8));
+	public static final Holder<ConfiguredFeature<?, ?>> SILVER_ORE_SMALL = register("small_silver_ore", Feature.ORE, new OreConfiguration(ORE_SILVER_TARGET_LIST, 3));
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ZINC_ORE = register("zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 10));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> ZINC_ORE_SMALL = register("small_zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 6));
+	public static final Holder<ConfiguredFeature<?, ?>> ZINC_ORE = register("zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 10));
+	public static final Holder<ConfiguredFeature<?, ?>> ZINC_ORE_SMALL = register("small_zinc_ore", Feature.ORE, new OreConfiguration(ORE_ZINC_TARGET_LIST, 6));
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TUNGSTEN_ORE = register("tungsten_ore", Feature.ORE, new OreConfiguration(ORE_TUNGSTEN_TARGET_LIST, 5));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> TUNGSTEN_ORE_SMALL = register("small_tungsten_ore", Feature.ORE, new OreConfiguration(ORE_TUNGSTEN_TARGET_LIST, 3));
+	public static final Holder<ConfiguredFeature<?, ?>> TUNGSTEN_ORE = register("tungsten_ore", Feature.ORE, new OreConfiguration(ORE_TUNGSTEN_TARGET_LIST, 5));
+	public static final Holder<ConfiguredFeature<?, ?>> TUNGSTEN_ORE_SMALL = register("small_tungsten_ore", Feature.ORE, new OreConfiguration(ORE_TUNGSTEN_TARGET_LIST, 3));
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LITHIUM_ORE = register("lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 9));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> LITHIUM_ORE_SMALL = register("small_lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 4));
+	public static final Holder<ConfiguredFeature<?, ?>> LITHIUM_ORE = register("lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 9));
+	public static final Holder<ConfiguredFeature<?, ?>> LITHIUM_ORE_SMALL = register("small_lithium_ore", Feature.ORE, new OreConfiguration(ORE_LITHIUM_TARGET_LIST, 4));
 	
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> BIG_URANIUM_ORE = register("big_uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 12));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> URANIUM_ORE = register("uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 6));
-	public static final Holder<ConfiguredFeature<OreConfiguration, ?>> URANIUM_ORE_SMALL = register("small_uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 2));
+	public static final Holder<ConfiguredFeature<?, ?>> BIG_URANIUM_ORE = register("big_uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 12));
+	public static final Holder<ConfiguredFeature<?, ?>> URANIUM_ORE = register("uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 6));
+	public static final Holder<ConfiguredFeature<?, ?>> URANIUM_ORE_SMALL = register("small_uranium_ore", Feature.ORE, new OreConfiguration(ORE_URANIUM_TARGET_LIST, 2));
 	
 	
 	// TREES
 	
-	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> HEVEA_TREE = register("hevea_tree", Feature.TREE,
+	public static final Holder<ConfiguredFeature<?, ?>> HEVEA_TREE = register("hevea_tree", Feature.TREE,
 			new TreeConfiguration.TreeConfigurationBuilder(
 					BlockStateProvider.simple(BlocksZT_World.HEVEA_LOG),
 					new StraightTrunkPlacer(6, 2, 2),
@@ -105,7 +107,7 @@ public class WorldFeaturesZT
 					.build()
 	);
 	
-	public static final Holder<ConfiguredFeature<TreeConfiguration, ?>> HEVEA_TREE_WITH_BEES = register("hevea_tree_with_bees", Feature.TREE,
+	public static final Holder<ConfiguredFeature<?, ?>> HEVEA_TREE_WITH_BEES = register("hevea_tree_with_bees", Feature.TREE,
 			new TreeConfiguration.TreeConfigurationBuilder(
 					BlockStateProvider.simple(BlocksZT_World.HEVEA_LOG),
 					new StraightTrunkPlacer(6, 2, 2),
@@ -119,27 +121,27 @@ public class WorldFeaturesZT
 					.build()
 	);
 	
-	public static final Holder<ConfiguredFeature<RandomFeatureConfiguration, ?>> HEVEA_TREES_PLAINS = register("hevea_trees_plains", Feature.RANDOM_SELECTOR,
+	public static final Holder<ConfiguredFeature<?, ?>> HEVEA_TREES_PLAINS = register("hevea_trees_plains", Feature.RANDOM_SELECTOR,
 			new RandomFeatureConfiguration(List.of(),
 					PlacementUtils.inlinePlaced(HEVEA_TREE_WITH_BEES))
 	);
 	
 	// Oil
 	
-	public static final Holder<ConfiguredFeature<OilLakeFeature.OilLakeConfiguration, ?>> SMALL_OIL_LAKE = register("small_oil_lake", FeaturesZT.OIL_LAKE,
+	public static final Holder<ConfiguredFeature<?, ?>> SMALL_OIL_LAKE = register("small_oil_lake", FeaturesZT.OIL_LAKE,
 			new OilLakeFeature.OilLakeConfiguration(OilLakeFeature.LakeType.SMALL, UniformFloat.of(0.5F, 1F))
 	);
 	
-	public static final Holder<ConfiguredFeature<OilLakeFeature.OilLakeConfiguration, ?>> MEDIUM_OIL_LAKE = register("medium_oil_lake", FeaturesZT.OIL_LAKE,
+	public static final Holder<ConfiguredFeature<?, ?>> MEDIUM_OIL_LAKE = register("medium_oil_lake", FeaturesZT.OIL_LAKE,
 			new OilLakeFeature.OilLakeConfiguration(OilLakeFeature.LakeType.MEDIUM, UniformFloat.of(0.5F, 1F))
 	);
 	
-	public static final Holder<ConfiguredFeature<OilLakeFeature.OilLakeConfiguration, ?>> LARGE_OIL_LAKE = register("large_oil_lake", FeaturesZT.OIL_LAKE,
+	public static final Holder<ConfiguredFeature<?, ?>> LARGE_OIL_LAKE = register("large_oil_lake", FeaturesZT.OIL_LAKE,
 			new OilLakeFeature.OilLakeConfiguration(OilLakeFeature.LakeType.LARGE, UniformFloat.of(0.8F, 1.2F))
 	);
 	
-	private static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> register(String id, F feature, FC configs)
+	private static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<?, ?>> register(String id, F feature, FC configs)
 	{
-		return FeatureUtils.register(ZeithTech.MOD_ID + ":" + id, feature, configs);
+		return new Holder.Direct<>(new ConfiguredFeature<>(feature, configs));
 	}
 }

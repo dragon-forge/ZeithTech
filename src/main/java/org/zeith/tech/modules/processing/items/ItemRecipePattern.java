@@ -15,11 +15,13 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.crafting.*;
 import org.zeith.hammerlib.api.crafting.impl.ItemStackResult;
+import org.zeith.hammerlib.api.items.ITabItem;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.hammerlib.util.java.tuples.Tuple2;
 import org.zeith.hammerlib.util.java.tuples.Tuples;
 import org.zeith.tech.api.item.IRecipePatternItem;
 import org.zeith.tech.api.item.tooltip.TooltipStack;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.processing.client.renderer.item.ItemRecipePatternISTER;
 
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.function.Consumer;
 
 public class ItemRecipePattern
 		extends Item
-		implements IRecipePatternItem
+		implements IRecipePatternItem, ITabItem
 {
 	public ItemRecipePattern(Properties props)
 	{
@@ -102,10 +104,14 @@ public class ItemRecipePattern
 	}
 	
 	@Override
+	public CreativeModeTab getItemCategory()
+	{
+		return ZeithTech.TAB.tab();
+	}
+	
+	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items)
 	{
-		super.fillItemCategory(tab, items);
-		
 		if(allowedIn(tab))
 		{
 			List<Tuple2<NamespacedRecipeRegistry<?>, INameableRecipe>> recipes = AbstractRecipeRegistry.getAllRegistries()

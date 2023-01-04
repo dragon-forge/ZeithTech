@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.transport.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -26,7 +26,7 @@ public class TileRendererItemPipe
 			matrix.pushPose();
 			matrix.translate(pos.x, pos.y, pos.z);
 			matrix.scale(0.25F, 0.25F, 0.25F);
-			matrix.mulPose(Vector3f.YP.rotationDegrees(item.itemId.getMostSignificantBits() / 3F));
+			matrix.mulPose(Axis.YP.rotationDegrees(item.itemId.getMostSignificantBits() / 3F));
 			mc.getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, lighting, overlay, matrix, buf, 0);
 			matrix.popPose();
 		}

@@ -82,7 +82,7 @@ public class BoatZT
 						{
 							for(int i = 0; i < 3; ++i)
 							{
-								this.spawnAtLocation(this.getBoatType().getPlanks());
+								this.spawnAtLocation(this.getBoatTypeZT().getPlanks());
 							}
 							
 							for(int j = 0; j < 2; ++j)
@@ -104,7 +104,7 @@ public class BoatZT
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag)
 	{
-		tag.putString("Type", this.getBoatType().getName());
+		tag.putString("Type", this.getBoatTypeZT().getName());
 	}
 	
 	@Override

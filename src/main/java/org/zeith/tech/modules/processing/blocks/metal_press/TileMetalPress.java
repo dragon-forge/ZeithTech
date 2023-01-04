@@ -146,7 +146,7 @@ public class TileMetalPress
 					var p3d = Vec3.atLowerCornerOf(worldPosition);
 					
 					for(LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, new AABB(p3d.x + 1 / 16F, p3d.y + 4 / 16F, p3d.z + 1 / 16F, p3d.x + 15 / 16F, p3d.y + 1F, p3d.z + 15 / 16F)))
-						entity.hurt(DamageSource.ANVIL, 8);
+						entity.hurt(DamageSource.anvil(entity), 8);
 				}
 			}, () ->
 			{

@@ -14,9 +14,9 @@ import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.transport.blocks.energy_wire.BlockEnergyWire;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -32,9 +32,9 @@ public class AdvancementGeneratorZT
 	}
 	
 	@Override
-	public void run(CachedOutput cache) throws IOException
+	public CompletableFuture<?> run(CachedOutput cache)
 	{
-		Path path = this.generator.getOutputFolder();
+		Path path = this.generator.getPackOutput().getOutputFolder(PackOutput.Target.RESOURCE_PACK);
 		Set<ResourceLocation> set = Sets.newHashSet();
 		Consumer<Advancement> consumer = (advancement) ->
 		{
@@ -44,18 +44,11 @@ public class AdvancementGeneratorZT
 			} else
 			{
 				Path path1 = createPath(path, advancement);
-				
-				try
-				{
-					DataProvider.saveStable(cache, advancement.deconstruct().serializeToJson(), path1);
-				} catch(IOException e)
-				{
-					throw new RuntimeException(e);
-				}
+				DataProvider.saveStable(cache, advancement.deconstruct().serializeToJson(), path1);
 			}
 		};
 		
-		generateAdvancements(consumer);
+		return CompletableFuture.runAsync(() -> generateAdvancements(consumer));
 	}
 	
 	private void generateAdvancements(Consumer<Advancement> consumer)

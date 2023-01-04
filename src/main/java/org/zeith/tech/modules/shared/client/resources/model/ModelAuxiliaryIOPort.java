@@ -1,7 +1,5 @@
 package org.zeith.tech.modules.shared.client.resources.model;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,6 +17,7 @@ import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.zeith.hammerlib.client.model.IBakedModel;
 import org.zeith.hammerlib.client.model.LoadUnbakedGeometry;
 import org.zeith.tech.api.ZeithTechAPI;
@@ -51,21 +50,15 @@ public class ModelAuxiliaryIOPort
 			);
 	
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 	{
 		return new Baked(context, bakery, spriteGetter, modelState, overrides, modelLocation);
-	}
-	
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
-	{
-		return ALL_MATERIALS.get().toList();
 	}
 	
 	private static class Baked
 			implements IBakedModel
 	{
-		public static Vector3f ZERO = Vector3f.ZERO;
+		public static Vector3f ZERO = new Vector3f(0);
 		public static Vector3f ONE = new Vector3f(16.0F, 16.0F, 16.0F);
 		
 		public static Vector3f ZERO2 = new Vector3f(-0.1F, -0.1F, -0.1F);
@@ -83,7 +76,7 @@ public class ModelAuxiliaryIOPort
 		final Map<ResourceLocation, TextureAtlasSprite> aux = new HashMap<>();
 		final ItemOverrides overrides;
 		
-		public Baked(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+		public Baked(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 		{
 			this.base = spriteGetter.apply(BASE_MATERIAL);
 			this.up = spriteGetter.apply(UP_MATERIAL);

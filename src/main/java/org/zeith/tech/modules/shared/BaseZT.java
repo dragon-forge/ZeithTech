@@ -29,24 +29,24 @@ public class BaseZT
 	
 	public static Item newItem()
 	{
-		return new Item(itemProps());
+		return ZeithTech.TAB.add(new Item(itemProps()));
 	}
 	
 	public static Item newItem(Item.Properties props)
 	{
-		return new Item(props);
+		return ZeithTech.TAB.add(new Item(props));
 	}
 	
 	public static Item newItem(UnaryOperator<Item.Properties> props)
 	{
-		return new Item(props.apply(itemProps()));
+		return ZeithTech.TAB.add(new Item(props.apply(itemProps())));
 	}
 	
 	public static Item newItem(TagKey<Item> tag)
 	{
 		var item = newItem();
 		TagAdapter.bind(tag, item);
-		return item;
+		return ZeithTech.TAB.add(item);
 	}
 	
 	public static Item newItem(List<TagKey<Item>> tags)
@@ -54,12 +54,12 @@ public class BaseZT
 		var item = newItem();
 		for(TagKey<Item> tag : tags)
 			TagAdapter.bind(tag, item);
-		return item;
+		return ZeithTech.TAB.add(item);
 	}
 	
 	public static Item.Properties itemProps()
 	{
-		return new Item.Properties().tab(ZeithTech.TAB);
+		return new Item.Properties();
 	}
 	
 	public static BlockHeveaLog heveaLog(MaterialColor p_50789_, MaterialColor p_50790_, boolean leaking)

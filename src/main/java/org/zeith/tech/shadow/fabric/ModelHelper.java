@@ -16,12 +16,13 @@ package org.zeith.tech.shadow.fabric;
  */
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Contract;
+import org.joml.Vector3f;
 
 import java.util.Arrays;
 import java.util.List;
@@ -120,8 +121,8 @@ public abstract class ModelHelper
                                                float translationY, float translationZ, float scaleX, float scaleY, float scaleZ)
     {
         Vector3f translation = new Vector3f(translationX, translationY, translationZ);
-        translation.mul(0.0625f);
-        translation.clamp(-5.0F, 5.0F);
+		translation.mul(0.0625f);
+		translation = new Vector3f(Mth.clamp(translation.x, -5.0F, 5.0F), Mth.clamp(translation.y, -5.0F, 5.0F), Mth.clamp(translation.z, -5.0F, 5.0F));
         return new ItemTransform(new Vector3f(rotationX, rotationY, rotationZ), translation,
                 new Vector3f(scaleX, scaleY, scaleZ));
     }

@@ -12,9 +12,11 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.zeith.hammerlib.api.items.ITabItem;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.item.tooltip.TooltipImage;
 import org.zeith.tech.api.misc.farm.FarmAlgorithm;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.BaseZT;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 public class ItemFarmSoC
 		extends Item
+		implements ITabItem
 {
 	public ItemFarmSoC()
 	{
@@ -54,9 +57,14 @@ public class ItemFarmSoC
 	}
 	
 	@Override
+	public CreativeModeTab getItemCategory()
+	{
+		return ZeithTech.TAB.tab();
+	}
+	
+	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items)
 	{
-		super.fillItemCategory(tab, items);
 		if(allowedIn(tab))
 			for(FarmAlgorithm algorithm : ZeithTechAPI.get().getFarmAlgorithms())
 				items.add(ofAlgorithm(algorithm));

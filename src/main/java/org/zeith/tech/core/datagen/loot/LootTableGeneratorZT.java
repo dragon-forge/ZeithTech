@@ -21,9 +21,9 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -61,10 +61,10 @@ public class LootTableGeneratorZT
 	}
 	
 	@Override
-	public void run(CachedOutput cache) throws IOException
+	public CompletableFuture<?> run(CachedOutput cache)
 	{
 		Set<ResourceLocation> set = Sets.newHashSet();
-		var prov = generator.createPathProvider(DataGenerator.Target.DATA_PACK, "loot_tables");
+		var prov = generator.getPackOutput().createPathProvider(PackOutput.Target.DATA_PACK, "loot_tables");
 		consumer = (id, table) ->
 		{
 			if(!set.add(id))
@@ -73,18 +73,11 @@ public class LootTableGeneratorZT
 			} else
 			{
 				Path path1 = prov.json(id);
-				
-				try
-				{
-					DataProvider.saveStable(cache, LootTables.serialize(table.build()), path1);
-				} catch(IOException e)
-				{
-					throw new RuntimeException(e);
-				}
+				DataProvider.saveStable(cache, LootTables.serialize(table.build()), path1);
 			}
 		};
 		
-		generateLootTables();
+		return CompletableFuture.runAsync(this::generateLootTables);
 	}
 	
 	private void generateLootTables()

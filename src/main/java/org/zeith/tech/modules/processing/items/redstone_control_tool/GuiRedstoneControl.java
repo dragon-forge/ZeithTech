@@ -14,6 +14,7 @@ import org.zeith.hammerlib.client.utils.RenderUtils;
 import org.zeith.tech.api.ZeithTechAPI;
 
 import java.awt.*;
+import java.util.function.Supplier;
 
 public class GuiRedstoneControl
 		extends ScreenWTFMojang<ContainerRedstoneControl>
@@ -45,13 +46,13 @@ public class GuiRedstoneControl
 	
 	public static Button createButtonWithRedstoneState(ContainerRedstoneControl.RedstoneModeData data, int x, int y, int width, int height, Component text, Button.OnPress onClick)
 	{
-		return new Button(x, y, width, height, text, onClick)
+		return new Button(x, y, width, height, text, onClick, Supplier::get)
 		{
 			@Override
 			protected void renderBg(PoseStack pose, Minecraft mc, int x, int y)
 			{
 				FXUtils.bindTexture(ZeithTechAPI.MOD_ID, "textures/gui/redstone_control_tool.png");
-				RenderUtils.drawTexturedModalRect(pose, this.x, this.y, 176, data.getMode().ordinal() * 20, width, height);
+				RenderUtils.drawTexturedModalRect(pose, this.getX(), this.getY(), 176, data.getMode().ordinal() * 20, width, height);
 			}
 		};
 	}

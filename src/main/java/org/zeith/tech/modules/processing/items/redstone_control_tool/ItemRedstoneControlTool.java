@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkHooks;
 import org.zeith.tech.api.ZeithTechCapabilities;
 import org.zeith.tech.api.tile.RedstoneControl;
+import org.zeith.tech.core.ZeithTech;
 
 public class ItemRedstoneControlTool
 		extends Item
@@ -19,6 +20,7 @@ public class ItemRedstoneControlTool
 	public ItemRedstoneControlTool(Properties props)
 	{
 		super(props);
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

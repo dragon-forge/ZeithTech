@@ -16,12 +16,12 @@ package org.zeith.tech.shadow.fabric;
  * limitations under the License.
  */
 
-import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 /**
  * A mutable {@link QuadView} instance. The base interface for {@link QuadEmitter} and for dynamic renders/mesh

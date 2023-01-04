@@ -3,7 +3,8 @@ package org.zeith.tech.api;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,6 +12,7 @@ import net.minecraftforge.common.ForgeTier;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.zeith.hammerlib.api.items.CreativeTab;
 import org.zeith.tech.api.audio.IAudioSystem;
 import org.zeith.tech.api.misc.farm.FarmAlgorithm;
 import org.zeith.tech.api.modules.IZeithTechModules;
@@ -129,11 +131,11 @@ public abstract class ZeithTechAPI
 	public abstract IAudioSystem getAudioSystem();
 	
 	/**
-	 * Returns the ZeithTech CreativeModeTab.
+	 * Returns the ZeithTech CreativeTab.
 	 *
-	 * @return CreativeModeTab instance
+	 * @return CreativeTab instance
 	 */
-	public abstract CreativeModeTab getCreativeTab();
+	public abstract CreativeTab getCreativeTab();
 	
 	/**
 	 * Returns the IForgeRegistry for FarmAlgorithms.

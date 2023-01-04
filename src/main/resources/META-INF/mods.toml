@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[43,)"
+loaderVersion = "[44,)"
 issueTrackerURL = "https://github.com/dragon-forge/ZeithTech/issues"
 license = "All rights reserved"
 
@@ -20,20 +20,20 @@ Tech mod for modern Minecraft versions. Brings a lot of tiered technology into t
 [[dependencies.zeithtech]]
 modId = "forge"
 mandatory = true
-versionRange = "[43.1.43,)"
+versionRange = "[44.1.0,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.zeithtech]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,1.20)"
+versionRange = "[1.19.3,1.20)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.zeithtech]]
 modId = "hammerlib"
 mandatory = true
-versionRange = "[19.3.44,)"
+versionRange = "[19.4.47,)"
 ordering = "NONE"
 side = "BOTH"

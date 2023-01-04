@@ -88,7 +88,7 @@ public class SimpleBlockZT
 	@Override
 	public BlockItem createBlockItem()
 	{
-		var props = new Item.Properties().tab(ZeithTech.TAB);
+		var props = new Item.Properties();
 		var gen = new BlockItem(this, props)
 		{
 			@Override
@@ -101,7 +101,7 @@ public class SimpleBlockZT
 		itemBlock = gen;
 		for(var tag : itemTags)
 			TagAdapter.bind(tag, gen);
-		return gen;
+		return ZeithTech.TAB.add(gen);
 	}
 	
 	@Override

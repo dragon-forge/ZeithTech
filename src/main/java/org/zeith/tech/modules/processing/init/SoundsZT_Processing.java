@@ -18,7 +18,7 @@ public interface SoundsZT_Processing
 	
 	static SoundEvent register(String s)
 	{
-		return SoundRegistrar.alloc(() -> new SoundEvent(ZeithTechAPI.id("processing." + s)));
+		return SoundRegistrar.alloc(() -> SoundEvent.createVariableRangeEvent(ZeithTechAPI.id("processing." + s)));
 	}
 	
 	static void setup()

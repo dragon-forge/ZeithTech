@@ -2,7 +2,6 @@ package org.zeith.tech.modules.shared.client.resources.model;
 
 import com.google.gson.*;
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
@@ -109,7 +108,7 @@ public class ModelMultiTool
 	}
 	
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 	{
 		var bakedMap = getAllPartModelLocations(bakery::getModel)
 				.entrySet()
@@ -121,17 +120,6 @@ public class ModelMultiTool
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 		
 		return new BakedMultiToolModel(itemTransforms, bakedMap, particle, spriteGetter, overrides);
-	}
-	
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
-	{
-		return getAllPartModels(modelGetter)
-				.values()
-				.stream()
-				.flatMap(List::stream)
-				.flatMap(model -> model.getMaterials(modelGetter, missingTextureErrors).stream())
-				.toList();
 	}
 	
 	public static class BakedMultiToolModel

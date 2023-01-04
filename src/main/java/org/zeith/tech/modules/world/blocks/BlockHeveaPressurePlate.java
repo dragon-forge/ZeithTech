@@ -1,5 +1,6 @@
 package org.zeith.tech.modules.world.blocks;
 
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -22,7 +23,7 @@ public class BlockHeveaPressurePlate
 	
 	public BlockHeveaPressurePlate(PressurePlateBlock.Sensitivity sensivity, Properties props)
 	{
-		super(sensivity, props);
+		super(sensivity, props, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON);
 	}
 	
 	public BlockHeveaPressurePlate dropsSelf()
@@ -66,12 +67,12 @@ public class BlockHeveaPressurePlate
 	@Override
 	public BlockItem createBlockItem()
 	{
-		var props = new Item.Properties().tab(ZeithTech.TAB);
+		var props = new Item.Properties();
 		var gen = new BlockItem(this, props);
 		itemBlock = gen;
 		for(var tag : itemTags)
 			TagAdapter.bind(tag, gen);
-		return gen;
+		return ZeithTech.TAB.add(gen);
 	}
 	
 	@Override

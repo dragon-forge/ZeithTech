@@ -1,8 +1,6 @@
 package org.zeith.tech.modules.transport.client.resources.model;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.math.Vector3f;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.client.Minecraft;
@@ -20,6 +18,7 @@ import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 import org.zeith.hammerlib.client.model.IBakedModel;
 import org.zeith.hammerlib.client.model.LoadUnbakedGeometry;
 import org.zeith.tech.api.tile.facade.FacadeData;
@@ -38,15 +37,9 @@ public class ModelItemFacade
 	private static final Renderer renderer = Renderer.getInstance();
 	
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 	{
 		return new GlobalFacadeModel(spriteGetter, overrides);
-	}
-	
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
-	{
-		return List.of();
 	}
 	
 	public static class GlobalFacadeModel

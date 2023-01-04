@@ -2,7 +2,6 @@ package org.zeith.tech.modules.transport.items.multimeter;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -103,7 +102,7 @@ public class GuiMultimeter
 		
 		double min = 0;
 		
-		Matrix4f pose4f = pose.last().pose();
+		var pose4f = pose.last().pose();
 		
 		float r = ColorHelper.getRed(color),
 				g = ColorHelper.getGreen(color),

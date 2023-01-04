@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.misc.farm.FarmAlgorithm;
 import org.zeith.tech.api.utils.InventoryHelper;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.BaseZT;
 import org.zeith.tech.modules.shared.init.ItemsZT;
 
@@ -30,6 +31,7 @@ public class ItemSoCProgrammer
 	public ItemSoCProgrammer()
 	{
 		super(BaseZT.itemProps().stacksTo(1));
+		ZeithTech.TAB.add(this);
 	}
 	
 	public static Optional<FarmAlgorithm> findAlgorithm(List<ItemStack> stacks)

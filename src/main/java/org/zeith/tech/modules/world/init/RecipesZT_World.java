@@ -4,8 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.BlastingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraftforge.common.Tags;
 import org.zeith.hammerlib.core.adapter.recipe.SmeltingRecipeBuilder;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
@@ -82,7 +81,7 @@ public interface RecipesZT_World
 			private Recipe<?> generateBlastRecipe()
 			{
 				var id = getIdentifier();
-				return new BlastingRecipe(new ResourceLocation(id.getNamespace(), id.getPath() + "/blasting"), group, input, result, xp, cookTime / 2);
+				return new BlastingRecipe(new ResourceLocation(id.getNamespace(), id.getPath() + "/blasting"), group, CookingBookCategory.BLOCKS, input, result, xp, cookTime / 2);
 			}
 			
 			@Override

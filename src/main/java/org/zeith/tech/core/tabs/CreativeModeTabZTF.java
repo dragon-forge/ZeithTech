@@ -1,9 +1,10 @@
 package org.zeith.tech.core.tabs;
 
-import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.NotNull;
+import org.zeith.hammerlib.api.items.CreativeTab;
 import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.BlocksZT;
 import org.zeith.tech.modules.shared.init.ItemsZT;
@@ -12,50 +13,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreativeModeTabZTF
-		extends CreativeModeTab
+		extends CreativeTab
 {
-	private List<ItemStack> subTypes = null;
+	private static List<ItemStack> subTypes = null;
 	
 	public CreativeModeTabZTF()
 	{
-		super(ZeithTech.MOD_ID + ".facades");
+		super(new ResourceLocation(ZeithTech.MOD_ID, "facades"),
+				b -> b.icon(() -> ItemsZT.FACADE.forItemRaw(new ItemStack(BlocksZT.HEVEA_PLANKS), 1))
+						.displayItems(CreativeModeTabZTF::fillItemList)
+		);
 	}
 	
-	@Override
-	public @NotNull ItemStack makeIcon()
+	public static void fillItemList(FeatureFlagSet features, CreativeModeTab.Output output, boolean hasPermisions)
 	{
-		return ItemsZT.FACADE.forItemRaw(new ItemStack(BlocksZT.HEVEA_PLANKS), 1);
-	}
-	
-	@Override
-	public void fillItemList(NonNullList<ItemStack> items)
-	{
-		if(this.subTypes != null)
+		if(subTypes != null)
 		{
-			items.addAll(subTypes);
+			output.acceptAll(subTypes);
 			return;
 		}
 		
-		this.subTypes = new ArrayList<>(1000);
+		subTypes = new ArrayList<>(1000);
 		
 		for(var b : ForgeRegistries.BLOCKS)
 			try
 			{
 				var item = b.asItem();
-				if(item != Items.AIR && item.getItemCategory() != null)
+				if(item != Items.AIR)
 				{
-					NonNullList<ItemStack> tmpList = NonNullList.create();
-					b.fillItemCategory(item.getItemCategory(), tmpList);
-					for(var l : tmpList)
-					{
-						var facade = ItemsZT.FACADE.forItem(l, false);
-						if(!facade.isEmpty()) this.subTypes.add(facade);
-					}
+					var facade = ItemsZT.FACADE.forItem(item.getDefaultInstance(), false);
+					if(!facade.isEmpty()) subTypes.add(facade);
 				}
 			} catch(Throwable ignored)
 			{
 			}
 		
-		items.addAll(subTypes);
+		output.acceptAll(subTypes);
 	}
 }

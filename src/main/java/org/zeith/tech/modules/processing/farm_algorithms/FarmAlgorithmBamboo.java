@@ -5,7 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.BambooBlock;
+import net.minecraft.world.level.block.BambooStalkBlock;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.zeith.hammerlib.core.RecipeHelper;
@@ -19,7 +19,7 @@ public class FarmAlgorithmBamboo
 	{
 		super(new Properties()
 						.upsideDown(false),
-				(BambooBlock) Blocks.BAMBOO,
+				(BambooStalkBlock) Blocks.BAMBOO,
 				Direction.UP
 		);
 	}

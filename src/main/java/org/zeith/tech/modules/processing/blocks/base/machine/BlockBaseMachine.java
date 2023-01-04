@@ -4,7 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
 import org.zeith.hammerlib.api.forge.BlockAPI;
 import org.zeith.hammerlib.api.forge.ContainerAPI;
+import org.zeith.hammerlib.api.items.CreativeTab;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.core.ZeithTech;
@@ -118,7 +120,7 @@ public abstract class BlockBaseMachine<T extends TileBaseMachine<T>>
 	}
 	
 	@Override
-	public CreativeModeTab getCreativeTab()
+	public CreativeTab getCreativeTab()
 	{
 		return ZeithTech.TAB;
 	}

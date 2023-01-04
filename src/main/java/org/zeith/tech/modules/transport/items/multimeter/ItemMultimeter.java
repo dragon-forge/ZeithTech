@@ -15,6 +15,7 @@ import net.minecraftforge.network.NetworkHooks;
 import org.zeith.hammerlib.api.tiles.IContainerTile;
 import org.zeith.hammerlib.net.Network;
 import org.zeith.tech.api.tile.energy.IEnergyMeasurable;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.transport.net.PacketUpdateMultimeterLoad;
 
 import java.util.*;
@@ -28,6 +29,7 @@ public class ItemMultimeter
 	public ItemMultimeter(Properties props)
 	{
 		super(props);
+		ZeithTech.TAB.add(this);
 	}
 	
 	public static float getLoadFromLook(ItemStack stack)

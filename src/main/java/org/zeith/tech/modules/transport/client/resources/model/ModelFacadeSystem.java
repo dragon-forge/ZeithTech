@@ -1,7 +1,6 @@
 package org.zeith.tech.modules.transport.client.resources.model;
 
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.RenderType;
@@ -47,28 +46,20 @@ public class ModelFacadeSystem
 	public static final Material FACADE_PARTICLE = new Material(InventoryMenu.BLOCK_ATLAS, ZeithTechAPI.id("block/aux_io_port/base"));
 	
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 	{
 		return new BakedFacadeModel(spriteGetter, bakery, overrides, modelLocation);
-	}
-	
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
-	{
-		return List.of(
-				FACADE_PARTICLE
-		);
 	}
 	
 	public static class BakedFacadeModel
 			implements IBakedModel
 	{
 		protected final Function<Material, TextureAtlasSprite> spriteGetter;
-		protected final ModelBakery bakery;
+		protected final ModelBaker bakery;
 		protected final ItemOverrides overrides;
 		protected final ResourceLocation modelLocation;
 		
-		public BakedFacadeModel(Function<Material, TextureAtlasSprite> spriteGetter, ModelBakery bakery, ItemOverrides overrides, ResourceLocation modelLocation)
+		public BakedFacadeModel(Function<Material, TextureAtlasSprite> spriteGetter, ModelBaker bakery, ItemOverrides overrides, ResourceLocation modelLocation)
 		{
 			this.spriteGetter = spriteGetter;
 			this.bakery = bakery;

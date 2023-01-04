@@ -8,8 +8,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.StrictNBTIngredient;
 import org.zeith.hammerlib.annotations.RegistryName;
@@ -29,6 +28,7 @@ public class RecipeTurnFacadesBackIntoBlock
 		super(
 				id,
 				group,
+				CraftingBookCategory.MISC,
 				new ItemStack(Items.STONE),
 				NonNullList.withSize(6,
 						StrictNBTIngredient.of(ItemsZT.FACADE.forItem(new ItemStack(Items.STONE), false))

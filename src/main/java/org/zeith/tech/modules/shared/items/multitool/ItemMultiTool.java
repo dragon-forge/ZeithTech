@@ -31,6 +31,7 @@ import org.zeith.hammerlib.api.items.tooltip.TooltipMulti;
 import org.zeith.tech.api.item.IAccumulatorItem;
 import org.zeith.tech.api.item.multitool.*;
 import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.proxy.ClientSharedProxyZT;
 import org.zeith.tech.utils.ChatUtil;
 
@@ -50,6 +51,7 @@ public class ItemMultiTool
 		super(0F, 0F, Tiers.IRON, BlockTags.MINEABLE_WITH_PICKAXE, props.stacksTo(1).durability(0));
 		this.model = model;
 		this.emptyModel = emptyModel;
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

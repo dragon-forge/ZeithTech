@@ -1,10 +1,10 @@
 package org.zeith.tech.modules.processing.recipes;
 
 import com.google.gson.*;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -64,7 +64,7 @@ public class CustomHammeringRecipeGenerator
 		
 		var arr = GsonHelper.getAsJsonArray(root, "block", new JsonArray());
 		for(int i = 0; i < arr.size(); i++)
-			blockHammeringTags.add(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(arr.getAsString())));
+			blockHammeringTags.add(BlockTags.create(new ResourceLocation(arr.getAsString())));
 		
 		return new RecipeHammering(recipeId, input, output, hits, List.copyOf(blockHammeringTags), tier);
 	}
@@ -115,7 +115,7 @@ public class CustomHammeringRecipeGenerator
 		var tagCount = buf.readInt();
 		var tags = new ArrayList<TagKey<Block>>();
 		for(int i = 0; i < tagCount; ++i)
-			tags.add(TagKey.create(Registry.BLOCK_REGISTRY, buf.readResourceLocation()));
+			tags.add(BlockTags.create(buf.readResourceLocation()));
 		return new RecipeHammering(id, input, output, hits, tags, tier);
 	}
 }

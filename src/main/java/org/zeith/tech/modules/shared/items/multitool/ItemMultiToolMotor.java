@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.item.multitool.IMultiToolMotor;
 import org.zeith.tech.api.item.multitool.TooltipFlagMultiTool;
+import org.zeith.tech.core.ZeithTech;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -23,6 +24,7 @@ public class ItemMultiToolMotor
 	public ItemMultiToolMotor(Tier tier, float energyMul, float speedMul, Properties props, ResourceLocation model)
 	{
 		super(tier, props.durability(0));
+		ZeithTech.TAB.add(this);
 		this.energyMul = energyMul;
 		this.speedMul = speedMul;
 		this.model = model;

@@ -11,4 +11,10 @@ public record TooltipFlagMultiTool(TooltipFlag parent, ItemStack multiToolStack)
 	{
 		return parent.isAdvanced();
 	}
+	
+	@Override
+	public boolean isCreative()
+	{
+		return parent.isCreative();
+	}
 }

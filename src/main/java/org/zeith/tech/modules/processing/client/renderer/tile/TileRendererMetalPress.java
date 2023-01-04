@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.processing.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -42,7 +42,7 @@ public class TileRendererMetalPress
 		
 		matrix.pushPose();
 		matrix.translate(1, 0.3125F + y, 1);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(180));
+		matrix.mulPose(Axis.XP.rotationDegrees(180));
 		animatedPart.render(matrix, buf.getBuffer(SOLID), lighting, overlay, 1F, 1F, 1F, 1F);
 		matrix.popPose();
 		
@@ -50,7 +50,7 @@ public class TileRendererMetalPress
 		var ir = mc.getItemRenderer();
 		
 		RotatedRenderHelper.rotateHorizontalPoseStack(matrix, entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), 0.5F, 0.265625F, 0.35F);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(90));
+		matrix.mulPose(Axis.XP.rotationDegrees(90));
 		ir.renderStatic(entity.inputItemDisplay.get(), ItemTransforms.TransformType.GROUND, lighting, overlay, matrix, buf, 0);
 	}
 }

@@ -106,11 +106,12 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${config.mc_version}-${config.forge_version}"
 
-    implementation fg.deobf("com.lowdragmc.shimmer:Shimmer-forge:${config.mc_version}-${config.shimmer_version}")
+    // implementation fg.deobf("com.lowdragmc.shimmer:Shimmer-forge:${config.mc_version}-${config.shimmer_version}")
 
-    implementation "org.zeith.hammerlib:HammerLib-${config.mc_version}:${config.hl_version}:deobf"
+    implementation fg.deobf("org.zeith.hammerlib:HammerLib-${config.mc_version}:${config.hl_version}")
     implementation fg.deobf("org.zeith.improvableskills:ImprovableSkills-${config.mc_version}:${config.is3_version}")
-    implementation "mezz.jei:jei-1.19.2-forge-api:11.4.0.274"
+
+    compileClasspath "mezz.jei:jei-1.19.2-forge-api:11.4.0.274"
 
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 

@@ -18,9 +18,9 @@
 
 package org.zeith.tech.shadow.codechicken.lib.model.pipeline.transformers;
 
-import com.mojang.math.Vector3f;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
+import org.joml.Vector3f;
 import org.zeith.tech.shadow.fabric.MutableQuadView;
 import org.zeith.tech.shadow.fabric.RenderContext;
 

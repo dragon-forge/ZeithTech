@@ -78,12 +78,12 @@ public class FluidFactory
 	
 	public static FluidFactory createWithBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Consumer<ForgeFlowingFluid.Properties> propertyModifier)
 	{
-		return new FluidFactory(fluidId, typeGenerator, fluid -> new BucketItem(fluid, (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1).tab(ZeithTech.TAB)), propertyModifier, true);
+		return new FluidFactory(fluidId, typeGenerator, fluid -> ZeithTech.TAB.add(new BucketItem(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))), propertyModifier, true);
 	}
 	
 	public static FluidFactory createWithBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator)
 	{
-		return new FluidFactory(fluidId, typeGenerator, fluid -> new BucketItem(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(ZeithTech.TAB)), null, true);
+		return new FluidFactory(fluidId, typeGenerator, fluid -> ZeithTech.TAB.add(new BucketItem(fluid, new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1))), null, true);
 	}
 	
 	public static FluidFactory createNoBucket(ResourceLocation fluidId, Supplier<FluidType> typeGenerator, Consumer<ForgeFlowingFluid.Properties> propertyModifier, boolean hasBlock)

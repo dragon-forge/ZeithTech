@@ -11,11 +11,11 @@ import mezz.jei.api.recipe.*;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.common.Constants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.recipes.processing.RecipeHammering;
@@ -114,11 +114,10 @@ public class ManualHammeringCategory
 		
 		List<ItemStack> blocks = recipe.getHammeringTags().stream().<ItemStack> mapMulti((tag, $) ->
 		{
-			for(var holder : Registry.BLOCK.getTagOrEmpty(tag))
+			for(var holder : ForgeRegistries.BLOCKS.tags().getTag(tag))
 			{
-				var item = holder.get().asItem();
-				if(item != Items.AIR)
-					$.accept(new ItemStack(item));
+				var item = holder.asItem();
+				if(item != Items.AIR) $.accept(new ItemStack(item));
 			}
 		}).collect(Collectors.toList());
 		

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.item.multitool.IMultiToolHead;
 import org.zeith.tech.api.item.multitool.TooltipFlagMultiTool;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TagsZT;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class ItemElectricSaw
 	{
 		super(0, -2, tier, TagsZT.Blocks.MINEABLE_WITH_ELECTRIC_SAW, props);
 		this.multiToolModel = model;
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

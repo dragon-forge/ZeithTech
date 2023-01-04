@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import org.zeith.tech.api.block.IPipeCuttable;
 import org.zeith.tech.api.utils.BlockUpdateEmitter;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.BaseZT;
 
 public class ItemPipeCutter
@@ -14,6 +15,7 @@ public class ItemPipeCutter
 	public ItemPipeCutter()
 	{
 		super(BaseZT.itemProps().stacksTo(1));
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

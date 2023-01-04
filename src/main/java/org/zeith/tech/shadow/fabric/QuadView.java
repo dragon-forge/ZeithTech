@@ -16,7 +16,6 @@ package org.zeith.tech.shadow.fabric;
  */
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -24,6 +23,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 /**
  * Interface for reading quad data encoded by {@link MeshBuilder}. Enables models to do analysis, re-texturing or

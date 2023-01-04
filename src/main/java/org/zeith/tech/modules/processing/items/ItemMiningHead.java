@@ -17,6 +17,7 @@ import net.minecraftforge.common.TierSortingRegistry;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.tech.api.item.multitool.IMultiToolHead;
 import org.zeith.tech.api.item.multitool.TooltipFlagMultiTool;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.modules.shared.init.TagsZT;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class ItemMiningHead
 	{
 		super(0, -2, tier, TagsZT.Blocks.MINEABLE_WITH_MINING_HEAD, props);
 		this.multiToolModel = multiToolModel;
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

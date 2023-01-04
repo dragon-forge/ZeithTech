@@ -12,7 +12,7 @@ public interface SoundsZT_Generators
 	
 	static SoundEvent register(String s)
 	{
-		return SoundRegistrar.alloc(() -> new SoundEvent(ZeithTechAPI.id("generators." + s)));
+		return SoundRegistrar.alloc(() -> SoundEvent.createVariableRangeEvent(ZeithTechAPI.id("generators." + s)));
 	}
 	
 	static void setup()

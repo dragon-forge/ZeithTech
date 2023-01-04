@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.processing.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -45,7 +45,7 @@ public class TileRendererFluidPump
 		
 		matrix.pushPose();
 		matrix.translate(1, 1.5 - 0.5625 * progress, 1);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(180));
+		matrix.mulPose(Axis.XP.rotationDegrees(180));
 		animatedPart.render(matrix, buf.getBuffer(CUTOUT_BLOCK), lighting, overlay, 1F, 1F, 1F, 1F);
 		matrix.popPose();
 		

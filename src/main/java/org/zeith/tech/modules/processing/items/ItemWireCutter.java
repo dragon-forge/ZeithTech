@@ -12,7 +12,8 @@ public class ItemWireCutter
 	
 	public ItemWireCutter(Properties props, Tier tier)
 	{
-		super(0, -3.0F, tier, TagsZT.Blocks.MINEABLE_WITH_WIRE_CUTTER, props.defaultDurability(192).tab(ZeithTech.TAB));
+		super(0, -3.0F, tier, TagsZT.Blocks.MINEABLE_WITH_WIRE_CUTTER, props.defaultDurability(192));
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

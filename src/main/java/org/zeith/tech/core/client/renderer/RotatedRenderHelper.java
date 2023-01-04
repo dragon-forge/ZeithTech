@@ -1,7 +1,7 @@
 package org.zeith.tech.core.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.core.Direction;
 
 public class RotatedRenderHelper
@@ -17,17 +17,17 @@ public class RotatedRenderHelper
 			case SOUTH ->
 			{
 				matrix.translate(1 - x, y, 1 - z);
-				matrix.mulPose(Vector3f.YP.rotationDegrees(180F));
+				matrix.mulPose(Axis.YP.rotationDegrees(180F));
 			}
 			case WEST ->
 			{
 				matrix.translate(z, y, 1 - x);
-				matrix.mulPose(Vector3f.YP.rotationDegrees(90F));
+				matrix.mulPose(Axis.YP.rotationDegrees(90F));
 			}
 			case EAST ->
 			{
 				matrix.translate(1 - z, y, x);
-				matrix.mulPose(Vector3f.YP.rotationDegrees(270F));
+				matrix.mulPose(Axis.YP.rotationDegrees(270F));
 			}
 		}
 	}

@@ -5,7 +5,8 @@ import net.minecraft.core.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
 import org.zeith.hammerlib.api.fml.IRegisterListener;
 import org.zeith.hammerlib.api.forge.BlockAPI;
+import org.zeith.hammerlib.api.items.CreativeTab;
 import org.zeith.hammerlib.core.adapter.BlockEntityAdapter;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.block.IPipeCuttable;
@@ -214,7 +216,7 @@ public class BlockEnergyWire
 	}
 	
 	@Override
-	public CreativeModeTab getCreativeTab()
+	public CreativeTab getCreativeTab()
 	{
 		return ZeithTech.TAB;
 	}

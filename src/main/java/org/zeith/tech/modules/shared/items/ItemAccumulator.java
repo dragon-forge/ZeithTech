@@ -15,6 +15,7 @@ import org.zeith.tech.api.item.IAccumulatorItem;
 import org.zeith.tech.api.item.ItemHandlerForgeEnergy;
 import org.zeith.tech.api.item.multitool.TooltipFlagMultiTool;
 import org.zeith.tech.api.item.tooltip.TooltipEnergyBar;
+import org.zeith.tech.core.ZeithTech;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class ItemAccumulator
 	{
 		super(props.stacksTo(1));
 		this.capacity = capacity;
+		ZeithTech.TAB.add(this);
 	}
 	
 	@Override

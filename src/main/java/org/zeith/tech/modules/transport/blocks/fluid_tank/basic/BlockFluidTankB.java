@@ -34,6 +34,7 @@ import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.hammerlib.util.java.Cast;
 import org.zeith.tech.api.block.ZeithTechStateProperties;
 import org.zeith.tech.api.item.ItemHandlerFluidTank;
+import org.zeith.tech.core.ZeithTech;
 import org.zeith.tech.core.client.renderer.item.BlockItemWithAltISTER;
 import org.zeith.tech.modules.processing.blocks.base.machine.BlockBaseMachine;
 import org.zeith.tech.modules.shared.BaseZT;
@@ -164,7 +165,7 @@ public class BlockFluidTankB
 	@Override
 	public BlockItem createBlockItem()
 	{
-		return new BlockItem(this, BaseZT.itemProps())
+		return ZeithTech.TAB.add(new BlockItem(this, BaseZT.itemProps())
 		{
 			@Override
 			public void initializeClient(Consumer<IClientItemExtensions> consumer)
@@ -208,6 +209,6 @@ public class BlockFluidTankB
 					tile.saveToItem(item);
 				});
 			}
-		};
+		});
 	}
 }

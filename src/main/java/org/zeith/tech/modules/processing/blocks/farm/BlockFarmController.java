@@ -2,7 +2,8 @@ package org.zeith.tech.modules.processing.blocks.farm;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.jetbrains.annotations.Nullable;
 import org.zeith.hammerlib.api.blocks.ICreativeTabBlock;
+import org.zeith.hammerlib.api.items.CreativeTab;
 import org.zeith.hammerlib.core.adapter.BlockHarvestAdapter;
 import org.zeith.tech.api.block.IMultiBlockPartWrapListener;
 import org.zeith.tech.core.ZeithTech;
@@ -55,7 +57,7 @@ public class BlockFarmController
 	}
 	
 	@Override
-	public CreativeModeTab getCreativeTab()
+	public CreativeTab getCreativeTab()
 	{
 		return ZeithTech.TAB;
 	}

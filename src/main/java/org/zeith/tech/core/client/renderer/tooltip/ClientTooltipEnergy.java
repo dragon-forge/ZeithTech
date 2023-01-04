@@ -1,7 +1,7 @@
 package org.zeith.tech.core.client.renderer.tooltip;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -36,7 +36,7 @@ public class ClientTooltipEnergy
 		WidgetAPI.bind();
 		pose.pushPose();
 		pose.translate(x + 66, y - 2, 0);
-		pose.mulPose(Vector3f.ZP.rotationDegrees(90));
+		pose.mulPose(Axis.ZP.rotationDegrees(90));
 		WidgetAPI.drawPowerBar(pose, 0, 0, bar.energy());
 		pose.popPose();
 	}

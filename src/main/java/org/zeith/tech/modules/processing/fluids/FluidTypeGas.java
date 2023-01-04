@@ -1,6 +1,5 @@
 package org.zeith.tech.modules.processing.fluids;
 
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -12,6 +11,7 @@ import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 import org.zeith.tech.api.ZeithTechAPI;
 
 import java.util.function.Consumer;

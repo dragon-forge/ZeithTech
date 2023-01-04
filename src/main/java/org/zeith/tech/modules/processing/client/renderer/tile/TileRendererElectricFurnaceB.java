@@ -1,7 +1,7 @@
 package org.zeith.tech.modules.processing.client.renderer.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -20,7 +20,7 @@ public class TileRendererElectricFurnaceB
 		var ir = mc.getItemRenderer();
 		
 		RotatedRenderHelper.rotateHorizontalPoseStack(matrix, entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING), 0.5F, 0.2F, 0.15F);
-		matrix.mulPose(Vector3f.XP.rotationDegrees(90));
+		matrix.mulPose(Axis.XP.rotationDegrees(90));
 		ir.renderStatic(entity.inputItemDisplay.get(), ItemTransforms.TransformType.GROUND, lighting, overlay, matrix, buf, 0);
 	}
 }

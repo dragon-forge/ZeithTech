@@ -3,7 +3,8 @@ package org.zeith.tech.core;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.*;
 import net.minecraftforge.fml.DistExecutor;
@@ -14,6 +15,7 @@ import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.zeith.api.registry.RegistryMapping;
+import org.zeith.hammerlib.api.items.CreativeTab;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
 import org.zeith.hammerlib.compat.base.CompatList;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
@@ -31,10 +33,10 @@ import org.zeith.tech.core.audio.CommonAudioSystem;
 import org.zeith.tech.core.mixins.TiersAccessor;
 import org.zeith.tech.core.proxy.ClientCoreProxyZT;
 import org.zeith.tech.core.proxy.CommonCoreProxyZT;
-import org.zeith.tech.core.tabs.CreativeModeTabZT;
 import org.zeith.tech.core.tabs.CreativeModeTabZTF;
 import org.zeith.tech.modules.generators.init.AdvancementTriggersZT;
 import org.zeith.tech.modules.shared.SharedModule;
+import org.zeith.tech.modules.shared.init.ItemsZT;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.modules.transport.items.ItemFacade;
 import org.zeith.tech.utils.LegacyEventBus;
@@ -58,8 +60,12 @@ public class ZeithTech
 	
 	public static final Logger LOG = LogManager.getLogger("ZeithTech");
 	
-	public static final CreativeModeTab TAB = new CreativeModeTabZT();
-	public static final CreativeModeTab FACADES_TAB = new CreativeModeTabZTF();
+	@CreativeTab.RegisterTab
+	public static final CreativeTab TAB = new CreativeTab(new ResourceLocation(ZeithTech.MOD_ID, "root"),
+			b -> b.icon(ItemsZT.IRON_HAMMER::getDefaultInstance));
+	
+	@CreativeTab.RegisterTab
+	public static final CreativeTab FACADES_TAB = new CreativeModeTabZTF();
 	
 	private static Supplier<IForgeRegistry<FarmAlgorithm>> FARM_ALGORITHMS;
 	
@@ -167,7 +173,7 @@ public class ZeithTech
 	}
 	
 	@Override
-	public CreativeModeTab getCreativeTab()
+	public CreativeTab getCreativeTab()
 	{
 		return TAB;
 	}

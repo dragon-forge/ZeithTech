@@ -1,9 +1,7 @@
 package org.zeith.tech.core.proxy;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import org.zeith.tech.api.item.tooltip.*;
 import org.zeith.tech.core.client.renderer.tooltip.*;
@@ -21,7 +19,6 @@ public class ClientCoreProxyZT
 	{
 		super.construct(modBus);
 		modBus.addListener(this::registerClientTooltips);
-		modBus.addListener(this::addExtraTextures);
 	}
 	
 	private void registerClientTooltips(RegisterClientTooltipComponentFactoriesEvent e)
@@ -36,11 +33,5 @@ public class ClientCoreProxyZT
 	{
 		if(!REGISTERED_TEXTURES.contains(path))
 			REGISTERED_TEXTURES.add(path);
-	}
-	
-	private void addExtraTextures(TextureStitchEvent.Pre e)
-	{
-		if(e.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS))
-			REGISTERED_TEXTURES.forEach(e::addSprite);
 	}
 }

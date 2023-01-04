@@ -2,22 +2,22 @@
 mod_id=zeithtech
 archive_name=ZeithTech
 mod_name=ZeithTech
-mod_version=19.1.0_b26
+mod_version=19.4.0_b26
 
 # Maven Info
 maven_group=org.zeith.tech
-is3_version=19.2.4
-hl_version=19.3.44
+is3_version=19.4.7
+hl_version=19.4.47
 shimmer_version=0.1.14
 
 # MC Info
-mc_version=1.19.2
-forge_version=43.1.43
+mc_version=1.19.3
+forge_version=44.1.0
 mc_user=Zeitheron,63fa4c485b5640809727d5d59663e603
 
 # MCP Info
 mcp_ch=official
-mcp_vr=1.19.2
+mcp_vr=1.19.3
 
 # Misc Info
 java=17

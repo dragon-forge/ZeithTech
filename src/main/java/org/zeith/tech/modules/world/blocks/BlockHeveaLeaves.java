@@ -47,11 +47,11 @@ public class BlockHeveaLeaves
 	@Override
 	public BlockItem createBlockItem()
 	{
-		var props = new Item.Properties().tab(ZeithTech.TAB);
+		var props = new Item.Properties();
 		var gen = new BlockItem(this, props);
 		itemBlock = gen;
 		for(var tag : itemTags)
 			TagAdapter.bind(tag, gen);
-		return gen;
+		return ZeithTech.TAB.add(gen);
 	}
 }

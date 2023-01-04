@@ -2,7 +2,6 @@ package org.zeith.tech.modules.shared.client.resources.model;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.RenderType;
@@ -30,7 +29,7 @@ import org.zeith.tech.shadow.codechicken.lib.model.pipeline.transformers.QuadReI
 import org.zeith.tech.shadow.codechicken.lib.model.pipeline.transformers.QuadTinter;
 import org.zeith.tech.shadow.fabric.*;
 
-import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 
 @LoadUnbakedGeometry(path = "multiblock_part")
@@ -45,15 +44,9 @@ public class ModelMultiBlockPart
 	}
 	
 	@Override
-	public BakedModel bake(IGeometryBakingContext context, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+	public BakedModel bake(IGeometryBakingContext context, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
 	{
 		return new Baked(spriteGetter.apply(particle));
-	}
-	
-	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext context, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors)
-	{
-		return List.of(particle);
 	}
 	
 	private static class Baked
