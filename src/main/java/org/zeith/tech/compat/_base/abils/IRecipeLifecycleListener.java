@@ -1,4 +1,4 @@
-package org.zeith.tech.api.recipes;
+package org.zeith.tech.compat._base.abils;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;

@@ -6,6 +6,7 @@ import org.zeith.hammerlib.api.crafting.NamespacedRecipeRegistry;
 import org.zeith.tech.api.enums.TechTier;
 import org.zeith.tech.api.recipes.base.ITieredRecipe;
 import org.zeith.tech.api.recipes.processing.*;
+import org.zeith.tech.compat._base.abils.IRecipeLifecycleListener;
 
 import java.util.List;
 
