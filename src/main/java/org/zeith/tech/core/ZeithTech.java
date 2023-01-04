@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.zeith.api.registry.RegistryMapping;
 import org.zeith.hammerlib.client.adapter.ChatMessageAdapter;
+import org.zeith.hammerlib.compat.base.CompatList;
 import org.zeith.hammerlib.core.adapter.LanguageAdapter;
 import org.zeith.hammerlib.core.adapter.ModSourceAdapter;
 import org.zeith.hammerlib.util.java.Cast;
@@ -23,8 +24,8 @@ import org.zeith.tech.api.audio.IAudioSystem;
 import org.zeith.tech.api.misc.farm.FarmAlgorithm;
 import org.zeith.tech.api.modules.IZeithTechModules;
 import org.zeith.tech.api.recipes.IRecipeRegistries;
-import org.zeith.tech.compat.BaseCompat;
-import org.zeith.tech.compat.Compats;
+import org.zeith.tech.compat._base.AbilitiesZT;
+import org.zeith.tech.compat._base.BaseCompatZT;
 import org.zeith.tech.core.audio.ClientAudioSystem;
 import org.zeith.tech.core.audio.CommonAudioSystem;
 import org.zeith.tech.core.mixins.TiersAccessor;
@@ -38,7 +39,8 @@ import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.modules.transport.items.ItemFacade;
 import org.zeith.tech.utils.LegacyEventBus;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -73,7 +75,6 @@ public class ZeithTech
 		var bus = FMLJavaModLoadingContext.get().getModEventBus();
 		bus.addListener(this::setup);
 		bus.addListener(this::newRegistries);
-		
 		PROXY.construct(bus);
 		
 		this.busses = new LegacyEventBus(bus, MinecraftForge.EVENT_BUS);
@@ -119,8 +120,6 @@ public class ZeithTech
 		
 		this.registries = new RecipeRegistries();
 		this.audioSystem = DistExecutor.unsafeRunForDist(() -> ClientAudioSystem::new, () -> CommonAudioSystem::new);
-		
-		compats.addAll(Compats.gatherAll());
 		
 		forCompats(c -> c.setup(busses));
 	}
@@ -191,11 +190,11 @@ public class ZeithTech
 		return SharedModule.PROXY.getPartialTick();
 	}
 	
-	public static final List<BaseCompat> compats = new ArrayList<>();
+	public static final CompatList<BaseCompatZT> COMPATS = CompatList.gather(BaseCompatZT.class);
 	
-	public static void forCompats(Consumer<BaseCompat> handler)
+	public static void forCompats(Consumer<BaseCompatZT> handler)
 	{
-		compats.forEach(handler);
+		COMPATS.getActive().forEach(handler);
 	}
 	
 	@Override
@@ -207,7 +206,8 @@ public class ZeithTech
 		
 		if(state.isPresent()) return state;
 		
-		return compats
+		return COMPATS
+				.getAbilities(AbilitiesZT.FACADE_OBTAINER_ABILITY)
 				.stream()
 				.flatMap(c -> c.getFacadeFromItem(stack).stream())
 				.findFirst();

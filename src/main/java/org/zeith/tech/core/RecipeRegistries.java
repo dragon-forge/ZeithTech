@@ -3,11 +3,12 @@ package org.zeith.tech.core;
 import org.zeith.hammerlib.api.crafting.INameableRecipe;
 import org.zeith.hammerlib.api.crafting.NamespacedRecipeRegistry;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.IRecipeLifecycleListener;
 import org.zeith.tech.api.recipes.IRecipeRegistries;
 import org.zeith.tech.api.recipes.base.ITieredRecipe;
 import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
 import org.zeith.tech.api.recipes.processing.*;
+import org.zeith.tech.compat._base.AbilitiesZT;
+import org.zeith.tech.compat._base.abils.IRecipeLifecycleListener;
 import org.zeith.tech.modules.shared.init.RecipeRegistriesZT;
 
 import java.util.List;
@@ -82,12 +83,14 @@ class RecipeRegistries
 	@Override
 	public <T extends IZeithTechRecipe> void onRecipeRegistered(T recipe)
 	{
-		ZeithTech.forCompats(compat -> compat.onRecipeRegistered(recipe));
+		ZeithTech.COMPATS.getAbilities(AbilitiesZT.RECIPE_LIFECYCLE_LISTENER_ABILITY)
+				.forEach(compat -> compat.onRecipeRegistered(recipe));
 	}
 	
 	@Override
 	public <T extends IZeithTechRecipe> void onRecipeDeRegistered(T recipe)
 	{
-		ZeithTech.forCompats(compat -> compat.onRecipeDeRegistered(recipe));
+		ZeithTech.COMPATS.getAbilities(AbilitiesZT.RECIPE_LIFECYCLE_LISTENER_ABILITY)
+				.forEach(compat -> compat.onRecipeDeRegistered(recipe));
 	}
 }

@@ -16,18 +16,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.fml.LogicalSide;
 import org.zeith.hammerlib.api.forge.ContainerAPI;
 import org.zeith.hammerlib.core.RecipeHelper;
 import org.zeith.hammerlib.util.java.Cast;
-import org.zeith.hammerlib.util.mcf.LogicalSidePredictor;
 import org.zeith.tech.api.ZeithTechAPI;
 import org.zeith.tech.api.block.multiblock.blast_furnace.IBlastFurnaceCasingBlock;
-import org.zeith.tech.api.compat.jei.ITieredRecipeType;
 import org.zeith.tech.api.enums.TechTier;
-import org.zeith.tech.api.recipes.base.ITieredRecipe;
-import org.zeith.tech.api.recipes.base.IZeithTechRecipe;
-import org.zeith.tech.compat.BaseCompat;
 import org.zeith.tech.compat.jei.category.*;
 import org.zeith.tech.compat.jei.category.blast_furnace.BlastFurnaceCategoryB;
 import org.zeith.tech.compat.jei.category.grinder.GrinderCategoryB;
@@ -63,13 +57,12 @@ import java.util.stream.Stream;
 
 @JeiPlugin
 public class JeiZT
-		extends BaseCompat
 		implements IModPlugin
 {
 	public static final ResourceLocation UID = ZeithTechAPI.id("jei");
 	
-	IJeiRuntime jeiRuntime;
-	List<RecipeType<?>> jeiRecipeTypes = List.of();
+	static IJeiRuntime jeiRuntime;
+	static List<RecipeType<?>> jeiRecipeTypes = List.of();
 	
 	public JeiZT()
 	{
@@ -84,8 +77,7 @@ public class JeiZT
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime)
 	{
-		if(this.jeiRuntime == null) ZeithTech.compats.add(this);
-		this.jeiRuntime = jeiRuntime;
+		JeiZT.jeiRuntime = jeiRuntime;
 		
 		NonNullList<ItemStack> items = NonNullList.create();
 		
@@ -280,48 +272,5 @@ public class JeiZT
 	{
 		jeiRecipeTypes = Stream.of(categories).map(IRecipeCategory::getRecipeType).collect(Collectors.toList());
 		registration.addRecipeCategories(categories);
-	}
-	
-	@Override
-	public <T extends IZeithTechRecipe> void onRecipeRegistered(T recipe)
-	{
-		super.onRecipeRegistered(recipe);
-		
-		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-		{
-			for(RecipeType<?> type : jeiRecipeTypes)
-			{
-				if(recipe.is(type.getRecipeClass()))
-				{
-					RecipeType<T> type1 = Cast.cast(type);
-					
-					if(recipe instanceof ITieredRecipe tiered && !ITieredRecipeType.get(type)
-							.map(itrt -> itrt.canHandle(tiered.getMinTier()))
-							.orElse(true))
-						continue;
-					
-					jeiRuntime.getRecipeManager().addRecipes(type1, List.of(recipe));
-				}
-			}
-		}
-	}
-	
-	@Override
-	public <T extends IZeithTechRecipe> void onRecipeDeRegistered(T recipe)
-	{
-		super.onRecipeDeRegistered(recipe);
-		
-		if(LogicalSidePredictor.getCurrentLogicalSide() == LogicalSide.CLIENT)
-		{
-			for(RecipeType<?> type : jeiRecipeTypes)
-			{
-				if(recipe.is(type.getRecipeClass()))
-				{
-					RecipeType<T> type1 = Cast.cast(type);
-					
-					jeiRuntime.getRecipeManager().hideRecipes(type1, List.of(recipe));
-				}
-			}
-		}
 	}
 }

@@ -6,9 +6,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.zeith.hammerlib.HammerLib;
+import org.zeith.hammerlib.compat.base.BaseCompat;
 import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
 import org.zeith.tech.api.ZeithTechAPI;
-import org.zeith.tech.compat.BaseCompat;
+import org.zeith.tech.compat._base.BaseCompatZT;
 import org.zeith.tech.modules.world.init.BlocksZT_World;
 import org.zeith.tech.utils.LegacyEventBus;
 import vectorwing.farmersdelight.common.crafting.CuttingBoardRecipe;
@@ -19,8 +20,12 @@ import vectorwing.farmersdelight.common.registry.ModItems;
 
 import java.util.List;
 
+@BaseCompat.LoadCompat(
+		modid = "farmersdelight",
+		compatType = BaseCompatZT.class
+)
 public class FarmersDelightCompat
-		extends BaseCompat
+		extends BaseCompatZT
 {
 	@Override
 	public void setup(LegacyEventBus bus)
