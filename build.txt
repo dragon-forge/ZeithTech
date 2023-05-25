@@ -2,12 +2,12 @@
 mod_id=zeithtech
 archive_name=ZeithTech
 mod_name=ZeithTech
-mod_version=19.1.0_b26
+mod_version=19.1.0_b28
 
 # Maven Info
 maven_group=org.zeith.tech
 is3_version=19.2.4
-hl_version=19.3.45
+hl_version=19.3.56
 shimmer_version=0.1.14
 
 # MC Info
