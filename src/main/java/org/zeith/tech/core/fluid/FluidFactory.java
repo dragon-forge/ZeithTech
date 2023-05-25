@@ -37,7 +37,7 @@ public class FluidFactory
 		this.fluidId = fluidId;
 		this.type = typeGenerator.get();
 		
-		this.fluidProps = new ForgeFlowingFluid.Properties(this::getType, this::getSource, this::getFlowing).block(this::getBlock).bucket(this::getBucket);
+		this.fluidProps = new ForgeFlowingFluid.Properties(this::getType, this::getSource, this::getFlowing).block(hasBlock ? this::getBlock : null).bucket(this::getBucket);
 		if(propertyModifier != null) propertyModifier.accept(this.fluidProps);
 		
 		this.source = new ForgeFlowingFluid.Source(this.fluidProps);

@@ -21,7 +21,8 @@ import org.zeith.tech.api.recipes.processing.RecipeGrinding;
 import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.ContainerUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.TileUnaryRecipeMachineB;
-import org.zeith.tech.modules.processing.init.*;
+import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
+import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.shared.ui.SlotInput;
 import org.zeith.tech.modules.shared.ui.SlotOutput;
 import org.zeith.tech.utils.SidedInventory;
@@ -32,11 +33,6 @@ public class TileGrinderB
 		extends TileUnaryRecipeMachineB<TileGrinderB, RecipeGrinding>
 {
 	public static final ResourceLocation GRINDER_GUI_TEXTURE = ZeithTechAPI.id("textures/processing/gui/grinder/basic.png");
-	
-	public TileGrinderB(BlockPos pos, BlockState state)
-	{
-		this(TilesZT_Processing.BASIC_GRINDER, pos, state);
-	}
 	
 	public TileGrinderB(BlockEntityType<TileGrinderB> type, BlockPos pos, BlockState state)
 	{

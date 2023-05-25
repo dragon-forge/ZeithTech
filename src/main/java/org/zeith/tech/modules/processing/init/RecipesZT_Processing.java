@@ -13,8 +13,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.zeith.hammerlib.core.RecipeHelper;
-import org.zeith.hammerlib.event.recipe.RegisterRecipesEvent;
-import org.zeith.hammerlib.event.recipe.ReloadRecipeRegistryEvent;
+import org.zeith.hammerlib.event.recipe.*;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredient;
 import org.zeith.hammerlib.util.mcf.fluid.FluidIngredientStack;
 import org.zeith.tech.api.block.multiblock.blast_furnace.IBlastFurnaceCasingBlock;
@@ -34,6 +33,10 @@ import java.util.function.Supplier;
 
 public interface RecipesZT_Processing
 {
+	static void spoofRecipes(SpoofRecipesEvent event)
+	{
+	}
+	
 	static void provideRecipes(RegisterRecipesEvent event)
 	{
 		if(ZeithTechBalanceConfigs.INSTANCE.getCurrent().vanilla.netheriteTweaks)

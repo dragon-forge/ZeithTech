@@ -21,7 +21,8 @@ import org.zeith.tech.api.recipes.processing.RecipeSawmill;
 import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.ContainerUnaryRecipeMachineB;
 import org.zeith.tech.modules.processing.blocks.base.unary_machine.basic.TileUnaryRecipeMachineB;
-import org.zeith.tech.modules.processing.init.*;
+import org.zeith.tech.modules.processing.init.RecipeRegistriesZT_Processing;
+import org.zeith.tech.modules.processing.init.SoundsZT_Processing;
 import org.zeith.tech.modules.shared.ui.SlotInput;
 import org.zeith.tech.modules.shared.ui.SlotOutput;
 import org.zeith.tech.utils.SidedInventory;
@@ -32,11 +33,6 @@ public class TileSawmillB
 		extends TileUnaryRecipeMachineB<TileSawmillB, RecipeSawmill>
 {
 	public static final ResourceLocation SAWMILL_GUI_TEXTURE = ZeithTechAPI.id("textures/processing/gui/sawmill/basic.png");
-	
-	public TileSawmillB(BlockPos pos, BlockState state)
-	{
-		this(TilesZT_Processing.BASIC_SAWMILL, pos, state);
-	}
 	
 	public TileSawmillB(BlockEntityType<TileSawmillB> type, BlockPos pos, BlockState state)
 	{

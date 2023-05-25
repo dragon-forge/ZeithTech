@@ -31,8 +31,8 @@ public class ClientSharedProxyZT
 		entity.swinging = false;
 		entity.swingTime = 0;
 		
-		model.rightArm.xRot = Mth.DEG_TO_RAD * 270;
-		model.leftArm.xRot = Mth.DEG_TO_RAD * 270;
+		model.rightArm.xRot = Mth.DEG_TO_RAD * -90;
+		model.leftArm.xRot = Mth.DEG_TO_RAD * -90;
 		
 		if(arm == HumanoidArm.RIGHT)
 		{

@@ -38,6 +38,7 @@ public class ProcessingModule
 		wasEnabled = true;
 		
 		HammerLib.EVENT_BUS.addListener(RecipesZT_Processing::provideRecipes);
+		HammerLib.EVENT_BUS.addListener(RecipesZT_Processing::spoofRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeMachineAssembler.class, RecipesZT_Processing::addMachineAssemblyRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeHammering.class, RecipesZT_Processing::addHammeringRecipes);
 		HammerLib.EVENT_BUS.addGenericListener(RecipeGrinding.class, RecipesZT_Processing::addGrindingRecipes);

@@ -35,7 +35,6 @@ import org.zeith.tech.api.tile.sided.ITileSidedConfig;
 import org.zeith.tech.api.tile.sided.TileSidedConfigImpl;
 import org.zeith.tech.api.utils.InventoryHelper;
 import org.zeith.tech.modules.processing.blocks.base.machine.TileBaseMachine;
-import org.zeith.tech.modules.processing.init.TilesZT_Processing;
 import org.zeith.tech.modules.processing.items.ItemMiningHead;
 import org.zeith.tech.modules.shared.init.TagsZT;
 import org.zeith.tech.utils.SidedInventory;
@@ -117,11 +116,6 @@ public class TileMiningQuarryB
 	public long doneMiningXZ;
 	
 	public int defaultCooldown = 50;
-	
-	public TileMiningQuarryB(BlockPos pos, BlockState state)
-	{
-		this(TilesZT_Processing.BASIC_QUARRY, pos, state);
-	}
 	
 	public TileMiningQuarryB(BlockEntityType<TileMiningQuarryB> type, BlockPos pos, BlockState state)
 	{
